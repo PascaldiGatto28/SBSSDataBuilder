@@ -113,9 +113,14 @@
         /// Constructs a <c>DescriptiveStataistics</c> object using the specified sequence of <c>double</c> items.
         /// </summary>
         /// <param name="source">The sequence of items of type <c>double</c></param>
-        /// <param name="title"></param>
-        /// <param name="mean"></param>
-        /// <returns></returns>
+        /// <param name="title">An optional title. The default is just "Statistics for [count] items" where [count] is
+        /// the number of items in the <paramref name="source"/> sequence.</param>
+        /// <param name="mean">
+        /// If <c>null</c> (which is the default), the value is calculated from the <c>source</c> sequence. Otherwise it used
+        /// to calculate the variance and sums of squares. Generally this should not be set.
+        /// </param>
+        /// <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source"/> is <c>null</c> or of length
+        /// zero, the empty (the field <c>IsEmpty</c> is <c>true</c>) instance is returned.</returns>
         public static DescriptiveStatistics GetStatistics(IEnumerable<double> source, string? title = null, double? mean = null)
         {
             DescriptiveStatistics stats = new();
@@ -179,7 +184,6 @@
                     StdDev = Math.Round(stdDev, 3),
                     Count = count,
                     OrderedSequence = orderedList.Select(e => Math.Round(e, 3))
-                    //SourceData = source
                 };
             }
 
