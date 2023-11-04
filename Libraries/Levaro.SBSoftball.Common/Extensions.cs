@@ -287,7 +287,7 @@ namespace Levaro.SBSoftball.Common
         /// The number of characters written to the file. If <paramref name="source"/> is <c>null</c> or 
         /// <paramref name="destFilePath"/> is <c>null</c> or empty, the file is not created and -1 is returned.
         /// </returns>
-        public static int Serializer<T>(this T source, string destFilePath)
+        public static int Serialize<T>(this T source, string destFilePath)
         {
             int length = -1;
             if ((source != null) && !string.IsNullOrEmpty(destFilePath))
