@@ -108,7 +108,6 @@
             set;
         }
 
-
         /// <summary>
         /// Constructs a <c>DescriptiveStataistics</c> object using the specified sequence of <c>double</c> items.
         /// </summary>
@@ -120,7 +119,7 @@
         /// to calculate the variance and sums of squares. Generally this should not be set.
         /// </param>
         /// <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source"/> is <c>null</c> or of length
-        /// zero, the empty (the field <c>IsEmpty</c> is <c>true</c>) instance is returned.</returns>
+        /// zero, the empty (<c>IsEmpty</c> is <c>true</c>) instance is returned.</returns>
         public static DescriptiveStatistics GetStatistics(IEnumerable<double> source, string? title = null, double? mean = null)
         {
             DescriptiveStatistics stats = new();

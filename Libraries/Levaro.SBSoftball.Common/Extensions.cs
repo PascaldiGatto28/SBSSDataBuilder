@@ -527,7 +527,7 @@ namespace Levaro.SBSoftball.Common
                 if (resourceStream != null)
                 {
                     content = new byte[resourceStream.Length];
-                    resourceStream.Read(content, 0, content.Length);
+                    _ = resourceStream.Read(content, 0, content.Length);
                 }
             }
 
@@ -577,6 +577,23 @@ namespace Levaro.SBSoftball.Common
         public static string AppendTimeStampToFileName(this string source, string format = " MM-dd-yyyy HH-mm-ss.ff")
         {
             return source.AppendTextToFileName(DateTime.Now.ToString(" MM-dd-yyyy HH-mm-ss.ff"));
+        }
+
+        /// <summary>
+        /// Constructs a <c>DescriptiveStataistics</c> object for the specified sequence of <c>double</c> items.
+        /// </summary>
+        /// <param name="source">The sequence of items of type <c>double</c></param>
+        /// <param name="title">An optional title. The default is just "Statistics for [count] items" where [count] is
+        /// the number of items in the <paramref name="source"/> sequence.</param>
+        /// <param name="mean">
+        /// If <c>null</c> (which is the default), the value is calculated from the <c>source</c> sequence. Otherwise it used
+        /// to calculate the variance and sums of squares. Generally this should not be set.
+        /// </param>
+        /// <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source"/> is <c>null</c> or of length
+        /// zero, the empty (<c>IsEmpty</c> is <c>true</c>) instance is returned.</returns>
+        public static DescriptiveStatistics GetStatistics(this IEnumerable<double> source, string? title = null, double? mean = null)
+        {
+            return DescriptiveStatistics.GetStatistics(source, title, mean);
         }
     }
 }
