@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Application
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levaro.SBSoftball", "Libraries\Levaro.SBSoftball\Levaro.SBSoftball.csproj", "{BEE8BA65-C446-4DCC-ABAB-5432A6AF8606}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Levaro.SBSoftball.Common", "Libraries\Levaro.SBSoftball.Common\Levaro.SBSoftball.Common.csproj", "{8BC40FF6-5553-470A-9282-953835FC062A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levaro.SBSoftball.Common", "Libraries\Levaro.SBSoftball.Common\Levaro.SBSoftball.Common.csproj", "{8BC40FF6-5553-470A-9282-953835FC062A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{0D160D9B-07E2-42BF-B206-C8FC94EBBE5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
