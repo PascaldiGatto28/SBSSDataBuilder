@@ -1,10 +1,13 @@
 ﻿namespace Levaro.SBSoftball.Common
 {
     /// <summary>
-    /// Encapsulates the descriptive statistics for a sequence of data values. Instances are created via the static method
+    /// Encapsulates the descriptive statistics for a sequence of data values. 
+    /// </summary>
+    /// <remarks>
+    /// Instances are created via the static method
     /// <see cref="GetStatistics(IEnumerable{double}, string?, double?)"/>. Generally speaking properties should not be set 
     /// except via the static method and deserialization.
-    /// </summary>
+    /// </remarks>
     public class DescriptiveStatistics
     {
         /// <summary>
@@ -109,7 +112,7 @@
         }
 
         /// <summary>
-        /// Constructs a <c>DescriptiveStataistics</c> object using the specified sequence of <c>double</c> items.
+        /// Constructs a <c>DescriptiveStatistics</c> object using the specified sequence of <c>double</c> items.
         /// </summary>
         /// <param name="source">The sequence of items of type <c>double</c></param>
         /// <param name="title">An optional title. The default is just "Statistics for [count] items" where [count] is

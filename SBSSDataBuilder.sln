@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levaro.SBSoftball.Common", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{0D160D9B-07E2-42BF-B206-C8FC94EBBE5D}"
 EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "SBSSDataBuilder API Docs", "Documentation\SBSSDataBuilder API Docs\SBSSDataBuilder API Docs.shfbproj", "{9CC6785D-44A5-42B1-92BC-5416C4036745}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8BC40FF6-5553-470A-9282-953835FC062A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BC40FF6-5553-470A-9282-953835FC062A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BC40FF6-5553-470A-9282-953835FC062A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CC6785D-44A5-42B1-92BC-5416C4036745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CC6785D-44A5-42B1-92BC-5416C4036745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CC6785D-44A5-42B1-92BC-5416C4036745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CC6785D-44A5-42B1-92BC-5416C4036745}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BEE8BA65-C446-4DCC-ABAB-5432A6AF8606} = {E43FBD7A-0EA0-4CAB-8649-7FC478BAE67B}
 		{8BC40FF6-5553-470A-9282-953835FC062A} = {E43FBD7A-0EA0-4CAB-8649-7FC478BAE67B}
+		{9CC6785D-44A5-42B1-92BC-5416C4036745} = {0D160D9B-07E2-42BF-B206-C8FC94EBBE5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90CD84B2-8201-4202-9D03-099CF3076382}

@@ -21,11 +21,11 @@ namespace Levaro.SBSoftball
             set;
         }
 
-        public static LeagueLocations ConstructLeagueLocations(string? saddlebrookeSeniorSoftball = null)
+        public static LeagueLocations ConstructLeagueLocations(string? saddleBrookeSeniorSoftball = null)
         {
             string json = string.Empty;
-            Dictionary<string, string> locations = new Dictionary<string, string>();
-            string url = saddlebrookeSeniorSoftball ?? "https://saddlebrookesoftball.com/";
+            Dictionary<string, string> locations = new();
+            string url = saddleBrookeSeniorSoftball ?? "https://saddlebrookesoftball.com/";
             HtmlDocument htmlDocument = PageContentUtilities.GetPageHtmlDocument(new Uri(url));
             IEnumerable<KeyValuePair<string, string>> locationKVPs = htmlDocument.DocumentNode
                                                       .SelectNodes("//ul[@id='menu-homepage-navigation']/li/a")
@@ -33,7 +33,7 @@ namespace Levaro.SBSoftball
                                                       .ParentNode
                                                       .SelectNodes("ul/li/a")
                                                       .Select(n => new KeyValuePair<string, string>(n.InnerText.Replace(" Schedule", string.Empty), n.GetAttributeValue("href", string.Empty)));
-            LeagueLocations leagues = new LeagueLocations
+            LeagueLocations leagues = new()
             {
                 BuildDate = DateTime.Now
             };
