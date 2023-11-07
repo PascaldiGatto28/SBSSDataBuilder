@@ -10,12 +10,13 @@
     /// (really Urls) to recover a page where the scheduled games for that league can be scraped from the page. The static method 
     /// <see cref="LeagueSchedule.ConstructLeagueSchedule(string)"/> returns the schedule for that league 
     /// and can be added to the <see cref="LeagueSchedules"/> property of this instance.
-    /// <para>For example,
+    /// <para>For example, the <see cref="LeaguesData"/> instance is created and then serialized to JSON file.
     /// <code language="c#" title="Sample Code to Populated the Data Store">
     /// <![CDATA[
-    /// LeaguesData leaguesData = new LeaguesData();
+    /// LeaguesData leaguesData = new();  // The build date is the current date and time, but the 
+    ///                                   // LeagueSchedules is the empty sequence.
     /// LeagueLocations leagues = LeagueLocations.ConstructLeagueLocations();
-    /// List<LeagueSchedule> schedules = new();
+    /// List<LeagueSchedule> schedules = new(); // Now create the sequence of LeagueSchedule objects
     /// foreach (KeyValuePair<string, string> kvp in leagues.Locations)
     /// {
     ///     LeagueSchedule schedule = LeagueSchedule.ConstructLeagueSchedule(kvp.Value);
@@ -29,7 +30,7 @@
     public class LeaguesData
     {
         /// <summary>
-        /// Creates an "empty" instance of this class, that is, the <paramref cref="LeagueSchedule"/> is the empty
+        /// Creates an "empty" instance of this class, that is, the <paramref cref="LeagueSchedules"/> is the empty
         /// sequence.
         /// </summary>
         public LeaguesData()
@@ -39,7 +40,8 @@
         }
 
         /// <summary>
-        /// Gets and sets the time stamp when the instance was constructed.
+        /// Gets and sets the time stamp when the instance was constructed, typically when the <see cref="LeagueSchedules"/>
+        /// sequence is constructed.
         /// </summary>
         public DateTime BuildDate
         {
@@ -48,7 +50,8 @@
         }
 
         /// <summary>
-        /// Get and sets the sequences of games schedules for each league. 
+        /// Get and sets the sequences of games schedules for each league. Use the 
+        /// <see cref="LeagueSchedule.ConstructLeagueSchedule(string)"/> method to build the sequence.
         /// </summary>
         public IEnumerable<LeagueSchedule> LeagueSchedules
         {

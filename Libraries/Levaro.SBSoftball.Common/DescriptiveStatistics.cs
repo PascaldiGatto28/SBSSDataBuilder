@@ -5,14 +5,15 @@
     /// </summary>
     /// <remarks>
     /// Instances are created via the static method
-    /// <see cref="GetStatistics(IEnumerable{double}, string?, double?)"/>. Generally speaking properties should not be set 
+    /// <see cref="GetStatistics(IEnumerable{double}, string?, double?)"/>. The properties cannot be set 
     /// except via the static method and deserialization.
     /// </remarks>
     public class DescriptiveStatistics
     {
         /// <summary>
         /// Creates a new instance of the class. Although the static methods are used to programatically create objects, this
-        /// constructor is required for serialization/deserialization.
+        /// constructor is required to initialized the non-nullable properties and to set the <see cref="IsEmpty"/> property
+        /// to <c>true</c>.
         /// </summary>
         private DescriptiveStatistics()
         {
@@ -22,93 +23,99 @@
         }
 
         /// <summary>
-        /// If the value is true, the object should not viewed a successfully instantiated.
+        /// If the value is true, the object should not be viewed as successfully instantiated. It is initialized 
+        /// to <c>true</c> by the default constructor and set to <c>false</c> if 
+        /// the static method <see cref="GetStatistics(IEnumerable{double}, string?, double?)"/> successfully 
+        /// returns an instance.
         /// </summary>
         public bool IsEmpty
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
-        /// Gets or sets an optional title of the instance of the class.
+        /// Gets or initializes an optional title of the instance of the class. If the title is not specified in the
+        /// static method <see cref="GetStatistics(IEnumerable{double}, string?, double?)"/>, the title
+        /// <code language="cs">"Statistics for {count:#,###} items"</code>, where <c>count</c> is the number of values
+        /// in the sequence used to compute the descriptive statistics.
         /// </summary>
         public string Title
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
-        /// Gets or sets the minimum value of the sequence of items.
+        /// Gets or initializes the minimum value of the sequence of items.
         /// </summary>
         public double Minimum
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
-        /// Gets or sets the maximum value of the sequence of items.
+        /// Gets or initializes the maximum value of the sequence of items.
         /// </summary>
         public double Maximum
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
-        /// Gets or sets the mean (average) of the sequence of items.
+        /// Gets or initializes the mean (average) of the sequence of items.
         /// </summary>
         public double Mean
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
-        /// Gets or sets the median of the sequence of items.
+        /// Gets or initializes the median of the sequence of items.
         /// </summary>
         public double Median
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
-        /// Gets or sets the variance of the sequence of items.
+        /// Gets or initializes the variance of the sequence of items.
         /// </summary>
         public double Variance
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
-        /// Gets or sets the standard deviation of the sequence of items.
+        /// Gets or initializes the standard deviation of the sequence of items.
         /// </summary>
         public double StdDev
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
-        /// Gets or sets the number of items in the sequence.
+        /// Gets or initializes the number of items in the sequence.
         /// </summary>
         public int Count
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
-        /// Gets or sets the sequences of items in ascending order.
+        /// Gets or initializes the sequence of items in ascending order.
         /// </summary>
         public IEnumerable<double> OrderedSequence
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
@@ -118,11 +125,12 @@
         /// <param name="title">An optional title. The default is just "Statistics for [count] items" where [count] is
         /// the number of items in the <paramref name="source"/> sequence.</param>
         /// <param name="mean">
-        /// If <c>null</c> (which is the default), the value is calculated from the <c>source</c> sequence. Otherwise it used
-        /// to calculate the variance and sums of squares. Generally this should not be set.
+        /// If <c>null</c> (which is the default), the value is calculated from the <c>source</c> sequence. Otherwise it is used
+        /// to calculate the variance and sums of squares. Generally this should not be set unless the data has been
+        /// normalized.
         /// </param>
         /// <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source"/> is <c>null</c> or of length
-        /// zero, the empty (<c>IsEmpty</c> is <c>true</c>) instance is returned.</returns>
+        /// zero, the empty instance (<c>IsEmpty</c> is <c>true</c>) is returned.</returns>
         public static DescriptiveStatistics GetStatistics(IEnumerable<double> source, string? title = null, double? mean = null)
         {
             DescriptiveStatistics stats = new();

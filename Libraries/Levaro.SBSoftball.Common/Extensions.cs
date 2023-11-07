@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿// Ignore Spelling: dest
+
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -72,8 +74,8 @@ namespace Levaro.SBSoftball.Common
         /// <param name="content">The string whose substring is returned.</param>
         /// <param name="start">The returned substring starts at the location of the value of this parameter.</param>
         /// <param name="includeStart">
-        ///     If <c>true</c>, the <paramref name="start"/> string is included in the returned substring; otherwise the returned 
-        ///     substring begins immediated after the <c>start</c> string. The default is false.
+        /// If <c>true</c>, the <paramref name="start"/> string is included in the returned substring; otherwise the returned 
+        /// substring begins immediately after the <c>start</c> string. The default is false.
         /// </param>
         /// <returns>A substring of the <paramref name="content"/> string based upon the values of the other parameters.</returns>
         /// <seealso cref="Substring(string, string, string, bool, bool)"/>.
@@ -85,36 +87,42 @@ namespace Levaro.SBSoftball.Common
 
         [GeneratedRegex(@"\s+")]
         private static partial Regex NoWhiteSpaceRegex();
+
         /// <summary>
-        /// Returns the <paramref name="content"/> string with all white space removed using the source generated Regex
-        /// <see cref="NoWhiteSpaceRegex"/>.
+        /// Returns the <paramref name="content"/> string with all white space removed using the source generated 
+        /// <see cref="Regex"/>.
         /// </summary>
+        /// <remarks>
+        /// The <c>Regex</c> instance is generated from the expression <code language="cs">"\\s+"</code>.
+        /// </remarks>
         /// <param name="content">The string from which to remove all white space</param>
         /// <returns><c>content</c> with all white space removed. The empty string is returned if <c>content</c> is
         /// empty or <c>null</c>.</returns>
         public static string RemoveWhiteSpace(this string content) => NoWhiteSpaceRegex().Replace(content ?? string.Empty, "");
 
-
-
-
         [GeneratedRegex("[\\s*]\\([a-z|A-Z|1-9]*\\)")]
-        public static partial Regex RemoveParenthicalText();
-        /// <summary>Decodes HTML encoded characters (for example <CDATA>&lt;</CDATA> to &lt;) and removes all leading text beginning with zero or more white 
+        private static partial Regex RemoveParentheticalText();
+
+        /// <summary>Decodes HTML encoded characters (for example <![CDATA[&lt;]]> to &lt;) and removes all leading text 
+        /// beginning with zero or more white 
         /// space characters followed by alphanumeric characters surrounded by parenthesis. Also all leading and trailing white 
         /// space is removed. This rather specialized method is used to "normalize" names recovered from data scraped 
         /// from HTML pages.
-        /// <see cref="RemoveParenthicalText"/>
         /// </summary>
+        /// <remarks>
+        /// The <see cref="Regex"/> instance used is generated using the regular expression 
+        /// <code>"[\\s*]\\([a-z|A-Z|1-9]*\\)"</code>
+        /// </remarks>
         /// <param name="name">The text to modify. If empty or <c>null</c>, the empty string is returned.</param>
         /// <returns>
-        /// The modified string by (1) decoding any Html characters, (2) removing any text using the <c>RemoveParenthicalText</c>
+        /// The modified string by (1) decoding any HTML characters, (2) removing any text using the <c>RemoveParentheticalText</c>
         /// generated <c>Regex</c> object, (3) removing leading and trailing white space characters. If <paramref name="name"/>
         /// is empty or <c>null</c> the empty string is returned.
         /// </returns>
         public static string CleanNameText(this string name)
         {
             string teamName = System.Net.WebUtility.HtmlDecode(name);
-            teamName = RemoveParenthicalText().Replace(teamName ?? string.Empty, string.Empty).Trim();
+            teamName = RemoveParentheticalText().Replace(teamName ?? string.Empty, string.Empty).Trim();
             return teamName;
         }
         /// <summary>
@@ -462,11 +470,12 @@ namespace Levaro.SBSoftball.Common
         }
 
         /// <summary>
-        /// Returns the value of a custom attribute for the <paramref name="assembly"/>.
+        /// For the specified <paramref name="assembly"/>, the value of the property for a custom attribute of 
+        /// <typeparamref name="T"/> is returned
         /// </summary>
         /// <typeparam name="T">The attribute type.</typeparam>
         /// <param name="assembly">The assembly whose attributes are inspected.</param>
-        /// <param name="propertyName">The property whose value is returned.</param>
+        /// <param name="propertyName">The property of the attribute whose value is returned.</param>
         /// <returns>The property value cast as a string for the recovered property. The empty string is returned if 
         /// <paramref name="assembly"/> is <c>null</c> or <paramref name="propertyName"/> is <c>null</c> or empty, or if
         /// the attributes or property or value cannot be recovered.
@@ -587,7 +596,8 @@ namespace Levaro.SBSoftball.Common
         /// the number of items in the <paramref name="source"/> sequence.</param>
         /// <param name="mean">
         /// If <c>null</c> (which is the default), the value is calculated from the <c>source</c> sequence. Otherwise it used
-        /// to calculate the variance and sums of squares. Generally this should not be set.
+        /// to calculate the variance and sums of squares. Generally this should not be set unless it is part of data
+        /// normalization.
         /// </param>
         /// <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source"/> is <c>null</c> or of length
         /// zero, the empty (<c>IsEmpty</c> is <c>true</c>) instance is returned.</returns>
