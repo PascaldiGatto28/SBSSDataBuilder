@@ -21,19 +21,18 @@
     /// {
     ///     LeagueSchedule schedule = LeagueSchedule.ConstructLeagueSchedule(kvp.Value);
     ///     schedules.Add(schedule);
-    ///     Console.WriteLine($"Created schedule for {schedule.LeagueDescription}");
     /// }
     /// ]]>
     /// </code>
     /// </para>
     /// </remarks>
-    public class LeaguesData
+    public sealed class LeaguesData
     {
         /// <summary>
         /// Creates an "empty" instance of this class, that is, the <paramref cref="LeagueSchedules"/> is the empty
         /// sequence.
         /// </summary>
-        public LeaguesData()
+        private LeaguesData()
         {
             BuildDate = DateTime.Now;
             LeagueSchedules = Enumerable.Empty<LeagueSchedule>();
@@ -46,7 +45,7 @@
         public DateTime BuildDate
         {
             get;
-            set;
+            init;
         }
 
         /// <summary>
@@ -56,7 +55,50 @@
         public IEnumerable<LeagueSchedule> LeagueSchedules
         {
             get;
-            set;
+            init;
+        }
+
+        public static LeaguesData ConstructLeaguesData(string? saddleBrookeSeniorSoftball = null, Action<string> message = null)
+        {
+            LeaguesData leaguesData = new LeaguesData();
+            bool callback = message != null;
+
+            try
+            {
+                LeagueLocations leagues = LeagueLocations.ConstructLeagueLocations(saddleBrookeSeniorSoftball);
+                if (message != null)
+                {
+                    message($"Constructed LeagueLocations object. There are {leagues.Locations.Count} leagues.");
+                }
+
+                List<LeagueSchedule> schedules = new List<LeagueSchedule>();
+                foreach (KeyValuePair<string, string> kvp in leagues.Locations)
+                {
+                    LeagueSchedule schedule = LeagueSchedule.ConstructLeagueSchedule(kvp.Value);
+                    schedules.Add(schedule);
+                    if (message != null)
+                    {
+                        message($"Created schedule for {schedule.LeagueDescription}");
+                    }
+                }
+
+                leaguesData = new()
+                {
+                    BuildDate = DateTime.Now,
+                    LeagueSchedules = schedules.ToList()
+                };
+
+                if (message != null)
+                {
+                    message($"Leagues data store created at {leaguesData.BuildDate:dddd MMMM d, yyyy a\\t hh:mm:ss tt}");
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new InvalidOperationException("Unable to construct the data store.", exception);
+            }
+
+            return leaguesData;
         }
     }
 }

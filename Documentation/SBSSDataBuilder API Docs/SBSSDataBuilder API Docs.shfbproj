@@ -58,15 +58,54 @@
     <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
     <AppendMarkdownFileExtensionsToUrls>False</AppendMarkdownFileExtensionsToUrls>
     <VisibleItems>Privates, Protected, ProtectedInternalAsProtected, NonBrowsable</VisibleItems>
-    <PlugInConfigurations />
+    <PlugInConfigurations>
+      <PlugInConfig id="Output Deployment" enabled="True">
+        <configuration deleteAfterDeploy="false" verboseLogging="false">
+  <deploymentLocation id="help1x" location="">
+    <userCredentials useDefault="true" userName="" password="" />
+    <proxyCredentials useProxy="false" proxyServer="">
+      <userCredentials useDefault="true" userName="" password="" />
+    </proxyCredentials>
+  </deploymentLocation>
+  <deploymentLocation id="helpViewer" location="" renameMSHA="false">
+    <userCredentials useDefault="true" userName="" password="" />
+    <proxyCredentials useProxy="false" proxyServer="">
+      <userCredentials useDefault="true" userName="" password="" />
+    </proxyCredentials>
+  </deploymentLocation>
+  <deploymentLocation id="website" location="J:\Softball\SHFBDocs">
+    <userCredentials useDefault="true" userName="" password="" />
+    <proxyCredentials useProxy="false" proxyServer="">
+      <userCredentials useDefault="true" userName="" password="" />
+    </proxyCredentials>
+  </deploymentLocation>
+  <deploymentLocation id="openXml" location="">
+    <userCredentials useDefault="true" userName="" password="" />
+    <proxyCredentials useProxy="false" proxyServer="">
+      <userCredentials useDefault="true" userName="" password="" />
+    </proxyCredentials>
+  </deploymentLocation>
+  <deploymentLocation id="markdown" location="">
+    <userCredentials useDefault="true" userName="" password="" />
+    <proxyCredentials useProxy="false" proxyServer="">
+      <userCredentials useDefault="true" userName="" password="" />
+    </proxyCredentials>
+  </deploymentLocation>
+</configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="Levaro.SBSoftball.Common" isExposed="True" xmlns="">
-  <Filter entryType="Class" fullName="Levaro.SBSoftball.Common.Extensions" filterName="Extensions" isExposed="True">
-    <Filter entryType="Method" fullName="Levaro.SBSoftball.Common.Extensions.NoWhiteSpaceRegex" filterName="NoWhiteSpaceRegex" isExposed="False" />
-    <Filter entryType="Method" fullName="Levaro.SBSoftball.Common.Extensions.RemoveParentheticalText" filterName="RemoveParentheticalText" isExposed="False" />
-  </Filter>
-</Filter>
+        <Filter entryType="Class" fullName="Levaro.SBSoftball.Common.Extensions" filterName="Extensions" isExposed="True">
+          <Filter entryType="Method" fullName="Levaro.SBSoftball.Common.Extensions.NoWhiteSpaceRegex" filterName="NoWhiteSpaceRegex" isExposed="False" />
+          <Filter entryType="Method" fullName="Levaro.SBSoftball.Common.Extensions.RemoveParentheticalText" filterName="RemoveParentheticalText" isExposed="False" />
+        </Filter>
+      </Filter>
     </ApiFilter>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="(global)" isDocumented="False">This is text for all namespaces checked, Ok so what!!!!!</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Levaro.SBSoftball" isDocumented="True" />
+<NamespaceSummaryItem name="Levaro.SBSoftball.Common" isDocumented="True" /></NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
