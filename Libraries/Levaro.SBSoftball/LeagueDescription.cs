@@ -85,7 +85,7 @@ namespace Levaro.SBSoftball
         /// <see cref="LeagueDescription"/> class.
         /// </summary>
         /// <remarks>
-        /// Generally there is no reason to call this method directory, because the static
+        /// Generally there is no reason to call this method directly, because the static
         /// <see cref="LeagueSchedule.ConstructLeagueSchedule(string)"/> method calls it when creating a 
         /// <see cref="LeagueSchedule"/> instance and stores the instance in its <see cref="LeagueSchedule.LeagueDescription"/>
         /// property.

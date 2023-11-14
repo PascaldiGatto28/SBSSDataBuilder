@@ -1,4 +1,6 @@
-﻿namespace Levaro.SBSoftball
+﻿using System.Text.Json.Serialization;
+
+namespace Levaro.SBSoftball
 {
 
     public class GameInformation
@@ -54,6 +56,18 @@
             set;
         }
 
+        [JsonIgnore]
         public string Year => $"{Date.Date:yyyy}";
+
+        public override string ToString()
+        {
+            string description = "No description available";
+            if (!string.IsNullOrEmpty(Title))
+            {
+                description = $"{Title} [{Season} {LeagueDay} {LeagueCategory}] on {Date:dddd MMMM, d yyyy}";
+            }
+
+            return description;
+        }
     }
 }

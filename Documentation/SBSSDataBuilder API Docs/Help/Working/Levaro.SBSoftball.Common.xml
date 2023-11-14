@@ -1,0 +1,509 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Levaro.SBSoftball.Common</name>
+  </assembly>
+  <members>
+    <member name="T:Levaro.SBSoftball.Common.DescriptiveStatistics">
+      <summary>
+            Encapsulates the descriptive statistics for a sequence of data values. 
+            </summary>
+      <remarks>
+            Instances are created via the static method
+            <see cref="M:Levaro.SBSoftball.Common.DescriptiveStatistics.GetStatistics(System.Collections.Generic.IEnumerable{System.Double},System.String,System.Nullable{System.Double})" />. The properties cannot be set 
+            except via the static method and deserialization.
+            </remarks>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.DescriptiveStatistics.#ctor">
+      <summary>
+            Creates a new instance of the class. Although the static methods are used to programatically create objects, this
+            constructor is required to initialized the non-nullable properties and to set the <see cref="P:Levaro.SBSoftball.Common.DescriptiveStatistics.IsEmpty" /> property
+            to <c>true</c>.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.IsEmpty">
+      <summary>
+            If the value is true, the object should not be viewed as successfully instantiated. It is initialized 
+            to <c>true</c> by the default constructor and set to <c>false</c> if 
+            the static method <see cref="M:Levaro.SBSoftball.Common.DescriptiveStatistics.GetStatistics(System.Collections.Generic.IEnumerable{System.Double},System.String,System.Nullable{System.Double})" /> successfully 
+            returns an instance.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.Title">
+      <summary>
+            Gets or initializes an optional title of the instance of the class. If the title is not specified in the
+            static method <see cref="M:Levaro.SBSoftball.Common.DescriptiveStatistics.GetStatistics(System.Collections.Generic.IEnumerable{System.Double},System.String,System.Nullable{System.Double})" />, the title
+            <code language="cs">"Statistics for {count:#,###} items"</code>, where <c>count</c> is the number of values
+            in the sequence used to compute the descriptive statistics.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.Minimum">
+      <summary>
+            Gets or initializes the minimum value of the sequence of items.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.Maximum">
+      <summary>
+            Gets or initializes the maximum value of the sequence of items.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.Mean">
+      <summary>
+            Gets or initializes the mean (average) of the sequence of items.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.Median">
+      <summary>
+            Gets or initializes the median of the sequence of items.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.Variance">
+      <summary>
+            Gets or initializes the variance of the sequence of items.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.StdDev">
+      <summary>
+            Gets or initializes the standard deviation of the sequence of items.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.Count">
+      <summary>
+            Gets or initializes the number of items in the sequence.
+            </summary>
+    </member>
+    <member name="P:Levaro.SBSoftball.Common.DescriptiveStatistics.OrderedSequence">
+      <summary>
+            Gets or initializes the sequence of items in ascending order.
+            </summary>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.DescriptiveStatistics.GetStatistics(System.Collections.Generic.IEnumerable{System.Double},System.String,System.Nullable{System.Double})">
+      <summary>
+            Constructs a <c>DescriptiveStatistics</c> object using the specified sequence of <c>double</c> items.
+            </summary>
+      <param name="source">The sequence of items of type <c>double</c></param>
+      <param name="title">An optional title. The default is just "Statistics for [count] items" where [count] is
+            the number of items in the <paramref name="source" /> sequence.</param>
+      <param name="mean">
+            If <c>null</c> (which is the default), the value is calculated from the <c>source</c> sequence. Otherwise it is used
+            to calculate the variance and sums of squares. Generally this should not be set unless the data has been
+            normalized.
+            </param>
+      <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source" /> is <c>null</c> or of length
+            zero, the empty instance (<c>IsEmpty</c> is <c>true</c>) is returned.</returns>
+    </member>
+    <member name="T:Levaro.SBSoftball.Common.Extensions">
+      <summary>
+            Extensions used by the <c>Levaro.Softball</c> API that supports the construction of SBSSDataBuilder application.
+            </summary>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.Substring(System.String,System.String,System.String,System.Boolean,System.Boolean)">
+      <summary>
+            Returns a substring starting from the <paramref name="start" /> string parameter and ending at the <paramref name="end" />
+            parameter.
+            </summary>
+      <param name="content">The string from which the substring is returned. If <c>null</c> or empty, the empty string
+            is returned.</param>
+      <param name="start">The returned substring starts at the location of the value of this parameter.</param>
+      <param name="end">The returned substring ends at the location of the value of this parameter.</param>
+      <param name="includeStart">
+                If <c>true</c>, the <paramref name="start" /> string is included in the returned substring; otherwise the returned 
+                substring begins immediated after the <c>start</c> string. The default is false.
+            </param>
+      <param name="includeEnd">
+                If <c>true</c>, the <paramref name="end" /> string is included in the returned substring; otherwise the returned 
+                substring ends at the character immediately before the <c>end</c> string. The default is true.
+            </param>
+      <returns>
+                A substring based upon the values of the parameters. If the source (<paramref name="content" />), 
+                <paramref name="start" />, <paramref name="end" /> are <c>null</c> or empty, the empty string is returned. 
+                The empty string is also returned if an <c>ArgumentOutOfRangeException</c> object is thrown; this can happen 
+                if the <c>start</c> string does not appear before the <c>end</c> string. <c>null</c> is never returned.
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.Substring(System.String,System.String,System.Boolean)">
+      <summary>
+            Returns a substring beginning at specified text (the <paramref name="start" />) until the end of the 
+            <paramref name="content" />.
+            </summary>
+      <param name="content">The string whose substring is returned.</param>
+      <param name="start">The returned substring starts at the location of the value of this parameter.</param>
+      <param name="includeStart">
+            If <c>true</c>, the <paramref name="start" /> string is included in the returned substring; otherwise the returned 
+            substring begins immediately after the <c>start</c> string. The default is false.
+            </param>
+      <returns>A substring of the <paramref name="content" /> string based upon the values of the other parameters.</returns>
+      <seealso cref="M:Levaro.SBSoftball.Common.Extensions.Substring(System.String,System.String,System.String,System.Boolean,System.Boolean)" />.
+        </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.NoWhiteSpaceRegex">
+      <remarks>
+            Pattern explanation:<br /><code>
+            ○ Match a whitespace character atomically at least once.<br /></code></remarks>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.RemoveWhiteSpace(System.String)">
+      <summary>
+            Returns the <paramref name="content" /> string with all white space removed using the source generated 
+            <see cref="T:System.Text.RegularExpressions.Regex" />.
+            </summary>
+      <remarks>
+            The <c>Regex</c> instance is generated from the expression <code language="cs">"\\s+"</code>.
+            </remarks>
+      <param name="content">The string from which to remove all white space</param>
+      <returns>
+        <c>content</c> with all white space removed. The empty string is returned if <c>content</c> is
+            empty or <c>null</c>.</returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.RemoveParentheticalText">
+      <remarks>
+            Pattern explanation:<br /><code>
+            ○ Match a character in the set [*\s].<br />
+            ○ Match '('.<br />
+            ○ Match a character in the set [1-9A-Za-z|] atomically any number of times.<br />
+            ○ Match ')'.<br /></code></remarks>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.CleanNameText(System.String)">
+      <summary>Decodes HTML encoded characters (for example <![CDATA[&lt;]]> to &lt;) and removes all leading text 
+            beginning with zero or more white 
+            space characters followed by alphanumeric characters surrounded by parenthesis. Also all leading and trailing white 
+            space is removed. This rather specialized method is used to "normalize" names recovered from data scraped 
+            from HTML pages.
+            </summary>
+      <remarks>
+            The <see cref="T:System.Text.RegularExpressions.Regex" /> instance used is generated using the regular expression 
+            <code>"[\\s*]\\([a-z|A-Z|1-9]*\\)"</code></remarks>
+      <param name="name">The text to modify. If empty or <c>null</c>, the empty string is returned.</param>
+      <returns>
+            The modified string by (1) decoding any HTML characters, (2) removing any text using the <c>RemoveParentheticalText</c>
+            generated <c>Regex</c> object, (3) removing leading and trailing white space characters. If <paramref name="name" />
+            is empty or <c>null</c> the empty string is returned.
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.Capitalize(System.String)">
+      <summary>
+            The first character of the string is changed to upper case.
+            </summary>
+      <param name="content">The string whose first character is capitalized.</param>
+      <returns>The capitalized string; if <paramref name="content" />is <c>null</c> or empty, the empty string is
+            returned.</returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.ImageNameToWords(System.String)">
+      <summary>
+            Converts the string to a sequence of words
+            </summary>
+      <remarks>A word is a sequence of characters beginning with an uppercaseletter and the previous letter is is not 
+            upper case. For example, "HelloRichard" returns the sequence "Hello", "Richard". This is often useful to create
+            words associated with file names (specifically image names) that do not use spaces.
+            </remarks>
+      <param name="content">The string to convert. If it is <c>null</c> or the empty string, the empty sequence is
+            returned.</param>
+      <returns>
+            A sequence of words, each of which starts with a capital letter.
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.NameToTitle(System.String)">
+      <summary>
+            Converts a string to words and then creates a string with each separated by a single space.
+            </summary>
+      <remarks>
+            The <see cref="M:Levaro.SBSoftball.Common.Extensions.ImageNameToWords(System.String)" /> method to create a sequence of words, and then the 
+            <see cref="M:Levaro.SBSoftball.Common.Extensions.ToString``1(System.Collections.Generic.IEnumerable{``0},System.String)" /> method to paste the words together using a single space between
+            each word.
+            </remarks>
+      <param name="name">The text to convert to a string of words with a single space between each word</param>
+      <returns>A string of space delimted words. The empty string is returned if <paramref name="name" /> is <c>null</c>
+            or empty.</returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.ByteArrayToString(System.Byte[])">
+      <summary>
+            Converts a byte array to a UTF8 string.
+            </summary>
+      <param name="byteArray">The byte array each entry of which is a returned character in the string</param>
+      <returns>The UTF8, ora the empty string if the <paramref name="byteArray" /> is <c>null</c> or empty.</returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.ToJsonString(System.Object)">
+      <summary>
+            Serializes an object to a JSON string.
+            </summary>
+      <param name="source">The object to serialize; if <c>null</c>, the empty string is returned.</param>
+      <returns>A JSON string representing the object that can deserialized to create an instance of the object. The
+            string is formatted for indentation using space characters (rather than tabs).</returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.FromJsonString``1(System.String)">
+      <summary>
+            Deserializes a sequence of objects from a JSON string.
+            </summary>
+      <typeparam name="T">The type of the elements of the sequence</typeparam>
+      <param name="source">The JSON string that is deserialized.</param>
+      <returns>A <c>List<typeparamref name="T" /></c></returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.Deserialize``1(System.String)">
+      <summary>
+            Deserializes and object from the contents of a specified file path.
+            </summary>
+      <typeparam name="T">The file path from which a JSON is read and used to deserialize and object of type <typeparamref name="T" /></typeparam>
+      <param name="sourceFilePath">The source file which is contains the JSON string.</param>
+      <returns>The default value of T or <c>null</c> if the file does not exist.</returns>
+      <exception cref="T:Newtonsoft.Json.JsonSerializationException">if the string read from the file is not a valid JSON representation
+            of the desired object.</exception>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.Serialize``1(``0,System.String)">
+      <summary>
+            Serializes the object as JSON text to the file who path <paramref name="destFilePath" /> is specified. T
+            </summary>
+      <remarks>
+            The object is serialized to a JSON string using the <see cref="M:Levaro.SBSoftball.Common.Extensions.ToJsonString(System.Object)" /> and then written to
+            the specified file, which is overwritten if it exists.
+            </remarks>
+      <typeparam name="T">The type of the file</typeparam>
+      <param name="source">An instance of the <typeparamref name="T" /> type</param>
+      <param name="destFilePath">
+            The full path of the file where the JSON string is written. This should be a full path, and if the directory
+            portion of the path does not exist, it is created. If the file already exists, it is overwritten.
+            </param>
+      <returns>
+            The number of characters written to the file. If <paramref name="source" /> is <c>null</c> or 
+            <paramref name="destFilePath" /> is <c>null</c> or empty, the file is not created and -1 is returned.
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.FormatJsonString(System.String)">
+      <summary>
+            Formats a JSON string using the <c>JsonTextWriter</c> used in <see cref="M:Levaro.SBSoftball.Common.Extensions.ToJsonString(System.Object)" />.
+            </summary>
+      <param name="source">The JSON text to format</param>
+      <returns>
+            The formatted JSON text or the empty string if the <paramref name="source" /> is <c>null</c> or not a valid
+            JSON string.
+            </returns>
+      <seealso cref="M:Levaro.SBSoftball.Common.Extensions.ToJsonString(System.Object)" />
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.ToString``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.String)">
+      <summary>
+            Converts an sequence of objects of type <typeparamref name="T" /> to a string where each element of the sequence
+            is converted to a string and contenated using the <paramref name="itemSeparator" /> string.
+            </summary>
+      <typeparam name="T">The type of the sequence elements</typeparam>
+      <param name="source">The sequence if elements</param>
+      <param name="toStringCallback">A delegate accepting a element of <typeparamref name="T" /> and returning a string for
+            that element. If <c>null</c>, the default <c>ToString()</c> method for the element object is used.</param>
+      <param name="itemSeparator">
+            A string that separates each element of the returned string. The default value is "; " (a semicolon followed by a
+            space character).
+            </param>
+      <returns>
+            A string with each element of the sequence separated to the <c>itemSeparator</c>. The empty string is returned if 
+            <paramref name="source" /> is <c>null</c> or empty.
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.ToString``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+      <summary>
+            Converts an sequence of objects of type <typeparamref name="T" /> to a string where each element of the sequence
+            is converted to a string using its <c>ToString()</c> method and contenated using the 
+            <paramref name="itemSeparator" /> string.
+            </summary>
+      <typeparam name="T">The type of the sequence elements</typeparam>
+      <param name="source">The sequence if elements</param>
+      <param name="itemSeparator">
+            A string that separates each element of the returned string. The default value is "; " (a semicolon followed by a
+            space character). 
+            </param>
+      <returns>
+            A string with each element of the sequence separated to the <c>itemSeparator</c>. The empty string is returned if 
+            <paramref name="source" /> is <c>null</c> or empty.
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.ToString``1(System.Collections.Generic.Stack{``0})">
+      <summary>
+            Converts a stack of objects of type <typeparamref name="T" /> to a string where each element of the sequence
+            is converted to a string using its <c>ToString()</c> method and contenated using a carriage return/line feed
+            string.
+            </summary>
+      <typeparam name="T">The type of the sequence elements</typeparam>
+      <param name="source">The stack if elements</param>
+      <returns>
+            A string with each element of the stack separated to the <c>CRLF</c>. The empty string is returned if 
+            <paramref name="source" /> is <c>null</c> or empty.
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.ParseInt(System.String)">
+      <summary>
+            Parses a string to an <c>int</c>.
+            </summary>
+      <param name="source">The string to parse.</param>
+      <returns>
+        <c>null</c> if the <paramref name="source" /> cannot be parsed (<c>null</c>, empty or not a valid int
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.GetFullVersion(System.Reflection.Assembly,System.String)">
+      <summary>
+            Extension method that returns the assembly version and build data as string formatted using the specified
+            format string.
+            </summary>
+      <remarks>
+            It is assumed that the build version is of the format "yyddd" where yy is the year and ddd is the number of the
+            day in the year. For example, 16350 corresponds to the day 350 of 2016 (December 15, 2016).
+            </remarks>
+      <param name="source">
+            The assembly whose version number is returned.
+            </param>
+      <param name="format">
+            A format string that must contain full replaceable parameters ({0}, {1}, {2}, {3}, and {4}). The first is used for
+            the build date and {1} and {2} are used for version major and minor numbers and {3} and {4} are used for the build
+            and version revision numbers. The replaceable parameters can be in any order and use any format, but there must be five.
+            </param>
+      <returns>
+            The full version string (all four components) is returned together with the full date corresponding to the
+            build version formatted using the <paramref name="format" /> string. The empty string is returned if
+            <paramref name="source" /> is <c>null</c>.
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.GetAttribute``1(System.Reflection.Assembly,System.String)">
+      <summary>
+            For the specified <paramref name="assembly" />, the value of the property for a custom attribute of 
+            <typeparamref name="T" /> is returned
+            </summary>
+      <typeparam name="T">The attribute type.</typeparam>
+      <param name="assembly">The assembly whose attributes are inspected.</param>
+      <param name="propertyName">The property of the attribute whose value is returned.</param>
+      <returns>The property value cast as a string for the recovered property. The empty string is returned if 
+            <paramref name="assembly" /> is <c>null</c> or <paramref name="propertyName" /> is <c>null</c> or empty, or if
+            the attributes or property or value cannot be recovered.
+            </returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.FormatResourceName(System.Reflection.Assembly,System.String)">
+      <summary>
+            Formats a common resource name (as in Visual Studio) into a formatted name that can be found when recovering
+            the resource from the assembly.
+            </summary>
+      <param name="assembly">The assembly in which the resource is embedded.</param>
+      <param name="resourceName">The common resource name.</param>
+      <returns>The formatted resource name: it is the assembly name followed by a '.' character and then the
+            resource name where spaces are replaced by underscores, back and forward slashes are replced by the
+            '.' character. If the <paramref name="assembly" /> or <paramref name="resourceName" /> are null or empty,
+            the empty string is returned.</returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.GetEmbeddedResourceAsBytes(System.Reflection.Assembly,System.String)">
+      <summary>
+            Reads the embedded resource and returns it as an array of bytes.
+            </summary>
+      <param name="assembly">The assembly in  which the resource is embedded.</param>
+      <param name="formattedResourceName">
+            The formatted resource name, <see cref="M:Levaro.SBSoftball.Common.Extensions.FormatResourceName(System.Reflection.Assembly,System.String)" /></param>
+      <returns>The array of bytes of the embedded resource. The empty array is returned if the the
+            <paramref name="assembly" /> is <c>null</c>, the <paramref name="formattedResourceName" /> is <c>null</c>
+            or empty, or the resource cannot be found.</returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.AppendTextToFileName(System.String,System.String)">
+      <summary>
+            Appends text to the end of a file name (and before the extension).
+            </summary>
+      <param name="source">The full file path</param>
+      <param name="appendText">The text to append to the file path before the extension.</param>
+      <returns>The newly appended full file path. If the text cannot be appended, the original file path (even if
+            <c>null</c> empty) is returned.</returns>
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.AppendTimeStampToFileName(System.String,System.String)">
+      <summary>
+            Appends the current data and time at the end of the file name of a full file path.
+            </summary>
+      <param name="source">The full file path</param>
+      <param name="format">The format used to append the current time stamp to the end of the filename. The default
+            format is " MM-dd-yyyy HH-mm-ss.ff"</param>
+      <returns>The updated full file path. If the <paramref name="source" /> is <c>null</c> or empty, the empty string
+            is returned.</returns>
+      <seealso cref="M:Levaro.SBSoftball.Common.Extensions.AppendTextToFileName(System.String,System.String)" />
+    </member>
+    <member name="M:Levaro.SBSoftball.Common.Extensions.GetStatistics(System.Collections.Generic.IEnumerable{System.Double},System.String,System.Nullable{System.Double})">
+      <summary>
+            Constructs a <c>DescriptiveStataistics</c> object for the specified sequence of <c>double</c> items.
+            </summary>
+      <param name="source">The sequence of items of type <c>double</c></param>
+      <param name="title">An optional title. The default is just "Statistics for [count] items" where [count] is
+            the number of items in the <paramref name="source" /> sequence.</param>
+      <param name="mean">
+            If <c>null</c> (which is the default), the value is calculated from the <c>source</c> sequence. Otherwise it used
+            to calculate the variance and sums of squares. Generally this should not be set unless it is part of data
+            normalization.
+            </param>
+      <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source" /> is <c>null</c> or of length
+            zero, the empty (<c>IsEmpty</c> is <c>true</c>) instance is returned.</returns>
+    </member>
+    <member name="N:Levaro.SBSoftball.Common">
+      <summary>
+            These are the namespace comments for <c>Levaro.Softball.Common</c>.
+            </summary>
+    </member>
+    <member name="T:System.Text.RegularExpressions.Generated.NoWhiteSpaceRegex_0">
+      <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex" />-derived type for the NoWhiteSpaceRegex method.</summary>
+    </member>
+    <member name="F:System.Text.RegularExpressions.Generated.NoWhiteSpaceRegex_0.Instance">
+      <summary>Cached, thread-safe singleton instance.</summary>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.NoWhiteSpaceRegex_0.#ctor">
+      <summary>Initializes the instance.</summary>
+    </member>
+    <member name="T:System.Text.RegularExpressions.Generated.NoWhiteSpaceRegex_0.RunnerFactory">
+      <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner" /> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex" />.</summary>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.NoWhiteSpaceRegex_0.RunnerFactory.CreateInstance">
+      <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner" /> used by methods on <see cref="T:System.Text.RegularExpressions.Regex" />.</summary>
+    </member>
+    <member name="T:System.Text.RegularExpressions.Generated.NoWhiteSpaceRegex_0.RunnerFactory.Runner">
+      <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.NoWhiteSpaceRegex_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+      <summary>Scan the <paramref name="inputSpan" /> starting from base.runtextstart for the next match.</summary>
+      <param name="inputSpan">The text being scanned by the regular expression.</param>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.NoWhiteSpaceRegex_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+      <summary>Search <paramref name="inputSpan" /> starting from base.runtextpos for the next location a match could possibly start.</summary>
+      <param name="inputSpan">The text being scanned by the regular expression.</param>
+      <returns>true if a possible match was found; false if no more matches are possible.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.NoWhiteSpaceRegex_0.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+      <summary>Determine whether <paramref name="inputSpan" /> at base.runtextpos is a match for the regular expression.</summary>
+      <param name="inputSpan">The text being scanned by the regular expression.</param>
+      <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+    </member>
+    <member name="T:System.Text.RegularExpressions.Generated.RemoveParentheticalText_1">
+      <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex" />-derived type for the RemoveParentheticalText method.</summary>
+    </member>
+    <member name="F:System.Text.RegularExpressions.Generated.RemoveParentheticalText_1.Instance">
+      <summary>Cached, thread-safe singleton instance.</summary>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.RemoveParentheticalText_1.#ctor">
+      <summary>Initializes the instance.</summary>
+    </member>
+    <member name="T:System.Text.RegularExpressions.Generated.RemoveParentheticalText_1.RunnerFactory">
+      <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner" /> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex" />.</summary>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.RemoveParentheticalText_1.RunnerFactory.CreateInstance">
+      <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner" /> used by methods on <see cref="T:System.Text.RegularExpressions.Regex" />.</summary>
+    </member>
+    <member name="T:System.Text.RegularExpressions.Generated.RemoveParentheticalText_1.RunnerFactory.Runner">
+      <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.RemoveParentheticalText_1.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+      <summary>Scan the <paramref name="inputSpan" /> starting from base.runtextstart for the next match.</summary>
+      <param name="inputSpan">The text being scanned by the regular expression.</param>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.RemoveParentheticalText_1.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+      <summary>Search <paramref name="inputSpan" /> starting from base.runtextpos for the next location a match could possibly start.</summary>
+      <param name="inputSpan">The text being scanned by the regular expression.</param>
+      <returns>true if a possible match was found; false if no more matches are possible.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Generated.RemoveParentheticalText_1.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+      <summary>Determine whether <paramref name="inputSpan" /> at base.runtextpos is a match for the regular expression.</summary>
+      <param name="inputSpan">The text being scanned by the regular expression.</param>
+      <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+    </member>
+    <member name="T:System.Text.RegularExpressions.Generated.Utilities">
+      <summary>Helper methods used by generated <see cref="T:System.Text.RegularExpressions.Regex" />-derived implementations.</summary>
+    </member>
+    <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout">
+      <summary>Default timeout value set in <see cref="T:System.AppContext" />, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout" /> if none was set.</summary>
+    </member>
+    <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_hasTimeout">
+      <summary>Whether <see cref="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout" /> is non-infinite.</summary>
+    </member>
+  </members>
+</doc>

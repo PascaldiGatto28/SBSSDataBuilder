@@ -55,9 +55,14 @@ namespace Levaro.SBSoftball
 
         public static HtmlDocument GetPageHtmlDocument(Uri requestAddress)
         {
+            HtmlDocument htmlDocument = new HtmlDocument();
+            if (requestAddress != null)
+            {
+                HtmlWeb web = new();
+                htmlDocument = web.Load(requestAddress);
+            }
 
-            HtmlWeb web = new();
-            return web.Load(requestAddress);
+            return htmlDocument;
         }
 
         public static HtmlDocument GetPageHtmlDocument(string filePath)

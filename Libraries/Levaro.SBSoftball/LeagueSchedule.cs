@@ -134,12 +134,17 @@ namespace Levaro.SBSoftball
                         scheduledGame.HomeScore = int.Parse(score[1].Trim());
                     }
 
-                    scheduledGames.Add(scheduledGame);
+                    // Use the data from the game results page to construct the game information
+                    scheduledGame.GameResults = Game.ConstructGame(scheduledGame, update: false); ;
 
-                    if (scheduledGame.IsComplete)
+                    // Setting the scores even that there is no team/player data indicates that the game was cancelled.
+                    if (scheduledGame.IsRecorded(16) && !scheduledGame.IsComplete)
                     {
-                        scheduledGame.GameResults = new Game(scheduledGame.ResultsUrl);
+                        scheduledGame.HomeScore = 0;
+                        scheduledGame.VisitorScore = 0;
                     }
+
+                    scheduledGames.Add(scheduledGame);
                 }
 
                 leagueSchedule = new LeagueSchedule()

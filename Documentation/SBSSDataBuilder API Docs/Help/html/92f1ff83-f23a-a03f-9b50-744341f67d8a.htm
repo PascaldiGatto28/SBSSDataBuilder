@@ -8,27 +8,26 @@
             <a href="d47cfa50-af09-fcfe-02f8-92448fbdda4c.htm">ConstructLeagueSchedule(String)</a> returns the schedule for that league 
             and can be added to the <a href="74b9a019-3be0-a48a-abf5-8b7a7d5484c7.htm">LeagueSchedules</a> property of this instance.
             <p>For example, the <span class="selflink">LeaguesData</span> instance is created and then serialized to JSON file.
-            <div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">Sample Code to Populated the Data Store</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-c#">LeaguesData leaguesData = new();  // The build date is the current date and time, but the 
-                                  // LeagueSchedules is the empty sequence.
-LeagueLocations leagues = LeagueLocations.ConstructLeagueLocations();
+            <div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">Sample Code to Populate the LeagueSchedule Sequence</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-c#">LeagueLocations leagues = LeagueLocations.ConstructLeagueLocations();
 List&lt;LeagueSchedule&gt; schedules = new(); // Now create the sequence of LeagueSchedule objects
 foreach (KeyValuePair&lt;string, string&gt; kvp in leagues.Locations)
 {
     LeagueSchedule schedule = LeagueSchedule.ConstructLeagueSchedule(kvp.Value);
     schedules.Add(schedule);
-    Console.WriteLine($"Created schedule for {schedule.LeagueDescription}");
 }</code></pre></div></div></p></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>Constructors</h2><div id="IDBEASection"><table id="ConstructorList" class="table is-hoverable"><tr><td><a href="90aac36e-aa18-6333-4de0-bd97501c87ac.htm">LeaguesData</a></td><td>
             Creates an "empty" instance of this class, that is, the <span class="parameter" /> is the empty
             sequence.
-            </td></tr></table></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>Properties</h2><div id="IDCEASection"><table id="PropertyList" class="table is-hoverable"><tr><td><a href="8955236b-e5c7-1d9b-e946-cff34d8669b9.htm">BuildDate</a></td><td>
-            Gets and sets the time stamp when the instance was constructed, typically when the <a href="74b9a019-3be0-a48a-abf5-8b7a7d5484c7.htm">LeagueSchedules</a>
-            sequence is constructed.
+            </td></tr></table></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>Properties</h2><div id="IDEEASection"><table id="PropertyList" class="table is-hoverable"><tr><td><a href="8955236b-e5c7-1d9b-e946-cff34d8669b9.htm">BuildDate</a></td><td>
+            Gets and sets the time stamp when the instance is constructed or updated, typically when the 
+            <a href="74b9a019-3be0-a48a-abf5-8b7a7d5484c7.htm">LeagueSchedules</a> sequence is constructed or the elements updated.
             </td></tr><tr><td><a href="74b9a019-3be0-a48a-abf5-8b7a7d5484c7.htm">LeagueSchedules</a></td><td>
-            Get and sets the sequences of games schedules for each league. Use the 
-            <a href="d47cfa50-af09-fcfe-02f8-92448fbdda4c.htm">ConstructLeagueSchedule(String)</a> method to build the sequence.
-            </td></tr></table></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>Extension Methods</h2><div id="IDAEASection"><table id="ExtensionList" class="table is-hoverable"><tr><td><a href="cb250217-ea05-078d-2343-ceb14f2ae048.htm">ToJsonString</a></td><td>
+            Get and initializes the sequences of game schedules for each league. 
+            </td></tr></table></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>Methods</h2><div id="IDCEASection"><table id="MethodList" class="table is-hoverable"><tr><td><a href="3b3f8f18-93f6-6cb7-741e-9fc0072f00da.htm">ConstructLeaguesData</a></td><td>
+            Constructs an instance of this class which is the data store for all information about the SaddleBrooke senior
+            softball games.
+            </td></tr><tr><td><a href="84cc3434-8038-4d49-ff2c-dc9fe7e87b2c.htm">DefaultCallback</a></td><td> </td></tr></table></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>Extension Methods</h2><div id="IDAEASection"><table id="ExtensionList" class="table is-hoverable"><tr><td><a href="cb250217-ea05-078d-2343-ceb14f2ae048.htm">ToJsonString</a></td><td>
             Serializes an object to a JSON string.
-            <br />(Defined by <a href="7d740286-c1e5-c510-fb21-be0bd3030fa7.htm">Extensions</a>)</td></tr></table></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>See Also</h2><div id="seeAlsoSection"><h4>Reference</h4><div><a href="9c4a62e8-9268-4a93-281a-658cd797d5b9.htm">Levaro.SBSoftball Namespace</a></div></div></div><div id="InThisArticleColumn" class="column is-hidden-mobile"><nav class="menu sticky is-hidden"><p class="menu-label"><strong>In This Article</strong></p><ul id="InThisArticleMenu" class="menu-list"><li><a class="quickLink">Definition</a></li><li><a class="quickLink">Remarks</a></li><li><a class="quickLink">Constructors</a></li><li><a class="quickLink">Properties</a></li><li><a class="quickLink">Extension Methods</a></li><li><a class="quickLink">See Also</a></li></ul></nav></div></div></div><footer id="PageFooter" class="footer border-top py-3 fixedFooter"><div class="columns"><div class="column"> 
+            <br />(Defined by <a href="7d740286-c1e5-c510-fb21-be0bd3030fa7.htm">Extensions</a>)</td></tr></table></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>See Also</h2><div id="seeAlsoSection"><h4>Reference</h4><div><a href="9c4a62e8-9268-4a93-281a-658cd797d5b9.htm">Levaro.SBSoftball Namespace</a></div></div></div><div id="InThisArticleColumn" class="column is-hidden-mobile"><nav class="menu sticky is-hidden"><p class="menu-label"><strong>In This Article</strong></p><ul id="InThisArticleMenu" class="menu-list"><li><a class="quickLink">Definition</a></li><li><a class="quickLink">Remarks</a></li><li><a class="quickLink">Constructors</a></li><li><a class="quickLink">Properties</a></li><li><a class="quickLink">Methods</a></li><li><a class="quickLink">Extension Methods</a></li><li><a class="quickLink">See Also</a></li></ul></nav></div></div></div><footer id="PageFooter" class="footer border-top py-3 fixedFooter"><div class="columns"><div class="column"> 
 				</div><div class="column"> 
 				</div></div></footer></div><script>$(function(){
 SetDefaultLanguage("cs");
