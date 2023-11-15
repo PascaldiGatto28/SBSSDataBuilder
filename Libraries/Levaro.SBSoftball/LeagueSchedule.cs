@@ -6,7 +6,7 @@ namespace Levaro.SBSoftball
 {
     /// <summary>
     /// Encapsulates all information about the scheduled games for a specific league whether the games have been played 
-    /// (completed) or to be played in the future.
+    /// (completed), cancelled or to be played in the future.
     /// </summary>
     /// <remarks>
     /// Instances should only be constructed using the static method <see cref="ConstructLeagueSchedule(string)"/> where
@@ -14,11 +14,14 @@ namespace Levaro.SBSoftball
     /// <see cref="LeaguesData.LeagueSchedules"/> property is a sequence of <c>LeagueSchedule</c> objects
     /// and are the essential information of the data store.
     /// <para>
-    /// Because the default constructor is private and all property setters or "private init", instance of this class are
-    /// essentially immutable.
+    /// Because the default constructor is private and all property setters are "private init", instances of this class are
+    /// essentially immutable, although because the <see cref="ScheduledGames"/> property is a sequence of 
+    /// <see cref="ScheduledGame"/> objects, the individual scheduled game information is altered when the game is played or
+    /// cancelled.
     /// </para>
     /// </remarks>
     /// <seealso cref="LeaguesData"/>
+    /// <seealso cref="ScheduledGame"/>
     public sealed class LeagueSchedule
     {
         /// <summary>
@@ -110,25 +113,22 @@ namespace Levaro.SBSoftball
                 List<ScheduledGame> scheduledGames = new();
                 foreach (HtmlNode row in rows)
                 {
-                    // N.B. HTML entities in the team names are decoded using CleanNameText extension method
+                    HtmlNode resultsHtmlNode = row.SelectSingleNode("td[@class='data-results']/a");
+                    Uri? resultsUrl = new Uri(resultsHtmlNode.GetAttributeValue("href", string.Empty));
+
                     ScheduledGame scheduledGame = new()
                     {
                         Date = DateTime.Parse(row.SelectSingleNode("td/a/date").InnerText),
 
                         VisitingTeamName = row.SelectSingleNode("td[@class='data-home']").InnerText.CleanNameText(),
-                        HomeTeamName = row.SelectSingleNode("td[@class='data-away']").InnerText.CleanNameText()
+                        HomeTeamName = row.SelectSingleNode("td[@class='data-away']").InnerText.CleanNameText(),
+                        ResultsUrl = resultsUrl
                     };
 
-                    HtmlNode resultsHtmlNode = row.SelectSingleNode("td[@class='data-results']/a");
-                    scheduledGame.ResultsUrl = new Uri(resultsHtmlNode.GetAttributeValue("href", string.Empty));
                     string scoreText = resultsHtmlNode.InnerText;
                     string[] score = scoreText.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (score.Length == 0)
-                    {
-                        scheduledGame.VisitorScore = null;
-                        scheduledGame.HomeScore = null;
-                    }
-                    else if (score.Length > 1)
+
+                    if (score.Length > 1)
                     {
                         scheduledGame.VisitorScore = int.Parse(score[0].Trim());
                         scheduledGame.HomeScore = int.Parse(score[1].Trim());
@@ -137,13 +137,14 @@ namespace Levaro.SBSoftball
                     // Use the data from the game results page to construct the game information
                     scheduledGame.GameResults = Game.ConstructGame(scheduledGame, update: false); ;
 
-                    // Setting the scores even that there is no team/player data indicates that the game was cancelled.
-                    if (scheduledGame.IsRecorded(16) && !scheduledGame.IsComplete)
+                    // Setting the scores even though there is no team/player data indicates that the game was cancelled.
+                    if (scheduledGame.IsRecorded && !scheduledGame.IsComplete)
                     {
                         scheduledGame.HomeScore = 0;
                         scheduledGame.VisitorScore = 0;
                     }
 
+                    // N.B. HTML entities in the team names are decoded using the CleanNameText extension method.
                     scheduledGames.Add(scheduledGame);
                 }
 

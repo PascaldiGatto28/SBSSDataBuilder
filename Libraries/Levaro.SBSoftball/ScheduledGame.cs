@@ -6,6 +6,9 @@ namespace Levaro.SBSoftball
 {
     public class ScheduledGame
     {
+        // TODO: This should be set by some configuration rather than hard-coded in the class.
+        private static readonly int checkHours = 16;
+
         public ScheduledGame()
         {
             Date = DateTime.MaxValue;
@@ -17,22 +20,22 @@ namespace Levaro.SBSoftball
         public DateTime Date
         {
             get;
-            set;
+            init;
         }
         public string VisitingTeamName
         {
             get;
-            set;
+            init;
         }
         public string HomeTeamName
         {
             get;
-            set;
+            init;
         }
         public Uri? ResultsUrl
         {
             get;
-            set;
+            init;
         }
         public int? VisitorScore
         {
@@ -50,8 +53,11 @@ namespace Levaro.SBSoftball
             set;
         }
 
+        private int CheckHours => checkHours;
+
+
         [JsonIgnore]
-        public int CheckHours => 16;
+        public bool IsRecorded => Recorded();
 
         [JsonIgnore]
         public bool IsComplete => VisitorScore.HasValue && HomeScore.HasValue;
@@ -60,20 +66,18 @@ namespace Levaro.SBSoftball
         public bool WasCancelled => (VisitorScore == 0) && (HomeScore == 0);
 
         /// <summary>
-        /// Indicates whether the game has been played and recorded by the SBSS supervisor.
+        /// Indicates whether the game results have been recorded by the SBSS supervisor.
         /// </summary>
         /// <remarks>
-        /// The assumption is that the information is available web site no later <paramref name="checkHours"/>
-        /// less the hour of game start hours. At that point, if there is no team data, it is assumed that is cancelled 
-        /// and not played.
+        /// The assumption is that the information is available from the SBSS Web site no later <see cref="CheckHours"/>
+        /// (the minimal value of which is 16) less the hour of game start time. At that point, if there is no team data, 
+        /// it is assumed that the game has been cancelled and will not be played.
         /// </remarks>
-        /// <param name="checkHours">the number of hours from the beginning of the day. The parameter is option, and if
-        /// <c>null</c>, the value of <see cref="CheckHours"/> is used.</param>
-        /// <returns><c>true</c> if it has been determine number of hours after the start of the game.</returns>
+        /// <returns><c>true</c> if it has been more than number of hours after the start time of the game.</returns>
         /// <seealso cref="LeagueSchedule.ConstructLeagueSchedule(string)"/>
-        public bool IsRecorded(int? checkHours = null)
+        private bool Recorded()
         {
-            int hours = checkHours ?? CheckHours;
+            int hours = Math.Max(CheckHours, 16);
             DateTime recordedTime = Date.AddHours(hours - Date.Hour);
             return (recordedTime < DateTime.Now);
         }

@@ -16,7 +16,8 @@ namespace Levaro.SBSoftball
 
         public GameInformation GameInformation
         {
-            get; set;
+            get;
+            init;
         }
 
         public List<Team> Teams
@@ -24,84 +25,6 @@ namespace Levaro.SBSoftball
             get;
             set;
         }
-
-
-        //public Game(Uri dataSource) : this()
-        //{
-        //    HtmlDocument htmlDocument = PageContentUtilities.GetPageHtmlDocument(dataSource);
-        //    Initialize(htmlDocument);
-        //    GameInformation.DataSource = dataSource;
-        //    string lastSegment = dataSource.Segments.ToList().Last();
-        //    string id = lastSegment;
-        //    if (lastSegment.EndsWith("/"))
-        //    {
-        //        int length = lastSegment.Length - 1;
-        //        id = lastSegment[..length];
-        //    }
-
-        //    GameInformation.GameId = id;
-        //}
-
-        //public static Game InitGame(ScheduledGame scheduledGame)
-        //{
-        //    Game game = new Game();
-        //    if ((scheduledGame != null) && (scheduledGame.ResultsUrl != null))
-        //    {
-        //        HtmlDocument htmlDocument = PageContentUtilities.GetPageHtmlDocument(scheduledGame.ResultsUrl);
-        //        if (htmlDocument.DocumentNode.SelectSingleNode("//body").HasClass("maintenance"))
-        //        {
-        //            throw new InvalidOperationException("The data is not available, web site data is currently being updated.");
-        //        }
-
-        //        GameInformation gameInformation = game.GameInformation;
-        //        if (string.IsNullOrEmpty(scheduledGame.GameResults.GameInformation.Title))
-        //        {
-        //            gameInformation = game.ConstructGameInformation(scheduledGame, htmlDocument);
-        //        }
-
-        //        List<Team> teams = new List<Team>();
-        //        if ((scheduledGame.IsComplete) && (!scheduledGame.WasCancelled))
-        //        {
-        //            teams = game.ConstructTeams(htmlDocument);
-        //        }
-
-        //        game = new Game()
-        //        {
-        //            GameInformation = gameInformation,
-        //            Teams = teams
-        //        };
-        //    }
-
-        //    return game;
-        //}
-
-        //public static Game UpdateGame(ScheduledGame scheduledGame)
-        //{
-
-        //    Game game = new Game();
-        //    if ((scheduledGame != null) && (scheduledGame.ResultsUrl != null))
-        //    {
-        //        game = scheduledGame.GameResults;
-        //        HtmlDocument htmlDocument = PageContentUtilities.GetPageHtmlDocument(scheduledGame.ResultsUrl);
-        //        if (htmlDocument.DocumentNode.SelectSingleNode("//body").HasClass("maintenance"))
-        //        {
-        //            throw new InvalidOperationException("The data is not available, web site data is currently being updated.");
-        //        }
-
-        //        //if (string.IsNullOrEmpty(game.GameInformation.Title))
-        //        //{
-        //        //    scheduledGame.GameResults.GameInformation = game.ConstructGameInformation(scheduledGame, htmlDocument);
-        //        //}
-
-        //        if ((!scheduledGame.IsComplete) && (!scheduledGame.WasCancelled))
-        //        {
-        //            scheduledGame.GameResults.Teams = game.ConstructTeams(htmlDocument);
-        //        }
-
-        //    }
-
-        //    return game;
-        //}
 
         private static HtmlDocument? GetHtmlDocument(ScheduledGame scheduledGame)
         {
@@ -130,6 +53,7 @@ namespace Levaro.SBSoftball
                 throw new NullReferenceException("The HtmlDocument cannot be null when construction a Game instance");
             }
 
+            // If this is an update, that means the scheduled already has GameResults (that is, a GameInformation instance)
             Game game = update ? scheduledGame.GameResults : new Game();
             GameInformation gameInformation = new GameInformation();
             if (!update)
@@ -139,43 +63,40 @@ namespace Levaro.SBSoftball
                     gameInformation = game.ConstructGameInformation(scheduledGame, htmlDocument);
                 }
             }
-            else
-            {
-                gameInformation = game.GameInformation;
-            }
 
+            // If this not an update, and as the has been played, but not cancelled, then we need to recover the Teams
+            // list, and if it is an update, we always to recover the Teams data.
             List<Team> teams = new List<Team>();
-            if ((scheduledGame.IsComplete) && (!scheduledGame.WasCancelled))
+            if (!update)
+            {
+                if ((scheduledGame.IsComplete) && (!scheduledGame.WasCancelled))
+                {
+                    teams = game.ConstructTeams(htmlDocument);
+                }
+            }
+            else
             {
                 teams = game.ConstructTeams(htmlDocument);
             }
 
-            game = new Game()
+            // If it's not an update, then we have to create another instance, because GameInformation's setter is init, but if
+            // is an update, just update the Team list.
+            if (!update)
             {
-                GameInformation = gameInformation,
-                Teams = teams
-            };
+                game = new Game()
+                {
+                    GameInformation = gameInformation,
+                    Teams = teams
+                };
+            }
+            else
+            {
+                game.Teams = teams;
+            }
 
 
             return game;
         }
-
-        //public Game(string dataSource) : this()
-        //{
-        //    HtmlDocument htmlDocument = PageContentUtilities.GetPageHtmlDocument(dataSource);
-        //    Initialize(htmlDocument);
-
-        //}
-
-        //private void Initialize(HtmlDocument htmlDocument)
-        //{
-        //    if (htmlDocument.DocumentNode.SelectSingleNode("//body").HasClass("maintenance"))
-        //    {
-        //        throw new InvalidOperationException("The data is not available, web site data is currently being updated.");
-        //    }
-
-        //    ConstructTeams(htmlDocument);
-        //}
 
         [JsonIgnore]
         public bool IsCompleted => (Teams != null) && Teams.Any();
@@ -220,50 +141,6 @@ namespace Levaro.SBSoftball
             };
 
             return gameInformation;
-
-
-            //HtmlNode linkNode = htmlDocument.DocumentNode.SelectSingleNode("/html/head/link[@rel='canonical']");
-            //if (linkNode != null)
-            //{
-            //    info.DataSource = new(linkNode.GetAttributeValue("href", null));
-
-            //    string lastSegment = info.DataSource.Segments.ToList().Last();
-            //    string id = lastSegment;
-            //    if (lastSegment.EndsWith("/"))
-            //    {
-            //        int length = lastSegment.Length - 1;
-            //        id = lastSegment[..length];
-            //    }
-
-            //    info.GameId = id;
-            //}
-            //else
-            //{
-            //    info.DataSource = null;
-            //    info.GameId = string.Empty;
-            //}
-
-            //info.Title = htmlDocument.DocumentNode.SelectSingleNode("//article/header/h1").InnerHtml.CleanNameText();
-            //List<HtmlNode> spSectionContentNodes = htmlDocument.DocumentNode.SelectSingleNode("//article/div").SelectNodes("div").ToList();
-
-            //HtmlNode gameDetails = spSectionContentNodes.Where(n => n.HasClass("sp-section-content-details")).Single();
-            //List<string> details = gameDetails.SelectSingleNode("//tbody/tr").Elements("td").Select(n => n.InnerHtml).ToList();
-
-            //if (DateTime.TryParse($"{details[0]} {details[1]}", out DateTime date))
-            //{
-            //    info.Date = date;
-            //}
-            //else
-            //{
-            //    info.Date = DateTime.MinValue;
-            //}
-
-            //string[] league = details[2].Split(' ');
-            //info.LeagueCategory = league[1].Trim();
-            //info.LeagueDay = league[0].Trim();
-            //info.Season = details[3].Split(' ')[0].Trim();
-
-            //return info;
         }
 
         private List<Team> ConstructTeams(HtmlDocument htmlDocument)

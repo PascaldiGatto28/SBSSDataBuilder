@@ -128,19 +128,15 @@ namespace Levaro.SBSoftball
 
             return leaguesData;
         }
-        //private static void DefaultCallback(string message, Stopwatch? sw = null)
-        //{
-        //    if (!string.IsNullOrEmpty(message))
-        //    { 
-        //        if (sw != null)
-        //        {
-        //            message += $" Elapsed time {sw.ElapsedMilliseconds:#,##0} milliseconds";
-        //        }
 
-        //        Console.WriteLine(message);
-        //    }
-        //}
-
+        /// <summary>
+        /// The default callback if one is not provided in the call to <see cref="ConstructLeaguesData(string?, Action{string}?)"/>
+        /// method.
+        /// </summary>
+        /// <remarks>
+        /// The action is to simply write the <paramref name="message"/> value to the console.
+        /// </remarks>
+        /// <param name="message">A text message from <c>ConstructLeagueData</c> during processing.</param>
         private static void DefaultCallback(string message)
         {
             Console.WriteLine(message);

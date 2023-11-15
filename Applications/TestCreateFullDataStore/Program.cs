@@ -41,7 +41,7 @@ namespace TestCreateFullDataStore
             foreach (ScheduledGame scheduledGame in scheduledGames.Where(s => !s.IsComplete))
             {
                 DateTime recordedTime = scheduledGame.Date.AddHours(checkHours - scheduledGame.Date.Hour);
-                if (scheduledGame.IsRecorded())
+                if (scheduledGame.IsRecorded)
                 {
                     Console.WriteLine($"Processing {scheduledGame.GameResults.GameInformation}");
                     Game currentGame = scheduledGame.GameResults;
@@ -55,7 +55,7 @@ namespace TestCreateFullDataStore
                     else
                     {
                         // For now on it will show completed so it won't be processed again.
-                        // When the game date is less than the build date, and not complete the game has been canceled
+                        // When the game date is less than the build date, and not complete the game has been cancelled
                         // and will never be played.
                         scheduledGame.VisitorScore = 0;
                         scheduledGame.HomeScore = 0;
