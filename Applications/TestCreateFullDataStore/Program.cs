@@ -10,9 +10,8 @@ namespace TestCreateFullDataStore
     {
         internal static void Main()
         {
-            //Program program = new();
             string path = @"D:\Temp\Junk\LeaguesData.json";
-            //Program.Build(path);
+            Program.Build(path);
             _ = Program.Update(path);
         }
 
