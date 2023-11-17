@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Levaro.SBSoftball
+﻿namespace Levaro.SBSoftball
 {
     /// <summary>
     /// This class is the main class for the SBSS data store. 
@@ -84,7 +82,7 @@ namespace Levaro.SBSoftball
         /// </exception>
         public static LeaguesData ConstructLeaguesData(string? saddleBrookeSeniorSoftball = null, Action<string>? message = null)
         {
-            LeaguesData leaguesData = new LeaguesData();
+            LeaguesData leaguesData;
 
             Action<string> callback;
             if (message == null)
@@ -96,7 +94,6 @@ namespace Levaro.SBSoftball
                 callback = message;
             }
 
-            Stopwatch sw = Stopwatch.StartNew();
             try
             {
                 callback("Beginning construction of League Locations");
@@ -104,7 +101,7 @@ namespace Levaro.SBSoftball
                 LeagueLocations leagues = LeagueLocations.ConstructLeagueLocations(saddleBrookeSeniorSoftball);
                 callback($"Constructed LeagueLocations object. There are {leagues.Locations.Count} leagues.");
 
-                List<LeagueSchedule> schedules = new List<LeagueSchedule>();
+                List<LeagueSchedule> schedules = new();
                 foreach (KeyValuePair<string, string> kvp in leagues.Locations)
                 {
                     LeagueSchedule schedule = LeagueSchedule.ConstructLeagueSchedule(kvp.Value);

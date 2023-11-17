@@ -10,15 +10,15 @@ namespace TestCreateFullDataStore
     {
         internal static void Main()
         {
-            Program program = new Program();
+            //Program program = new();
             string path = @"D:\Temp\Junk\LeaguesData.json";
-            program.Build(path);
-            LeaguesData dataStore = program.Update(path, 16);
+            //Program.Build(path);
+            _ = Program.Update(path);
         }
 
-        public LeaguesData Build(string path)
+        public static LeaguesData Build(string path)
         {
-            Action<string> callback = (m) => Support.ProcessMessage(m);
+            static void callback(string m) => Support.ProcessMessage(m);
             LeaguesData leaguesData = LeaguesData.ConstructLeaguesData(message: callback);
             //leaguesData.Dump("Constructed");
             //string json = leaguesData.ToString();
@@ -29,7 +29,8 @@ namespace TestCreateFullDataStore
             return path.Deserialize<LeaguesData>();
         }
 
-        public LeaguesData Update(string path, int checkHours)
+
+        public static LeaguesData Update(string path)
         {
             LeaguesData dataStore = path.Deserialize<LeaguesData>();
             int count = dataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).Count(g => g.IsComplete);
@@ -40,7 +41,7 @@ namespace TestCreateFullDataStore
 
             foreach (ScheduledGame scheduledGame in scheduledGames.Where(s => !s.IsComplete))
             {
-                DateTime recordedTime = scheduledGame.Date.AddHours(checkHours - scheduledGame.Date.Hour);
+                //DateTime recordedTime = scheduledGame.Date.AddHours(checkHours - scheduledGame.Date.Hour);
                 if (scheduledGame.IsRecorded)
                 {
                     Console.WriteLine($"Processing {scheduledGame.GameResults.GameInformation}");

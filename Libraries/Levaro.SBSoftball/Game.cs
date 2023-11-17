@@ -6,29 +6,58 @@ using Newtonsoft.Json;
 
 namespace Levaro.SBSoftball
 {
+    /// <summary>
+    /// The class has just properties, but together hold all the stats for every game in every league. Moreover
+    /// the <see cref="GameInformation"/> is really just meta-data that is created when the data store class
+    /// <see cref="LeaguesData"/> is created. It never needs to change. All the game data in terms of stats resides in the
+    /// <see cref="Teams"/> property that is updated during the course of a season as games are played.
+    /// </summary>
     public class Game
     {
-        public Game()
+        /// <summary>
+        /// Creates an "empty" instance of the class.
+        /// </summary>
+        /// <remarks>
+        /// Because this constructor is private and both property settings are "init", the only recommended way to create an
+        /// instance of the class us using the <see cref="ConstructGame"/> static method.
+        /// </remarks>
+        private Game()
         {
-            GameInformation = new GameInformation();
             Teams = Enumerable.Empty<Team>().ToList();
         }
 
-        public GameInformation GameInformation
+        /// <summary>
+        /// Gets and initializes the <c>GameInformation</c> property which encapsulates all the meta-data for the scheduled
+        /// game.
+        /// </summary>
+        /// <remarks>
+        /// This property is only initialized once when the <see cref="Game"/> instance is constructed by the 
+        /// <see cref="ConstructGame"/> method and should not be altered after that.
+        /// </remarks>
+        public GameInformation? GameInformation
         {
             get;
             init;
         }
 
+        /// <summary>
+        /// Gets and initializes the <see cref="Team"/> classes (visitors and home) for a scheduled game.
+        /// </summary>
+        /// <remarks>
+        /// Again, the <see cref="ConstructGame"/> method that initializes this property. If a game that has not played or is
+        /// cancelled, it is initialized to an empty list. If the <see cref="Game"/> class is updated or initialized when a
+        /// game is completed, each of the elements of the list (visitor and home teams) do include all the team and player stats
+        /// for that game.
+        /// </remarks>
         public List<Team> Teams
         {
             get;
-            set;
+            init;
         }
 
         private static HtmlDocument? GetHtmlDocument(ScheduledGame scheduledGame)
         {
-            HtmlDocument? htmlDocument = null;
+            HtmlDocument? htmlDocument;
             if ((scheduledGame != null) && (scheduledGame.ResultsUrl != null))
             {
                 htmlDocument = PageContentUtilities.GetPageHtmlDocument(scheduledGame.ResultsUrl);
@@ -47,61 +76,46 @@ namespace Levaro.SBSoftball
 
         public static Game ConstructGame(ScheduledGame scheduledGame, bool update = false)
         {
-            HtmlDocument? htmlDocument = Game.GetHtmlDocument(scheduledGame);
-            if (htmlDocument == null)
-            {
-                throw new NullReferenceException("The HtmlDocument cannot be null when construction a Game instance");
-            }
+            HtmlDocument? htmlDocument = Game.GetHtmlDocument(scheduledGame) ??
+                                         throw new NullReferenceException("The HtmlDocument cannot be null when construction a Game instance");
 
             // If this is an update, that means the scheduled already has GameResults (that is, a GameInformation instance)
-            Game game = update ? scheduledGame.GameResults : new Game();
-            GameInformation gameInformation = new GameInformation();
+            Game game; // = update ? scheduledGame.GameResults : null;
+            GameInformation gameInformation = new();
             if (!update)
             {
-                if (string.IsNullOrEmpty(scheduledGame.GameResults.GameInformation.Title))
+                if ((scheduledGame.GameResults == null) || string.IsNullOrEmpty(scheduledGame.GameResults.GameInformation.Title))
                 {
-                    gameInformation = game.ConstructGameInformation(scheduledGame, htmlDocument);
+                    gameInformation = Game.ConstructGameInformation(scheduledGame, htmlDocument);
                 }
             }
 
-            // If this not an update, and as the has been played, but not cancelled, then we need to recover the Teams
+            // If this not an update, and because the game has been played, but not cancelled, then we need to recover the Teams
             // list, and if it is an update, we always to recover the Teams data.
-            List<Team> teams = new List<Team>();
+            List<Team> teams = new();
             if (!update)
             {
                 if ((scheduledGame.IsComplete) && (!scheduledGame.WasCancelled))
                 {
-                    teams = game.ConstructTeams(htmlDocument);
+                    teams = Game.ConstructTeams(htmlDocument);
                 }
             }
             else
             {
-                teams = game.ConstructTeams(htmlDocument);
+                teams = Game.ConstructTeams(htmlDocument);
             }
 
-            // If it's not an update, then we have to create another instance, because GameInformation's setter is init, but if
-            // is an update, just update the Team list.
-            if (!update)
+            return new Game()
             {
-                game = new Game()
-                {
-                    GameInformation = gameInformation,
-                    Teams = teams
-                };
-            }
-            else
-            {
-                game.Teams = teams;
-            }
-
-
-            return game;
+                GameInformation = !update ? gameInformation : scheduledGame.GameResults.GameInformation,
+                Teams = teams
+            };
         }
 
         [JsonIgnore]
         public bool IsCompleted => (Teams != null) && Teams.Any();
 
-        private GameInformation ConstructGameInformation(ScheduledGame scheduledGame, HtmlDocument htmlDocument)
+        private static GameInformation ConstructGameInformation(ScheduledGame scheduledGame, HtmlDocument htmlDocument)
         {
             string title = htmlDocument.DocumentNode.SelectSingleNode("//article/header/h1").InnerHtml.CleanNameText();
             Uri? dataSource = scheduledGame.ResultsUrl;
@@ -129,7 +143,7 @@ namespace Levaro.SBSoftball
             string leagueDay = league[0].Trim();
             string season = details[3].Split(' ')[0].Trim();
 
-            GameInformation gameInformation = new GameInformation()
+            GameInformation gameInformation = new()
             {
                 Title = title,
                 GameId = gameId,
@@ -143,7 +157,7 @@ namespace Levaro.SBSoftball
             return gameInformation;
         }
 
-        private List<Team> ConstructTeams(HtmlDocument htmlDocument)
+        private static List<Team> ConstructTeams(HtmlDocument htmlDocument)
         {
             // See the Sample Game Source.html file in the Documents folder of this project of document source that is
             // scraped to recover the game information.
