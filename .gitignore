@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Documentation/SBSSDataBuilder API Docs/SBSSDataBuilder API Docs.shfbproj
+/Documentation/SBSSDataBuilder API Docs/Help
