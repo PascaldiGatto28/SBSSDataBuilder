@@ -163,9 +163,25 @@ namespace Levaro.SBSoftball
             };
         }
 
+        /// <summary>
+        /// Returns the year of the league in the format "yyyy".
+        /// </summary>
+        /// <remarks>
+        /// This property is not serialized, but it useful for display.
+        /// </remarks>
         [JsonIgnore]
         public string Year => $"{Date.Date:yyyy}";
 
+        /// <summary>
+        /// Overrides the <see cref="ToString()"/> method to provide a description of the current instance.
+        /// </summary>
+        /// <returns>
+        /// The format is "[[Title]] [[[Season]] [[LeagueDay]] [[LeagueCategory]]] on [[Date:dddd MMMM, d yyyy]]"
+        /// where those enclosed in "[[ ]]" are the current values of the properties. For example,
+        /// <example>
+        /// The Charles Company vs Tucson Orthopaedic Institute [Fall Monday Community] on Monday October, 9 2023
+        /// </example>
+        /// </returns>
         public override string ToString()
         {
             string description = "No description available";

@@ -51,10 +51,19 @@ namespace Levaro.SBSoftball
             set;
         }
 
+        /// <summary>
+        /// Overrides <see cref="ToString()"/> to provide a text summary description of instance.
+        /// </summary>
+        /// <returns>
+        /// The format is "[Name] ([IsHome], [RunsScored],  [Outcome]" 
+        ///  where those enclosed in "[ ]" are the current values of the properties. For example,
+        /// <example>
+        /// The Charles Company (Visitors, Runs 9, Loss)
+        /// </example>
+        /// </returns>
         public override string ToString()
         {
             StringBuilder summary = new();
-            //string indent = new string(' ', 4);
             string isHome = HomeTeam ? "Home" : "Visitors";
             summary.Append(Name).Append($" ({isHome}, Runs {RunsScored}, {Outcome})");
 

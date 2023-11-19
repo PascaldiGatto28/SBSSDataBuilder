@@ -7,11 +7,13 @@ using Newtonsoft.Json;
 namespace Levaro.SBSoftball
 {
     /// <summary>
-    /// The class has just properties, but together hold all the stats for every game in every league. Moreover
-    /// the <see cref="GameInformation"/> is really just meta-data that is created when the data store class
+    /// The class has two properties, but together hold all the stats for every game in every league.
+    /// </summary>
+    /// <remarks>
+    /// The <see cref="GameInformation"/> is really just meta-data that is created when the data store class
     /// <see cref="LeaguesData"/> is created. It never needs to change. All the game data in terms of stats resides in the
     /// <see cref="Teams"/> property that is updated during the course of a season as games are played.
-    /// </summary>
+    /// </remarks>
     public class Game
     {
         /// <summary>
@@ -44,9 +46,9 @@ namespace Levaro.SBSoftball
         /// Gets and initializes the <see cref="Team"/> classes (visitors and home) for a scheduled game.
         /// </summary>
         /// <remarks>
-        /// Again, the <see cref="ConstructGame(ScheduledGame, bool)"/> method that initializes this property. If a game that has not played or is
-        /// cancelled, it is initialized to an empty list. If the <see cref="Game"/> class is updated or initialized when a
-        /// game is completed, each of the elements of the list (visitor and home teams) do include all the team and player stats
+        /// The <see cref="ConstructGame(ScheduledGame, bool)"/> method initializes this property.If a game has not been played 
+        /// or is cancelled, it is initialized to an empty list. If the <see cref="Game"/> class is updated or initialized when a
+        /// game is completed, each of the elements of the list (visitor and home teams) include all the team and player stats
         /// for that game.
         /// </remarks>
         public List<Team> Teams
@@ -56,28 +58,28 @@ namespace Levaro.SBSoftball
         }
 
         /// <summary>
-        /// Gets the <see cref="HtmlAgilityPack"/> <see cref="HtmlDocument"/> for the HTML page have all game information.
+        /// Gets the <see cref="HtmlDocument"/> for the HTML page that has all game information.
         /// </summary>
         /// <remarks>
         /// The <see cref="ConstructGame(ScheduledGame, bool)"/> static method parses the page using the 
-        /// <see cref="ScheduledGame.ResultsUrl"/>. This private method is used to make the Web site is available for recovering
-        /// data.
+        /// <paramref name="scheduledGame"/> <see cref="ScheduledGame.ResultsUrl"/> property value. 
+        /// This private method is used to make sure the Web site is available for recovering data.
         /// </remarks>
-        /// <param name="scheduledGame">The scheduled game whose <see cref="ScheduledGame.ResultsUrl"/> url is to recover the
-        /// HTML page.
+        /// <param name="scheduledGame">The scheduled game whose <see cref="ScheduledGame.ResultsUrl"/> property value is used to 
+        /// create a <see cref="Uri"/> to recover the HTML page.
         /// </param>
-        /// <returns>The <see cref="HtmlDocument"/> for the page"/> if both the <paramref name="scheduledGame"/> 
+        /// <returns>The <see cref="HtmlDocument"/> for the page if both the <paramref name="scheduledGame"/> 
         /// and its <c>ResultsUrl</c> property are not <c>null</c> and the document does not contain an <see cref="HtmlNode"/>
-        /// having a class named "Maintenance". Although exceptions can be thrown, if method succeeds, the returned
-        /// document is never <c>null</c>, but could be empty.
+        /// having a class named "maintenance". Although exceptions are not thrown, the returned
+        /// HTMLDocument is never <c>null</c>, but could be empty.
         /// </returns>
         /// <exception cref="InvalidOperationException">This occurs when the "maintenance" class is found in the document,
         /// which means the Web site is current not available because the data is being updated.</exception>
         /// <exception cref="ArgumentNullException">if either the <paramref name="scheduledGame"/> or its <c>ResultsUrl</c>
         /// is null.</exception>
-        private static HtmlDocument? GetHtmlDocument(ScheduledGame scheduledGame)
+        private static HtmlDocument GetHtmlDocument(ScheduledGame scheduledGame)
         {
-            HtmlDocument? htmlDocument;
+            HtmlDocument htmlDocument;
             if ((scheduledGame != null) && (scheduledGame.ResultsUrl != null))
             {
                 htmlDocument = PageContentUtilities.GetPageHtmlDocument(scheduledGame.ResultsUrl);
@@ -112,33 +114,37 @@ namespace Levaro.SBSoftball
             HtmlDocument? htmlDocument = Game.GetHtmlDocument(scheduledGame) ??
                                          throw new NullReferenceException("The HtmlDocument cannot be null when construction a Game instance");
 
-            GameInformation gameInformation = new GameInformation();
-            if (!update)
-            {
-                if ((scheduledGame.GameResults == null) || string.IsNullOrEmpty(scheduledGame.GameResults.GameInformation?.Title))
-                {
-                    gameInformation = GameInformation.ConstructGameInformation(scheduledGame, htmlDocument);
-                }
-            }
-            else
-            {
-                // GameResults should never be null because if this is an update, GameResults is already constructed.
-                gameInformation = scheduledGame.GameResults.GameInformation;
-            }
-
-            // If this not an update, and because the game has been played, but not cancelled, then we need to recover the Teams
-            // list, and if it is an update, we always to recover the Teams data.
+            GameInformation gameInformation = new();
             List<Team> teams = new();
-            if (!update)
+            if (scheduledGame != null)
             {
-                if ((scheduledGame.IsComplete) && (!scheduledGame.WasCancelled))
+                if (!update)
+                {
+                    if ((scheduledGame.GameResults == null) || string.IsNullOrEmpty(scheduledGame.GameResults.GameInformation?.Title))
+                    {
+                        gameInformation = GameInformation.ConstructGameInformation(scheduledGame, htmlDocument);
+                    }
+                }
+                else
+                {
+                    // GameResults should never be null because if this is an update, GameResults is already constructed.
+                    gameInformation = scheduledGame.GameResults?.GameInformation ?? new GameInformation();
+                }
+
+                // If this not an update, and because the game has been played, but not cancelled, then we need to recover the Teams
+                // list, and if it is an update, we always to recover the Teams data.
+
+                if (!update)
+                {
+                    if (scheduledGame.IsComplete && (!scheduledGame.WasCancelled))
+                    {
+                        teams = Game.ConstructTeams(htmlDocument);
+                    }
+                }
+                else
                 {
                     teams = Game.ConstructTeams(htmlDocument);
                 }
-            }
-            else
-            {
-                teams = Game.ConstructTeams(htmlDocument);
             }
 
             return new Game()
@@ -164,94 +170,41 @@ namespace Levaro.SBSoftball
         [JsonIgnore]
         public bool IsCompleted => (Teams != null) && Teams.Any();
 
+
+
+        ///// <remarks>
+        ///// <para>
+        ///// This method is called when both updating or creating the <c>Game</c> object using the 
+        ///// <see cref="ConstructGame(ScheduledGame, bool)"/> static method, which is the only way a <c>Team</c> 
+        ///// instance is created.
+        ///// </para>
+        ///// <para>
+        ///// When the sequence of <see cref="ScheduledGame"/> objects are created, the <c>Teams</c> property may be changed as well.
+        ///// After all the scheduled games have been initialized (and the results persisted &mdash; JSON serialized), changes
+        ///// in games played means the scheduled games are checked to see if the results have been recorded. If so, this
+        ///// method is called and returns the updated list of <c>Teams</c>
+        ///// </para>
+        ///// </remarks>
         /// <summary>
-        /// Construct the <see cref="GameInformation"/> instance for the <see cref="Game.GameInformation"/> property.
+        /// Constructs the list of objects that contain <see cref="Team"/> game information and team/player stats.
         /// </summary>
-        /// <remarks>
-        /// This method is only called from this class and the only time it is called is when the class is instantiated and
-        /// not when updated. Because it shares the same HtmlDocument that the <see cref="ConstructGame(ScheduledGame, bool)"/>
-        /// static method uses, it the <c>GameInformation</c> is only created from the <c>Game</c> class this static here
-        /// rather than the <c>GameInformation</c> class.
-        /// </remarks>
-        /// <param name="scheduledGame">
-        /// The <see cref="ScheduledGame"/> for which the <see cref="ScheduledGame.GameResults"/> property (that is, <c>Game</c>
-        /// object) is created.
-        /// </param>
-        /// <param name="htmlDocument">The <see cref="HtmlDocument"/> for the page having the game data</param>
-        /// <returns>A <c>GameInformation</c> instance; never <c>null</c>.</returns>
-        private static GameInformation ConstructGameInformation(ScheduledGame scheduledGame, HtmlDocument htmlDocument)
-        {
-            string title = htmlDocument.DocumentNode.SelectSingleNode("//article/header/h1").InnerHtml.CleanNameText();
-            Uri? dataSource = scheduledGame.ResultsUrl;
-            string gameId = string.Empty;
-            if (dataSource != null)
-            {
-                string lastSegment = dataSource.Segments.ToList().Last();
-                string id = lastSegment;
-                if (lastSegment.EndsWith("/"))
-                {
-                    int length = lastSegment.Length - 1;
-                    id = lastSegment[..length];
-                }
-
-                gameId = id;
-            }
-
-            DateTime date = scheduledGame.Date;
-
-            List<HtmlNode> spSectionContentNodes = htmlDocument.DocumentNode.SelectSingleNode("//article/div").SelectNodes("div").ToList();
-            HtmlNode gameDetails = spSectionContentNodes.Where(n => n.HasClass("sp-section-content-details")).Single();
-            List<string> details = gameDetails.SelectSingleNode("//tbody/tr").Elements("td").Select(n => n.InnerHtml).ToList();
-            string[] league = details[2].Split(' ');
-            string leagueCategory = league[1].Trim();
-            string leagueDay = league[0].Trim();
-            string season = details[3].Split(' ')[0].Trim();
-
-            GameInformation gameInformation = new()
-            {
-                Title = title,
-                GameId = gameId,
-                DataSource = dataSource,
-                Date = date,
-                LeagueCategory = leagueCategory,
-                LeagueDay = leagueDay,
-                Season = season,
-            };
-
-            return gameInformation;
-        }
-
-        /// <summary>
-        /// Constructs the list of <see cref="Team"/> objects that contain team game information, and team/player stats.
-        /// </summary>
-        /// <remarks>
-        /// This method called when both updating or creating the <c>Game</c> object using 
-        /// <see cref="ConstructGame(ScheduledGame, bool)"/>. This is the only location where a <c>Team</c> instance is created.
-        /// When the sequence of <see cref="ScheduledGame"/> objects are created, the <c>Teams</c> property may be changed:
-        /// <list type="bullet">
-        ///     <item>
-        ///     <code language="c#">
-        ///         If the game has not been played, the team list is empty (not <c>null</c>, that is
-        ///         List{Team} Teams = Enumerable.Empty{Team}().ToList();
-        ///     </code>
-        ///     and this method is not called.
-        ///     </item>
-        ///     <item>
-        ///     If the game is complete, the <c>Team</c> instances are created , including the <see cref="Player"/> sequence,
-        ///     having all team information and stats. The first team in the list is the visitors, the second the home team.
-        ///     </item>
-        ///     <item>
-        ///     If the game is not complete but has been recorded in the Web site, that means it has been cancelled. In this
-        ///     case this method is not called, but instead the scores in the <c>ScheduledGame</c> object are changed to 0 to 
-        ///     indicate there is no need to check for changes.
-        ///     </item>
-        /// </list>
-        /// After all the scheduled games have been initialized (and the results persisted &mdash; JSON serialized), changes
-        /// in games played means the scheduled games are checked to see if the results have been recorded. If so, this
-        /// method is called and returns the updated list of <c>Teams</c>
-        /// </remarks>
         /// <param name="htmlDocument">The HTML document segment having the team and player information</param>
         /// <returns>Returns a list of <c>Team</c> objects. It may be empty, but never <c>null</c>.</returns>
+
+        /*
+        /// <summary>
+        /// This is the summary
+        /// </summary>
+        /// <param name="htmlDocument">This is the parameter</param>
+        /// <returns>And it returns this</returns>
+        /// <remarks>
+        /// Lorem ipsum dolor sit amet, cum et fuisset minimum, tale accusata mel ei, ius ei accusam epicurei. 
+        /// Mea te simul viris suscipit, ut sea virtute perpetua, no sed autem definitiones. 
+        /// Pro vidit partem conclusionemque eu,
+        /// per numquam legimus delicatissimi at, no quo soluta nonumes accusata. 
+        /// Per ei affert erroribus appellantur. Est nobis adolescens ei.
+        /// </remarks>
+        /// */
         private static List<Team> ConstructTeams(HtmlDocument htmlDocument)
         {
             List<HtmlNode> spSectionContentNodes = htmlDocument.DocumentNode.SelectSingleNode("//article/div").SelectNodes("div").ToList();
