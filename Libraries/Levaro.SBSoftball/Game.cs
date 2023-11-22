@@ -14,7 +14,7 @@ namespace Levaro.SBSoftball
     /// <see cref="LeaguesData"/> is created. It never needs to change. All the game data in terms of stats resides in the
     /// <see cref="Teams"/> property that is updated during the course of a season as games are played.
     /// </remarks>
-    public class Game
+    public sealed class Game
     {
         /// <summary>
         /// Creates an "empty" instance of the class.
@@ -190,21 +190,6 @@ namespace Levaro.SBSoftball
         /// </summary>
         /// <param name="htmlDocument">The HTML document segment having the team and player information</param>
         /// <returns>Returns a list of <c>Team</c> objects. It may be empty, but never <c>null</c>.</returns>
-
-        /*
-        /// <summary>
-        /// This is the summary
-        /// </summary>
-        /// <param name="htmlDocument">This is the parameter</param>
-        /// <returns>And it returns this</returns>
-        /// <remarks>
-        /// Lorem ipsum dolor sit amet, cum et fuisset minimum, tale accusata mel ei, ius ei accusam epicurei. 
-        /// Mea te simul viris suscipit, ut sea virtute perpetua, no sed autem definitiones. 
-        /// Pro vidit partem conclusionemque eu,
-        /// per numquam legimus delicatissimi at, no quo soluta nonumes accusata. 
-        /// Per ei affert erroribus appellantur. Est nobis adolescens ei.
-        /// </remarks>
-        /// */
         private static List<Team> ConstructTeams(HtmlDocument htmlDocument)
         {
             List<HtmlNode> spSectionContentNodes = htmlDocument.DocumentNode.SelectSingleNode("//article/div").SelectNodes("div").ToList();
@@ -233,12 +218,11 @@ namespace Levaro.SBSoftball
                         Name = results[0].CleanNameText(),
                         RunsScored = results[1].ParseInt() ?? 0,
                         Hits = results[2].ParseInt() ?? 0,
-                        HomeTeam = homeTeam  // The first team is the visiting team
+                        HomeTeam = homeTeam,  // The first team is the visiting team
+                        Outcome = results[3]
                     };
 
                     homeTeam = !homeTeam;
-                    team.Outcome = results[3];
-
                     teams.Add(team);
                 }
 
@@ -264,81 +248,19 @@ namespace Levaro.SBSoftball
                                                           .Where(n => n.NodeType == HtmlNodeType.Element)
                                                           .ToList();
 
-                    // Each row provides the data for each player in the team.
+                    // Each row provides the data for each player that participated in this team.
                     foreach (HtmlNode teamStatsNode in rawTeamStats)
                     {
-                        var teamStats = teamStatsNode.SelectNodes("td")
+                        IEnumerable<PlayerLabelValue> labelValues = teamStatsNode.SelectNodes("td")
                                                      .Where(n => n.NodeType == HtmlNodeType.Element)
                                                      .Select(n => new
                                                      {
                                                          DataLabel = n.Attributes.Where(a => a.Name == "data-label").Single().Value,
                                                          Value = n.InnerText
                                                      })
-                                                     .ToList();
-                        Player player = new();
-                        foreach (var stats in teamStats)
-                        {
-                            switch (stats.DataLabel)
-                            {
-                                case "Player":
-                                {
-                                    player.Name = stats.Value.CleanNameText();
-                                    break;
-                                }
-                                case "AB":
-                                {
-                                    player.AtBats = int.Parse(stats.Value);
-                                    break;
-                                }
-                                case "R":
-                                {
-                                    player.Runs = int.Parse(stats.Value);
-                                    break;
-                                }
-                                case "1B":
-                                {
-                                    player.Singles = int.Parse(stats.Value);
-                                    break;
-                                }
-                                case "2B":
-                                {
-                                    player.Doubles = int.Parse(stats.Value);
-                                    break;
-                                }
-                                case "3B":
-                                {
-                                    player.Triples = int.Parse(stats.Value);
-                                    break;
-                                }
-                                case "HR":
-                                {
-                                    player.HomeRuns = int.Parse(stats.Value);
-                                    break;
-                                }
-                                case "BB":
-                                {
-                                    if (int.TryParse(stats.Value, out int result))
-                                    {
-                                        player.BasesOnBalls = int.Parse(stats.Value);
-                                    }
-                                    else
-                                    {
-                                        player.BasesOnBalls = 0;
-                                    }
-                                    break;
-                                }
-                                case "SF":
-                                {
-                                    player.SacrificeFlies = int.Parse(stats.Value);
-                                    break;
-                                }
-                                default:
-                                {
-                                    break;
-                                }
-                            }
-                        }
+                                                     .ToList().Select(t => new PlayerLabelValue(t.DataLabel, t.Value));
 
+                        Player player = Player.ConstructPlayer(labelValues);
                         players.Add(player);
                     }
 

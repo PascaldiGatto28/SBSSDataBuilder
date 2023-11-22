@@ -95,7 +95,7 @@ namespace Levaro.SBSoftball
         /// <param name="htmlDocument">The <see cref="HtmlDocument"/> returned by the 
         /// <see cref="PageContentUtilities.GetPageHtmlDocument(Uri)"/>.
         /// </param>
-        /// <returns></returns>
+        /// <returns>A <c>LeagueDescription</c> instance; it is never <c>null</c>.</returns>
         /// <exception cref="InvalidOperationException">
         /// if the page recovered from specified <paramref name="scheduleDataSource"/> cannot be parsed to provide the 
         /// class data.

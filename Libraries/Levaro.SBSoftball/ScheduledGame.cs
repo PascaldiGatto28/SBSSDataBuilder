@@ -12,7 +12,7 @@ namespace Levaro.SBSoftball
     /// Encapsulates the data about the scheduled game, for example, the scheduled game date, team names, page Url that
     /// contains information for the game, and for completed games, team score, and team and player stats.
     /// </summary>
-    public class ScheduledGame
+    public sealed class ScheduledGame
     {
         // TODO: This should be set by some configuration rather than hard-coded in the class.
         private static readonly int checkHours = 16;

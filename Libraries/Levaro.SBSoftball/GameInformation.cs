@@ -11,7 +11,7 @@ namespace Levaro.SBSoftball
     /// Game meta data (as opposed to stats) for a <see cref="ScheduledGame"/>. It is a property of the <see cref="Game"/>
     /// instance which is the value of <see cref="ScheduledGame.GameResults"/> property.
     /// </summary>
-    public class GameInformation
+    public sealed class GameInformation
     {
         /// <summary>
         /// Creates an "empty" instanced.

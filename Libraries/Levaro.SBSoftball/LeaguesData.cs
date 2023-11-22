@@ -76,7 +76,7 @@
         /// <param name="message">
         /// A delegate that can be used by the calling code to receive notifications during the construction process. 
         /// </param>
-        /// <returns></returns>
+        /// <returns>A <c>LeaguesData</c> instance; <c>null</c> is never returned.</returns>
         /// <exception cref="InvalidOperationException">If any error occurs that prevents the data store to be built. The
         /// most common error occurs if code that extracts the information from the web site pages is not valid. 
         /// </exception>
