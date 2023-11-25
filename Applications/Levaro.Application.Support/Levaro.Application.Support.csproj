@@ -4,15 +4,11 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball.Common\Levaro.SBSoftball.Common.csproj" />
+    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball\Levaro.SBSoftball.csproj" />
   </ItemGroup>
 
 </Project>

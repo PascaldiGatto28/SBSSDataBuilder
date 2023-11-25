@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>SBSSDataStore</AssemblyName>
+    <RootNamespace>Levaro.Application.SBSSDataStore</RootNamespace>
+    <ApplicationIcon>Sync.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <Title>SBSS Data Store Manager</Title>
+    <Description>Reads and updates the SBSS data store</Description>
+    <Version>1.0.23327</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Deterministic>False</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Deterministic>False</Deterministic>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Sync.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball.Common\Levaro.SBSoftball.Common.csproj" />
+    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball.Logging\Levaro.SBSoftball.Logging.csproj" />
+    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball\Levaro.SBSoftball.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Configuration\Settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
