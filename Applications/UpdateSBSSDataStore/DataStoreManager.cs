@@ -7,7 +7,7 @@ namespace Levaro.Application.SBSSDataStore
     public sealed class DataStoreManager
     {
         private static readonly string DataStorePath = AppContext.Instance.Settings.DataStorePath;
-        private static readonly ILog log = AppContext.Instance.Log;
+        private static readonly Log log = AppContext.Instance.Log;
 
         public static void Run(bool update = true)
         {
@@ -43,10 +43,12 @@ namespace Levaro.Application.SBSSDataStore
                 {
                     log.WriteLine(LogCategory.Warning, "Rebuilding the data store is not available at this time.");
                 }
+
+
             }
             else
             {
-                log.WriteLine($"Unable to deserialize the LeaguesData from \"{DataStorePath}\"");
+                log.WriteLine($"Unable to deserialize the LeaguesData object from \"{DataStorePath}\"");
             }
         }
 

@@ -38,8 +38,16 @@ namespace Levaro.Application.SBSSDataStore
             init;
         }
 
+        public string LogSessionFileName
+        {
+            get;
+            init;
+        }
+
         public string DataStorePath => $"{DataStoreFolder}{DataStoreFileName}";
 
         public string LogFilePath => $"{DataStoreFolder}{LogFileName}";
+
+        public string LogSessionFilePath => $"{DataStoreFolder}{LogSessionFileName}";
     }
 }

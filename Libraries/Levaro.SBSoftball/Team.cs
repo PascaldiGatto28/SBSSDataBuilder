@@ -12,13 +12,13 @@ namespace Levaro.SBSoftball
         /// </summary>
         /// <remarks>
         /// Instances should only be created using the <see cref="Game.ConstructTeams(HtmlAgilityPack.HtmlDocument)"/> static
-        /// method. That method actually produces instance of both teams for a game in concert. A single instance does not 
-        /// make sense because the data for one team depends on the data for the other
+        /// method. That method actually produces instance of both teams for a game. Instances should really be in pairs
+        /// because they are part of a single game.
         /// </remarks>
         public Team()
         {
-            Name = string.Empty;
-            Outcome = string.Empty;
+            Name = "Unknown";
+            Outcome = "Unknown";
             Players = Enumerable.Empty<Player>().ToList();
         }
 

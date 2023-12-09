@@ -7,7 +7,7 @@ namespace Levaro.SBSoftball.Logging
     /// Encapsulates the information that is output in the log file.
     /// </summary>
     /// <remarks>
-    /// The <see cref="ILog.WriteLine(LogEntry)"/> method, which all the other variants ultimately call, write a JSON string
+    /// The <see cref="Log.WriteLine(LogEntry)"/> method, which all the other variants ultimately call, writes a JSON string
     /// representation of this class to the log file or stream.
     /// </remarks>
     public class LogEntry
@@ -181,8 +181,10 @@ namespace Levaro.SBSoftball.Logging
         /// <summary>
         /// Overrides the default method and returns a string that represents this instance.
         /// </summary>
-        /// <returns>A string having the <see cref="Date"/>, <see cref="LogCategory"/> and <see cref="LogText"/>, for example,
-        /// "06:18:32 PM -- Info: Starting the Data store manager".</returns>
+        /// <returns>
+        /// A string having the <see cref="Date"/>, <see cref="LogCategory"/> and <see cref="LogText"/>, for example,
+        /// "06:18:32 PM -- Info: Starting the Data store manager".
+        /// </returns>
         public override string ToString()
         {
             return $"{Date:hh:mm:ss tt} -- {LogCategory}: {LogText}";

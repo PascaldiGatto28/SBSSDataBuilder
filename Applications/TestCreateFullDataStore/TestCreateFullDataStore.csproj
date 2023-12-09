@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball.Common\Levaro.SBSoftball.Common.csproj" />
+    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball.Logging\Levaro.SBSoftball.Logging.csproj" />
     <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball\Levaro.SBSoftball.csproj" />
   </ItemGroup>
 

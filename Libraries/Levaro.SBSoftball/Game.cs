@@ -26,6 +26,7 @@ namespace Levaro.SBSoftball
         private Game()
         {
             Teams = Enumerable.Empty<Team>().ToList();
+            GameInformation = GameInformation.Empty;
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace Levaro.SBSoftball
         /// This property is only initialized once when the <see cref="Game"/> instance is constructed by the 
         /// <see cref="ConstructGame"/> method and should not be altered after that.
         /// </remarks>
-        public GameInformation? GameInformation
+        public GameInformation GameInformation
         {
             get;
             init;
@@ -104,7 +105,7 @@ namespace Levaro.SBSoftball
         /// </param>
         /// <param name="update">If <c>true</c>, the <see cref="Teams"/> property is updated with team and player stats if 
         /// the game is completed but not cancelled. Otherwise, the <see cref="GameInformation"/> and <c>Teams</c> properties
-        /// are both initialized, the if the game is completed and not cancelled, the stats information is also recorded.
+        /// are both initialized, then if the game is completed and not cancelled, the stats information is also recorded.
         /// </param>
         /// <returns>A new <see cref="Game"/> instance; <c>null</c> is never returned</returns>
         public static Game ConstructGame(ScheduledGame scheduledGame, bool update = false)
@@ -112,9 +113,9 @@ namespace Levaro.SBSoftball
             // Actually GetHtmlDocument can never return null, because it checks for cases if scheduledGame is null.
             // GetHtmlDocument uses PageContentUtilities.GetPageHtmlDocument, and it returns
             HtmlDocument? htmlDocument = Game.GetHtmlDocument(scheduledGame) ??
-                                         throw new NullReferenceException("The HtmlDocument cannot be null when construction a Game instance");
+                                         throw new NullReferenceException("The HtmlDocument cannot be null when constructing a Game instance");
 
-            GameInformation gameInformation = new();
+            GameInformation gameInformation = GameInformation.Empty;
             List<Team> teams = new();
             if (scheduledGame != null)
             {
@@ -128,11 +129,11 @@ namespace Levaro.SBSoftball
                 else
                 {
                     // GameResults should never be null because if this is an update, GameResults is already constructed.
-                    gameInformation = scheduledGame.GameResults?.GameInformation ?? new GameInformation();
+                    gameInformation = scheduledGame.GameResults?.GameInformation ?? GameInformation.Empty;
                 }
 
                 // If this not an update, and because the game has been played, but not cancelled, then we need to recover the Teams
-                // list, and if it is an update, we always to recover the Teams data.
+                // list, and if it is an update, we always need to recover the Teams data.
 
                 if (!update)
                 {
@@ -155,6 +156,17 @@ namespace Levaro.SBSoftball
         }
 
         /// <summary>
+        /// Returns an "empty" game object, that is, one with properties set to default values.
+        /// </summary>
+        /// <remarks>
+        /// An empty game is just used as an initialized <see cref="Game"/> object and because the properties can only be
+        /// initialized during construction, it has no use otherwise.
+        /// </remarks>
+        /// <seealso cref="ConstructGame(ScheduledGame, bool)"/>
+        [JsonIgnore]
+        public static Game Empty => new();
+
+        /// <summary>
         /// Returns <c>true</c> if the game is complete; <c>false otherwise</c>
         /// </summary>
         /// <remarks>
@@ -169,8 +181,6 @@ namespace Levaro.SBSoftball
         /// <returns><c>true</c> if the <c>Teams</c> property is neither <c>null</c> nor empty.</returns>
         [JsonIgnore]
         public bool IsCompleted => (Teams != null) && Teams.Any();
-
-
 
         ///// <remarks>
         ///// <para>

@@ -579,17 +579,17 @@ namespace Levaro.SBSoftball.Common
         /// </summary>
         /// <param name="source">The full file path</param>
         /// <param name="format">The format used to append the current time stamp to the end of the filename. The default
-        /// format is " MM-dd-yyyy HH-mm-ss.ff"</param>
+        /// format is "-MM-dd-yyyy HH-mm-ss.ff"</param>
         /// <returns>The updated full file path. If the <paramref name="source"/> is <c>null</c> or empty, the empty string
         /// is returned.</returns>
         /// <seealso cref="AppendTextToFileName(string, string)"/>
-        public static string AppendTimeStampToFileName(this string source, string format = " MM-dd-yyyy HH-mm-ss.ff")
+        public static string AppendTimeStampToFileName(this string source, string format = "-MM-dd-yyyy HH-mm-ss.ff")
         {
-            return source.AppendTextToFileName(DateTime.Now.ToString(" MM-dd-yyyy HH-mm-ss.ff"));
+            return source.AppendTextToFileName(DateTime.Now.ToString(format));
         }
 
         /// <summary>
-        /// Constructs a <c>DescriptiveStataistics</c> object for the specified sequence of <c>double</c> items.
+        /// Constructs a <c>DescriptiveStatistics</c> object for the specified sequence of <c>double</c> items.
         /// </summary>
         /// <param name="source">The sequence of items of type <c>double</c></param>
         /// <param name="title">An optional title. The default is just "Statistics for [count] items" where [count] is

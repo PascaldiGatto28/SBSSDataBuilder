@@ -127,6 +127,23 @@
         }
 
         /// <summary>
+        /// Constructs and "empty" <see cref="LeaguesData"/> object, that is, one whose <see cref="BuildDate"/> property
+        /// is <c>DateTime.MinValue</c> and whose <see cref="LeagueSchedules"/> property is the empty sequence.
+        /// </summary>
+        public static LeaguesData Empty
+        {
+            get
+            {
+                LeaguesData leaguesData = new()
+                {
+                    BuildDate = DateTime.MinValue
+                };
+
+                return leaguesData;
+            }
+        }
+
+        /// <summary>
         /// The default callback if one is not provided in the call to <see cref="ConstructLeaguesData(string?, Action{string}?)"/>
         /// method.
         /// </summary>

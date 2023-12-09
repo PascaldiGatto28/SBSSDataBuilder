@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.Json.Serialization;
 
 using Levaro.SBSoftball.Common;
 
@@ -18,7 +19,7 @@ namespace Levaro.SBSoftball
         /// </remarks>
         private Player()
         {
-            Name = string.Empty;
+            Name = "Unknown";
         }
 
         /// <summary>
@@ -44,63 +45,54 @@ namespace Levaro.SBSoftball
                     {
                         PropertyInfo? property = playerType.GetProperty("Name");
                         property?.SetValue(player, labelValue.Value.CleanNameText());
-                        //player.Name = labelValue.Value.CleanNameText();
                         break;
                     }
                     case "AB":
                     {
                         PropertyInfo? property = playerType.GetProperty("AtBats");
                         property?.SetValue(player, labelValue.Value.ParseInt() ?? 0);
-                        //player.AtBats = labelValue.Value.ParseInt() ?? 0;
                         break;
                     }
                     case "R":
                     {
                         PropertyInfo? property = playerType.GetProperty("Runs");
                         property?.SetValue(player, labelValue.Value.ParseInt() ?? 0);
-                        //player.Runs = labelValue.Value.ParseInt() ?? 0;
                         break;
                     }
                     case "1B":
                     {
                         PropertyInfo? property = playerType.GetProperty("Singles");
                         property?.SetValue(player, labelValue.Value.ParseInt() ?? 0);
-                        //player.Singles = labelValue.Value.ParseInt() ?? 0;
                         break;
                     }
                     case "2B":
                     {
                         PropertyInfo? property = playerType.GetProperty("Doubles");
                         property?.SetValue(player, labelValue.Value.ParseInt() ?? 0);
-                        //player.Doubles = labelValue.Value.ParseInt() ?? 0;
                         break;
                     }
                     case "3B":
                     {
                         PropertyInfo? property = playerType.GetProperty("Triples");
                         property?.SetValue(player, labelValue.Value.ParseInt() ?? 0);
-                        //player.Triples = labelValue.Value.ParseInt() ?? 0;
                         break;
                     }
                     case "HR":
                     {
                         PropertyInfo? property = playerType.GetProperty("HomeRuns");
                         property?.SetValue(player, labelValue.Value.ParseInt() ?? 0);
-                        //player.HomeRuns = labelValue.Value.ParseInt() ?? 0;
                         break;
                     }
                     case "BB":
                     {
                         PropertyInfo? property = playerType.GetProperty("BasesOnBalls");
                         property?.SetValue(player, labelValue.Value.ParseInt() ?? 0);
-                        //player.BasesOnBalls = labelValue.Value.ParseInt() ?? 0;
                         break;
                     }
                     case "SF":
                     {
                         PropertyInfo? property = playerType.GetProperty("SacrificeFlies");
                         property?.SetValue(player, labelValue.Value.ParseInt() ?? 0);
-                        //player.SacrificeFlies = labelValue.Value.ParseInt() ?? 0;
                         break;
                     }
                     default:
@@ -114,10 +106,21 @@ namespace Levaro.SBSoftball
         }
 
         /// <summary>
+        /// Returns an "empty" player object, that is, one with properties set to default values.
+        /// </summary>
+        /// <remarks>
+        /// An empty player is just used as an initialized <see cref="Player"/> object and because the properties can only be
+        /// initialized during construction, it has no use otherwise.
+        /// </remarks>
+        /// <seealso cref="Player.ConstructPlayer(IEnumerable{PlayerLabelValue})"/>
+        [JsonIgnore]
+        public static Player Empty => Player.ConstructPlayer(Enumerable.Empty<PlayerLabelValue>());
+
+        /// <summary>
         /// Gets and initializes the player name.
         /// </summary>
         /// <remarks>
-        /// The name is a text string of the format "[lastname], [firstname]".
+        /// The name is a text string of the format "[Lastname], [Firstname]".
         /// </remarks>
         public string Name
         {

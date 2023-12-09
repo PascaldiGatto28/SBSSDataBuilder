@@ -21,7 +21,7 @@ namespace Levaro.Application.SBSSDataStore
         {
             Settings = AppSettings.Settings;
             //LogFilePath = Settings.LogFilePath;
-            Log = (ILog)(new Log(Settings.LogFilePath, start: true));
+            Log = new Log(Settings.LogFilePath);
         }
 
         public static AppContext Reset()
@@ -37,7 +37,7 @@ namespace Levaro.Application.SBSSDataStore
         }
 
 
-        public ILog Log
+        public Log Log
         {
             get;
             init;

@@ -6,7 +6,6 @@ using Levaro.SBSoftball.Common;
 
 namespace Levaro.SBSoftball
 {
-
     /// <summary>
     /// Game meta data (as opposed to stats) for a <see cref="ScheduledGame"/>. It is a property of the <see cref="Game"/>
     /// instance which is the value of <see cref="ScheduledGame.GameResults"/> property.
@@ -14,20 +13,22 @@ namespace Levaro.SBSoftball
     public sealed class GameInformation
     {
         /// <summary>
-        /// Creates an "empty" instanced.
+        /// Creates an "empty" instance.
         /// </summary>
         /// <remarks>
-        /// This is only used for initialized in other classes (in particular, <see cref="Game"/>). Because all properties
+        /// This is only used for initialization in other classes (in particular, <see cref="Game"/>). Because all properties
         /// have "init" setters, the class can really only be instantiated using the static 
         /// <see cref="ConstructGameInformation(ScheduledGame, HtmlDocument)"/> method.
         /// </remarks>
-        public GameInformation()
+        private GameInformation()
         {
-            Title = string.Empty;
-            GameId = string.Empty;
-            LeagueCategory = string.Empty;
-            LeagueDay = string.Empty;
-            Season = string.Empty;
+            Title = "Unknown";
+            GameId = "Unknown";
+            DataSource = null;
+            Date = DateTime.Now;
+            LeagueCategory = "Unknown";
+            LeagueDay = "Unknown";
+            Season = "Unknown";
         }
 
         /// <summary>
@@ -162,6 +163,17 @@ namespace Levaro.SBSoftball
                 Season = season,
             };
         }
+
+        /// <summary>
+        /// Returns an "empty" game information object, that is, one with properties set to default values.
+        /// </summary>
+        /// <remarks>
+        /// An empty game information object is just used as an initialized <see cref="GameInformation"/> object and because 
+        /// the properties can only be initialized during construction, it has no use otherwise.
+        /// </remarks>
+        /// <seealso cref="ConstructGameInformation(ScheduledGame, HtmlDocument)"/>
+        [JsonIgnore]
+        public static GameInformation Empty => new();
 
         /// <summary>
         /// Returns the year of the league in the format "yyyy".

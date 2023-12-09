@@ -1,5 +1,6 @@
 {
     "DataStoreFolder": "D:\\Temp\\Junk\\",
     "DataStoreFileName": "LeaguesData.json",
-    "LogFileName": "DataStoreManager.log"
+    "LogFileName": "DataStoreManager.log",
+    "LogSessionFileName": "DataStoreManager.json"
 }

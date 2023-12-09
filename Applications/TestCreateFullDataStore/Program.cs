@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 using Levaro.SBSoftball;
 using Levaro.SBSoftball.Common;
+using Levaro.SBSoftball.Logging;
 
 namespace TestCreateFullDataStore
 {
@@ -10,9 +11,40 @@ namespace TestCreateFullDataStore
     {
         internal static void Main()
         {
-            string path = @"D:\Temp\Junk\LeaguesData.json";
-            Program.Build(path);
-            _ = Program.Update(path);
+            string logPath = @"D:\Temp\Junk\MoreJunk\x.log";
+            Log log = new(logPath);
+            //string path = @"D:\Temp\junk\LeaguesData.json";
+            //Program.Build(path);
+            // _ = Program.Update(path, log);
+            //Log log = new(logPath);
+
+            LogEntry logEntry = new()
+            {
+                SessionId = Guid.NewGuid(),
+                Date = DateTime.Parse("June 6, 1945"),
+                LogCategory = LogCategory.Warning,
+                LogText = "Test is a test using \"void WriteLine(LogEntry entry)\"",
+                ObjectInstance = new string('?', 32),
+                CallerFileName = "FooBar.txt",
+                CallerMemberName = "Foo",
+                CallerLineNumber = int.MaxValue
+            };
+
+            DateTime now = DateTime.Now;
+            log.WriteLine(logEntry);
+            log.WriteLine(now.AddDays(1), LogCategory.Debug, "\"void WriteLine(DateTime dateTime, LogCategory category, string text, object? instance\"", null);
+            log.WriteLine("\"void WriteLine(string text, object instance)\"", new object());
+            log.WriteLine(LogCategory.Info, "\"void WriteLine(LogCategory category, string text, object instance\"", new Exception("shit"));
+            log.WriteLine(LogCategory.Warning, "Warning, \"void WriteLine(LogCategory category, string text)\"");
+            log.WriteLine("\"void WriteLine(string text);\"");
+            log.WriteLine("\"void WriteLine(string text, Exception exception)\"", new InvalidOperationException("Yes, it's not so"));
+            log.WriteLine(new Exception("\"void WriteLine(Exception exception\""));
+            log.Stop();
+            log.Close();
+
+            IEnumerable<LogSession> sessions = Log.ReadLog(logPath);
+            Console.WriteLine(sessions.ToJsonString());
+            //sessions.Serialize(logPath);
         }
 
         public static LeaguesData Build(string path)
@@ -29,11 +61,11 @@ namespace TestCreateFullDataStore
         }
 
 
-        public static LeaguesData Update(string path)
+        public static LeaguesData Update(string path, Log log)
         {
             LeaguesData dataStore = path.Deserialize<LeaguesData>();
             int count = dataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).Count(g => g.IsComplete);
-            Console.WriteLine($"There are {count} complete games as of {dataStore.BuildDate:dddd MMMM d, yyyy a\\t h:mm tt}");
+            log.WriteLine($"There are {count} complete games as of {dataStore.BuildDate:dddd MMMM d, yyyy a\\t h:mm tt}");
             IEnumerable<LeagueSchedule> schedules = dataStore.LeagueSchedules;
             int updated = 0;
             IEnumerable<ScheduledGame> scheduledGames = schedules.SelectMany((s) => s.ScheduledGames);
@@ -43,7 +75,7 @@ namespace TestCreateFullDataStore
                 //DateTime recordedTime = scheduledGame.Date.AddHours(checkHours - scheduledGame.Date.Hour);
                 if (scheduledGame.IsRecorded)
                 {
-                    Console.WriteLine($"Processing {scheduledGame.GameResults.GameInformation}");
+                    log.WriteLine($"Processing {scheduledGame.GameResults.GameInformation}");
                     Game currentGame = scheduledGame.GameResults;
                     Game updatedGame = Game.ConstructGame(scheduledGame, update: true);
                     scheduledGame.GameResults = updatedGame;
@@ -70,14 +102,14 @@ namespace TestCreateFullDataStore
             if (updated > 0)
             {
                 int size = dataStore.Serialize<LeaguesData>(path);
-                Console.WriteLine($"{updated} games updated, data store serialized using {size:#,###} bytes.");
+                log.WriteLine($"{updated} games updated, data store serialized using {size:#,###} bytes.");
                 dataStore = path.Deserialize<LeaguesData>();
                 count = dataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).Count(g => g.IsComplete);
-                Console.WriteLine($"There are {count} complete games as of {dataStore.BuildDate:dddd MMMM d, yyyy a\\t h:mm tt}");
+                log.WriteLine($"There are {count} complete games as of {dataStore.BuildDate:dddd MMMM d, yyyy a\\t h:mm tt}");
             }
             else
             {
-                Console.WriteLine("No updates made");
+                log.WriteLine("No updates made");
             }
 
             return dataStore;
