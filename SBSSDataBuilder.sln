@@ -7,22 +7,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{54E165F3-50B2-434D-9701-BCF9307790F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levaro.SBSoftball", "Libraries\Levaro.SBSoftball\Levaro.SBSoftball.csproj", "{BEE8BA65-C446-4DCC-ABAB-5432A6AF8606}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball", "Libraries\SBSSData.Softball\SBSSData.Softball.csproj", "{BEE8BA65-C446-4DCC-ABAB-5432A6AF8606}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levaro.SBSoftball.Common", "Libraries\Levaro.SBSoftball.Common\Levaro.SBSoftball.Common.csproj", "{8BC40FF6-5553-470A-9282-953835FC062A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Common", "Libraries\SBSSData.Softball.Common\SBSSData.Softball.Common.csproj", "{8BC40FF6-5553-470A-9282-953835FC062A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCreateFullDataStore", "Applications\TestCreateFullDataStore\TestCreateFullDataStore.csproj", "{DF2AB2BF-8D91-4CEC-9675-AB39F576212B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levaro.Application.SBSSDataStore", "Applications\UpdateSBSSDataStore\Levaro.Application.SBSSDataStore.csproj", "{A5C839AF-8801-4287-BD05-783576D9EBC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.DataStore", "Applications\SBSSData.Application.DataStore\SBSSData.Application.DataStore.csproj", "{A5C839AF-8801-4287-BD05-783576D9EBC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3B88A07C-B55F-479A-8E70-E192B2332121}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levaro.SBSoftball.Logging", "Libraries\Levaro.SBSoftball.Logging\Levaro.SBSoftball.Logging.csproj", "{3F424CFB-59D7-45C2-B8F3-A03A33FCC0B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Logging", "Libraries\SBSSData.Softball.Logging\SBSSData.Softball.Logging.csproj", "{3F424CFB-59D7-45C2-B8F3-A03A33FCC0B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Levaro.SBSoftball.Stats", "Libraries\Levaro.SBSoftball.Stats\Levaro.SBSoftball.Stats.csproj", "{7E67B83F-F28D-42DC-9166-E5EDFAD6A9C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Stats", "Libraries\SBSSData.Softball.Stats\SBSSData.Softball.Stats.csproj", "{7E67B83F-F28D-42DC-9166-E5EDFAD6A9C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

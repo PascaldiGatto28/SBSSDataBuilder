@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball.Common\Levaro.SBSoftball.Common.csproj" />
-    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball.Logging\Levaro.SBSoftball.Logging.csproj" />
-    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball\Levaro.SBSoftball.csproj" />
+    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball.Common\SBSSData.Softball.Common.csproj" />
+    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball.Logging\SBSSData.Softball.Logging.csproj" />
+    <ProjectReference Include="..\..\Libraries\Levaro.SBSoftball\SBSSData.Softball.csproj" />
   </ItemGroup>
 
 </Project>

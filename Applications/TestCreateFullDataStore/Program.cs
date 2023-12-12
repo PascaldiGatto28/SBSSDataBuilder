@@ -1,9 +1,9 @@
 ﻿using System.Data;
 using System.Diagnostics;
 
-using Levaro.SBSoftball;
-using Levaro.SBSoftball.Common;
-using Levaro.SBSoftball.Logging;
+using SBSSData.Softball;
+using SBSSData.Softball.Common;
+using SBSSData.Softball.Logging;
 
 namespace TestCreateFullDataStore
 {
