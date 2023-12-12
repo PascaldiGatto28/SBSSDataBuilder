@@ -44,10 +44,18 @@ namespace Levaro.Application.SBSSDataStore
             init;
         }
 
+        public string BuildOption
+        {
+            get;
+            init;
+        }
+
         public string DataStorePath => $"{DataStoreFolder}{DataStoreFileName}";
 
         public string LogFilePath => $"{DataStoreFolder}{LogFileName}";
 
         public string LogSessionFilePath => $"{DataStoreFolder}{LogSessionFileName}";
+
+        public bool Update => !string.Equals(BuildOption, "Build", StringComparison.OrdinalIgnoreCase);
     }
 }

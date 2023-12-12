@@ -147,7 +147,7 @@ namespace Levaro.SBSoftball.Common
         /// <summary>
         /// Converts the string to a sequence of words
         /// </summary>
-        /// <remarks>A word is a sequence of characters beginning with an uppercaseletter and the previous letter is is not 
+        /// <remarks>A word is a sequence of characters beginning with an uppercase letter and the previous letter is is not 
         /// upper case. For example, "HelloRichard" returns the sequence "Hello", "Richard". This is often useful to create
         /// words associated with file names (specifically image names) that do not use spaces.
         /// </remarks>
@@ -156,7 +156,7 @@ namespace Levaro.SBSoftball.Common
         /// <returns>
         /// A sequence of words, each of which starts with a capital letter.
         /// </returns>
-        public static IEnumerable<string> ImageNameToWords(this string content)
+        public static IEnumerable<string> NameToWords(this string content)
         {
             List<string> words = new();
             if (!string.IsNullOrWhiteSpace(content))
@@ -192,20 +192,40 @@ namespace Levaro.SBSoftball.Common
 
             return words;
         }
+
         /// <summary>
-        /// Converts a string to words and then creates a string with each separated by a single space.
+        /// Converts a string to words from a list of words and to a string with each separated by a single space.
         /// </summary>
         /// <remarks>
-        /// The <see cref="ImageNameToWords(string)"/> method to create a sequence of words, and then the 
+        /// The <see cref="NameToWords(string)"/> method to creates a sequence of words, and then the 
         /// <see cref="ToString{T}(IEnumerable{T}, string)"/> method to paste the words together using a single space between
-        /// each word.
+        /// each word. Words not at the beginning of the sequence and are certain preposition are not capitalized.
         /// </remarks>
         /// <param name="name">The text to convert to a string of words with a single space between each word</param>
-        /// <returns>A string of space delimted words. The empty string is returned if <paramref name="name"/> is <c>null</c>
+        /// <returns>A string of space delimited words. The empty string is returned if <paramref name="name"/> is <c>null</c>
         /// or empty.</returns>
         public static string NameToTitle(this string name)
         {
-            return name.ImageNameToWords().ToString(" ");
+            List<string> lowerCase = new()
+            {
+                "Of", "Off", "A", "An", "To", "From", "The"
+            };
+
+            List<string> words = (name.NameToWords()).ToList();
+            List<string> titleWords = new() { words.First() };
+
+            foreach (string word in words.Skip(1))
+            {
+                string titleWord = word;
+                if (lowerCase.Any(w => string.Equals(w, word, StringComparison.OrdinalIgnoreCase)))
+                {
+                    titleWord = word.ToLower();
+                }
+
+                titleWords.Add(titleWord);
+            }
+
+            return titleWords.ToString<string>(" ");
         }
 
         /// <summary>
@@ -337,7 +357,7 @@ namespace Levaro.SBSoftball.Common
 
         /// <summary>
         /// Converts an sequence of objects of type <typeparamref name="T"/> to a string where each element of the sequence
-        /// is converted to a string and contenated using the <paramref name="itemSeparator"/> string.
+        /// is converted to a string and concatenated using the <paramref name="itemSeparator"/> string.
         /// </summary>
         /// <typeparam name="T">The type of the sequence elements</typeparam>
         /// <param name="source">The sequence if elements</param>
@@ -371,7 +391,7 @@ namespace Levaro.SBSoftball.Common
 
         /// <summary>
         /// Converts an sequence of objects of type <typeparamref name="T"/> to a string where each element of the sequence
-        /// is converted to a string using its <c>ToString()</c> method and contenated using the 
+        /// is converted to a string using its <c>ToString()</c> method and concatenated using the 
         /// <paramref name="itemSeparator"/> string.
         /// </summary>
         /// <typeparam name="T">The type of the sequence elements</typeparam>
@@ -397,7 +417,7 @@ namespace Levaro.SBSoftball.Common
 
         /// <summary>
         /// Converts a stack of objects of type <typeparamref name="T"/> to a string where each element of the sequence
-        /// is converted to a string using its <c>ToString()</c> method and contenated using a carriage return/line feed
+        /// is converted to a string using its <c>ToString()</c> method and concatenated using a carriage return/line feed
         /// string.
         /// </summary>
         /// <typeparam name="T">The type of the sequence elements</typeparam>

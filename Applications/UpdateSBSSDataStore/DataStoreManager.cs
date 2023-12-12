@@ -1,6 +1,6 @@
 ﻿using Levaro.SBSoftball;
-using Levaro.SBSoftball.Common;
 using Levaro.SBSoftball.Logging;
+using Levaro.SBSoftball.Stats;
 
 namespace Levaro.Application.SBSSDataStore
 {
@@ -9,46 +9,46 @@ namespace Levaro.Application.SBSSDataStore
         private static readonly string DataStorePath = AppContext.Instance.Settings.DataStorePath;
         private static readonly Log log = AppContext.Instance.Log;
 
-        public static void Run(bool update = true)
+        public static void Run(bool update)
         {
             DataStoreManager manager = new();
+            DataStoreContainer dsContainer = DataStoreContainer.Instance(DataStorePath);
+            LeaguesData dataStore = dsContainer.DataStore;
+            bool updating = update || dataStore.LeagueSchedules.Any();
 
-            LeaguesData dataStore = DataStorePath.Deserialize<LeaguesData>();
-            if (dataStore != null)
+            if (updating)
             {
                 List<ScheduledGame> scheduledGames = dataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).ToList();
-                int count = scheduledGames.Count;
-                int complete = scheduledGames.Count(g => g.IsComplete);
-                int cancelled = scheduledGames.Count(g => g.WasCancelled);
-                log.WriteLine($"There are {count} scheduled games, of which {complete} are completed, and of those, {cancelled} were cancelled " +
+                log.WriteLine($"There are {dsContainer.NumberOfGames} scheduled games, of which {dsContainer.GamesCompleted} " +
+                              $"are completed, and of those, {dsContainer.GamesCanceled} were canceled " +
                               $"as of {dataStore.BuildDate:dddd MMMM d, yyyy a\\t h:mm tt}");
 
-                if (update)
+                int updated = DataStoreManager.Update(scheduledGames);
+                if (updated > 0)
                 {
-                    int updated = DataStoreManager.Update(scheduledGames);
-                    if (updated > 0)
-                    {
-                        dataStore.BuildDate = DateTime.Now;
-                        log.WriteLine($"{updated} games have been updated");
-                        dataStore.Serialize(DataStorePath);
-                        log.WriteLine($"The data has been serialized to {DataStorePath}");
+                    log.WriteLine($"{updated} games have been updated");
+                    int bytesWrittent = dsContainer.Save();
+                    log.WriteLine($"The data has been serialized to {DataStorePath}; {bytesWrittent:#,###} bytes written.");
 
-                    }
-                    else
-                    {
-                        log.WriteLine("The data store is up-to-date; no games were found.");
-                    }
                 }
                 else
                 {
-                    log.WriteLine(LogCategory.Warning, "Rebuilding the data store is not available at this time.");
+                    log.WriteLine("The data store is up-to-date; no games were found.");
                 }
-
-
             }
             else
             {
-                log.WriteLine($"Unable to deserialize the LeaguesData object from \"{DataStorePath}\"");
+                string dataStorePath = dsContainer.DataStorePath;
+                if (dataStore.LeagueSchedules.Any())
+                {
+                    log.WriteLine(LogCategory.Warning, "The existing data store will be overwritten");
+                }
+                else
+                {
+                    log.WriteLine($"Building the data store at {dataStorePath}");
+                }
+
+                dsContainer = DataStoreManager.Build(dataStorePath);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Levaro.Application.SBSSDataStore
                 if (scheduledGame.IsRecorded)
                 {
                     // When the data store is built, the GameResults property is never null. 
-                    log.WriteLine($"Processing {scheduledGame.GameResults.GameInformation}");
+                    log.WriteLine($"Updating {scheduledGame.GameResults.GameInformation}");
                     Game currentGame = scheduledGame.GameResults;
                     Game updatedGame = Game.ConstructGame(scheduledGame, update: true);
                     scheduledGame.GameResults = updatedGame;
@@ -77,6 +77,7 @@ namespace Levaro.Application.SBSSDataStore
                         // and will never be played.
                         scheduledGame.VisitorScore = 0;
                         scheduledGame.HomeScore = 0;
+                        log.WriteLine($"Marked as canceled!");
                     }
 
                     updated++;
@@ -84,6 +85,17 @@ namespace Levaro.Application.SBSSDataStore
             }
 
             return updated;
+        }
+
+        public static DataStoreContainer Build(string dataStorePath)
+        {
+            LeaguesData dataStore = LeaguesData.ConstructLeaguesData(message: (s) => log.WriteLine(s));
+            DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath);
+            dsContainer.Dispose();
+            dsContainer = DataStoreContainer.Instance(dataStorePath, dataStore);
+            dsContainer.Save();
+            log.WriteLine($"New data store constructed and container created\r\n{dsContainer}");
+            return dsContainer;
         }
     }
 }

@@ -87,7 +87,7 @@
             Action<string> callback;
             if (message == null)
             {
-                callback = DefaultCallback;
+                callback = (m) => Console.WriteLine(m);
             }
             else
             {
@@ -144,17 +144,22 @@
         }
 
         /// <summary>
-        /// The default callback if one is not provided in the call to <see cref="ConstructLeaguesData(string?, Action{string}?)"/>
-        /// method.
+        /// Overrides the default <see cref="object.ToString()"/> method to provide summary descriptions and value of the
+        /// two properties of this class.
+        /// properties.
         /// </summary>
         /// <remarks>
-        /// The action is to simply write the <paramref name="message"/> value to the console.
+        /// This method is most useful when writing information to the logging system.
         /// </remarks>
-        /// <param name="message">A text message from <c>ConstructLeagueData</c> during processing.</param>
-        private static void DefaultCallback(string message)
+        /// <returns>
+        /// A string that represents the current instance. For example,
+        /// <code language="cs">
+        /// Build Date 12/11/2023 11:19:04 AM; Number of Leagues 9
+        /// </code>
+        /// </returns>
+        public override string ToString()
         {
-            Console.WriteLine(message);
+            return $"Build Date {BuildDate}; Number of Leagues {LeagueSchedules.Count()}";
         }
     }
-
 }

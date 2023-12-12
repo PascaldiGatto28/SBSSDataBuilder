@@ -16,7 +16,7 @@ namespace Levaro.Application.SBSSDataStore
                 log.WriteLine("Starting the Data store manager");
                 try
                 {
-                    DataStoreManager.Run(true);
+                    DataStoreManager.Run((context.Settings).Update);
                 }
                 catch (Exception exception)
                 {

@@ -2,5 +2,6 @@
     "DataStoreFolder": "D:\\Temp\\Junk\\",
     "DataStoreFileName": "LeaguesData.json",
     "LogFileName": "DataStoreManager.log",
-    "LogSessionFileName": "DataStoreManager.json"
+    "LogSessionFileName": "DataStoreManager.json",
+    "BuildOption":  "Build" // Build a new instance; Update to update
 }

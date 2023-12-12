@@ -223,7 +223,7 @@ namespace Levaro.SBSoftball
         /// <seealso cref="LeagueSchedule.ConstructLeagueSchedule(string)"/>
         private bool Recorded()
         {
-            int hours = Math.Max(CheckHours, 16);
+            int hours = Math.Max(CheckHours, 10);
             DateTime recordedTime = Date.AddHours(hours - Date.Hour);
             return (recordedTime < DateTime.Now);
         }
