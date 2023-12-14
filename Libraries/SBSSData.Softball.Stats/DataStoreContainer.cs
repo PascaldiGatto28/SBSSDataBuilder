@@ -142,7 +142,7 @@ namespace SBSSData.Softball.Stats
         /// be created, it is the immediate parent of the file itself. For example, if the <c>DataStorePath</c> is
         /// <c>D:\Temp\SBSS\LeaguesData.json</c>, the default backup path is 
         /// <c>D:\Temp\SBSS\Backup\LeaguesData-[time stamp].json</c>, where [time stamp] is a string of the form
-        /// <c>MM-dd-yyyy-HH-mm-ss</c>. 
+        /// <c>MM-dd-yyyy-HH-mm-ss.ff</c> (ff is hundredths of a second). 
         /// </param>
         /// <remarks>
         /// If you invoke this method with just the defaults, the data store is serialized and overwrites the current file
