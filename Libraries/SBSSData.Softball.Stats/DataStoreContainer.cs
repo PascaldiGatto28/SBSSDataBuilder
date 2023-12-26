@@ -54,7 +54,6 @@ namespace SBSSData.Softball.Stats
         public static DataStoreContainer Instance(string path, LeaguesData? leaguesData = null)
         {
             instance ??= new DataStoreContainer(path, leaguesData);
-
             return instance;
         }
 

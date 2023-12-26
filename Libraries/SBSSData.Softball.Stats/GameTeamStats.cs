@@ -53,12 +53,14 @@
         /// </summary>
         /// <returns>The sequence of <c>PlayerStats</c>. If the game is not complete or has been canceled, the empty
         /// sequence is returned; <c>null</c> is never returned.</returns>
+        /// 
+        /// TODO: Fix this.
         private IEnumerable<PlayerStats> GetPlayersStats()
         {
             List<PlayerStats> stats = new();
             foreach (Team team in Game.Teams)
             {
-                stats.Add(new TeamPlayerStats(team).PlayersStats);
+                //stats.Add((new TeamPlayerStats(team)).Players);
             }
 
             return stats;

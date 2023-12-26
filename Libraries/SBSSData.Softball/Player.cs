@@ -8,19 +8,40 @@ namespace SBSSData.Softball
     /// <summary>
     /// Encapsulates player statistics for a single game.
     /// </summary>
-    public sealed class Player
+    public class Player
     {
         /// <summary>
         /// Creates an instance of this class.
         /// </summary>
         /// <remarks>
-        /// Because this is a private constructor, and all the properties of "init" setters, the <see cref="Player.ConstructPlayer"/>
-        /// static method is really (short of reflection) to create an instance.
+        /// Because all the properties of "init" setters, the <see cref="Player.ConstructPlayer"/>
+        /// static method is really (short of reflection) was to create an new instance.
         /// </remarks>
-        private Player()
+        public Player()
         {
             Name = "Unknown";
         }
+
+        /// <summary>
+        /// Creates a copy of the specified instance (that is, a copy constructor).
+        /// </summary>
+        /// <param name="player">The existing <see cref="Player"/> whose property values are used to
+        /// produce a new instance having all the same properties.</param>
+        public Player(Player player) : this()
+        {
+            if (player != null)
+            {
+                Type type = typeof(Player);
+                PropertyInfo[] properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+                foreach (PropertyInfo property in properties)
+                {
+                    object? value = property.GetValue(player, null);
+                    type.GetProperty(property.Name)?.SetValue(this, value, null);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Constructs a instance with all properties initialized.
@@ -192,7 +213,7 @@ namespace SBSSData.Softball
         }
 
         /// <summary>
-        /// Gets and initializes the number of sacrifice files hit by the player.
+        /// Gets and initializes the number of sacrifice flies hit by the player.
         /// </summary>
         public int SacrificeFlies
         {

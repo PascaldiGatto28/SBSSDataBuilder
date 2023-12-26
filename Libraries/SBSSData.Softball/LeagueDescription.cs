@@ -135,13 +135,55 @@ namespace SBSSData.Softball
         }
 
         /// <summary>
-        /// Overrides the default method.
+        /// Gets the "empty" <see cref="LeagueDescription"/> object.
+        /// </summary>
+        /// <returns>The <see cref="LeagueDescription"/> object having all properties set to their default values.</returns>
+        public static LeagueDescription Empty()
+        {
+            return new LeagueDescription();
+        }
+
+        /// <summary>
+        /// Overrides the default <see cref="Object.ToString()"/> method.
         /// </summary>
         /// <returns>Returns a description string containing the values of <c>string</c> properties. For example,
         /// "Monday Recreation Fall 2023"</returns>
         public override string ToString()
         {
             return $"{LeagueDay} {LeagueCategory} {Season} {Year}";
+        }
+
+        /// <summary>
+        /// Overrides the default <see cref="Object.Equals(object?)"/> method.
+        /// </summary>
+        /// <param name="obj">The <c>object</c> to test for equality.</param>
+        /// <returns>Returns <c>true</c> if <paramref name="obj"/> is not null of type <see cref="LeagueDescription"/> and
+        /// <c>string</c> property values are equal (case insensitive).</returns>
+        public override bool Equals(object? obj)
+        {
+            bool isEqual = false;
+            if ((obj != null) && (GetType() == obj.GetType()))
+            {
+                LeagueDescription description = (LeagueDescription)obj;
+                isEqual = string.Equals(LeagueCategory, description.LeagueCategory, StringComparison.OrdinalIgnoreCase) &&
+                          string.Equals(LeagueDay, description.LeagueDay, StringComparison.OrdinalIgnoreCase) &&
+                          string.Equals(Season, description.Season, StringComparison.OrdinalIgnoreCase) &&
+                          string.Equals(Year, description.Year, StringComparison.OrdinalIgnoreCase);
+
+            }
+
+            return isEqual;
+        }
+
+        /// <summary>
+        /// Overrides the default <see cref="Object.GetHashCode()"/> method
+        /// </summary>
+        /// <returns>
+        /// Returns the hash code of the string returned by the <see cref="LeagueDescription.ToString()"/> method.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 }

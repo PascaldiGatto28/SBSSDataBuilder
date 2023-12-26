@@ -1,11 +1,12 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 
 namespace SBSSData.Softball
 {
     /// <summary>
     /// Encapsulates team information, stats and all players stats for a game.
     /// </summary>
-    public sealed class Team
+    public class Team
     {
         /// <summary>
         /// Constructs an "empty" instance of this class.
@@ -20,6 +21,26 @@ namespace SBSSData.Softball
             Name = "Unknown";
             Outcome = "Unknown";
             Players = Enumerable.Empty<Player>().ToList();
+        }
+
+        /// <summary>
+        /// Creates a copy of the specified instance (that is, a copy constructor).
+        /// </summary>
+        /// <param name="team">The existing <see cref="Team"/> whose property values are used to
+        /// produce a new instance having all the same properties.</param>
+        public Team(Team team) : this()
+        {
+            if (team != null)
+            {
+                Type type = typeof(Team);
+                PropertyInfo[] properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+                foreach (PropertyInfo property in properties)
+                {
+                    object? value = property.GetValue(team, null);
+                    type.GetProperty(property.Name)?.SetValue(this, value, null);
+                }
+            }
         }
 
         /// <summary>

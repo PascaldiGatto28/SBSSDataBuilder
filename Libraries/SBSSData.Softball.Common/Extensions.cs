@@ -257,7 +257,10 @@ namespace SBSSData.Softball.Common
                 textWriter.Indentation = 4;
                 textWriter.IndentChar = ' ';
 
-                JsonSerializer serializer = new();
+                JsonSerializer serializer = new()
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                };
                 serializer.Serialize(textWriter, source);
 
                 jsonString = stringWriter.GetStringBuilder().ToString();
@@ -278,7 +281,7 @@ namespace SBSSData.Softball.Common
         }
 
         /// <summary>
-        /// Deserializes and object from the contents of a specified file path.
+        /// Deserializes an object from the contents of a specified file path.
         /// </summary>
         /// <typeparam name="T">The file path from which a JSON is read and used to deserialize and object of type <typeparamref name="T"/>
         /// </typeparam>
@@ -292,7 +295,12 @@ namespace SBSSData.Softball.Common
             if (File.Exists(sourceFilePath))
             {
                 string json = File.ReadAllText(sourceFilePath);
-                deserializedObject = JsonConvert.DeserializeObject<T>(json);
+
+                JsonSerializerSettings settings = new()
+                {
+                    TypeNameHandling = TypeNameHandling.Auto,
+                };
+                deserializedObject = JsonConvert.DeserializeObject<T>(json, settings);
             }
 
             return deserializedObject;

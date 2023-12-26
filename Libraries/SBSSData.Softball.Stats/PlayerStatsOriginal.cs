@@ -3,59 +3,61 @@
 namespace SBSSData.Softball.Stats
 {
     /// <summary>
-    /// Inherits a <see cref="Player"/> class and includes additional properties, for example, calculated
+    /// Encapsulates a <see cref="Player"/> instance and includes additional properties, for example, calculated
     /// stats.
     /// </summary>
     /// <remarks>
-    /// Using inheritance allows this class to include all the properties of the base class. This class is used to encapsulate
-    /// the data for a single player and single game, or a single player from multiple games (summary player data, 
-    /// <see cref="TeamStats"/>), 
-    /// or multiple players for a single game (game data, <see cref="GameTeamStats"/>), or even multiple players for multiple games 
-    /// (team data, <see cref="TeamSummaryStats"/>).
+    /// Because all the addition properties are calculated from the <c>Player</c> instance, those properties are not
+    /// serialized.
     /// </remarks>
-    public class PlayerStats : Player
+    public sealed class PlayerStats
     {
         /// <summary>
-        /// Creates a instance using the data from the <paramref name="player"/> parameter, that is the 
-        /// base object.
+        /// Creates a new empty instance where the contained <see cref="Player"/> is an "empty" instance.
         /// </summary>
-        /// <param name="player">A non-null <see cref="Player"/> instance.</param>
-        /// <param name="numGames">The number of games that the data of this instance is recovered. This parameter is
-        /// optional and default value is 1. This is always the case if the data is for a single player and single game (this is,
-        /// not summary data).</param>
-        /// <remarks>
-        /// If <paramref name="player"/> is <c>null</c> or the <see cref="Player.Empty"/> instance, an
-        /// "empty" (all properties have default values) instance is created.
-        /// </remarks>
-        public PlayerStats(Player player, int numGames = 1) : base(player)
+        private PlayerStats()
         {
-            NumGames = numGames;
+            // This just suppresses the warning that the property must be initialized.
+            Player = Player.ConstructPlayer(Enumerable.Empty<PlayerLabelValue>());
         }
 
-        [JsonIgnore]
-        public int NumGames
+        /// <summary>
+        /// Creates a instance using the data from the <paramref name="player"/> parameter.
+        /// </summary>
+        /// <param name="player">A non-null <see cref="Player"/> instance.</param>
+        /// <exception cref="ArgumentNullException">if <paramref name="player"/> is <c>null</c></exception>
+        public PlayerStats(Player player) : this()
+        {
+            Player = player ?? throw new ArgumentNullException(nameof(player));
+        }
+
+        /// <summary>
+        /// Gets and initializes the contained <see cref="Player"/> property used to produce the addition properties.
+        /// </summary>
+        public Player Player
         {
             get;
-            set;
+            init;
         }
+
         /// <summary>
         /// Gets the first name of the <see cref="Player.Name"/> property. The <c>Player</c> name is of the form 
-        /// "[last name],[first-name]". If the first name is not specified, the empty string is returned.
+        /// "[lastname],[firstname]". If the first name is not specified, the empty string is returned.
         /// </summary>
         [JsonIgnore]
-        public string FirstName => (Name.Split(',').Length == 2) ? Name.Split(',')[1].Trim() : string.Empty;
+        public string FirstName => (Player.Name.Split(',').Length == 2) ? Player.Name.Split(',')[1].Trim() : string.Empty;
 
         /// <summary>
         /// Gets the last name of the <see cref="Player.Name"/> property. The <c>Player</c> name is of the form 
-        /// "[last-name],[first-name]". If the last name is not specified, "Unknown" is returned.
+        /// "[lastname],[firstname]". If the last name is not specified, "Unknown" is returned.
         /// </summary>
         [JsonIgnore]
-        public string LastName => Name.Split(',')[0].Trim();
+        public string LastName => Player.Name.Split(',')[0].Trim();
 
         /// <summary>
         /// Gets the display using the <see cref="FirstName"/> and <see cref="LastName"/> properties. The <c>Player</c> name is of the form 
-        /// "[last-name],[first-name]". If the last name is not specified, "Unknown" is returned; otherwise a string of the
-        /// format "[first-name] [last-name]" is returned.
+        /// "[lastname],[firstname]". If the last name is not specified, "Unknown" is returned; otherwise a string of the
+        /// format "[firstname] [lastname]" is returned.
         /// </summary>
         [JsonIgnore]
         public string DisplayName => (string.IsNullOrEmpty(LastName) ? FirstName : $"{FirstName} {LastName}").Trim();
@@ -67,7 +69,7 @@ namespace SBSSData.Softball.Stats
         /// </code>
         /// </summary>
         [JsonIgnore]
-        public int TotalHits => Singles + Doubles + Triples + HomeRuns;
+        public int TotalHits => Player.Singles + Player.Doubles + Player.Triples + Player.HomeRuns;
 
         /// <summary>
         /// Returns the calculated number of total bases for the player, that is
@@ -76,7 +78,7 @@ namespace SBSSData.Softball.Stats
         /// </code>
         /// </summary>
         [JsonIgnore]
-        public int TotalBases => Singles + (2 * Doubles) + (3 * Triples) + (4 * HomeRuns);
+        public int TotalBases => Player.Singles + (2 * Player.Doubles) + (3 * Player.Triples) + (4 * Player.HomeRuns);
 
         /// <summary>
         /// Returns the calculated batting average for the player, that is
@@ -92,7 +94,7 @@ namespace SBSSData.Softball.Stats
         {
             get
             {
-                double ave = Math.Round((double)TotalHits / (double)AtBats, 3);
+                double ave = Math.Round((double)TotalHits / (double)Player.AtBats, 3);
                 return double.IsNaN(ave) ? 0 : ave;
             }
         }
@@ -111,7 +113,7 @@ namespace SBSSData.Softball.Stats
         {
             get
             {
-                double slugging = Math.Round((double)TotalBases / (double)AtBats, 3);
+                double slugging = Math.Round((double)TotalBases / (double)Player.AtBats, 3);
                 return double.IsNaN(slugging) ? 0 : slugging;
             }
         }
@@ -130,7 +132,7 @@ namespace SBSSData.Softball.Stats
         {
             get
             {
-                double onBase = Math.Round((double)(TotalHits + BasesOnBalls) / (double)(AtBats + BasesOnBalls + SacrificeFlies), 3);
+                double onBase = Math.Round((double)(TotalHits + Player.BasesOnBalls) / (double)(Player.AtBats + Player.BasesOnBalls + Player.SacrificeFlies), 3);
                 return double.IsNaN(onBase) ? 0 : onBase;
             }
         }
@@ -143,6 +145,6 @@ namespace SBSSData.Softball.Stats
         /// </summary>
         [JsonIgnore]
         public double OnBasePlusSlugging => Math.Round(OnBase + Slugging, 3);
-
     }
 }
+
