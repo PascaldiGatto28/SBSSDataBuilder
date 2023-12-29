@@ -7,11 +7,6 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="PlayerDataSummary.cs" />
-    <Compile Remove="PlayerStatsDisplay.cs" />
-    <Compile Remove="PlayerStatsOriginal.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

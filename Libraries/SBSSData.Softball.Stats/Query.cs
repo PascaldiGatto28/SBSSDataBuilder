@@ -86,36 +86,38 @@ namespace SBSSData.Softball.Stats
                                                                .ThenByDescending(p => p.Player.AtBats)
                                                                .ThenBy(p => p.Player.Name)
                                                                .Select(p => p.Player);
-            PlayerStats summaryStats = new PlayerStats(GetSummaryData(leaguePlayers, summaryName));
-            summaryStats.NumGames = numGames;
+            PlayerStats summaryStats = new(GetSummaryData(leaguePlayers, summaryName))
+            {
+                NumGames = numGames
+            };
             leaguePlayers = leaguePlayers.Append(summaryStats);
             return leaguePlayers;
         }
 
         public static Player GetSummaryData(IEnumerable<Player> playerData, string summaryName = "")
         {
-            Player player = new Player();
+            Player player = Player.Empty;
             if ((playerData != null) && playerData.Any())
             {
                 string nameText = !string.IsNullOrEmpty(summaryName) ? summaryName : playerData.First().Name;
                 player = Player.ConstructPlayer(new List<PlayerLabelValue> { new("Player", nameText) });
-                player = SumIntProperties<Player>(playerData, player);
+                player = playerData.SumIntProperties<Player>(player);
             }
 
             return player;
         }
 
-        public static T SumIntProperties<T>(IEnumerable<T> data, T instance)
-        {
-            IEnumerable<PropertyInfo> properties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                            .Where(p => p.PropertyType == typeof(int));
-            foreach (PropertyInfo property in properties)
-            {
-                property.SetValue(instance, data.Select(p => (int)property.GetValue(p)).ToList().Sum());
-            }
+        //public static T SumIntProperties<T>(IEnumerable<T> data, T instance)
+        //{
+        //    IEnumerable<PropertyInfo> properties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public)
+        //                                                    .Where(p => p.PropertyType == typeof(int));
+        //    foreach (PropertyInfo property in properties)
+        //    {
+        //        property.SetValue(instance, data.Select(p => (int)property.GetValue(p)).ToList().Sum());
+        //    }
 
-            return instance;
-        }
+        //    return instance;
+        //}
 
 
         //public IEnumerable<LeagueSchedule> GetLeagueSchedules(LeagueDescription? leagueDescription = null)
@@ -222,22 +224,23 @@ namespace SBSSData.Softball.Stats
             {
                 string category = description.LeagueCategory;
                 string day = description.LeagueDay;
-                if (!validLeagues.ContainsKey(category))
+                if (!validLeagues.TryGetValue(category, out List<string>? value))
                 {
-                    validLeagues.Add(category, new List<string>());
+                    value = new List<string>();
+                    validLeagues.Add(category, value);
                 }
 
-                List<string> days = validLeagues[category];
+                List<string> days = value;
                 if (!days.Contains(day))
                 {
-                    validLeagues[category].Add(day);
+                    value.Add(day);
                 }
             }
 
             return validLeagues;
         }
 
-        public IEnumerable<LeagueSchedule> GetSchedules(IEnumerable<LeagueSchedule> schedules, string propertyName, string propertyValue)
+        public static IEnumerable<LeagueSchedule> GetSchedules(IEnumerable<LeagueSchedule> schedules, string propertyName, string propertyValue)
         {
             IEnumerable<LeagueSchedule> newSchedules = schedules ?? Enumerable.Empty<LeagueSchedule>();
             if ((schedules != null) && schedules.Any() && !string.IsNullOrEmpty(propertyName))

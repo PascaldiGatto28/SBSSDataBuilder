@@ -45,7 +45,7 @@
         /// Although the property just access the <see cref="GameTeamStats.PlayersStats"/> property for each team, using a property
         /// allows serialization of the instance to contain the information.
         /// </remarks>
-        public IEnumerable<PlayerStats> PlayersStats => GetPlayersStats();
+        //public IEnumerable<PlayerStats> PlayersStats => GetPlayersStats();
 
         /// <summary>
         /// Returns a sequence of <see cref="PlayerStats"/>, an element for each <see cref="Team"/> which the 
@@ -55,16 +55,16 @@
         /// sequence is returned; <c>null</c> is never returned.</returns>
         /// 
         /// TODO: Fix this.
-        private IEnumerable<PlayerStats> GetPlayersStats()
-        {
-            List<PlayerStats> stats = new();
-            foreach (Team team in Game.Teams)
-            {
-                //stats.Add((new TeamPlayerStats(team)).Players);
-            }
+        //private IEnumerable<PlayerStats> GetPlayersStats()
+        //{
+        //    List<PlayerStats> stats = new();
+        //    //foreach (Team team in Game.Teams)
+        //    //{
+        //    //    //stats.Add((new TeamPlayerStats(team)).Players);
+        //    //}
 
-            return stats;
-        }
+        //    return stats;
+        //}
 
     }
 }

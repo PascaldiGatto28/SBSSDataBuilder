@@ -16,8 +16,7 @@ namespace SBSSData.Softball.Stats
         }
 
         /// <summary>
-        /// Creates a instance using the data from the <paramref name="Team"/> parameter, that is the 
-        /// base object.
+        /// Creates a instance using the data from the <paramref name="team"/> parameter.
         /// </summary>
         /// <param name="team">A non-null <see cref="Team"/> instance.</param>
         /// <remarks>

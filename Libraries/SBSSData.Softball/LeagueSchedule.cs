@@ -31,6 +31,7 @@ namespace SBSSData.Softball
             //LeagueDescription = new();
             ScheduledGames = Enumerable.Empty<ScheduledGame>();
             IsEmpty = true;
+            LeagueDescription = LeagueDescription.Empty();
         }
 
         /// <summary>
@@ -46,7 +47,6 @@ namespace SBSSData.Softball
             init;
         }
 
-
         /// <summary>
         /// Gets or initializes the <c>LeagueDescription</c> property.
         /// </summary>
@@ -54,7 +54,7 @@ namespace SBSSData.Softball
         /// The default constructor initializes the value to the default instance, but then its <c>LeagueDescription</c>
         /// properties are initialized by the <see cref="ConstructLeagueSchedule(string)"/> method.
         /// </remarks>
-        public LeagueDescription? LeagueDescription
+        public LeagueDescription LeagueDescription
         {
             get;
             init;

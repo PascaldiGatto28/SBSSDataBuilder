@@ -300,6 +300,7 @@ namespace SBSSData.Softball.Common
                 {
                     TypeNameHandling = TypeNameHandling.Auto,
                 };
+
                 deserializedObject = JsonConvert.DeserializeObject<T>(json, settings);
             }
 

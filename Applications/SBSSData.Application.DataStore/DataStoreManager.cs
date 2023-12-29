@@ -88,7 +88,6 @@ namespace SBSSData.Application.DataStore
             int updated = 0;
 
             // Scheduled games are never null because all exist when the data store is created.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             foreach (ScheduledGame scheduledGame in scheduledGames.Where(s => !s.IsComplete))
             {
                 // A completed game is never null
@@ -115,7 +114,7 @@ namespace SBSSData.Application.DataStore
                         scheduledGame.HomeScore = 0;
                         log.WriteLine($"Marked as canceled!");
                     }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
                     updated++;
                 }
             }

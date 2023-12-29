@@ -1,7 +1,7 @@
 {
-    "DataStoreFolder": "D:\\Temp\\Junk\\",
-    "DataStoreFileName": "LeaguesData.json",
+    "DataStoreFolder": "J:\\SBSSDataStore\\",
+    "DataStoreFileName": "2024WinterLeaguesData.json",
     "LogFileName": "DataStoreManager.log",
     "LogSessionFileName": "DataStoreManager.json",
-    "BuildOption":  "Build" // Build a new instance; Update to update
+    "BuildOption": "Build" // Build a new instance; Update to update
 }

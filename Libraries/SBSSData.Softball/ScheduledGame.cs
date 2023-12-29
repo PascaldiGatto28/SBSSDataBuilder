@@ -2,9 +2,9 @@
 
 using HtmlAgilityPack;
 
-using SBSSData.Softball.Common;
-
 using Newtonsoft.Json;
+
+using SBSSData.Softball.Common;
 
 namespace SBSSData.Softball
 {
@@ -22,7 +22,7 @@ namespace SBSSData.Softball
             Date = DateTime.MaxValue;
             VisitingTeamName = string.Empty;
             HomeTeamName = string.Empty;
-            //GameResults = new();
+            GameResults = Game.Empty;
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace SBSSData.Softball
         /// <see cref="Game.GameInformation"/> property and which never changes. For a scheduled that hasn't completed 
         /// the <see cref="Game.Teams"/> property is left "empty" until the game is completed at which it is updated.
         /// </remarks>
-        public Game? GameResults
+        public Game GameResults
         {
             get;
             set;

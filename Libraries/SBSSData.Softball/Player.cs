@@ -15,9 +15,9 @@ namespace SBSSData.Softball
         /// </summary>
         /// <remarks>
         /// Because all the properties of "init" setters, the <see cref="Player.ConstructPlayer"/>
-        /// static method is really (short of reflection) was to create an new instance.
+        /// static method is really (short of reflection) way to create and populated a new instance.
         /// </remarks>
-        public Player()
+        private Player()
         {
             Name = "Unknown";
         }

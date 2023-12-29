@@ -1,4 +1,6 @@
-﻿namespace SBSSData.Softball.Stats
+﻿using Utility = SBSSData.Softball.Stats.StatsUtilities;
+
+namespace SBSSData.Softball.Stats
 {
     public class TeamSummaryStats : Team
     {
@@ -10,7 +12,7 @@
         {
             NumGames = teams.Count();
             Name = teams.First().Name;
-            Query.SumIntProperties<Team>(teams, this);
+            Utility.SumIntProperties<Team>(teams, this);
 
             NumWins = teams.Where(t => t.Outcome == "Win").Count();
             Outcome = $"{NumWins} wins and {NumLosses} losses";
@@ -22,13 +24,13 @@
             foreach (IGrouping<string, Player> playerGroup in playerGroups)
             {
                 Player player = Player.ConstructPlayer(new List<PlayerLabelValue> { new("Player", playerGroup.Key) });
-                Query.SumIntProperties<Player>(playerGroup.ToList(), player);
-                playerList.Add(new PlayerStats(player, playerGroup.ToList().Count()));
+                playerGroup.ToList().SumIntProperties<Player>(player);
+                playerList.Add(new PlayerStats(player, playerGroup.ToList().Count));
             }
 
             playerList = playerList.Cast<PlayerStats>().OrderByDescending(p => p.NumGames).Cast<Player>().ToList();
             Player summary = Player.ConstructPlayer(new List<PlayerLabelValue> { new("Player", Name) });
-            Query.SumIntProperties<Player>(playerList, summary);
+            playerList.SumIntProperties<Player>(summary);
 
             playerList.Add(new PlayerStats(summary, NumGames));
             Players = playerList;

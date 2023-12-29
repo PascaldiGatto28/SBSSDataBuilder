@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Common", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCreateFullDataStore", "Applications\TestCreateFullDataStore\TestCreateFullDataStore.csproj", "{DF2AB2BF-8D91-4CEC-9675-AB39F576212B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.DataStore", "Applications\SBSSData.Application.DataStore\SBSSData.Application.DataStore.csproj", "{A5C839AF-8801-4287-BD05-783576D9EBC6}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3B88A07C-B55F-479A-8E70-E192B2332121}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -23,6 +21,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Logging", "Libraries\SBSSData.Softball.Logging\SBSSData.Softball.Logging.csproj", "{3F424CFB-59D7-45C2-B8F3-A03A33FCC0B7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Stats", "Libraries\SBSSData.Softball.Stats\SBSSData.Softball.Stats.csproj", "{7E67B83F-F28D-42DC-9166-E5EDFAD6A9C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.DataStore", "Applications\SBSSData.Application.DataStore\SBSSData.Application.DataStore.csproj", "{DDC92FC1-4850-4777-A50E-E77C8ADE4CF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,10 +40,6 @@ Global
 		{8BC40FF6-5553-470A-9282-953835FC062A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF2AB2BF-8D91-4CEC-9675-AB39F576212B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF2AB2BF-8D91-4CEC-9675-AB39F576212B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5C839AF-8801-4287-BD05-783576D9EBC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5C839AF-8801-4287-BD05-783576D9EBC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5C839AF-8801-4287-BD05-783576D9EBC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5C839AF-8801-4287-BD05-783576D9EBC6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3F424CFB-59D7-45C2-B8F3-A03A33FCC0B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F424CFB-59D7-45C2-B8F3-A03A33FCC0B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F424CFB-59D7-45C2-B8F3-A03A33FCC0B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,6 +48,10 @@ Global
 		{7E67B83F-F28D-42DC-9166-E5EDFAD6A9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E67B83F-F28D-42DC-9166-E5EDFAD6A9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E67B83F-F28D-42DC-9166-E5EDFAD6A9C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDC92FC1-4850-4777-A50E-E77C8ADE4CF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDC92FC1-4850-4777-A50E-E77C8ADE4CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDC92FC1-4850-4777-A50E-E77C8ADE4CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDC92FC1-4850-4777-A50E-E77C8ADE4CF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,9 +60,9 @@ Global
 		{BEE8BA65-C446-4DCC-ABAB-5432A6AF8606} = {E43FBD7A-0EA0-4CAB-8649-7FC478BAE67B}
 		{8BC40FF6-5553-470A-9282-953835FC062A} = {E43FBD7A-0EA0-4CAB-8649-7FC478BAE67B}
 		{DF2AB2BF-8D91-4CEC-9675-AB39F576212B} = {54E165F3-50B2-434D-9701-BCF9307790F2}
-		{A5C839AF-8801-4287-BD05-783576D9EBC6} = {54E165F3-50B2-434D-9701-BCF9307790F2}
 		{3F424CFB-59D7-45C2-B8F3-A03A33FCC0B7} = {E43FBD7A-0EA0-4CAB-8649-7FC478BAE67B}
 		{7E67B83F-F28D-42DC-9166-E5EDFAD6A9C6} = {E43FBD7A-0EA0-4CAB-8649-7FC478BAE67B}
+		{DDC92FC1-4850-4777-A50E-E77C8ADE4CF7} = {54E165F3-50B2-434D-9701-BCF9307790F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90CD84B2-8201-4202-9D03-099CF3076382}
