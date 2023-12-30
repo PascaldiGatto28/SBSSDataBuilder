@@ -1,4 +1,6 @@
-﻿using SBSSData.Softball.Common;
+﻿using Newtonsoft.Json;
+
+using SBSSData.Softball.Common;
 using SBSSData.Softball.Logging;
 
 namespace SBSSData.Application.DataStore
@@ -70,7 +72,7 @@ namespace SBSSData.Application.DataStore
             IEnumerable<LogSession> sessions = Log.ReadLog(logFilePath);
             string logSessionsFilePath = logFilePath.Replace(".log", ".json", StringComparison.Ordinal);
             IEnumerable<LogSession>? loggedSessions = File.Exists(logSessionsFilePath) ?
-                                                     logSessionsFilePath.Deserialize<IEnumerable<LogSession>>() :
+                                                     JsonConvert.DeserializeObject<IEnumerable<LogSession>>(File.ReadAllText(logSessionsFilePath)) :
                                                      Enumerable.Empty<LogSession>();
 
             if ((loggedSessions != null) && loggedSessions.Any())
@@ -78,7 +80,9 @@ namespace SBSSData.Application.DataStore
                 sessions.ToList().AddRange(loggedSessions);
             }
 
-            sessions.Serialize(logSessionsFilePath);
+            //sessions.Serialize(logSessionsFilePath);
+            string json = JsonConvert.SerializeObject(sessions).FormatJsonString();
+            File.WriteAllText(logSessionsFilePath, json);
         }
     }
 }

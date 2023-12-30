@@ -1,5 +1,4 @@
-﻿// Ignore Spelling: dest
-
+﻿
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -158,10 +157,10 @@ namespace SBSSData.Softball.Common
         /// </returns>
         public static IEnumerable<string> NameToWords(this string content)
         {
-            List<string> words = new();
+            List<string> words = [];
             if (!string.IsNullOrWhiteSpace(content))
             {
-                List<char> wordChars = new();
+                List<char> wordChars = [];
                 char prevChar = ' ';
                 for (int i = 0; i < content.Length; i++)
                 {
@@ -175,7 +174,7 @@ namespace SBSSData.Softball.Common
                         if (char.IsUpper(c) && !char.IsUpper(prevChar))
                         {
                             words.Add(new string(wordChars.ToArray()));
-                            wordChars = new List<char>();
+                            wordChars = [];
                         }
 
                         wordChars.Add(c);
@@ -206,13 +205,19 @@ namespace SBSSData.Softball.Common
         /// or empty.</returns>
         public static string NameToTitle(this string name)
         {
-            List<string> lowerCase = new()
-            {
-                "Of", "Off", "A", "An", "To", "From", "The"
-            };
+            List<string> lowerCase =
+            [
+                "Of",
+                "Off",
+                "A",
+                "An",
+                "To",
+                "From",
+                "The"
+            ];
 
             List<string> words = (name.NameToWords()).ToList();
-            List<string> titleWords = new() { words.First() };
+            List<string> titleWords = [words.First()];
 
             foreach (string word in words.Skip(1))
             {
@@ -308,7 +313,7 @@ namespace SBSSData.Softball.Common
         }
 
         /// <summary>
-        /// Serializes the object as JSON text to the file who path <paramref name="destFilePath"/> is specified. T
+        /// Serializes the object as JSON text to the file who path <paramref name="filePath"/> is specified. T
         /// </summary>
         /// <remarks>
         /// The object is serialized to a JSON string using the <see cref="ToJsonString(object)"/> and then written to
@@ -316,27 +321,27 @@ namespace SBSSData.Softball.Common
         /// </remarks>
         /// <typeparam name="T">The type of the file</typeparam>
         /// <param name="source">An instance of the <typeparamref name="T"/> type</param>
-        /// <param name="destFilePath">
+        /// <param name="filePath">
         /// The full path of the file where the JSON string is written. This should be a full path, and if the directory
         /// portion of the path does not exist, it is created. If the file already exists, it is overwritten.
         /// </param>
         /// <returns>
         /// The number of characters written to the file. If <paramref name="source"/> is <c>null</c> or 
-        /// <paramref name="destFilePath"/> is <c>null</c> or empty, the file is not created and -1 is returned.
+        /// <paramref name="filePath"/> is <c>null</c> or empty, the file is not created and -1 is returned.
         /// </returns>
-        public static int Serialize<T>(this T source, string destFilePath)
+        public static int Serialize<T>(this T source, string filePath)
         {
             int length = -1;
-            if ((source != null) && !string.IsNullOrEmpty(destFilePath))
+            if ((source != null) && !string.IsNullOrEmpty(filePath))
             {
-                string directory = Path.GetDirectoryName(destFilePath) ?? string.Empty;
+                string directory = Path.GetDirectoryName(filePath) ?? string.Empty;
                 if (!string.IsNullOrEmpty(directory))
                 {
                     Directory.CreateDirectory(directory);
                 }
 
                 string json = source.ToJsonString();
-                File.WriteAllText(destFilePath, json);
+                File.WriteAllText(filePath, json);
                 length = json.Length;
             }
 
@@ -355,7 +360,7 @@ namespace SBSSData.Softball.Common
         public static string FormatJsonString(this string source)
         {
             string jsonText = string.Empty;
-            if (string.IsNullOrEmpty(source))
+            if (!string.IsNullOrEmpty(source))
             {
                 jsonText = JToken.Parse(source).ToJsonString();
             }
@@ -558,7 +563,7 @@ namespace SBSSData.Softball.Common
         /// or empty, or the resource cannot be found.</returns>
         public static byte[] GetEmbeddedResourceAsBytes(this Assembly assembly, string formattedResourceName)
         {
-            byte[] content = Array.Empty<byte>();
+            byte[] content = [];
             if ((assembly != null) && !string.IsNullOrEmpty(formattedResourceName))
             {
                 using Stream? resourceStream = assembly.GetManifestResourceStream(formattedResourceName);
