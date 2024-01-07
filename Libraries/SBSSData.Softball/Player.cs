@@ -26,7 +26,7 @@ namespace SBSSData.Softball
         /// Creates a copy of the specified instance (that is, a copy constructor).
         /// </summary>
         /// <param name="player">The existing <see cref="Player"/> whose property values are used to
-        /// produce a new instance having all the same properties.</param>
+        /// produce a new instance having all the same property values.</param>
         public Player(Player player) : this()
         {
             if (player != null)
@@ -219,6 +219,22 @@ namespace SBSSData.Softball
         {
             get;
             init;
+        }
+
+        public override string ToString()
+        {
+            //StringBuilder sb = new();
+            //sb.Append($"{Name}:")
+            //.Append($"AB:{AtBats};")
+            //.Append($"R:{Runs};")
+            //.Append($"1B:{Singles};")
+            //.Append($"2B:{Doubles};")
+            //.Append($"3B:{Triples};")
+            //.Append($"HR:{HomeRuns};")
+            //.Append($"BB:{BasesOnBalls};")
+            //.Append($"SF:{SacrificeFlies}");
+
+            return Name;
         }
     }
 }

@@ -179,7 +179,6 @@ namespace SBSSData.Softball.Logging
             init;
         }
 
-
         /// <summary>
         /// Get and sets the value that determines whether the log message is displayed on the console as well as written
         /// to the log file.

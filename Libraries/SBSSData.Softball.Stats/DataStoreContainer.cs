@@ -21,6 +21,27 @@ namespace SBSSData.Softball.Stats
         private static DataStoreContainer? instance = null;
 
         /// <summary>
+        /// Returns an instance with <see cref="DataStore"/> and <see cref="DataStorePath"/> set to <see cref="LeaguesData.Empty"/>
+        /// and <see cref="String.Empty"/> respectively.
+        /// </summary>
+        private DataStoreContainer()
+        {
+            DataStore = LeaguesData.Empty;
+            DataStorePath = string.Empty;
+        }
+
+        /// <summary>
+        /// Returns an empty instance, that is one whose properties are the default values.
+        /// </summary>
+        /// <remarks>
+        /// This is only valuable when needing to initialize a <see cref="DataStoreContainer"/> to a non-null value, for 
+        /// example when it is used as a property. 
+        /// </remarks>
+        /// <seealso cref="Query"/>
+        public static DataStoreContainer Empty => new();
+
+
+        /// <summary>
         /// The private constructor call by the <see cref="instance"/> method that creates the object.
         /// </summary>
         /// <param name="path">A fully qualified path to a JSON serialization of the <see cref="LeaguesData"/> object. The

@@ -15,7 +15,7 @@
     /// </para>
     /// </remarks>
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class NamespaceDoc
+    internal static class NamespaceDoc
     {
     }
 }

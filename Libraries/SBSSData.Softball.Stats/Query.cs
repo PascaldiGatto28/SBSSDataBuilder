@@ -11,24 +11,23 @@ namespace SBSSData.Softball.Stats
     {
         //public readonly Dictionary<string, List<string>> ValidLeagues = new();
 
-        public Query()
+        private Query()
         {
-            DataStore = LeaguesData.Empty;
+            Container = DataStoreContainer.Empty;
         }
 
-        public Query(string dsPath)
+        public Query(DataStoreContainer dsContainer)
         {
-            DataStore = DataStoreContainer.Instance(dsPath).DataStore;
-
-
+            Container = dsContainer ?? DataStoreContainer.Empty;
         }
 
-        public LeaguesData DataStore
+        public DataStoreContainer Container
         {
             get;
-            init;
+            set;
         }
 
+        public LeaguesData DataStore => Container.DataStore;
 
 
         public IEnumerable<LeagueDescription> LeagueDescriptions => DataStore.LeagueSchedules.Select(s => s.LeagueDescription);
@@ -219,14 +218,14 @@ namespace SBSSData.Softball.Stats
         // TODO: This should be static and only executed once.
         public Dictionary<string, List<string>> ValidLeagueDescriptions()
         {
-            Dictionary<string, List<string>> validLeagues = new();
+            Dictionary<string, List<string>> validLeagues = [];
             foreach (LeagueDescription description in LeagueDescriptions)
             {
                 string category = description.LeagueCategory;
                 string day = description.LeagueDay;
                 if (!validLeagues.TryGetValue(category, out List<string>? value))
                 {
-                    value = new List<string>();
+                    value = [];
                     validLeagues.Add(category, value);
                 }
 

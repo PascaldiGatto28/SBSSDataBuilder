@@ -4,20 +4,17 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Documentation\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.57" />
+    <PackageReference Include="LINQPad.Runtime" Version="7.8.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SBSSData.Softball.Common\SBSSData.Softball.Common.csproj" />
+    <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Common\SBSSData.Softball.Common.csproj" />
+    <ProjectReference Include="..\..\Libraries\SBSSData.Softball\SBSSData.Softball.csproj" />
   </ItemGroup>
 
 </Project>

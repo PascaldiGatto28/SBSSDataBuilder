@@ -10,7 +10,7 @@
     /// <seealso cref="SBSSData.Softball.Logging"/>
     /// <seealso cref="SBSSData.Softball.Common"/>
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class NamespaceDoc
+    internal static class NamespaceDoc
     {
     }
 }

@@ -144,5 +144,10 @@ namespace SBSSData.Softball.Stats
         [JsonIgnore]
         public double OnBasePlusSlugging => Math.Round(OnBase + Slugging, 3);
 
+        public override string ToString()
+        {
+            return DisplayName;
+        }
+
     }
 }

@@ -56,6 +56,7 @@ namespace SBSSData.Application.DataStore
                 {
                     log.WriteLine("Completed.");
                     log.Stop();
+                    log.Close();
                 }
             }
             catch (InvalidOperationException exception)
