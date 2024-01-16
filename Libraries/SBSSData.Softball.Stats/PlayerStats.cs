@@ -144,6 +144,10 @@ namespace SBSSData.Softball.Stats
         [JsonIgnore]
         public double OnBasePlusSlugging => Math.Round(OnBase + Slugging, 3);
 
+        /// <summary>
+        /// Overrides the default to provide an identifying string for this instance.
+        /// </summary>
+        /// <returns>The value of the <see cref="DisplayName"/> property</returns>
         public override string ToString()
         {
             return DisplayName;

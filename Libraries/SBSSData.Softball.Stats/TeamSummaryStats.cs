@@ -56,5 +56,6 @@ namespace SBSSData.Softball.Stats
         }
 
         public int NumLosses => NumGames - NumWins;
+
     }
 }

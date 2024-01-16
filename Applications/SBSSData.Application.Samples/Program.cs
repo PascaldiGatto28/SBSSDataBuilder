@@ -11,24 +11,24 @@ namespace SBSSData.Application.Samples
             string htmlOutput = @"D:\Users\Richard\AppData\Local\SBSSData-Application-Samples\HtmlOutput";
             string dataStorePath = @"TestData\LeaguesData.json";
             DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath);
-
             Console.WriteLine(dsContainer.ToString());
-            Query queries = new(dsContainer);
 
-            //CheckQueryResults queries = new CheckQueryResults(dataStorePath);
+            Query query = new(dsContainer);
+
+            //CheckQueryResults query = new CheckQueryResults(dataStorePath);
 
 
             using (HtmlGenerator generator = new(htmlOutput))
             {
                 //generator.Write(dsContainer.DataStore);
 
-                //LeagueDescription ld = queries.LeagueDescriptions.First();
+                //LeagueDescription ld = query.LeagueDescriptions.First();
                 //generator.Write(ld);
                 //var ldResults = CheckQueryResults<LeagueDescription>.CheckResults(ld);
                 //generator.Write(ldResults);
                 //Console.WriteLine(ldResults.ToString());
 
-                //Player player = queries.Players.First();
+                //Player player = query.Players.First();
                 //generator.Write(player);
                 //var playerResults = CheckQueryResults<Player>.CheckResults(player);
                 //generator.Write(playerResults);
@@ -43,21 +43,21 @@ namespace SBSSData.Application.Samples
                 //generator.Write(statsResults);
                 //Console.WriteLine(statsResults.ToString());
 
-                //Game game = queries.PlayedGames.First();
+                //Game game = query.PlayedGames.First();
                 //generator.Write(game);
                 //var gameResults = CheckQueryResults<Game>.CheckResults(game);
                 //generator.Write(gameResults);
                 //Console.WriteLine(gameResults.ToString());
 
 
-                var reportLeaguePlayers = ReportLeaguePlayers(queries, "Community", "Friday", generator);
-                IEnumerable<Player> players = queries.GetLeaguePlayersSummary("Community", "Friday");
-                generator.Write(players);
+                var reportLeaguePlayers = ReportLeaguePlayers(query, "Community", "Friday", generator);
+                IEnumerable<Player> players = query.GetLeaguePlayersSummary("Community", "Friday");
+                generator.Write(players, header: "List of player stats and summary for Friday Community Fall 2023");
 
                 //generator.DumpHtml("TestResults.html");
-                generator.DumpHtml("TestResults.html",
-                                   new string[] { "A Summary of all Friday Community players", "Testing \"Summary of all Friday Community players\"" },
-                                   new string[] { "Stats for players", "Test Results" });
+                generator.DumpHtml("TestResults.html");
+                //new string[] { "A Summary of all Friday Community players", "Testing \"Summary of all Friday Community players\"" },
+                //new string[] { "Stats for players", "Test Results" });
 
             }
 
@@ -66,11 +66,20 @@ namespace SBSSData.Application.Samples
 
         public static CheckQueryResults<IEnumerable<Player>> ReportLeaguePlayers(Query queries, string leagueCategory, string day, HtmlGenerator generator)
         {
-            IEnumerable<Player> players = queries.LeaguePlayers(leagueCategory, day);
-            generator.Write(players);
+            IEnumerable<Player> players = queries.GetLeaguePlayers(leagueCategory, day);
+            string info = $"Player stats for {day} {leagueCategory} Fall 2023";
+            generator.Write(players, $"List of {info}");
             var leaguePlayers = CheckQueryResults<IEnumerable<Player>>.CheckResults(players);
-            generator.Write(leaguePlayers);
+            generator.Write(leaguePlayers, "Test Results", info);
             return leaguePlayers;
         }
+
+        //pubic static CheckQueryResults<Player> ReportPlayer(Query query, string playerName HtmlGenerator generator)
+        //{
+        //    Player player = query.Players.Wh
+        //    var playerResults = CheckQueryResults<Player>.CheckResults(player);
+        //    generator.Write(playerResults);
+        //    Console.WriteLine(playerResults.ToString());
+        //}
     }
 }

@@ -221,20 +221,13 @@ namespace SBSSData.Softball
             init;
         }
 
+        /// <summary>
+        /// Overrides the default method using the player's name
+        /// </summary>
+        /// <returns>Returns the display name, that is "Firstname" followed by "Lastname".</returns>
         public override string ToString()
         {
-            //StringBuilder sb = new();
-            //sb.Append($"{Name}:")
-            //.Append($"AB:{AtBats};")
-            //.Append($"R:{Runs};")
-            //.Append($"1B:{Singles};")
-            //.Append($"2B:{Doubles};")
-            //.Append($"3B:{Triples};")
-            //.Append($"HR:{HomeRuns};")
-            //.Append($"BB:{BasesOnBalls};")
-            //.Append($"SF:{SacrificeFlies}");
-
-            return Name;
+            return Name.BuildDisplayName();
         }
     }
 }

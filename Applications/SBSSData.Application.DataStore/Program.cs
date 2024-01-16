@@ -84,6 +84,9 @@ namespace SBSSData.Application.DataStore
             //sessions.Serialize(logSessionsFilePath);
             string json = JsonConvert.SerializeObject(sessions).FormatJsonString();
             File.WriteAllText(logSessionsFilePath, json);
+
+            //Console.Write("Press any key to quit ...");
+            //Console.ReadKey();
         }
     }
 }

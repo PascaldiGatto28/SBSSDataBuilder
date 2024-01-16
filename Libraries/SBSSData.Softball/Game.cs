@@ -116,7 +116,7 @@ namespace SBSSData.Softball
                                          throw new NullReferenceException("The HtmlDocument cannot be null when constructing a Game instance");
 
             GameInformation gameInformation = GameInformation.Empty;
-            List<Team> teams = new();
+            List<Team> teams = [];
             if (scheduledGame != null)
             {
                 if (!update)
@@ -180,7 +180,7 @@ namespace SBSSData.Softball
         /// </remarks>
         /// <returns><c>true</c> if the <c>Teams</c> property is neither <c>null</c> nor empty.</returns>
         [JsonIgnore]
-        public bool IsCompleted => (Teams != null) && Teams.Any();
+        public bool IsCompleted => (Teams != null) && (Teams.Count > 0);
 
         ///// <remarks>
         ///// <para>
@@ -202,10 +202,10 @@ namespace SBSSData.Softball
         /// <returns>Returns a list of <c>Team</c> objects. It may be empty, but never <c>null</c>.</returns>
         private static List<Team> ConstructTeams(HtmlDocument htmlDocument)
         {
-            List<HtmlNode> spSectionContentNodes = htmlDocument.DocumentNode.SelectSingleNode("//article/div").SelectNodes("div").ToList();
+            List<HtmlNode> spSectionContentNodes = [.. htmlDocument.DocumentNode.SelectSingleNode("//article/div").SelectNodes("div")];
 
             // Now each of the teams. The second section provide summary information about the team for this game.
-            List<Team> teams = new();
+            List<Team> teams = [];
             HtmlNode sectionContentResults = spSectionContentNodes.Where(n => n.HasClass("sp-section-content-results")).Single();
             if ((sectionContentResults != null) && sectionContentResults.HasChildNodes)
             {
@@ -253,7 +253,7 @@ namespace SBSSData.Softball
                 foreach (HtmlNode htmlNode in sectionContentPerformanceValues)
                 {
                     string teamName = htmlNode.Element("h4").InnerHtml.CleanNameText();
-                    List<Player> players = new();
+                    List<Player> players = [];
                     List<HtmlNode> rawTeamStats = htmlNode.SelectNodes("div/table/tbody/tr")
                                                           .Where(n => n.NodeType == HtmlNodeType.Element)
                                                           .ToList();

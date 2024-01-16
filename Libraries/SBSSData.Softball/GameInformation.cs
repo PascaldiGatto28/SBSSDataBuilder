@@ -25,7 +25,7 @@ namespace SBSSData.Softball
             Title = "Unknown";
             GameId = "Unknown";
             DataSource = null;
-            Date = DateTime.Now;
+            Date = DateTime.MinValue;
             LeagueCategory = "Unknown";
             LeagueDay = "Unknown";
             Season = "Unknown";
@@ -133,7 +133,7 @@ namespace SBSSData.Softball
             {
                 string lastSegment = dataSource.Segments.ToList().Last();
                 string id = lastSegment;
-                if (lastSegment.EndsWith("/"))
+                if (lastSegment.EndsWith('/'))
                 {
                     int length = lastSegment.Length - 1;
                     id = lastSegment[..length];
@@ -144,7 +144,7 @@ namespace SBSSData.Softball
 
             DateTime date = scheduledGame.Date;
 
-            List<HtmlNode> spSectionContentNodes = htmlDocument.DocumentNode.SelectSingleNode("//article/div").SelectNodes("div").ToList();
+            List<HtmlNode> spSectionContentNodes = [.. htmlDocument.DocumentNode.SelectSingleNode("//article/div").SelectNodes("div")];
             HtmlNode gameDetails = spSectionContentNodes.Where(n => n.HasClass("sp-section-content-details")).Single();
             List<string> details = gameDetails.SelectSingleNode("//tbody/tr").Elements("td").Select(n => n.InnerHtml).ToList();
             string[] league = details[2].Split(' ');

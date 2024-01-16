@@ -1,4 +1,6 @@
-﻿using SBSSData.Softball.Common;
+﻿using System.Reflection;
+
+using SBSSData.Softball.Common;
 
 namespace SBSSData.Application.DataStore
 {
@@ -49,12 +51,20 @@ namespace SBSSData.Application.DataStore
         /// the problem can be found in the inner exception.</exception>
         public static AppSettings Instance(string? path = null)
         {
-            string settingsLocation = string.IsNullOrEmpty(path) ? settingsPath : path;
+            // N.B. We need to get the full path because when running as a scheduled task, the directory is relative
+            // to the scheduler executable.
+            string defaultPath = @$"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\{settingsPath}";
+            string settingsLocation = string.IsNullOrEmpty(path) ? defaultPath : path;
             if (instance == null)
             {
                 try
                 {
-                    instance = settingsLocation.Deserialize<AppSettings>() ?? settingsPath.Deserialize<AppSettings>();
+                    instance = settingsLocation.Deserialize<AppSettings>() ?? defaultPath.Deserialize<AppSettings>();
+                    if (instance == null)
+                    {
+                        string message = $"{defaultPath} is the default path";
+                        throw new ArgumentNullException(message);
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -63,9 +73,7 @@ namespace SBSSData.Application.DataStore
                 }
             }
 
-#pragma warning disable CS8603 // Possible null reference return.
             return instance;
-#pragma warning restore CS8603 // Possible null reference return.
         }
 
 

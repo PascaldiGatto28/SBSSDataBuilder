@@ -83,6 +83,65 @@ namespace SBSSData.Softball.Common
             return Substring(content + "~", start, "~", includeStart, false);
         }
 
+        /// <summary>
+        /// Formats and returns the string using comma delimited or decimal values using KB and MB when appropriate.
+        /// </summary>
+        /// <param name="size">The source for this extension and is formatted based on parameter settings.</param>
+        /// <param name="simple">If true, of the value of <paramref name="size"/> is the string returned is comma delimited. If
+        /// not true, then the value is formatted using KB or MB which ever is more appropriate. This parameter is optional and
+        /// the default value is <c>false</c>.</param>
+        /// <param name="extend">If <c>true</c> and the format is not simple, then the text is extended beyond KB or MB values, 
+        /// with the comma delimited text. If <paramref name="simple"/>is <c>true</c> this value is ignored. It is optional and the
+        /// default value is <c>false</c>".
+        /// /param>
+        /// <returns>
+        /// The text for the value of <paramref name="size"/>. For example,
+        /// <code language="cs" title="Sample Results">
+        /// 999.FormatInt().ToString() returns "999"
+        /// 1037.FormatInt() yields 1.04 KB
+        /// 11178.FormatInt() yields 11.2 KB
+        /// 971623.FormatInt(false, true) yields 971.6 KB (971,623 bytes)
+        /// 2124599.FormatInt() yields 2.12 MB
+        /// 2124599.FormatInt(false, true) yields 2.12 MB (2,124,599 bytes)
+        /// 97324456.FormatInt(true) yields 97,324,456 bytes
+        /// 97324456.FormatInt() yields 97.32 MB
+        /// </code>
+        /// </returns>
+        public static string FormatInt(this int size, bool simple = false, bool extend = false)
+        {
+            double altSize = (double)size;
+            string format = "#,##0 bytes";
+            string formattedInt = altSize.ToString(format);
+            if (!simple)
+            {
+                if ((size > 999) && (size <= 9999))
+                {
+                    altSize /= 1000.0;
+                    format = "#,###.00 KB";
+                }
+                else if ((size > 9999) && (size <= 999999))
+                {
+                    altSize /= 1000.0;
+                    format = "#,###.0 KB";
+                }
+                else if (size > 999999)
+                {
+                    altSize /= 1000000.0;
+                    format = "#,###.00 MB";
+                }
+                formattedInt = altSize.ToString(format);
+
+                if (extend & (size > 999))
+                {
+                    string baseFormat = " (#,##0 bytes)";
+                    string baseFormattedInt = size.ToString(baseFormat);
+                    formattedInt += baseFormattedInt;
+                }
+            }
+
+            return formattedInt;
+        }
+
 
         [GeneratedRegex(@"\s+")]
         private static partial Regex NoWhiteSpaceRegex();
@@ -124,6 +183,40 @@ namespace SBSSData.Softball.Common
             teamName = RemoveParentheticalText().Replace(teamName ?? string.Empty, string.Empty).Trim();
             return teamName;
         }
+
+        /// <summary>
+        /// Splits a string and "swaps" the first two capitalized items.
+        /// </summary>
+        /// <remarks>
+        /// Names are often in the form "lastName", "firstName" (often to make sorting easier). This extension splits the string
+        /// and return a string more suitable for display. For example "corley,    malcolm" is returned as
+        /// "Malcolm Corley". Notice that excess white space is removed, and the strings are capitalized if needed.
+        /// </remarks>
+        /// <param name="source">The source string to split. If it is <c>null</c> or empty, the empty string is returned.</param>
+        /// <param name="delimiter">The character to use to split the string. This parameter is option and default value
+        /// is a comma (',').</param>
+        /// <returns>
+        /// The capitalized swapped items if there are two non-empty items. If there is just one item, it is returned. if the
+        /// <paramref name="source"/> is <c>null</c> or empty, the empty string is returned. If there are more than two items
+        /// after splitting the <c>source</c>, only the first two are used to construct the returned string. <c>null</c> is
+        /// never returned.
+        /// </returns>
+        public static string BuildDisplayName(this string source, char delimiter = ',')
+        {
+            string displayName = string.Empty;
+            if (!string.IsNullOrEmpty(source))
+            {
+
+                string firstName = ((source.Split(delimiter).Length >= 2) ?
+                                     source.Split(delimiter)[1].Trim() :
+                                     string.Empty).Capitalize();
+                string lastName = source.Split(delimiter)[0].Trim().Capitalize();
+                displayName = (string.IsNullOrEmpty(lastName) ? firstName : $"{firstName} {lastName}").Trim();
+            }
+
+            return displayName;
+        }
+
         /// <summary>
         /// The first character of the string is changed to upper case.
         /// </summary>

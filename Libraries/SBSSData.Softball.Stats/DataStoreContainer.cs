@@ -19,6 +19,7 @@ namespace SBSSData.Softball.Stats
         /// The private static field that contains the one and only instance at a time of this class.
         /// </summary>
         private static DataStoreContainer? instance = null;
+        private static List<ScheduledGame>? _scheduledGames = null;
 
         /// <summary>
         /// Returns an instance with <see cref="DataStore"/> and <see cref="DataStorePath"/> set to <see cref="LeaguesData.Empty"/>
@@ -111,11 +112,21 @@ namespace SBSSData.Softball.Stats
         }
 
         /// <summary>
+        /// The size of the data store as a JSON object in bytes.
+        /// </summary>
+        public int DataStoreSize => DataStore.ToJsonString().Length;
+
+        /// <summary>
         /// The list of all scheduled games in all leagues.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        public List<ScheduledGame> Games => DataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).ToList();
+        public List<ScheduledGame> Games
+        {
+            get
+            {
+                _scheduledGames ??= DataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).ToList();
+                return _scheduledGames;
+            }
+        }
 
         /// <summary>
         /// Gets the total number of scheduled games in all leagues.
@@ -276,6 +287,7 @@ namespace SBSSData.Softball.Stats
         /// <code language="cs">
         /// Data Store : Build Date 12/11/2023 11:19:04 AM; Number of Leagues 9
         /// Data Store Path : D:\Softball\WorkingStorage\LeaguesData-Fall2023.json
+        /// Data Store Size : 1.27 MB (1,269,123 bytes)
         /// Number of Games : 154
         /// Games Completed : 138
         /// Games Canceled : 5
@@ -287,7 +299,10 @@ namespace SBSSData.Softball.Stats
             PropertyInfo[] properties = typeof(DataStoreContainer).GetProperties(BindingFlags.Public | BindingFlags.Instance);
             string text = properties.Where(p => p.Name != "Games").ToString<PropertyInfo>(x =>
             {
-                return $"{(x.Name).NameToTitle()} : {x.GetValue(this)}";
+                string title = (x.Name).NameToTitle();
+                object objValue = x.GetValue(this) ?? string.Empty;
+                string? value = (x.Name == "DataStoreSize") ? ((int)objValue).FormatInt(true) : objValue.ToString();
+                return $"{title} : {value}";
             }, "\r\n");
 
             return text;
@@ -304,6 +319,7 @@ namespace SBSSData.Softball.Stats
             instance = null;
             DataStorePath = string.Empty;
             DataStore = LeaguesData.Empty;
+            _scheduledGames = null;
         }
     }
 }

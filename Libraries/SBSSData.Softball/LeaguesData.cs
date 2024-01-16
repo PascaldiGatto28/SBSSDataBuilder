@@ -101,7 +101,7 @@
                 LeagueLocations leagues = LeagueLocations.ConstructLeagueLocations(saddleBrookeSeniorSoftball);
                 callback($"Constructed LeagueLocations object. There are {leagues.Locations.Count} leagues.");
 
-                List<LeagueSchedule> schedules = new();
+                List<LeagueSchedule> schedules = [];
                 foreach (KeyValuePair<string, string> kvp in leagues.Locations)
                 {
                     LeagueSchedule schedule = LeagueSchedule.ConstructLeagueSchedule(kvp.Value);

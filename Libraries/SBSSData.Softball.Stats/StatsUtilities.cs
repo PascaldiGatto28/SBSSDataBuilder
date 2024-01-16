@@ -96,5 +96,10 @@ namespace SBSSData.Softball.Stats
 
             return retValue;
         }
+
+        public static object BuildDisplay<T>(T instance) where T : IDisplay
+        {
+            return instance.BuildDisplay(instance);
+        }
     }
 }

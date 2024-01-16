@@ -17,7 +17,7 @@ namespace SBSSData.Softball
         /// </remarks>
         private LeagueLocations()
         {
-            Locations = new Dictionary<string, string>();
+            Locations = [];
             BuildDate = DateTime.MinValue;
         }
 
@@ -62,7 +62,7 @@ namespace SBSSData.Softball
         public static LeagueLocations ConstructLeagueLocations(string? saddleBrookeSeniorSoftball = null)
         {
             LeagueLocations leagues = new();
-            Dictionary<string, string> locations = new();
+            Dictionary<string, string> locations = [];
             string url = saddleBrookeSeniorSoftball ?? "https://saddlebrookesoftball.com/";
             try
             {

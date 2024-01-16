@@ -34,6 +34,16 @@ namespace SBSSData.Softball
             LeagueDescription = LeagueDescription.Empty();
         }
 
+
+        /// <summary>
+        /// Constructs an instance with all properties set to initial values.
+        /// </summary>
+        /// <returns>An empty instance, that is, properties are set to default initial values.</returns>
+        public static LeagueSchedule Empty()
+        {
+            return new LeagueSchedule();
+        }
+
         /// <summary>
         /// Gets or initializes the <c>IsEmpty</c> property. 
         /// </summary>
@@ -108,7 +118,7 @@ namespace SBSSData.Softball
 
                 IEnumerable<HtmlNode> rows = article.SelectNodes("//table/tbody/tr").Cast<HtmlNode>();
                 //rows.Select(n => n.Attributes["class"].Value); //.Dump();
-                List<ScheduledGame> scheduledGames = new();
+                List<ScheduledGame> scheduledGames = [];
                 foreach (HtmlNode row in rows)
                 {
                     //HtmlNode resultsHtmlNode = row.SelectSingleNode("td[@class='data-results']/a");

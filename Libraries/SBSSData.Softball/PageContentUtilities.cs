@@ -30,7 +30,7 @@ namespace SBSSData.Softball
         /// <returns>The page source as and array of bytes. The array may be empty, but never <c>null</c>.</returns>
         public static async Task<byte[]> DownloadPageDataAsync(string requestAddress)
         {
-            byte[] pageData = Array.Empty<byte>();
+            byte[] pageData = [];
             using (HttpClient client = new())
             {
                 pageData = await client.GetByteArrayAsync(requestAddress)

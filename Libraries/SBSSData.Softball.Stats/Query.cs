@@ -9,7 +9,7 @@ namespace SBSSData.Softball.Stats
     /// </summary>
     public class Query
     {
-        //public readonly Dictionary<string, List<string>> ValidLeagues = new();
+        public static Dictionary<string, List<string>> validLeaguesDictionary = new();
 
         private Query()
         {
@@ -19,6 +19,7 @@ namespace SBSSData.Softball.Stats
         public Query(DataStoreContainer dsContainer)
         {
             Container = dsContainer ?? DataStoreContainer.Empty;
+            validLeaguesDictionary = this.ValidLeagueDescriptions();
         }
 
         public DataStoreContainer Container
@@ -32,66 +33,80 @@ namespace SBSSData.Softball.Stats
 
         public IEnumerable<LeagueDescription> LeagueDescriptions => DataStore.LeagueSchedules.Select(s => s.LeagueDescription);
 
-        public IEnumerable<ScheduledGame> ScheduledGames => DataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames);
-
-        //public Dictionary<string, IEnumerable<string>> GetLeagues()
-        //{
-        //    Dictionary<string, IEnumerable<string>> leagues = new Dictionary<string, IEnumerable<string>>();
-        //    foreach (string category in )
-        //}
+        public IEnumerable<ScheduledGame> ScheduledGames => Container.Games;
 
 
-        public IEnumerable<Game> PlayedGames => ScheduledGames.Where(s => s.IsComplete && !s.WasCancelled).Select(s => s.GameResults);
+        public IEnumerable<Game> PlayedGames => Container.Games.Where(s => s.IsComplete && !s.WasCancelled).Select(s => s.GameResults);
 
         public IEnumerable<Player> Players => PlayedGames.SelectMany(g => g.Teams)
                                                          .SelectMany(t => t.Players)
                                                          .OrderBy(p => p.Name);
 
-        public IEnumerable<Player> LeaguePlayers(string leagueCategory = "", string day = "")
-            => GetLeagueSchedules(leagueCategory, day).SelectMany(l => l.ScheduledGames)
-                                                      .Where(s => s.IsComplete && !s.WasCancelled)
-                                                      .Select(s => s.GameResults)
-                                                      .SelectMany(g => g.Teams)
-                                                      .SelectMany(t => t.Players)
-                                                      .GroupBy(p => p.Name)
-                                                      .Select(gp => new
-                                                      {
-                                                          gp.Key,
-                                                          Player = new PlayerStats(GetSummaryData(gp.ToList()), gp.ToList().Count)
-                                                      }).OrderByDescending(p => p.Player.NumGames)
-                                                        .ThenByDescending(p => p.Player.AtBats)
-                                                        .ThenBy(p => p.Player.Name)
-                                                        .Select(p => p.Player);
+        public IEnumerable<PlayerStats> GetLeaguePlayers(string leagueCategory = "", string day = "")
+        {
+            IEnumerable<PlayerStats> leaguePlayers = new List<PlayerStats>();
+            leaguePlayers = GetLeagueSchedules(leagueCategory, day)
+                                          .SelectMany(l => l.ScheduledGames)
+                                          .Where(s => s.IsComplete && !s.WasCancelled)
+                                          .Select(s => s.GameResults)
+                                          .SelectMany(g => g.Teams)
+                                          .SelectMany(t => t.Players)
+                                          .GroupBy(p => p.Name)
+                                          .Select(gp => new
+                                          {
+                                              gp.Key,
+                                              Player = new PlayerStats(GetSummaryData(gp.ToList()), gp.ToList().Count)
+                                          }).OrderBy(p => p.Player.Name)
+                                            .Select(p => p.Player);
+            return leaguePlayers;
+        }
 
         public IEnumerable<PlayerStats> PlayersStats => Players.Select(p => new PlayerStats(p));
 
-        public IEnumerable<Player> GetLeaguePlayersSummary(string leagueCategory = "", string day = "")
+        public IEnumerable<PlayerStats> GetLeaguePlayersSummary(string leagueCategory = "", string day = "")
         {
-            IEnumerable<Player> leaguePlayers = new List<Player>();
+            IEnumerable<PlayerStats> leaguePlayers = GetLeaguePlayers(leagueCategory, day);
             IEnumerable<LeagueSchedule> leagueSchedules = GetLeagueSchedules(leagueCategory, day);
             string summaryName = leagueSchedules.Select(s => s.LeagueDescription).ToString<LeagueDescription>("; ");
             int numGames = leagueSchedules.SelectMany(l => l.ScheduledGames).Where(s => s.IsComplete && !s.WasCancelled).Count();
-            leaguePlayers = leagueSchedules.SelectMany(l => l.ScheduledGames)
-                                                             .Where(s => s.IsComplete && !s.WasCancelled)
-                                                             .Select(s => s.GameResults)
-                                                             .SelectMany(g => g.Teams)
-                                                             .SelectMany(t => t.Players)
-                                                             .GroupBy(p => p.Name)
-                                                             .Select(gp => new
-                                                             {
-                                                                 gp.Key,
-                                                                 Player = new PlayerStats(GetSummaryData(gp.ToList()), gp.ToList().Count)
-                                                             }).OrderByDescending(p => p.Player.NumGames)
-                                                               .ThenByDescending(p => p.Player.AtBats)
-                                                               .ThenBy(p => p.Player.Name)
-                                                               .Select(p => p.Player);
+
             PlayerStats summaryStats = new(GetSummaryData(leaguePlayers, summaryName))
             {
                 NumGames = numGames
             };
+
             leaguePlayers = leaguePlayers.Append(summaryStats);
             return leaguePlayers;
         }
+
+        public IEnumerable<TeamSummaryStats> GetTeamsPlayersStats(string leagueCategory, string day)
+        {
+            IEnumerable<Game> playedGames = GetLeagueSchedule(leagueCategory, day)
+                                           .ScheduledGames
+                                           .Where(s => s.IsComplete && !s.WasCancelled)
+                                           .Select(s => s.GameResults);
+
+            IEnumerable<IGrouping<string, Team>> teamGroups = playedGames.SelectMany(g => g.Teams).GroupBy(t => t.Name);
+
+            List<TeamSummaryStats> teamPlayersStats = [];
+            foreach (IGrouping<string, Team> teamGroup in teamGroups)
+            {
+                TeamSummaryStats teamSummary = new TeamSummaryStats(teamGroup.ToList());
+                teamPlayersStats.Add(teamSummary);
+            }
+
+            return teamPlayersStats;
+        }
+
+        public TeamSummaryStats GetTeamPlayersStats(string teamName, string leagueCategory, string day)
+        {
+            // TODO: Do error checking here.
+            IEnumerable<TeamSummaryStats> teamsSummaryStats = GetTeamsPlayersStats(leagueCategory, day);
+            TeamSummaryStats teamSummaryStats = teamsSummaryStats.Single(t => t.Name == teamName);
+            return teamSummaryStats;
+        }
+
+
 
         public static Player GetSummaryData(IEnumerable<Player> playerData, string summaryName = "")
         {
@@ -105,35 +120,6 @@ namespace SBSSData.Softball.Stats
 
             return player;
         }
-
-        //public static T SumIntProperties<T>(IEnumerable<T> data, T instance)
-        //{
-        //    IEnumerable<PropertyInfo> properties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public)
-        //                                                    .Where(p => p.PropertyType == typeof(int));
-        //    foreach (PropertyInfo property in properties)
-        //    {
-        //        property.SetValue(instance, data.Select(p => (int)property.GetValue(p)).ToList().Sum());
-        //    }
-
-        //    return instance;
-        //}
-
-
-        //public IEnumerable<LeagueSchedule> GetLeagueSchedules(LeagueDescription? leagueDescription = null)
-        //{
-        //    IEnumerable<LeagueSchedule> leagueSchedules = DataStore.LeagueSchedules;
-
-        //    if (leagueDescription != null)
-        //    {
-
-        //        leagueSchedules = GetLeagueSchedules(leagueDescription.LeagueCategory,
-        //                                             leagueDescription.LeagueDay,
-        //                                             leagueDescription.Season,
-        //                                             leagueDescription.Year);
-        //    }
-
-        //    return leagueSchedules;
-        //}
 
         /// <summary>
         /// Returns a sequence of <see cref="LeagueSchedule"/> objects filtered by the values of the parameters
@@ -187,7 +173,7 @@ namespace SBSSData.Softball.Stats
         /// <returns>The filtered sequence of <see cref="LeagueSchedule"/> objects.</returns>
         public IEnumerable<LeagueSchedule> GetLeagueSchedules(string category = "", string day = "", string season = "", string year = "")
         {
-            Dictionary<string, List<string>> validLeagues = ValidLeagueDescriptions();
+            Dictionary<string, List<string>> validLeagues = validLeaguesDictionary;
             IEnumerable<LeagueSchedule> leagueSchedules = DataStore.LeagueSchedules;
             if (!string.IsNullOrEmpty(category) && validLeagues.ContainsKey(category))
             {
@@ -215,8 +201,21 @@ namespace SBSSData.Softball.Stats
             return leagueSchedules;
         }
 
+        public LeagueSchedule GetLeagueSchedule(string category, string day)
+        {
+            LeagueSchedule leagueSchedule = LeagueSchedule.Empty();
+            if (!string.IsNullOrEmpty(category) && !string.IsNullOrEmpty(day)
+                                                && validLeaguesDictionary.ContainsKey(category)
+                                                && validLeaguesDictionary[category].Contains(day))
+            {
+                leagueSchedule = GetLeagueSchedules(category, day).Single();
+            }
+
+            return leagueSchedule;
+        }
+
         // TODO: This should be static and only executed once.
-        public Dictionary<string, List<string>> ValidLeagueDescriptions()
+        private Dictionary<string, List<string>> ValidLeagueDescriptions()
         {
             Dictionary<string, List<string>> validLeagues = [];
             foreach (LeagueDescription description in LeagueDescriptions)
@@ -252,6 +251,11 @@ namespace SBSSData.Softball.Stats
 
             }
             return newSchedules;
+        }
+
+        public override string ToString()
+        {
+            return $"{Container}\r\nNumber of Players: {Players.Select(p => p.Name).Distinct().Count()}";
         }
 
     }
