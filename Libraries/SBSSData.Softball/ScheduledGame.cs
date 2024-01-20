@@ -17,6 +17,9 @@ namespace SBSSData.Softball
         // TODO: This should be set by some configuration rather than hard-coded in the class.
         private static readonly int checkHours = 16;
 
+        // Separator value used split score value.
+        private static readonly char[] separator = ['-'];
+
         private ScheduledGame()
         {
             Date = DateTime.MaxValue;
@@ -60,7 +63,7 @@ namespace SBSSData.Softball
                 };
 
                 string scoreText = resultsHtmlNode.InnerText;
-                string[] score = scoreText.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] score = scoreText.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
                 if (score.Length > 1)
                 {
@@ -244,7 +247,7 @@ namespace SBSSData.Softball
             {
                 DateTime gameTime = GameResults.GameInformation?.Date ?? DateTime.MinValue;
                 summary.Append($"{gameTime,-11:MM/dd/yyyy}{gameTime:h:mm tt}  ");
-                List<Team> teams = GameResults.Teams.ToList();
+                List<Team> teams = [.. GameResults.Teams];
                 summary.Append(teams[0].ToString()).Append(" vs ").Append(teams[1].ToString());
             }
             else

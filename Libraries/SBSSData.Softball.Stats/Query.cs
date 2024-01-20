@@ -56,7 +56,7 @@ namespace SBSSData.Softball.Stats
                                           {
                                               gp.Key,
                                               Player = new PlayerStats(GetSummaryData(gp.ToList()), gp.ToList().Count)
-                                          }).OrderBy(p => p.Player.Name)
+                                          }).OrderByDescending(p => p.Player.NumGames).ThenByDescending(p => p.Player.AtBats)
                                             .Select(p => p.Player);
             return leaguePlayers;
         }
@@ -67,7 +67,7 @@ namespace SBSSData.Softball.Stats
         {
             IEnumerable<PlayerStats> leaguePlayers = GetLeaguePlayers(leagueCategory, day);
             IEnumerable<LeagueSchedule> leagueSchedules = GetLeagueSchedules(leagueCategory, day);
-            string summaryName = leagueSchedules.Select(s => s.LeagueDescription).ToString<LeagueDescription>("; ");
+            string summaryName = leagueSchedules.Select(s => s.LeagueDescription).ToString<LeagueDescription>("\r\n");
             int numGames = leagueSchedules.SelectMany(l => l.ScheduledGames).Where(s => s.IsComplete && !s.WasCancelled).Count();
 
             PlayerStats summaryStats = new(GetSummaryData(leaguePlayers, summaryName))

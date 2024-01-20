@@ -121,7 +121,7 @@ namespace SBSSData.Softball
             {
                 if (!update)
                 {
-                    if ((scheduledGame.GameResults == null) || string.IsNullOrEmpty(scheduledGame.GameResults.GameInformation?.Title))
+                    if ((scheduledGame.GameResults == null) || (scheduledGame.GameResults.GameInformation?.Title.ToLower() == "unknown"))
                     {
                         gameInformation = GameInformation.ConstructGameInformation(scheduledGame, htmlDocument);
                     }

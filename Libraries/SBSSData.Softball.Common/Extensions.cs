@@ -93,7 +93,7 @@ namespace SBSSData.Softball.Common
         /// <param name="extend">If <c>true</c> and the format is not simple, then the text is extended beyond KB or MB values, 
         /// with the comma delimited text. If <paramref name="simple"/>is <c>true</c> this value is ignored. It is optional and the
         /// default value is <c>false</c>".
-        /// /param>
+        /// </param>
         /// <returns>
         /// The text for the value of <paramref name="size"/>. For example,
         /// <code language="cs" title="Sample Results">
@@ -330,10 +330,41 @@ namespace SBSSData.Softball.Common
         /// Converts a byte array to a UTF8 string.
         /// </summary>
         /// <param name="byteArray">The byte array each entry of which is a returned character in the string</param>
-        /// <returns>The UTF8, ora the empty string if the <paramref name="byteArray"/> is <c>null</c> or empty.</returns>
+        /// <returns>The UTF8, or the empty string if the <paramref name="byteArray"/> is <c>null</c> or empty.</returns>
         public static string ByteArrayToString(this byte[] byteArray)
         {
             return (byteArray != null) ? Encoding.UTF8.GetString(byteArray, 0, byteArray.Length) : string.Empty;
+        }
+
+        public static string ByteArrayToBase64String(this byte[] byteArray)
+        {
+            return (byteArray != null) ? Convert.ToBase64String(byteArray) : string.Empty;
+        }
+
+        public static string FileToHtmlImageTag(this string filePath, int pixels = 0, string imageTypeName = "")
+        {
+            string imgTag = string.Empty;
+            if (File.Exists(filePath))
+            {
+                string sizeStyle = pixels > 0 ? $" style=\"height:{pixels}px\"" : string.Empty;
+                List<string> imageTypes = ["jpg", "jpeg", "jpe", "bmp", "gif", "png"];
+                string imageType = !string.IsNullOrEmpty(imageTypeName) ? imageTypeName : Path.GetExtension(filePath);
+                if (!string.IsNullOrEmpty(imageType))
+                {
+                    if (imageType.StartsWith('.'))
+                    {
+                        imageType = imageType[1..];
+                    }
+
+                    if (imageTypes.Contains(imageType.ToLower()) && File.Exists(filePath))
+                    {
+                        byte[] bytes = File.ReadAllBytes(filePath);
+                        string base64 = Convert.ToBase64String(bytes);
+                        imgTag = $"<img{sizeStyle} src=\"data:image/{imageType};base64,{base64}\"/>";
+                    }
+                }
+            }
+            return imgTag;
         }
 
         /// <summary>

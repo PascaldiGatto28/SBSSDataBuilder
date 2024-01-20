@@ -13,23 +13,4 @@
     /// Instances are only created by the <c>ConstructTeams</c> methods and only consumed the <c>ConstructPlayer</c>
     /// </remarks>
     public record PlayerLabelValue(string Label, string Value);
-    //{
-    //    /// <summary>
-    //    /// Gets and initializes the property label
-    //    /// </summary>
-    //    public string Label
-    //    {
-    //        get;
-    //        init;
-    //    }
-
-    //    /// <summary>
-    //    /// Gets and initializes the property value
-    //    /// </summary>
-    //    public string Value
-    //    {
-    //        get;
-    //        init;
-    //    }
-    //}
 }

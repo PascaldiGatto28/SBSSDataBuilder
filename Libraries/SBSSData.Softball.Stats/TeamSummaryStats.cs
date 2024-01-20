@@ -18,9 +18,14 @@ namespace SBSSData.Softball.Stats
             Outcome = $"{NumWins} wins and {NumLosses} losses";
             NumHomeGames = teams.Where(t => t.HomeTeam).Count();
 
-            List<Player> playerList = new();
+            List<Player> playerList = [];
 
-            IEnumerable<IGrouping<string, Player>> playerGroups = teams.SelectMany(t => t.Players).GroupBy(p => p.Name);
+            // Get all the players, but "summary" players should not be included. Real players always name with a comma to 
+            // separate first and last name. There are no team names that have comma character within. (This needs to be 
+            // fixed, because a team name could have a comma in it I suppose.)
+            IEnumerable<IGrouping<string, Player>> playerGroups = teams.SelectMany(t => t.Players)
+                                                                       .Where(p => p.Name.IndexOf(',') != -1)
+                                                                       .GroupBy(p => p.Name);
             foreach (IGrouping<string, Player> playerGroup in playerGroups)
             {
                 Player player = Player.ConstructPlayer(new List<PlayerLabelValue> { new("Player", playerGroup.Key) });

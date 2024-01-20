@@ -10,7 +10,7 @@ namespace SBSSData.Softball.Stats
         /// <summary>
         /// Constructs an empty instance, that is one where the properties all have default values.
         /// </summary>
-        private TeamStats()
+        public TeamStats()
         {
 
         }
@@ -31,7 +31,7 @@ namespace SBSSData.Softball.Stats
         /// </remarks>
         public TeamStats(Team team) : base(team)
         {
-            List<Player> playersStats = team.Players.Select(p => new PlayerStats(p)).Cast<Player>().ToList();
+            List<PlayerStats> playersStats = team.Players.Select(p => new PlayerStats(p)).ToList();
             PlayerStats summaryPlayerStats = GetPlayersStats(team);
             playersStats.Add(summaryPlayerStats);
             Players = playersStats.Cast<Player>().ToList();
@@ -41,7 +41,7 @@ namespace SBSSData.Softball.Stats
         /// Gets the aggregated and calculated summary player stats for the <see cref="Team"/>.
         /// </summary>
         /// <returns>A <see cref="PlayerStats"/> instance. <c>null</c> is never returned.</returns>
-        private PlayerStats GetPlayersStats(Team team)
+        private static PlayerStats GetPlayersStats(Team team)
         {
             Player player = Player.ConstructPlayer(Enumerable.Empty<PlayerLabelValue>());
             IEnumerable<Player> players = team.Players;

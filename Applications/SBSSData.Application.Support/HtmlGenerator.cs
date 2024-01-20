@@ -11,7 +11,7 @@ namespace SBSSData.Application.Support
         public HtmlGenerator()
         {
             Writer = LINQPad.Util.CreateXhtmlWriter(true, 6, false);
-            OutputFolder = Environment.ExpandEnvironmentVariables(@"LocalAppData\SBSSData-Application-Samples\HtmlOutput");
+            OutputFolder = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\SBSSData-Application-Samples\HtmlOutput");
             Descriptions = [];
             Headers = [];
         }
@@ -71,7 +71,7 @@ namespace SBSSData.Application.Support
             Writer.Write(value);
         }
 
-        public string DumpHtml(string fileName, string pageTitle = "")
+        public string DumpHtml(string fileName, string pageTitle = "", int collapseTo = 1)
         {
             string? docHtml = Writer?.ToString();
 
@@ -95,7 +95,7 @@ namespace SBSSData.Application.Support
 
                 if (!string.IsNullOrEmpty(pageTitle))
                 {
-                    HtmlNode title = HtmlNode.CreateNode(pageTitle);
+                    HtmlNode title = HtmlNode.CreateNode($"<div>{pageTitle}</div>");
                     body.PrependChild(title);
                 }
 
@@ -119,16 +119,44 @@ namespace SBSSData.Application.Support
                 HtmlNodeCollection currentHeaders = rootNode.SelectNodes("//table//tr/td[@class='typeheader']/a");
                 for (int i = 0; i < Headers.Count; i++)
                 {
+                    HtmlNode currentHeader = currentHeaders[i];
+                    //HtmlNode spanInHeader = currentHeader.SelectSingleNode("span");
+
+                    // TODO: Change the header text. This is going to be a problem, I think if there are nested tables
                     string header = Headers[i];
                     if (!string.IsNullOrEmpty(header))
                     {
-                        HtmlNode currentHeader = currentHeaders[i];
                         html = currentHeader.OuterHtml;
                         string text = html.Substring("</span>", "</a>", false, false);
                         html = html.Replace(text, header);
-                        currentHeader.InnerHtml = html;
+                        currentHeader.ParentNode.ReplaceChild(HtmlNode.CreateNode(html), currentHeader);
+                    }
+
+                    // Put the table in collapsed mode
+                    //
+                }
+
+                // Now collapse all tables whose depth is greater than or equal to the collapseTo parameter
+                HtmlNodeCollection tables = rootNode.SelectNodes("//table");
+                foreach (HtmlNode table in tables)
+                {
+                    int nestingLevel = GetTableNestingLevel(table);
+                    if (nestingLevel >= collapseTo)
+                    {
+                        HtmlNode span = table.SelectSingleNode("thead/tr/td/a/span");
+                        span.Attributes["class"].Value = "arrow-down";
+                        HtmlNode tableTBody = table.SelectSingleNode("tbody");
+                        tableTBody.Attributes.Add("style", "display:none");
+                        HtmlNode columnHeaders = table.SelectSingleNode("thead/tr[2]");
+
+                        // Some tables have just one header, and it is not represented in a row.
+                        if (columnHeaders != null)
+                        {
+                            columnHeaders.Attributes.Add("style", "display:none");
+                        }
                     }
                 }
+
 
                 // Finally right justify all the table headers (th tags) so they are right-justified when the values are
                 // numeric (int or double).
@@ -149,6 +177,21 @@ namespace SBSSData.Application.Support
             }
 
             return docHtml;
+        }
+
+        private static int GetTableNestingLevel(HtmlNode table)
+        {
+            int nestingLevel = 0;
+            HtmlNode parent = table.ParentNode;
+            while (parent != null)
+            {
+                if (parent.Name == "table")
+                {
+                    nestingLevel++;
+                }
+                parent = parent.ParentNode;
+            }
+            return nestingLevel;
         }
 
         public void Dispose()
