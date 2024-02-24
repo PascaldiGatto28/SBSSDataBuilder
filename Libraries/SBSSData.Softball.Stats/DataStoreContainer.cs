@@ -20,6 +20,8 @@ namespace SBSSData.Softball.Stats
         /// </summary>
         private static DataStoreContainer? instance = null;
         private static List<ScheduledGame>? _scheduledGames = null;
+        private static List<string>? _playerNames = null;
+        private static List<string>? _teamNames = null;
 
         /// <summary>
         /// Returns an instance with <see cref="DataStore"/> and <see cref="DataStorePath"/> set to <see cref="LeaguesData.Empty"/>
@@ -87,7 +89,9 @@ namespace SBSSData.Softball.Stats
         /// <code language="cs">
         /// DataStoreContainer dsContainer = DataStoreContainer.Instance;
         /// LeaguesData dataStore = dsContainer.DataStore;
-        /// </code>"
+        /// </code>
+        /// The value is set by the private constructor <see cref="DataStoreContainer(string, LeaguesData?)"/> when the
+        /// <see cref="Instance(string, LeaguesData?)"/> method is called. 
         /// </remarks>
         public LeaguesData DataStore
         {
@@ -96,14 +100,16 @@ namespace SBSSData.Softball.Stats
         }
 
         /// <summary>
-        /// Gets the path to the <see cref="LeaguesData"/> serialized object. 
+        /// Gets the path to the <see cref="LeaguesData"/> serialized object.  
         /// </summary>
         /// <remarks>
         /// Properties of this class are accessed via the constructed instance, for example
         /// <code language="cs">
         /// DataStoreContainer dsContainer = DataStoreContainer.Instance;
         /// string dataStorePath = dsContainer.DataStorePath;
-        /// </code>"
+        /// </code>
+        /// The value is set by the private constructor <see cref="DataStoreContainer(string, LeaguesData?)"/> when the
+        /// <see cref="Instance(string, LeaguesData?)"/> method is called.
         /// </remarks>
         public string DataStorePath
         {
@@ -112,20 +118,66 @@ namespace SBSSData.Softball.Stats
         }
 
         /// <summary>
-        /// The size of the data store as a JSON object in bytes.
+        /// Get the size of the data store as a JSON object in bytes.
         /// </summary>
         public int DataStoreSize => DataStore.ToJsonString().Length;
 
         /// <summary>
-        /// The list of all scheduled games in all leagues.
+        /// Gets the list of all scheduled games in all leagues.
         /// </summary>
-        public List<ScheduledGame> Games
+        /// <remarks>
+        /// The list is created using a LINQ query the first time the property is access and stores the results, so the query
+        /// is not executed in subsequent access.
+        /// </remarks>
+        /// <returns>
+        /// A list of all scheduled games, played, canceled or not.
+        /// </returns>
+        public List<ScheduledGame> GetScheduledGames()
         {
-            get
-            {
-                _scheduledGames ??= DataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).ToList();
-                return _scheduledGames;
-            }
+
+            _scheduledGames ??= DataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).ToList();
+            return _scheduledGames;
+        }
+
+        /// <summary>
+        /// Returns the list of all team names in all scheduled games, ordered by name.
+        /// </summary>
+        /// <remarks>
+        /// The list is created using a LINQ query the first time the property is accessed and stores the results, so the query
+        /// is not executed in subsequent access.
+        /// </remarks>
+        /// <returns>
+        /// The scheduled team names, ordered by name.
+        /// </returns>
+        public List<string> GetTeamNames()
+        {
+
+            _teamNames ??= GetScheduledGames().Select(g => g.HomeTeamName).Distinct().OrderBy(tn => tn).ToList();
+            return _teamNames;
+
+        }
+
+        /// <summary>
+        /// Returns the list of player names who have participated in a completed (but not canceled) game.
+        /// </summary>
+        /// <remarks>
+        /// The list is created using a LINQ query the first time the property is access and stores the results, so the query
+        /// is not executed in subsequent access. As more games are played, or as new players appear in played games, the list
+        /// will increase in length.
+        /// </remarks>
+        /// <returns>
+        /// A list of the names of the current active players, ordered by last name then by first name.
+        /// </returns>
+        public List<string> GetPlayerNames()
+        {
+
+            _playerNames ??= GetScheduledGames().Where(g => g.IsComplete && !g.WasCancelled)
+                                                .SelectMany(g => g.GameResults.Teams)
+                                                .SelectMany(t => t.Players)
+                                                .Select(p => p.Name)
+                                                .Distinct().OrderBy(p => p)
+                                                .ToList();
+            return _playerNames;
         }
 
         /// <summary>
@@ -134,12 +186,14 @@ namespace SBSSData.Softball.Stats
         /// <remarks>
         /// Once leagues are scheduled and the data store built, this number should not change.
         /// </remarks>
-        public int NumberOfGames => Games.Count;
+        /// <seealso cref="GetScheduledGames()"/>
+        public int NumberOfGames => GetScheduledGames().Count;
 
         /// <summary>
         /// Gets the number of scheduled games in all leagues that have been completed, that is no longer waiting to be played.
         /// </summary>
-        public int GamesCompleted => Games.Count(g => g.IsComplete);
+        /// <seealso cref="GetScheduledGames()"/>
+        public int GamesCompleted => GetScheduledGames().Count(g => g.IsComplete);
 
         /// <summary>
         /// Gets the number of scheduled games in all leagues that have been canceled.
@@ -148,12 +202,36 @@ namespace SBSSData.Softball.Stats
         /// Although canceled games have not been played, that is there are no player stats for the teams, they are considered
         /// completed.
         /// </remarks>
-        public int GamesCanceled => Games.Count(g => g.WasCancelled);
+        /// <seealso cref="GetScheduledGames()"/>
+        public int GamesCanceled => GetScheduledGames().Count(g => g.WasCancelled);
 
         /// <summary>
-        /// The number of games actually played in all leagues, that is games where there are player stats for the teams.
+        /// The number of games actually played (not canceled) in all leagues, that is, games where there are player stats 
+        /// for the teams.
         /// </summary>
-        public int GamesPlayed => Games.Count(g => g.IsComplete && !g.WasCancelled);
+        /// <seealso cref="GetScheduledGames()"/>
+        public int GamesPlayed => GetScheduledGames().Count(g => g.IsComplete && !g.WasCancelled);
+
+        /// <summary>
+        /// Returns the number of team names in all scheduled games, ordered by name.
+        /// </summary>
+        /// <returns>
+        /// The scheduled team names, ordered by name.
+        /// </returns>
+        /// <seealso cref="GetTeamNames()"/>
+        public int NumberOfTeams => GetTeamNames().Count();
+
+        /// <summary>
+        /// Returns the number of players who have participated in a completed (but not canceled) game.
+        /// </summary>
+        /// <remarks>
+        /// It uses the <see cref="GetTeamNames()"/> method to return a list of distinct names.
+        /// </remarks>
+        /// <returns>
+        /// The number of active players.
+        /// </returns>
+        /// <seealso cref="GetPlayerNames()"/>
+        public int NumberOfPlayers => GetPlayerNames().Count();
 
         /// <summary>
         /// Saves the current <see cref="DataStore"/> by serializing it to the file specified <paramref name="path"/> 
@@ -266,11 +344,6 @@ namespace SBSSData.Softball.Stats
                     throw new InvalidOperationException("The SBSS database file is not valid. Is the JSON text correct?", exception);
                 }
             }
-            //else
-            //{
-            //    //throw new FileNotFoundException("The data store path is either null or the file cannot be found.");
-            //    data = 
-            //}
 
             return data;
         }
@@ -288,7 +361,7 @@ namespace SBSSData.Softball.Stats
         /// Data Store : Build Date 12/11/2023 11:19:04 AM; Number of Leagues 9
         /// Data Store Path : D:\Softball\WorkingStorage\LeaguesData-Fall2023.json
         /// Data Store Size : 1.27 MB (1,269,123 bytes)
-        /// Number of Games : 154
+        /// Number of Scheduled Games : 154
         /// Games Completed : 138
         /// Games Canceled : 5
         /// Games Played : 133
@@ -296,12 +369,14 @@ namespace SBSSData.Softball.Stats
         /// </returns>
         public override string ToString()
         {
-            PropertyInfo[] properties = typeof(DataStoreContainer).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            string text = properties.Where(p => p.Name != "Games").ToString<PropertyInfo>(x =>
+            PropertyInfo[] properties = typeof(DataStoreContainer).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                                                  .ToArray();
+
+            string text = properties.ToString<PropertyInfo>(x =>
             {
                 string title = (x.Name).NameToTitle();
                 object objValue = x.GetValue(this) ?? string.Empty;
-                string? value = (x.Name == "DataStoreSize") ? ((int)objValue).FormatInt(true) : objValue.ToString();
+                string? value = (x.Name == "DataStoreSize") ? ((int)objValue).FormatInt(extend: true) : objValue.ToString();
                 return $"{title} : {value}";
             }, "\r\n");
 

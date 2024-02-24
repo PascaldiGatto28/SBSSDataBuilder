@@ -765,7 +765,7 @@
     <None Update="TestData\PlayerPhotos\Wlach_Mark.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\PlayerPhotos\Woehr_Charles.jpg">
+    <None Update="TestData\PlayerPhotos\Woehr_CW.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestData\PlayerPhotos\Wolfe_Steve.jpg">

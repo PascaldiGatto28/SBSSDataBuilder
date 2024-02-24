@@ -35,7 +35,7 @@ namespace SBSSData.Softball.Stats
             T instance = default;
             Type type = typeof(T);
             ConstructorInfo constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
-                                                               Type.EmptyTypes);
+                                                              Type.EmptyTypes);
 
             if (constructor != null)
             {
@@ -69,14 +69,10 @@ namespace SBSSData.Softball.Stats
             Player player = null;
             if ((data != null) && data.Any())
             {
-                string firstName = data.First().Name;
-                bool singlePlayer = data.Where(p => p.Name == firstName).Count() == data.Count();
+                string firstPlayerName = data.First().Name;
+                bool singlePlayer = data.Where(p => p.Name == firstPlayerName).Count() == data.Count();
                 player = data.SumIntProperties() ?? Player.Empty;
-
-                if (!singlePlayer && (player != null))
-                {
-                    player = player.ChangeName(name);
-                }
+                player = player?.ChangeName(!singlePlayer ? name : firstPlayerName);
             }
 
             return player ?? Player.Empty;
@@ -95,11 +91,6 @@ namespace SBSSData.Softball.Stats
             }
 
             return retValue;
-        }
-
-        public static object BuildDisplay<T>(T instance) where T : IDisplay
-        {
-            return instance.BuildDisplay(instance);
         }
     }
 }

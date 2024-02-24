@@ -36,8 +36,8 @@ namespace SBSSData.Softball.Stats
             playerList = playerList.Cast<PlayerStats>().OrderByDescending(p => p.NumGames).Cast<Player>().ToList();
             Player summary = Player.ConstructPlayer(new List<PlayerLabelValue> { new("Player", Name) });
             playerList.SumIntProperties<Player>(summary);
-
             playerList.Add(new PlayerStats(summary, NumGames));
+
             Players = playerList;
         }
 

@@ -7,13 +7,1056 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.57" />
+    <None Remove="PlayerPhotos\Adams_Harry.jpg" />
+    <None Remove="PlayerPhotos\Adolph_Mark.jpg" />
+    <None Remove="PlayerPhotos\Agnone_John.jpg" />
+    <None Remove="PlayerPhotos\Agnone_Linda.jpg" />
+    <None Remove="PlayerPhotos\Alkhoury_Sam.jpg" />
+    <None Remove="PlayerPhotos\Arffa_Dave.jpg" />
+    <None Remove="PlayerPhotos\Argabright_Marc.jpg" />
+    <None Remove="PlayerPhotos\Atkins_Misty.jpg" />
+    <None Remove="PlayerPhotos\Auster_Paul.jpg" />
+    <None Remove="PlayerPhotos\Available_Photo-Not.jpg" />
+    <None Remove="PlayerPhotos\Avrutik_Tom.jpg" />
+    <None Remove="PlayerPhotos\Baker_Roger.jpg" />
+    <None Remove="PlayerPhotos\Battagello_Rich.jpg" />
+    <None Remove="PlayerPhotos\Beals_Ken.jpg" />
+    <None Remove="PlayerPhotos\Becker_Keith.jpg" />
+    <None Remove="PlayerPhotos\Benjamin_Tim.jpg" />
+    <None Remove="PlayerPhotos\Bigos_Jerry.jpg" />
+    <None Remove="PlayerPhotos\Blaize_John.jpg" />
+    <None Remove="PlayerPhotos\Blandford_Bill.jpg" />
+    <None Remove="PlayerPhotos\Block_Allan.jpg" />
+    <None Remove="PlayerPhotos\Bohlman_David.jpg" />
+    <None Remove="PlayerPhotos\Borland_Dominic.jpg" />
+    <None Remove="PlayerPhotos\Bragan_Bob.jpg" />
+    <None Remove="PlayerPhotos\Buchanan_p.jpg" />
+    <None Remove="PlayerPhotos\Buonarigo_Rick.jpg" />
+    <None Remove="PlayerPhotos\Butzer_Dave.jpg" />
+    <None Remove="PlayerPhotos\Cangeme_Al.jpg" />
+    <None Remove="PlayerPhotos\Carbonne_Bobby.jpg" />
+    <None Remove="PlayerPhotos\Cartwright_Steve.jpg" />
+    <None Remove="PlayerPhotos\Cavicchia_Phil.jpg" />
+    <None Remove="PlayerPhotos\Chesney_Bob.jpg" />
+    <None Remove="PlayerPhotos\Cheszek_Ed.jpg" />
+    <None Remove="PlayerPhotos\Chiarello_Bob.jpg" />
+    <None Remove="PlayerPhotos\Cholvin_Craig.jpg" />
+    <None Remove="PlayerPhotos\Clark_Ed.jpg" />
+    <None Remove="PlayerPhotos\Cole_Bob.jpg" />
+    <None Remove="PlayerPhotos\Conway_Dean.jpg" />
+    <None Remove="PlayerPhotos\Corrick_George.jpg" />
+    <None Remove="PlayerPhotos\Cowart_Jerry.jpg" />
+    <None Remove="PlayerPhotos\Cox_Don.jpg" />
+    <None Remove="PlayerPhotos\Crenshaw_Jay.jpg" />
+    <None Remove="PlayerPhotos\Crossman_Ken.jpg" />
+    <None Remove="PlayerPhotos\Cussick_Ed.jpg" />
+    <None Remove="PlayerPhotos\Daus_Ed.jpg" />
+    <None Remove="PlayerPhotos\Dawson_Brian.jpg" />
+    <None Remove="PlayerPhotos\Dawson_Stacy.jpg" />
+    <None Remove="PlayerPhotos\Deal_Mike.jpg" />
+    <None Remove="PlayerPhotos\DeHaan_Curt.jpg" />
+    <None Remove="PlayerPhotos\Dial_Diane.jpg" />
+    <None Remove="PlayerPhotos\Dickey_Jim.jpg" />
+    <None Remove="PlayerPhotos\Diericks_Dave.jpg" />
+    <None Remove="PlayerPhotos\Dunbar_Dick.jpg" />
+    <None Remove="PlayerPhotos\Dzbinski_Rick.jpg" />
+    <None Remove="PlayerPhotos\Eigen_Brand.jpg" />
+    <None Remove="PlayerPhotos\Emmons_Barry.jpg" />
+    <None Remove="PlayerPhotos\Emmons_Howie.jpg" />
+    <None Remove="PlayerPhotos\Ervin_Rick.jpg" />
+    <None Remove="PlayerPhotos\Fagotti_Bob.jpg" />
+    <None Remove="PlayerPhotos\Farland_Jef.jpg" />
+    <None Remove="PlayerPhotos\Felzien_Bill.jpg" />
+    <None Remove="PlayerPhotos\Figueroa_Rich.jpg" />
+    <None Remove="PlayerPhotos\Finelli_Ron.jpg" />
+    <None Remove="PlayerPhotos\Fink_Bruce.jpg" />
+    <None Remove="PlayerPhotos\Fitzgerald_Tom.jpg" />
+    <None Remove="PlayerPhotos\Floyd_Kim.jpg" />
+    <None Remove="PlayerPhotos\Fortis_Dave.jpg" />
+    <None Remove="PlayerPhotos\Freel_Jack.jpg" />
+    <None Remove="PlayerPhotos\Frels_Julie.jpg" />
+    <None Remove="PlayerPhotos\Fuller_David.jpg" />
+    <None Remove="PlayerPhotos\Furash_Dick.jpg" />
+    <None Remove="PlayerPhotos\Gallo_Tom.jpg" />
+    <None Remove="PlayerPhotos\Gann_Leonard.jpg" />
+    <None Remove="PlayerPhotos\Garceau_Steve.jpg" />
+    <None Remove="PlayerPhotos\Gentner_Don.jpg" />
+    <None Remove="PlayerPhotos\Good_Dave.jpg" />
+    <None Remove="PlayerPhotos\Graef_Jack.jpg" />
+    <None Remove="PlayerPhotos\Green_Jon.jpg" />
+    <None Remove="PlayerPhotos\Guralnick_Howard.jpg" />
+    <None Remove="PlayerPhotos\Gurewitz_Greg.jpg" />
+    <None Remove="PlayerPhotos\Hamm_Mike.jpg" />
+    <None Remove="PlayerPhotos\Hanson_Rick.jpg" />
+    <None Remove="PlayerPhotos\Hart_Rocky.jpg" />
+    <None Remove="PlayerPhotos\Hastings_Morlin.jpg" />
+    <None Remove="PlayerPhotos\Hauschildt_Jack.jpg" />
+    <None Remove="PlayerPhotos\Hayes_Mark.jpg" />
+    <None Remove="PlayerPhotos\Heaton_Ken.jpg" />
+    <None Remove="PlayerPhotos\Henderlong_Art.jpg" />
+    <None Remove="PlayerPhotos\Hendryx_Charles.jpg" />
+    <None Remove="PlayerPhotos\Hirschfeld_Jim.jpg" />
+    <None Remove="PlayerPhotos\Hoedel_Mike.jpg" />
+    <None Remove="PlayerPhotos\Hojnacki_Mark.jpg" />
+    <None Remove="PlayerPhotos\Horrigan_Steve.jpg" />
+    <None Remove="PlayerPhotos\Hurley_Terry.jpg" />
+    <None Remove="PlayerPhotos\Imes_Julian.jpg" />
+    <None Remove="PlayerPhotos\Jackson_Steve.jpg" />
+    <None Remove="PlayerPhotos\Jacobson_Jake.jpg" />
+    <None Remove="PlayerPhotos\Jarzembinski_Janet.jpg" />
+    <None Remove="PlayerPhotos\Jarzembinski_Paul.jpg" />
+    <None Remove="PlayerPhotos\Jennings_Dwight.jpg" />
+    <None Remove="PlayerPhotos\Johnson_Corey.jpg" />
+    <None Remove="PlayerPhotos\Johnson_Leroy.jpg" />
+    <None Remove="PlayerPhotos\Jones_Brad.jpg" />
+    <None Remove="PlayerPhotos\Jones_Debbie.jpg" />
+    <None Remove="PlayerPhotos\Jones_Don.jpg" />
+    <None Remove="PlayerPhotos\Keagy_Rick.jpg" />
+    <None Remove="PlayerPhotos\Keefer_Bruce.jpg" />
+    <None Remove="PlayerPhotos\Keefer_Debbie.jpg" />
+    <None Remove="PlayerPhotos\Kennedy_Charlie.jpg" />
+    <None Remove="PlayerPhotos\Kill_Chuck.jpg" />
+    <None Remove="PlayerPhotos\Kingsley_Robin.jpg" />
+    <None Remove="PlayerPhotos\Klein_Tom.jpg" />
+    <None Remove="PlayerPhotos\Klem_Tom.jpg" />
+    <None Remove="PlayerPhotos\Kohl_Tina.jpg" />
+    <None Remove="PlayerPhotos\Kraft_Stu.jpg" />
+    <None Remove="PlayerPhotos\Kraut_David.jpg" />
+    <None Remove="PlayerPhotos\Kravitz_Alan.jpg" />
+    <None Remove="PlayerPhotos\Krom_Gloria.jpg" />
+    <None Remove="PlayerPhotos\Kroppe_Cathe.jpg" />
+    <None Remove="PlayerPhotos\Kunde_Jack.jpg" />
+    <None Remove="PlayerPhotos\Kutansky_Mike.jpg" />
+    <None Remove="PlayerPhotos\LaNeve_Charlie.jpg" />
+    <None Remove="PlayerPhotos\Lang_Laura.jpg" />
+    <None Remove="PlayerPhotos\Lauder_John.jpg" />
+    <None Remove="PlayerPhotos\Laureys_Lynn.jpg" />
+    <None Remove="PlayerPhotos\Laureys_Steve.jpg" />
+    <None Remove="PlayerPhotos\Lavaro_Richard.jpg" />
+    <None Remove="PlayerPhotos\Lee_Dave.jpg" />
+    <None Remove="PlayerPhotos\Leierzapf_Fred.jpg" />
+    <None Remove="PlayerPhotos\Leksell_Lee.jpg" />
+    <None Remove="PlayerPhotos\Lenihan_Bob.jpg" />
+    <None Remove="PlayerPhotos\Lesser_Jeff.jpg" />
+    <None Remove="PlayerPhotos\Levaro_Richard.jpg" />
+    <None Remove="PlayerPhotos\Lewis_Sean.jpg" />
+    <None Remove="PlayerPhotos\Logan_Chris.jpg" />
+    <None Remove="PlayerPhotos\Longo_Nick.jpg" />
+    <None Remove="PlayerPhotos\Lopez_Eddie.jpg" />
+    <None Remove="PlayerPhotos\Lowry_Rob.jpg" />
+    <None Remove="PlayerPhotos\Lueck_Mike.jpg" />
+    <None Remove="PlayerPhotos\Lulek_Tony.jpg" />
+    <None Remove="PlayerPhotos\Lundgren_Scott.jpg" />
+    <None Remove="PlayerPhotos\MacDonald_Jim.jpg" />
+    <None Remove="PlayerPhotos\Magdanz_Mark.jpg" />
+    <None Remove="PlayerPhotos\Maki_Rick.jpg" />
+    <None Remove="PlayerPhotos\Malberg_Joe.jpg" />
+    <None Remove="PlayerPhotos\Malone_Tim.jpg" />
+    <None Remove="PlayerPhotos\Marano_Gus.jpg" />
+    <None Remove="PlayerPhotos\Massara_Paul.jpg" />
+    <None Remove="PlayerPhotos\Mazujian_John.jpg" />
+    <None Remove="PlayerPhotos\Mazujian_Rebecca.jpg" />
+    <None Remove="PlayerPhotos\McInnis_Andy.jpg" />
+    <None Remove="PlayerPhotos\McKniff_John.jpg" />
+    <None Remove="PlayerPhotos\McNellis_Terry.jpg" />
+    <None Remove="PlayerPhotos\Merlin_John.jpg" />
+    <None Remove="PlayerPhotos\Mihora_Janice.jpg" />
+    <None Remove="PlayerPhotos\Mihora_Terry.jpg" />
+    <None Remove="PlayerPhotos\Millican_Dan.jpg" />
+    <None Remove="PlayerPhotos\Mitchell_Mitch.jpg" />
+    <None Remove="PlayerPhotos\Mitchell_Ryan.jpg" />
+    <None Remove="PlayerPhotos\Moffatt_Mike.jpg" />
+    <None Remove="PlayerPhotos\Morgan_Greg.jpg" />
+    <None Remove="PlayerPhotos\Mullen_Mike.jpg" />
+    <None Remove="PlayerPhotos\Mundahl_Bruce.jpg" />
+    <None Remove="PlayerPhotos\Nagy_Zoltan.jpg" />
+    <None Remove="PlayerPhotos\Nicolich_John.jpg" />
+    <None Remove="PlayerPhotos\Noffsinger_Jason.jpg" />
+    <None Remove="PlayerPhotos\Nola_John.jpg" />
+    <None Remove="PlayerPhotos\Norgard_Dale.jpg" />
+    <None Remove="PlayerPhotos\Norgard_Denise.jpg" />
+    <None Remove="PlayerPhotos\Oberg_Gary.jpg" />
+    <None Remove="PlayerPhotos\Oczak_Joe.jpg" />
+    <None Remove="PlayerPhotos\Odonnell_Sue.jpg" />
+    <None Remove="PlayerPhotos\Ottaway_Tom.jpg" />
+    <None Remove="PlayerPhotos\Overhaug_Steve.jpg" />
+    <None Remove="PlayerPhotos\Oxnam_Rose.jpg" />
+    <None Remove="PlayerPhotos\Oxnam_Tom.jpg" />
+    <None Remove="PlayerPhotos\Parker_Hugh.jpg" />
+    <None Remove="PlayerPhotos\Passoni_Joe.jpg" />
+    <None Remove="PlayerPhotos\Payne_Arch.jpg" />
+    <None Remove="PlayerPhotos\Pede_Steve.jpg" />
+    <None Remove="PlayerPhotos\Pennington_Rich.jpg" />
+    <None Remove="PlayerPhotos\Peters_Ed.jpg" />
+    <None Remove="PlayerPhotos\Peters_Saul.jpg" />
+    <None Remove="PlayerPhotos\Pizzitola_Dale.jpg" />
+    <None Remove="PlayerPhotos\Polak_Mike.jpg" />
+    <None Remove="PlayerPhotos\Purcell_Dennis.jpg" />
+    <None Remove="PlayerPhotos\Quarantino_Ron.jpg" />
+    <None Remove="PlayerPhotos\Rangno_Art.jpg" />
+    <None Remove="PlayerPhotos\Reed_Dan.jpg" />
+    <None Remove="PlayerPhotos\Reingruber_John.jpg" />
+    <None Remove="PlayerPhotos\Reingruber_Tracy.jpg" />
+    <None Remove="PlayerPhotos\Rischall_Mordy.jpg" />
+    <None Remove="PlayerPhotos\Romac_Ron.jpg" />
+    <None Remove="PlayerPhotos\Romano_Mike.jpg" />
+    <None Remove="PlayerPhotos\Romeo_Peter.jpg" />
+    <None Remove="PlayerPhotos\Rossman_Judy.jpg" />
+    <None Remove="PlayerPhotos\Rowe_William.jpg" />
+    <None Remove="PlayerPhotos\Sahl_Steve.jpg" />
+    <None Remove="PlayerPhotos\Sanders_Joe.jpg" />
+    <None Remove="PlayerPhotos\Santos_Vern.jpg" />
+    <None Remove="PlayerPhotos\Schauer_Mark.jpg" />
+    <None Remove="PlayerPhotos\Schmitt_Buzz.jpg" />
+    <None Remove="PlayerPhotos\Schneck_Mary.jpg" />
+    <None Remove="PlayerPhotos\Schneck_Steve.jpg" />
+    <None Remove="PlayerPhotos\Schneiderman_Stan.jpg" />
+    <None Remove="PlayerPhotos\Schumacher_Michael.jpg" />
+    <None Remove="PlayerPhotos\Schuttler_Ken.jpg" />
+    <None Remove="PlayerPhotos\Schwartzberg_Yvette.jpg" />
+    <None Remove="PlayerPhotos\Schweitzer_Jay.jpg" />
+    <None Remove="PlayerPhotos\Schwin_Paul.jpg" />
+    <None Remove="PlayerPhotos\Scott_Charlie.jpg" />
+    <None Remove="PlayerPhotos\Searcy_Mike.jpg" />
+    <None Remove="PlayerPhotos\Seguin_Debbie.jpg" />
+    <None Remove="PlayerPhotos\Selk_Jim.jpg" />
+    <None Remove="PlayerPhotos\Sentowski_John.jpg" />
+    <None Remove="PlayerPhotos\Shaughnessy_John.jpg" />
+    <None Remove="PlayerPhotos\Sherby_Scott.jpg" />
+    <None Remove="PlayerPhotos\Skoneczka_Dennis.jpg" />
+    <None Remove="PlayerPhotos\Smith_Chuck.jpg" />
+    <None Remove="PlayerPhotos\Smith_JIm.jpg" />
+    <None Remove="PlayerPhotos\Spevak_Bill.jpg" />
+    <None Remove="PlayerPhotos\St-Jules_Barbara.jpg" />
+    <None Remove="PlayerPhotos\St-Jules_David.jpg" />
+    <None Remove="PlayerPhotos\Stafford_Wayne.jpg" />
+    <None Remove="PlayerPhotos\Steffes_Phil.jpg" />
+    <None Remove="PlayerPhotos\Stein_Alan.jpg" />
+    <None Remove="PlayerPhotos\Stevens_Dave.jpg" />
+    <None Remove="PlayerPhotos\Stewart_Gary.jpg" />
+    <None Remove="PlayerPhotos\Stobbe_Terry.jpg" />
+    <None Remove="PlayerPhotos\Stolze_Jeff.jpg" />
+    <None Remove="PlayerPhotos\Stroud_Greg.jpg" />
+    <None Remove="PlayerPhotos\Sweetland_Doug.jpg" />
+    <None Remove="PlayerPhotos\Szpakowski_Ray.jpg" />
+    <None Remove="PlayerPhotos\Talacs_Jim.jpg" />
+    <None Remove="PlayerPhotos\Talkington_Jack.jpg" />
+    <None Remove="PlayerPhotos\Taney_Kent.jpg" />
+    <None Remove="PlayerPhotos\Upchurch_Jeff.jpg" />
+    <None Remove="PlayerPhotos\Vaaler_John.jpg" />
+    <None Remove="PlayerPhotos\Vaughan_John.jpg" />
+    <None Remove="PlayerPhotos\Walder_Bill.jpg" />
+    <None Remove="PlayerPhotos\Ward_Jim.jpg" />
+    <None Remove="PlayerPhotos\Ward_Tim.jpg" />
+    <None Remove="PlayerPhotos\Watts_Jim.jpg" />
+    <None Remove="PlayerPhotos\Weber_Larry.jpg" />
+    <None Remove="PlayerPhotos\Webster_Bill.jpg" />
+    <None Remove="PlayerPhotos\Weems_Russell.jpg" />
+    <None Remove="PlayerPhotos\Weinenger_Harold.jpg" />
+    <None Remove="PlayerPhotos\Weiss_Herb.jpg" />
+    <None Remove="PlayerPhotos\Wescoe_Bill.jpg" />
+    <None Remove="PlayerPhotos\West_Brad.jpg" />
+    <None Remove="PlayerPhotos\West_Greg.jpg" />
+    <None Remove="PlayerPhotos\White_Larry.jpg" />
+    <None Remove="PlayerPhotos\Wlach_Mark.jpg" />
+    <None Remove="PlayerPhotos\Woehr_Charles.jpg" />
+    <None Remove="PlayerPhotos\Wolfe_Steve.jpg" />
+    <None Remove="PlayerPhotos\Wollack_Jim.jpg" />
+    <None Remove="PlayerPhotos\Woolmington_John.jpg" />
+    <None Remove="PlayerPhotos\Yester_Jim.jpg" />
+    <None Remove="PlayerPhotos\Young_Dennis.jpg" />
+    <None Remove="PlayerPhotos\Zalewski_Paul.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="PlayerPhotos\Adams_Harry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Adolph_Mark.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Agnone_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Agnone_Linda.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Alkhoury_Sam.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Arffa_Dave.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Argabright_Marc.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Atkins_Misty.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Auster_Paul.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Available_Photo-Not.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Avrutik_Tom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Baker_Roger.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Battagello_Rich.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Beals_Ken.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Becker_Keith.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Benjamin_Tim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Bigos_Jerry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Blaize_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Blandford_Bill.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Block_Allan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Bohlman_David.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Borland_Dominic.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Bragan_Bob.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Buchanan_p.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Buonarigo_Rick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Butzer_Dave.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Cangeme_Al.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Carbonne_Bobby.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Cartwright_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Cavicchia_Phil.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Chesney_Bob.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Cheszek_Ed.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Chiarello_Bob.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Cholvin_Craig.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Clark_Ed.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Cole_Bob.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Conway_Dean.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Corrick_George.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Cowart_Jerry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Cox_Don.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Crenshaw_Jay.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Crossman_Ken.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Cussick_Ed.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Daus_Ed.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Dawson_Brian.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Dawson_Stacy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Deal_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\DeHaan_Curt.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Dial_Diane.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Dickey_Jim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Diericks_Dave.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Dunbar_Dick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Dzbinski_Rick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Eigen_Brand.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Emmons_Barry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Emmons_Howie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Ervin_Rick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Fagotti_Bob.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Farland_Jef.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Felzien_Bill.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Figueroa_Rich.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Finelli_Ron.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Fink_Bruce.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Fitzgerald_Tom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Floyd_Kim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Fortis_Dave.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Freel_Jack.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Frels_Julie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Fuller_David.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Furash_Dick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Gallo_Tom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Gann_Leonard.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Garceau_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Gentner_Don.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Good_Dave.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Graef_Jack.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Green_Jon.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Guralnick_Howard.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Gurewitz_Greg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hamm_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hanson_Rick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hart_Rocky.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hastings_Morlin.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hauschildt_Jack.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hayes_Mark.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Heaton_Ken.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Henderlong_Art.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hendryx_Charles.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hirschfeld_Jim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hoedel_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hojnacki_Mark.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Horrigan_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Hurley_Terry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Imes_Julian.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Jackson_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Jacobson_Jake.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Jarzembinski_Janet.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Jarzembinski_Paul.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Jennings_Dwight.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Johnson_Corey.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Johnson_Leroy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Jones_Brad.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Jones_Debbie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Jones_Don.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Keagy_Rick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Keefer_Bruce.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Keefer_Debbie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kennedy_Charlie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kill_Chuck.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kingsley_Robin.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Klein_Tom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Klem_Tom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kohl_Tina.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kraft_Stu.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kraut_David.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kravitz_Alan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Krom_Gloria.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kroppe_Cathe.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kunde_Jack.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Kutansky_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\LaNeve_Charlie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lang_Laura.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lauder_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Laureys_Lynn.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Laureys_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lavaro_Richard.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lee_Dave.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Leierzapf_Fred.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Leksell_Lee.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lenihan_Bob.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lesser_Jeff.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Levaro_Richard.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lewis_Sean.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Logan_Chris.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Longo_Nick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lopez_Eddie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lowry_Rob.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lueck_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lulek_Tony.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Lundgren_Scott.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\MacDonald_Jim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Magdanz_Mark.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Maki_Rick.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Malberg_Joe.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Malone_Tim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Marano_Gus.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Massara_Paul.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Mazujian_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Mazujian_Rebecca.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\McInnis_Andy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\McKniff_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\McNellis_Terry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Merlin_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Mihora_Janice.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Mihora_Terry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Millican_Dan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Mitchell_Mitch.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Mitchell_Ryan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Moffatt_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Morgan_Greg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Mullen_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Mundahl_Bruce.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Nagy_Zoltan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Nicolich_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Noffsinger_Jason.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Nola_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Norgard_Dale.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Norgard_Denise.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Oberg_Gary.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Oczak_Joe.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Odonnell_Sue.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Ottaway_Tom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Overhaug_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Oxnam_Rose.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Oxnam_Tom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Parker_Hugh.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Passoni_Joe.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Payne_Arch.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Pede_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Pennington_Rich.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Peters_Ed.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Peters_Saul.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Pizzitola_Dale.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Polak_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Purcell_Dennis.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Quarantino_Ron.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Rangno_Art.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Reed_Dan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Reingruber_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Reingruber_Tracy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Rischall_Mordy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Romac_Ron.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Romano_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Romeo_Peter.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Rossman_Judy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Rowe_William.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Sahl_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Sanders_Joe.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Santos_Vern.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schauer_Mark.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schmitt_Buzz.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schneck_Mary.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schneck_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schneiderman_Stan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schumacher_Michael.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schuttler_Ken.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schwartzberg_Yvette.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schweitzer_Jay.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Schwin_Paul.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Scott_Charlie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Searcy_Mike.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Seguin_Debbie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Selk_Jim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Sentowski_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Shaughnessy_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Sherby_Scott.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Skoneczka_Dennis.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Smith_Chuck.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Smith_JIm.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Spevak_Bill.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\St-Jules_Barbara.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\St-Jules_David.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Stafford_Wayne.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Steffes_Phil.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Stein_Alan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Stevens_Dave.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Stewart_Gary.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Stobbe_Terry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Stolze_Jeff.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Stroud_Greg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Sweetland_Doug.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Szpakowski_Ray.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Talacs_Jim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Talkington_Jack.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Taney_Kent.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Upchurch_Jeff.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Vaaler_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Vaughan_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Walder_Bill.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Ward_Jim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Ward_Tim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Watts_Jim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Weber_Larry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Webster_Bill.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Weems_Russell.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Weinenger_Harold.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Weiss_Herb.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Wescoe_Bill.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\West_Brad.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\West_Greg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\White_Larry.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Wlach_Mark.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Woehr_Charles.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Wolfe_Steve.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Wollack_Jim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Woolmington_John.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Yester_Jim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Young_Dennis.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\Zalewski_Paul.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
     <PackageReference Include="LINQPad.Runtime" Version="7.8.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Common\SBSSData.Softball.Common.csproj" />
+    <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Stats\SBSSData.Softball.Stats.csproj" />
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball\SBSSData.Softball.csproj" />
   </ItemGroup>
 

@@ -306,7 +306,10 @@ namespace SBSSData.Softball.Common
                 "An",
                 "To",
                 "From",
-                "The"
+                "The",
+                "At",
+                "And",
+                "Or"
             ];
 
             List<string> words = (name.NameToWords()).ToList();
@@ -336,12 +339,49 @@ namespace SBSSData.Softball.Common
             return (byteArray != null) ? Encoding.UTF8.GetString(byteArray, 0, byteArray.Length) : string.Empty;
         }
 
+        /// <summary>
+        /// Convert an array of bytes to a Base64 string.
+        /// </summary>
+        /// <param name="byteArray">The array of bytes.</param>
+        /// <returns>
+        /// The Base64 string if the <paramref name="byteArray"/> is not null; 
+        /// otherwise the empty string is returned
+        /// </returns>
         public static string ByteArrayToBase64String(this byte[] byteArray)
         {
             return (byteArray != null) ? Convert.ToBase64String(byteArray) : string.Empty;
         }
 
-        public static string FileToHtmlImageTag(this string filePath, int pixels = 0, string imageTypeName = "")
+        /// <summary>
+        /// Create an HTML image (<c>&lt;mg&gt;</c>) tag text from the byte data of the contents of the specified file.
+        /// </summary>
+        /// <remarks>
+        /// The create image tag using the data specification for the image which means rendering the image does not require
+        /// a HTML request. This is useful for create stand-alone files that have embedded images.
+        /// </remarks>
+        /// <param name="filePath">
+        /// The full file path of the image to use to create image tag.
+        /// </param>
+        /// <param name="pixels">
+        /// The number of pixels of the image to be displayed. This is done by inserting a <c>style</c>
+        /// attributes in the return tag text. The parameter and is not provided a value of 0 is used and no <c>style</c>
+        /// attribute is inserted in the returned tag text.
+        /// </param>
+        /// <param name="imageTypeName">
+        /// The type of the image and must be one of the values from the list:
+        /// <code language="cs">
+        /// List{string} imageTypes = ["jpg", "jpeg", "jpe", "bmp", "gif", "png"];
+        /// </code>
+        /// This parameter is optional and if not specified the file extension is used (and must one of the image types.
+        /// </param>
+        /// <returns>An image tag text or the empty string if it the file does not exist or the <paramref name="imageTypeName"/>
+        /// is not valid. for values of 175 for <paramref name="pixels"/> and <paramref name="imageTypeName"/> of "jpg", the
+        /// return image tag is
+        /// <code language="html">
+        /// <img style="175px;" src="data:image/jpg;base64,/9j/4AA.....Dr6/2Q=="/>
+        /// </code>
+        /// </returns>
+        public static string FileImageToHtml(this string filePath, int pixels = 0, string imageTypeName = "")
         {
             string imgTag = string.Empty;
             if (File.Exists(filePath))
@@ -364,6 +404,31 @@ namespace SBSSData.Softball.Common
                     }
                 }
             }
+            return imgTag;
+        }
+
+        /// <summary>
+        /// TODO: Complete this!
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="resourceName"></param>
+        /// <param name="pixels"></param>
+        /// <param name="imageTypeName"></param>
+        /// <returns></returns>
+        public static string EmbeddedImageResourceToHtml<T>(this string resourceName, int pixels = 0, string imageTypeName = "png")
+        {
+            string imgTag = string.Empty;
+            Assembly assembly = typeof(T).Assembly;
+            string[] names = assembly.GetManifestResourceNames();
+            string formattedResource = assembly.FormatResourceName(resourceName);
+            if (names.Contains(formattedResource))
+            {
+                byte[] resource = assembly.GetEmbeddedResourceAsBytes(formattedResource);
+                string base64 = resource.ByteArrayToBase64String();
+                string sizeStyle = pixels > 0 ? $" style=\"height:{pixels}px\"" : string.Empty;
+                imgTag = $"<img{sizeStyle} src=\"data:image/{imageTypeName};base64,{base64}\"/>";
+            }
+
             return imgTag;
         }
 
@@ -659,7 +724,7 @@ namespace SBSSData.Softball.Common
         /// <param name="assembly">The assembly in which the resource is embedded.</param>
         /// <param name="resourceName">The common resource name.</param>
         /// <returns>The formatted resource name: it is the assembly name followed by a '.' character and then the
-        /// resource name where spaces are replaced by underscores, back and forward slashes are replced by the
+        /// resource name where spaces are replaced by underscores, back and forward slashes are replaced by the
         /// '.' character. If the <paramref name="assembly"/> or <paramref name="resourceName"/> are null or empty,
         /// the empty string is returned.</returns>
         public static string FormatResourceName(this Assembly assembly, string resourceName)

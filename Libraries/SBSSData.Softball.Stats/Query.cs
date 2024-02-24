@@ -9,7 +9,7 @@ namespace SBSSData.Softball.Stats
     /// </summary>
     public class Query
     {
-        public static Dictionary<string, List<string>> validLeaguesDictionary = new();
+        private static Dictionary<string, List<string>> validLeaguesDictionary = [];
 
         private Query()
         {
@@ -22,6 +22,8 @@ namespace SBSSData.Softball.Stats
             validLeaguesDictionary = this.ValidLeagueDescriptions();
         }
 
+        public static Query Empty => new();
+
         public DataStoreContainer Container
         {
             get;
@@ -31,16 +33,23 @@ namespace SBSSData.Softball.Stats
         public LeaguesData DataStore => Container.DataStore;
 
 
-        public IEnumerable<LeagueDescription> LeagueDescriptions => DataStore.LeagueSchedules.Select(s => s.LeagueDescription);
+        public IEnumerable<LeagueDescription> GetLeagueDescriptions() => DataStore.LeagueSchedules.Select(s => s.LeagueDescription);
 
-        public IEnumerable<ScheduledGame> ScheduledGames => Container.Games;
+        public string GetSeason()
+        {
+            LeagueDescription league = GetLeagueDescriptions().First();
+            return $"{league.Season} {league.Year}";
+        }
+
+        public IEnumerable<ScheduledGame> ScheduledGames => Container.GetScheduledGames();
 
 
-        public IEnumerable<Game> PlayedGames => Container.Games.Where(s => s.IsComplete && !s.WasCancelled).Select(s => s.GameResults);
+        public IEnumerable<Game> GetPlayedGames() => Container.GetScheduledGames().Where(s => s.IsComplete && !s.WasCancelled).Select(s => s.GameResults);
 
-        public IEnumerable<Player> Players => PlayedGames.SelectMany(g => g.Teams)
-                                                         .SelectMany(t => t.Players)
-                                                         .OrderBy(p => p.Name);
+        public IEnumerable<Player> Players => GetPlayedGames().SelectMany(g => g.Teams)
+                                                              .SelectMany(t => t.Players)
+                                                              .OrderBy(p => p.Name);
+        public IEnumerable<string> GetPlayerNames() => Players.Select(p => p.Name).Distinct().OrderBy(p => p);
 
         public IEnumerable<PlayerStats> GetLeaguePlayers(string leagueCategory = "", string day = "")
         {
@@ -91,7 +100,7 @@ namespace SBSSData.Softball.Stats
             List<TeamSummaryStats> teamPlayersStats = [];
             foreach (IGrouping<string, Team> teamGroup in teamGroups)
             {
-                TeamSummaryStats teamSummary = new TeamSummaryStats(teamGroup.ToList());
+                TeamSummaryStats teamSummary = new(teamGroup.ToList());
                 teamPlayersStats.Add(teamSummary);
             }
 
@@ -218,7 +227,7 @@ namespace SBSSData.Softball.Stats
         private Dictionary<string, List<string>> ValidLeagueDescriptions()
         {
             Dictionary<string, List<string>> validLeagues = [];
-            foreach (LeagueDescription description in LeagueDescriptions)
+            foreach (LeagueDescription description in GetLeagueDescriptions())
             {
                 string category = description.LeagueCategory;
                 string day = description.LeagueDay;
@@ -255,8 +264,7 @@ namespace SBSSData.Softball.Stats
 
         public override string ToString()
         {
-            return $"{Container}\r\nNumber of Players: {Players.Select(p => p.Name).Distinct().Count()}";
+            return Container.ToString();
         }
-
     }
 }

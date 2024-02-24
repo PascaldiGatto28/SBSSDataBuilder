@@ -1,4 +1,6 @@
-﻿namespace SBSSData.Application.Support
+﻿using HtmlAgilityPack;
+
+namespace SBSSData.Application.Support
 {
     /// <summary>
     /// Support extensions and methods for applications when displaying information, particularly in Web pages and
@@ -6,7 +8,6 @@
     /// </summary>
     public static class Utilities
     {
-
         /// <summary>
         /// Returns a string representing the <see cref="Type"/> name.
         /// </summary>
@@ -99,6 +100,59 @@
             }
 
             return display;
+        }
+
+        /// <summary>
+        /// Returns a string appropriate for the number of times an item occurs.
+        /// </summary>
+        /// <param name="num">The number of times the item occurs.</param>
+        /// <param name="title">The text of the item.</param>
+        /// <returns>The <paramref name="num"/> and <paramref name="title"/> as a text string. If <c>num</c> is 0 or negative,
+        /// "no [title]s"; if <c>num</c> is 1, "one [title]", if <c>num</c> is any other value, "[num] [title]s" is returned.
+        /// </returns>
+        public static string NumDesc(this int num, string title)
+        {
+            string text;
+            switch (Math.Max(num, 0))
+            {
+                case 0:
+                {
+                    text = $"no {title}s";
+                    break;
+                }
+                case 1:
+                {
+                    text = $"one {title}";
+                    break;
+                }
+                default:
+                {
+                    text = $"{num} {title}s";
+                    break;
+                }
+            }
+
+            return text;
+        }
+
+        public static bool IsRootTableNode(this HtmlNode tableNode)
+        {
+            bool isRoot = false;
+            if (tableNode != null)
+            {
+`               isRoot = !tableNode.Ancestors("table").Any();
+            }
+
+            return isRoot;
+        }
+
+        public static HtmlNode ParentTableNode(this HtmlNode tableNode)
+        {
+        }
+
+        public static HtmlNode GetSiblingTable(this HtmlNode tableNode, bool nextSibling = true)
+        {
+
         }
 
     }

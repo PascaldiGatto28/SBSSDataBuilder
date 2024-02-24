@@ -26,9 +26,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.DataSt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Storage", "Libraries\SBSSData.Softball.Storage\SBSSData.Softball.Storage.csproj", "{C1729ECB-7106-461B-9977-04869C500694}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBSSData.Application.Samples", "Applications\SBSSData.Application.Samples\SBSSData.Application.Samples.csproj", "{A36362ED-4DFB-47C2-ADC3-C95EEBC49A91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.Samples", "Applications\SBSSData.Application.Samples\SBSSData.Application.Samples.csproj", "{A36362ED-4DFB-47C2-ADC3-C95EEBC49A91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBSSData.Application.Support", "Applications\SBSSData.Application.Support\SBSSData.Application.Support.csproj", "{8A87A88D-7505-405A-B479-409DC3CA4023}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.Support", "Applications\SBSSData.Application.Support\SBSSData.Application.Support.csproj", "{8A87A88D-7505-405A-B479-409DC3CA4023}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
