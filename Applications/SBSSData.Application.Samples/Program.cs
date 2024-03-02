@@ -8,6 +8,7 @@ namespace SBSSData.Application.Samples
     {
         private static void Main()
         {
+            /*
             string htmlOutput = @"D:\Users\Richard\AppData\Local\SBSSData-Application-Samples\HtmlOutput";
             string dataStorePath = @"TestData\LeaguesData.json";
             DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath);
@@ -18,7 +19,7 @@ namespace SBSSData.Application.Samples
             //CheckQueryResults query = new CheckQueryResults(dataStorePath);
 
 
-            using (HtmlGenerator generator = new(htmlOutput))
+            using (HtmlGenerator generator = new())
             {
                 //generator.Write(dsContainer.DataStore);
 
@@ -52,25 +53,26 @@ namespace SBSSData.Application.Samples
 
                 var reportLeaguePlayers = ReportLeaguePlayers(query, "Community", "Friday", generator);
                 IEnumerable<Player> players = query.GetLeaguePlayersSummary("Community", "Friday");
-                generator.Write(players, header: "List of player stats and summary for Friday Community Fall 2023");
+                generator.Write(players);
 
                 //generator.DumpHtml("TestResults.html");
-                generator.DumpHtml("TestResults.html");
+                generator.DumpHtml();
                 //new string[] { "A Summary of all Friday Community players", "Testing \"Summary of all Friday Community players\"" },
                 //new string[] { "Stats for players", "Test Results" });
 
             }
 
             dsContainer.Dispose();
+            */
         }
 
         public static CheckQueryResults<IEnumerable<Player>> ReportLeaguePlayers(Query queries, string leagueCategory, string day, HtmlGenerator generator)
         {
             IEnumerable<Player> players = queries.GetLeaguePlayers(leagueCategory, day);
             string info = $"Player stats for {day} {leagueCategory} Fall 2023";
-            generator.Write(players, $"List of {info}");
+            generator.Write(players);
             var leaguePlayers = CheckQueryResults<IEnumerable<Player>>.CheckResults(players);
-            generator.Write(leaguePlayers, "Test Results", info);
+            generator.Write(leaguePlayers);
             return leaguePlayers;
         }
 

@@ -43,18 +43,6 @@ namespace SBSSData.Softball.Stats
 
         public string Season => query.GetSeason();
 
-        ///// <summary>
-        ///// The HTML image tag using the data source specification, that is,
-        ///// <code language="html">
-        ///// "<img src=\"data:image/jpg;base64,[[data]]\" />
-        ///// </code>
-        ///// where "[[data]] is the base64 string representation of the byte array of the data representing the player photograph.
-        ///// </summary>
-        //public object ImageData
-        //{
-        //    get;
-        //    set;
-        //}
 
         /// <summary>
         /// Gets and sets the sequence of (<see cref="LeagueDescription"/>) leagues in which the player has played during the 

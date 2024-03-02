@@ -98,7 +98,7 @@ namespace SBSSData.Application.Support
                 generator.WriteRawHtml(GetIntroduction(width));
                 foreach (var dataDisplay in PlayerDataDisplays)
                 {
-                    generator.Write(dataDisplay.DisplaySummary(), ds => dataDisplay.Header);
+                    generator.WriteRootTable(dataDisplay.DisplaySummary(), ds => dataDisplay.Header);
                 }
 
                 html = generator.DumpHtml(collapseTo: collapseTo);

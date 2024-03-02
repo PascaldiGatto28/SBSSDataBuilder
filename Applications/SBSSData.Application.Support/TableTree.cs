@@ -1,4 +1,6 @@
-﻿using HtmlAgilityPack;
+﻿using System.Text;
+
+using HtmlAgilityPack;
 
 using SBSSData.Softball.Common;
 
@@ -13,6 +15,11 @@ namespace SBSSData.Application.Support
         public TableTree()
         {
             Root = null;
+        }
+
+        public TableTree(TableNode root)
+        {
+            Root = root;
         }
 
         public TableNode? Root
@@ -78,6 +85,29 @@ namespace SBSSData.Application.Support
             {
                 SetTableHeader(childTable, callback);
             }
+        }
+
+        public IEnumerable<TableNode> GetAllNodes(TableNode node)
+        {
+            List<TableNode> tableNodes = [];
+            tableNodes.Add(node);
+            foreach (TableNode childNode in node.ChildNodes)
+            {
+                tableNodes.AddRange(GetAllNodes(childNode));
+            }
+
+            return tableNodes;
+        }
+
+        public static string DisplayTree(TableNode node, StringBuilder sbTree)
+        {
+            sbTree.AppendLine(node.ToString());
+            foreach (TableNode childNode in node.ChildNodes)
+            {
+                DisplayTree(childNode, sbTree);
+            }
+
+            return sbTree.ToString();
         }
     }
 }

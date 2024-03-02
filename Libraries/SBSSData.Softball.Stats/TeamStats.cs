@@ -23,7 +23,7 @@ namespace SBSSData.Softball.Stats
         /// This subclass differs from the base class in that the list of <see cref="Player"/> objects is
         /// replaced by a list of <see cref="PlayerStats"/> objects, essentially adding computed stats to the
         /// <c>Player</c> objects. It also add a <c>PlayerStats</c> object to the <see cref="Team.Players"/> list
-        /// that is a summary of all players and represents the stats date for the team.
+        /// that is a summary of all players and represents the stats data for the team.
         /// <para>
         /// If <paramref name="team"/> is <c>null</c> an "empty" (all properties are default values) 
         /// instance is created.

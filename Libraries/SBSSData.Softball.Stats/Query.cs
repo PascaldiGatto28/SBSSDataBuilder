@@ -214,8 +214,8 @@ namespace SBSSData.Softball.Stats
         {
             LeagueSchedule leagueSchedule = LeagueSchedule.Empty();
             if (!string.IsNullOrEmpty(category) && !string.IsNullOrEmpty(day)
-                                                && validLeaguesDictionary.ContainsKey(category)
-                                                && validLeaguesDictionary[category].Contains(day))
+                                                && validLeaguesDictionary.TryGetValue(category, out List<string>? value)
+                                                && value.Contains(day))
             {
                 leagueSchedule = GetLeagueSchedules(category, day).Single();
             }

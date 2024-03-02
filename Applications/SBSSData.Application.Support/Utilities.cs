@@ -1,4 +1,6 @@
-﻿using HtmlAgilityPack;
+﻿using System.Text;
+
+using HtmlAgilityPack;
 
 namespace SBSSData.Application.Support
 {
@@ -135,25 +137,51 @@ namespace SBSSData.Application.Support
             return text;
         }
 
+        #region Utilities to help in parsing LINQPad generated HTML pages
         public static bool IsRootTableNode(this HtmlNode tableNode)
         {
             bool isRoot = false;
             if (tableNode != null)
             {
-`               isRoot = !tableNode.Ancestors("table").Any();
+                isRoot = !tableNode.Ancestors("table").Any();
             }
 
             return isRoot;
         }
 
-        public static HtmlNode ParentTableNode(this HtmlNode tableNode)
+        public static void AlterTableColumnHeader(HtmlNode tableNode, int headerIndex, string newHeaderText)
         {
+            List<HtmlNode> columnHeaders = tableNode.SelectNodes("./thead/tr[2]/th").ToList();
+            HtmlNode columnHeader = columnHeaders[headerIndex];
+            HtmlNode newHeader = HtmlNode.CreateNode(columnHeader.OuterHtml.Replace(columnHeader.InnerText, newHeaderText));
+            columnHeader.ParentNode.ReplaceChild(newHeader, columnHeader);
         }
 
-        public static HtmlNode GetSiblingTable(this HtmlNode tableNode, bool nextSibling = true)
+        public static string DisplayTree(TableNode node, StringBuilder sbTree)
         {
+            sbTree.AppendLine(node.ToString());
+            foreach (TableNode childNode in node.ChildNodes)
+            {
+                DisplayTree(childNode, sbTree);
+            }
 
+            return sbTree.ToString();
         }
+
+        public static TableTree BuildTree(HtmlNode tableRootNode)
+        {
+            TableTree tableTree = new();
+            TableNode rootTableNode = new(tableRootNode);
+
+            foreach (HtmlNode tableHtmlNode in tableRootNode.DescendantsAndSelf("table"))
+            {
+                TableNode tableNode = new(tableHtmlNode);
+                tableTree.Insert(tableNode);
+            }
+
+            return tableTree;
+        }
+        #endregion
 
     }
 }

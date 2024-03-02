@@ -62,7 +62,7 @@ namespace SBSSData.Application.Support
             int numberOfChildNodes = ChildNodes.Count;
             string parentId = Parent == null ? "No parent" : Parent.Id();
             return $"ID={Id()}; Parent ID={parentId}; Depth={Depth()}; Index={Index()}; " +
-                   $"Number of child nodes={numberOfChildNodes}\r\nHeader={Header().InnerText}";
+                   $"Number of child nodes={numberOfChildNodes}\r\nHeader={Header().InnerText.Trim()}";
         }
     }
 }

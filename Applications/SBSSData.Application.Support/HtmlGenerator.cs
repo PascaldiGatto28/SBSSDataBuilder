@@ -18,45 +18,13 @@ namespace SBSSData.Application.Support
             //TableObjects = [];
         }
 
-        //public HtmlGenerator(string? outputFolder = null) : this()
-        //{
-        //    OutputFolder = outputFolder ?? Path.GetTempPath();
-        //    Directory.CreateDirectory(OutputFolder);
-        //    Descriptions = [];
-        //    Headers = [];
-        //}
-
         public TextWriter Writer
         {
             get;
             init;
         }
 
-        //public string OutputFolder
-        //{
-        //    get;
-        //    set;
-        //}
-
-        //public List<string> Descriptions
-        //{
-        //    get;
-        //    set;
-        //}
-
-        //public List<string> Headers
-        //{
-        //    get;
-        //    set;
-        //}
-
-        //public Dictionary<Guid, object> TableObjects
-        //{
-        //    get;
-        //    init;
-        //}
-
-        public List<Func<TableNode, string>> TableNodeCallbacks
+        public List<Func<TableNode, string>?> TableNodeCallbacks
         {
             get;
             init;
@@ -74,23 +42,24 @@ namespace SBSSData.Application.Support
                 Information = text,
             };
 
-            //string writeHeader = !string.IsNullOrEmpty(header) ? header : displayObject.GetType().TypeToString();
-            Write(displayObject); //, description: description, header: writeHeader);
+            Writer.Write(displayObject); //, description: description, header: writeHeader);
         }
         public void WriteRawHtml(string text)
         {
             object displayObject = Util.RawHtml(text);
-            //Headers.Add(WebUtility.HtmlEncode(header));
             Writer.Write(displayObject);
         }
 
-        public void Write(object value, Func<TableNode, string>? callback = null)
+        public void Write(object value)
         {
             Writer.Write(value);
-            if (callback != null)
-            {
-                TableNodeCallbacks.Add(callback);
-            }
+        }
+
+        public void WriteRootTable(object value, Func<TableNode, string>? callback = null)
+        {
+            Writer.Write(value);
+            TableNodeCallbacks.Add(callback);
+
         }
 
         private static readonly string emptyDoc = """<html><body><span style="color:firebrick; font-size:1.50em; font-weight:bold;">This is an empty document; no tables were written.</span></body></html>""";
@@ -119,8 +88,7 @@ namespace SBSSData.Application.Support
 
                 if (pageTitle != null)
                 {
-                    // TODO: Allow styling of the title -- pass a HTML node or just the html???
-                    //HtmlNode title = HtmlNode.CreateNode($"<div>{pageTitle}</div>");
+                    // The page title is an HtmlNode, so can be any HTML and have any styling, not just text.
                     body.PrependChild(pageTitle);
                 }
 
@@ -129,42 +97,20 @@ namespace SBSSData.Application.Support
                 List<HtmlNode> rootTableS = [];
                 if ((tables != null) && (tables.Count != 0))
                 {
-                    #region Headers and description code is no longer supported. See callback.
-                    //for (int i = 0; i < Descriptions.Count; i++)
-                    //{
-                    //    string description = Descriptions[i];
-                    //    if (!string.IsNullOrEmpty(description))
-                    //    {
-                    //        HtmlNode table = tables.ElementAt(i);
-                    //        HtmlNode h1 = HtmlNode.CreateNode($"<h1 class=\"headingpresenter\">{description}</h1>");
 
-                    //        // TODO Fix this. It fails if there is no previous description I think!!!
-                    //        table.InsertBefore(h1, table);
-                    //        table.Attributes["class"].Remove();
-                    //        table.Attributes.Add("class", "headingpresenter");
-                    //    }
+                    // First right justify all the table column headers (th tags) so they are right-justified when the values 
+                    // are numeric (int or double). Also change the column to words, for example "BuildDate" becomes "Build Date".
+                    HtmlNodeCollection tableColumnHeaders = rootNode.SelectNodes("//table//tr//th");
+                    foreach (HtmlNode n in tableColumnHeaders)
+                    {
+                        string columnHeaderTitle = n.GetAttributeValue("title", string.Empty);
+                        if ((columnHeaderTitle == "System.Int32") || (columnHeaderTitle == "System.Double"))
+                        {
+                            n.Attributes.Add("style", "text-align:right");
+                        }
 
-                    //}
-
-                    //// If a headers are specified, use those.
-                    //HtmlNodeCollection currentHeaders = rootNode.SelectNodes("//table//tr/td[@class='typeheader']/a");
-
-                    //for (int i = 0; i < Headers.Count; i++)
-                    //{
-                    //    HtmlNode currentHeader = currentHeaders[i];
-                    //    //HtmlNode spanInHeader = currentHeader.SelectSingleNode("span");
-
-                    //    // TODO: Change the header text. This is going to be a problem, I think if there are nested tables
-                    //    string header = Headers[i];
-                    //    if (!string.IsNullOrEmpty(header))
-                    //    {
-                    //        html = currentHeader.OuterHtml;
-                    //        string text = html.Substring("</span>", "</a>", false, false);
-                    //        html = html.Replace(text, header);
-                    //        currentHeader.ParentNode.ReplaceChild(HtmlNode.CreateNode(html), currentHeader);
-                    //    }
-                    //}
-                    #endregion
+                        n.InnerHtml = n.InnerText.NameToTitle().Replace(" ", "&nbsp;");
+                    }
 
                     tables = rootNode.SelectNodes("//table");
                     int rootTableIndex = 0;
@@ -181,8 +127,9 @@ namespace SBSSData.Application.Support
                                 tableTree.Insert(tableNode);
                             }
 
-                            Func<TableNode, string> callback = TableNodeCallbacks[rootTableIndex++];
-                            if (tableTree.Root != null)
+                            // It is possible that no tables are specifying a callback, so don't do any thing.
+                            Func<TableNode, string>? callback = (TableNodeCallbacks.Count != 0) ? TableNodeCallbacks[rootTableIndex++] : null;
+                            if ((tableTree.Root != null) && (callback != null))
                             {
                                 TableTree.SetTableHeader(tableTree.Root, callback);
                             }
@@ -209,23 +156,7 @@ namespace SBSSData.Application.Support
                             table.RemoveChild(tableFooter);
                         }
                     }
-
-
-                    // Finally right justify all the table column headers (th tags) so they are right-justified when the values 
-                    // are numeric (int or double). Also change the column to words, for example "BuildDate" becomes "Build Date".
-                    HtmlNodeCollection tableColumnHeaders = rootNode.SelectNodes("//table//tr//th");
-                    foreach (HtmlNode n in tableColumnHeaders)
-                    {
-                        string columnHeaderTitle = n.GetAttributeValue("title", string.Empty);
-                        if ((columnHeaderTitle == "System.Int32") || (columnHeaderTitle == "System.Double"))
-                        {
-                            n.Attributes.Add("style", "text-align:right");
-                        }
-
-                        n.InnerHtml = n.InnerText.NameToTitle().Replace(" ", "&nbsp;");
-                    }
                 }
-
             }
 
             return rootNode.OuterHtml;
