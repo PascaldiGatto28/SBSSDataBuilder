@@ -408,7 +408,7 @@ namespace SBSSData.Softball.Common
         }
 
         /// <summary>
-        /// TODO: Complete this!
+        /// Returns an image embedded as a resource to an image tag having "data:image" source representing the image.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="resourceName"></param>

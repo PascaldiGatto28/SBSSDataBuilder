@@ -12,10 +12,6 @@ namespace SBSSData.Application.Support
         {
             Writer = LINQPad.Util.CreateXhtmlWriter(true, 6, false);
             TableNodeCallbacks = [];
-            //OutputFolder = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\SBSSData-Application-Samples\HtmlOutput");
-            //Descriptions = [];
-            //Headers = [];
-            //TableObjects = [];
         }
 
         public TextWriter Writer
@@ -55,11 +51,10 @@ namespace SBSSData.Application.Support
             Writer.Write(value);
         }
 
-        public void WriteRootTable(object value, Func<TableNode, string>? callback = null)
+        public void WriteRootTable(object value, Func<TableNode, string> callback)
         {
             Writer.Write(value);
             TableNodeCallbacks.Add(callback);
-
         }
 
         private static readonly string emptyDoc = """<html><body><span style="color:firebrick; font-size:1.50em; font-weight:bold;">This is an empty document; no tables were written.</span></body></html>""";
@@ -94,7 +89,7 @@ namespace SBSSData.Application.Support
 
                 // If tables is null, then no tables have been  written to the page.
                 HtmlNodeCollection tables = body.SelectNodes("//table");
-                List<HtmlNode> rootTableS = [];
+                //List<HtmlNode> rootTables = [];
                 if ((tables != null) && (tables.Count != 0))
                 {
 
@@ -112,7 +107,7 @@ namespace SBSSData.Application.Support
                         n.InnerHtml = n.InnerText.NameToTitle().Replace(" ", "&nbsp;");
                     }
 
-                    tables = rootNode.SelectNodes("//table");
+                    //tables = rootNode.SelectNodes("//table");
                     int rootTableIndex = 0;
                     foreach (HtmlNode table in tables)
                     {

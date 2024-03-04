@@ -74,12 +74,15 @@ namespace SBSSData.Application.Support
         public static void SetTableHeader(TableNode tableNode, Func<TableNode, string> callback)
         {
             HtmlNode header = tableNode.Header(); //table.SelectSingleNode("./thead/tr/td[@class='typeheader']/a");
-            string html = header.OuterHtml;
-            string text = html.Substring("</span>", "</a>", false, false);
-            string headerText = callback(tableNode);
+            if (header != null)
+            {
+                string html = header.OuterHtml;
+                string text = html.Substring("</span>", "</a>", false, false);
+                string headerText = callback(tableNode);
 
-            html = html.Replace(text, headerText);
-            header.ParentNode.ReplaceChild(HtmlNode.CreateNode(html), header);
+                html = html.Replace(text, headerText);
+                header.ParentNode.ReplaceChild(HtmlNode.CreateNode(html), header);
+            }
 
             foreach (TableNode childTable in tableNode.ChildNodes)
             {

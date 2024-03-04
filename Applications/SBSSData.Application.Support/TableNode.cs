@@ -29,7 +29,7 @@ namespace SBSSData.Application.Support
 
         public string Id() => TableHtmlNode.GetAttributeValue("id", Guid.NewGuid().ToString());
 
-        public HtmlNode Header() => TableHtmlNode.SelectSingleNode("./thead/tr/td[@class='typeheader']/a");
+        public HtmlNode Header() => TableHtmlNode.SelectSingleNode(".//a[@class='typeheader']");
 
         public int Depth() => TableHtmlNode.Ancestors("table").Count();
 

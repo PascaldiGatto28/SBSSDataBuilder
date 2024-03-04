@@ -1,5 +1,9 @@
-﻿using SBSSData.Application.Support;
+﻿using System.Diagnostics;
+
+using SBSSData.Application.LinqPadQuerySupport;
+using SBSSData.Application.Support;
 using SBSSData.Softball;
+using SBSSData.Softball.Common;
 using SBSSData.Softball.Stats;
 
 namespace SBSSData.Application.Samples
@@ -8,6 +12,8 @@ namespace SBSSData.Application.Samples
     {
         private static void Main()
         {
+            GTP();
+            //CheckHtml();
             /*
             string htmlOutput = @"D:\Users\Richard\AppData\Local\SBSSData-Application-Samples\HtmlOutput";
             string dataStorePath = @"TestData\LeaguesData.json";
@@ -83,5 +89,67 @@ namespace SBSSData.Application.Samples
         //    generator.Write(playerResults);
         //    Console.WriteLine(playerResults.ToString());
         //}
+
+        public static void CheckHtml()
+        {
+            string seasonText = "2024 Winter";
+            string season = seasonText.RemoveWhiteSpace();
+            string path = $@"J:\SBSSDataStore\{season}LeaguesData.json";
+            DataStoreContainer dsContainer = DataStoreContainer.Instance(path);
+            DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
+            //dsInfo.Dump();
+            Query query = new Query(dsContainer);
+
+            IEnumerable<Player> players = query.GetPlayedGames().Skip(25).First().Teams.First().Players;
+            string outputPath = @"D:\temp\junk\vsx.html";
+            string html = string.Empty;
+
+            using (HtmlGenerator generator = new HtmlGenerator())
+            {
+                generator.WriteRootTable(players, PlayersCallback);
+                html = generator.DumpHtml();
+            }
+
+            File.WriteAllText(outputPath, html);
+            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe", $"{outputPath}");
+
+            string outputBodyPath = outputPath.Replace("vsx.html", "vsxBody.html");
+            string body = html.Substring("<body>", "</body>", true, true);
+            File.WriteAllText(outputBodyPath, body);
+            Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", outputBodyPath);
+
+            dsContainer.Dispose();
+        }
+
+        public static Func<TableNode, string> PlayersCallback = (t) =>
+        {
+            string headerText = "Holy crap!, header is null";
+            if (t.Header() != null)
+            {
+                headerText = t.Header().InnerText;
+            }
+            Console.WriteLine($"Players header = {headerText}");
+            return headerText;
+        };
+
+        public static void GTP()
+        {
+            string seasonText = "2024 Winter";
+            string dsFolder = $@"J:\SBSSDataStore\";
+
+            GamesTeamPlayers gtp = new GamesTeamPlayers();
+            string html = gtp.BuildHtmlPage(seasonText, dsFolder);
+            //foreach (object value in gtp.Values)
+            //{
+            //    value.Dump();
+            //}
+
+            string folderName = @$"{dsFolder}Html Data\";
+            string fileName = "GamesTeamPlayers.html";
+            string htmlFilePath = $"{folderName}{fileName}";
+
+            File.WriteAllText(htmlFilePath, html);
+            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe", $"\"{htmlFilePath}\"");
+        }
     }
 }

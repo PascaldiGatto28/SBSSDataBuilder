@@ -1,0 +1,489 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <style style="text/css">
+
+    * {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    font-size: 100%;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+    margin: 0.2em 0 0.05em;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    }
+
+    i, em {
+    font-style: italic;
+    }
+
+    body {
+    margin: 0.5em;
+    font-family: Segoe UI, Verdana, sans-serif;
+    font-size: 1em;
+    background: rgba(255, 255, 255, 1);
+    }
+
+    pre, code, .fixedfont {
+    font-family: Consolas, monospace;
+    font-size: 10pt;
+    }
+
+    a, a:visited {
+    text-decoration: none;
+    font-family: Segoe UI Semibold, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    }
+
+    a:hover, a:visited:hover {
+    text-decoration: underline;
+    }
+
+    span.hex {
+    color: rgba(200, 30, 250, 1);
+    font-family: Consolas, monospace;
+    margin-top: 1px;
+    }
+
+    span.hex::before {
+    content: " 0x";
+    color: rgba(200, 200, 200, 1);
+    }
+
+    table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 2px solid rgba(76, 116, 178, 1);
+    margin: 0.3em 0.1em 0.2em;
+    }
+
+    table.limit {
+    border-bottom-color: rgba(181, 97, 114, 1);
+    }
+
+    table.expandable {
+    border-bottom-style: dashed;
+    }
+
+    td, th {
+    vertical-align: top;
+    border: 1px solid rgba(187, 187, 187, 1);
+    margin: 0;
+    }
+
+    th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    }
+
+    th[scope="row"] {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    }
+
+    th {
+    padding: 0.05em 0.3em 0.15em;
+    text-align: left;
+    background-color: rgba(221, 221, 221, 1);
+    border: 1px solid rgba(119, 119, 119, 1);
+    font-size: 0.95em;
+    font-family: Segoe UI Semibold, sans-serif;
+    font-weight: bold;
+    }
+
+    th.private {
+    font-family: Segoe UI;
+    font-weight: normal;
+    font-style: italic;
+    }
+
+    td.private {
+    background: rgba(244, 244, 238, 1);
+    }
+
+    td.private table {
+    background: rgba(255, 255, 255, 1);
+    }
+
+    td, th.member {
+    padding: 0.1em 0.3em 0.2em;
+    position: initial;
+    }
+
+    tr.repeat>th {
+    font-size: 90%;
+    font-family: Segoe UI Semibold, sans-serif;
+    border: none;
+    background-color: rgba(238, 238, 238, 1);
+    color: rgba(153, 153, 153, 1);
+    padding: 0 0.2em 0.15em 0.3em;
+    }
+
+    td.typeheader {
+    font-size: 0.95em;
+    background-color: rgba(76, 116, 178, 1);
+    color: rgba(255, 255, 255, 1);
+    padding: 0 0.3em 0.25em 0.2em;
+    }
+
+    td.n {
+    text-align: right;
+    }
+
+    a.typeheader, a:link.typeheader, a:visited.typeheader, a:link.extenser, a:visited.extenser {
+    font-family: Segoe UI Semibold, sans-serif;
+    font-size: 0.95em;
+    font-weight: bold;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 1);
+    margin-bottom: -0.1em;
+    float: left;
+    }
+
+    a.difheader, a:link.difheader, a:visited.difheader {
+    color: rgba(255, 255, 136, 1);
+    }
+
+    a.extenser, a:link.extenser, a:visited.extenser {
+    margin: 0 0 0 0.3em;
+    padding-left: 0.5em;
+    padding-right: 0.3em;
+    }
+
+    a:hover.extenser {
+    text-decoration: none;
+    }
+
+    span.extenser {
+    font-size: 1.1em;
+    line-height: 0.8;
+    }
+
+    span.cyclic {
+    padding: 0 0.2em 0 0;
+    margin: 2px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.5em;
+    line-height: 0;
+    vertical-align: middle;
+    }
+
+    .arrow-up, .arrow-down {
+    display: inline-block;
+    margin: 0 0.3em 0.15em 0.1em;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    }
+
+    .arrow-up {
+    border-left: 0.35em solid rgba(0, 0, 0, 0);
+    border-right: 0.35em solid rgba(0, 0, 0, 0);
+    border-bottom: 0.35em solid rgba(255, 255, 255, 1);
+    }
+
+    .arrow-down {
+    border-left: 0.35em solid rgba(0, 0, 0, 0);
+    border-right: 0.35em solid rgba(0, 0, 0, 0);
+    border-top: 0.35em solid rgba(255, 255, 255, 1);
+    }
+
+    table.group {
+    border: none;
+    margin: 0;
+    }
+
+    td.group {
+    border: none;
+    padding: 0 0.1em;
+    }
+
+    div.spacer {
+    margin: 0.6em 0;
+    }
+
+    div.headingpresenter {
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-left: 0.17em dashed rgba(17, 170, 85, 1);
+    margin: 0.8em 0 1em 0.1em;
+    padding-left: 0.5em;
+    }
+
+    div.headingcontinuation {
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-left: 0.2em dotted rgba(17, 170, 85, 1);
+    margin: -0.4em 0 1em 0.1em;
+    padding-left: 0.5em;
+    }
+
+    h1.headingpresenter {
+    border: none;
+    padding: 0 0 0.3em;
+    margin: 0;
+    font-family: Segoe UI Semibold, Arial;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(32, 144, 32, 1);
+    font-size: 1.1em;
+    line-height: 1;
+    }
+
+    td.summary {
+    background-color: rgba(218, 234, 250, 1);
+    color: rgba(0, 0, 0, 1);
+    font-size: 0.95em;
+    padding: 0.05em 0.3em 0.2em;
+    }
+
+    tr.columntotal>td {
+    background-color: rgba(238, 238, 238, 1);
+    font-family: Segoe UI Semibold, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 0.95em;
+    color: rgba(76, 116, 178, 1);
+    text-align: right;
+    }
+
+    .error>table {
+    border-color: rgba(181, 97, 114, 1);
+    }
+
+    .error>table>thead>tr>td.summary {
+    background-color: rgba(244, 222, 227, 1);
+    color: rgba(0, 0, 0, 1);
+    }
+
+    .error>table>thead>tr>td.typeheader {
+    background-color: rgba(181, 97, 114, 1);
+    }
+
+    span.graphbar {
+    background: rgba(218, 234, 250, 1);
+    color: rgba(218, 234, 250, 1);
+    padding-bottom: 1px;
+    margin-left: -0.2em;
+    margin-right: 0.2em;
+    }
+
+    a.graphcolumn, a:link.graphcolumn, a:visited.graphcolumn {
+    color: rgba(76, 116, 178, 1);
+    text-decoration: none;
+    font-weight: bold;
+    font-family: Arial;
+    font-size: 1em;
+    line-height: 1;
+    letter-spacing: -0.2em;
+    margin-left: 0.15em;
+    margin-right: 0.2em;
+    cursor: pointer;
+    }
+
+    a.collection, a:link.collection, a:visited.collection {
+    color: rgba(32, 144, 32, 1);
+    }
+
+    a.reference, a:link.reference, a:visited.reference {
+    color: rgba(0, 128, 209, 1);
+    }
+
+    span.meta, span.null {
+    color: rgba(32, 144, 32, 1);
+    }
+
+    span.warning {
+    color: rgba(255, 0, 0, 1);
+    }
+
+    span.false {
+    color: rgba(136, 136, 136, 1);
+    }
+
+    span.true {
+    font-weight: bold;
+    }
+
+    .highlight {
+    background: rgba(255, 255, 136, 1);
+    }
+
+    code.xml b {
+    color: rgba(0, 0, 255, 1);
+    font-weight: normal;
+    }
+
+    code.xml i {
+    color: rgba(165, 42, 42, 1);
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    code.xml em {
+    color: rgba(255, 0, 0, 1);
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    span.cc {
+    background: rgba(102, 102, 102, 1);
+    color: rgba(255, 255, 255, 1);
+    margin: 0 1.5px;
+    padding: 0 1px;
+    font-family: Consolas, monospace;
+    border-radius: 3px;
+    }
+
+    ol, ul {
+    margin: 0.7em 0.3em;
+    padding-left: 2.5em;
+    }
+
+    li {
+    margin: 0.3em 0;
+    }
+
+    .difadd {
+    background: rgba(163, 243, 163, 1);
+    border: 1px solid rgba(136, 216, 136, 1);
+    }
+
+    .difremove {
+    background: rgba(255, 200, 200, 1);
+    border: 1px solid rgba(232, 179, 179, 1);
+    }
+
+    .rendering {
+    font-style: italic;
+    color: rgba(165, 42, 42, 1);
+    }
+
+    p.scriptLog {
+    color: rgba(170, 119, 119, 1);
+    background: rgba(248, 246, 246, 1);
+    font-family: Consolas, monospace;
+    font-size: 9pt;
+    padding: 0.1em 0.3em;
+    }
+
+    {
+    display: none;
+    }
+
+    input, textarea, button, select {
+    font-family: Segoe UI;
+    font-size: 1em;
+    padding: 0.2em;
+    }
+
+    button {
+    padding: 0.2em 0.4em;
+    }
+
+    input, textarea, select {
+    margin: 0.15em 0;
+    }
+
+    input[type="checkbox"], input[type="radio"] {
+    margin: 0 0.4em 0 0;
+    height: 0.9em;
+    width: 0.9em;
+    }
+
+    input[type="radio"]:focus, input[type="checkbox"]:focus {
+    outline: 1px dotted rgba(255, 0, 0, 1);
+    }
+
+    .checkbox-label {
+    vertical-align: middle;
+    position: relative;
+    bottom: 0.07em;
+    margin-right: 0.5em;
+    }
+
+    fieldset {
+    margin: 0 0.2em 0.4em 0.1em;
+    border: 1pt solid rgba(170, 170, 170, 1);
+    padding: 0.1em 0.6em 0.4em;
+    }
+
+    legend {
+    padding: 0.2em 0.1em;
+    }
+
+    tr.columntotal {
+    display: none;
+    }
+</style>
+</head>
+<body>
+    <div class="IntroContent" style="font-size:100%;">
+        <h2 style="font-weight:500; color:firebrick;">Games Results, Team and Players Stats</h2>
+        <div style="font-size:1.25em; margin-bottom:10px;">
+            The page is a preview and preliminary version of the game results from the 9 Winter 2024 leagues. The first table,
+            <span style="font-style:italic">Data Store Information</span>, is a summary of the data store (database) file statistics
+            from this season. It is
+            updated every weekday at 8:30 PM and reflects any changes in the completed (played or cancelled) games.
+            <div id="more" style="font-size: .90em; color: #4C74BC; font-weight:500; cursor: pointer;" onclick="toggleVisibility('moreInfo')">More &darr; ...</div>
+        </div>
+        
+        <div id="moreInfo" style="font-size: 1.25em; margin-bottom: 10px; display:none">
+            <div style="margin-bottom: 10px;">
+                Following are tables for each of the leagues. Within each league table, there are tables for each played game containing
+                the scheduled game information and table for each of the teams in the game. With each of the team tables is yet another
+                table providing stats for each player and summary of all team players. The players included are just those players who
+                played in this game, which can be
+                be non-roster (substitute) players. The summary team data is constructed from all player data.
+            </div>
+            <div style="margin-bottom: 10px;">
+                <span style="color:#4C74BC; font-weight:500;">
+                    The tables can be collapsed or expanded by clicking anywhere on the text within the table headers.
+                </span>
+                This page is a totally static HTML page and makes no server requests and places neither cookies nor any information on your
+                computer or in your browser. It is totally safe.
+            </div>
+            <div style="margin-bottom: 10px;">
+                Again, these tables are preliminary, but should give you idea of how the data can be presented. Expect to see more
+                complete versions that include summaries and comparison of teams and players. Data for last year's Fall and Summer
+                seasons are available. Ultimately, if there is interest, a complete desktop browser site will be available to
+                investigate all the data using you own searches. Any thoughts, suggestions or ideas are appreciated and can be forwarded to
+                Pascal.diGatto@Outlook.com.
+            </div>
+        </div>
+
+    <script type="text/javascript">
+        function toggleVisibility(id)
+        {
+            var sourceEl = document.getElementById("more");
+            var div = document.getElementById(id);
+            if (div.style.display === 'block')
+            {
+                div.style.display = 'none';
+                sourceEl.innerText = 'More ↓ ...';
+                
+            }
+            else
+            {
+                div.style.display = 'block';
+                sourceEl.innerText = 'Less ↑ ...';
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>

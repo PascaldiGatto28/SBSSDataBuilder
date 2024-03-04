@@ -7,10 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="GamesTeamPlayersIntro.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="GamesTeamPlayersIntro.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Common\SBSSData.Softball.Common.csproj" />
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Stats\SBSSData.Softball.Stats.csproj" />
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball\SBSSData.Softball.csproj" />
     <ProjectReference Include="..\SBSSData.Application.Support\SBSSData.Application.Support.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

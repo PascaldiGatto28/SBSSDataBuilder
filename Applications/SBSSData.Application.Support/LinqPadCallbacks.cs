@@ -9,7 +9,6 @@ namespace SBSSData.Application.Support
     /// </summary>
     public static class LinqPadCallbacks
     {
-
         public static Func<TableNode, string> DsInfoCallback = (t) => $"Data Store Information"; // &mdash; [Table ID={t.Id()}; Depth,Index=({t.Depth()},{t.Index()})]";
         public static Func<TableNode, string> GamesCallback = (t) =>
         {
@@ -23,7 +22,8 @@ namespace SBSSData.Application.Support
                     int numGames = tableHtmlNode.SelectNodes("./tbody/tr").Count;
                     HtmlNode gameInfo = tableHtmlNode.SelectSingleNode("./tbody//table/tbody");
                     string league = gameInfo.SelectNodes("./tr")[4].SelectSingleNode("./td").InnerText;
-                    header = $"Game Results Data for the {league} Games";
+                    string title = $"{league} Game";
+                    header = $"Game Results Data for the {numGames.NumDesc(title)}";
                     break;
                 }
                 case 1:
@@ -90,6 +90,5 @@ namespace SBSSData.Application.Support
 
             return header;
         };
-
     }
 }

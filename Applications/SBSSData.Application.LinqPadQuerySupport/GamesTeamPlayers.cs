@@ -1,5 +1,7 @@
 ﻿// Ignore Spelling: Linq
 
+using System.Reflection;
+
 using HtmlAgilityPack;
 
 using SBSSData.Application.Support;
@@ -25,12 +27,17 @@ namespace SBSSData.Application.LinqPadQuerySupport
             set;
         }
 
-        public string BuildHtmlPage(string seasonText, string dataStoreFolder)
+        public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
             string text = seasonText;
             string season = seasonText.RemoveWhiteSpace();
             string changedHtml = string.Empty;
 
+
+            Assembly assembly = typeof(GamesTeamPlayers).Assembly;
+            string resName = assembly.FormatResourceName("GamesTeamPlayersIntro.html");
+            byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
+            string html = bytes.ByteArrayToString();
 
             string dataStorePath = $@"{dataStoreFolder}{season}LeaguesData.json";
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
@@ -39,7 +46,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                 DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
 
-
                 IEnumerable<Game> playedGames = query.GetPlayedGames();
                 IEnumerable<string> leagueNames = query.GetLeagueDescriptions().OrderBy(d => d.LeagueCategory).Select(d => $"{d.LeagueDay} {d.LeagueCategory}");
 
@@ -47,6 +53,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 {
                     generator.WriteRootTable(dsInfo, LinqPadCallbacks.DsInfoCallback);
                     Values.Add(dsInfo);
+                    if (callback != null)
+                    {
+                        callback(dsInfo);
+                    }
 
                     foreach (string leagueName in leagueNames)
                     {
@@ -59,9 +69,15 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                         generator.WriteRootTable(games, LinqPadCallbacks.GamesCallback);
                         Values.Add(games);
+                        if (callback != null)
+                        {
+                            callback(games);
+                        }
                     }
 
-                    HtmlNode title = HtmlNode.CreateNode("""<span style="color:firebrick; font-size:1.25em; font-weight:500;">Games, Teams and Players</span>""");
+                    //HtmlNode title = HtmlNode.CreateNode("""<span style="color:firebrick; font-size:1.25em; font-weight:500;">Games, Teams and Players</span>""");
+                    string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
+                    HtmlNode title = HtmlNode.CreateNode(htmlNode);
                     changedHtml = generator.DumpHtml(pageTitle: title, collapseTo: 2);
                 }
             }
