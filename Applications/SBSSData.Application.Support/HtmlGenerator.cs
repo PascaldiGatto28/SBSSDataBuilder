@@ -51,7 +51,7 @@ namespace SBSSData.Application.Support
             Writer.Write(value);
         }
 
-        public void WriteRootTable(object value, Func<TableNode, string> callback)
+        public void WriteRootTable(object? value, Func<TableNode, string>? callback)
         {
             Writer.Write(value);
             TableNodeCallbacks.Add(callback);

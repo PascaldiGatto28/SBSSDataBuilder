@@ -12,7 +12,8 @@ namespace SBSSData.Application.Samples
     {
         private static void Main()
         {
-            GTP();
+            L2HTML();
+            //GTP();
             //CheckHtml();
             /*
             string htmlOutput = @"D:\Users\Richard\AppData\Local\SBSSData-Application-Samples\HtmlOutput";
@@ -146,6 +147,22 @@ namespace SBSSData.Application.Samples
 
             string folderName = @$"{dsFolder}Html Data\";
             string fileName = "GamesTeamPlayers.html";
+            string htmlFilePath = $"{folderName}{fileName}";
+
+            File.WriteAllText(htmlFilePath, html);
+            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe", $"\"{htmlFilePath}\"");
+        }
+
+        public static void L2HTML()
+        {
+            string seasonText = "2024 Winter";
+            string dsFolder = $@"J:\SBSSDataStore\";
+
+            LogSessionsToHtml ls2Html = new LogSessionsToHtml();
+            string html = ls2Html.BuildHtmlPage(seasonText, dsFolder, null);
+
+            string folderName = @$"{dsFolder}Html Data\";
+            string fileName = "LogSessions.html";
             string htmlFilePath = $"{folderName}{fileName}";
 
             File.WriteAllText(htmlFilePath, html);
