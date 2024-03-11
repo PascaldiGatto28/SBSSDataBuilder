@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3B88A07C-B55F-479A-8E70-E192B2332121}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		index.html = index.html
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Logging", "Libraries\SBSSData.Softball.Logging\SBSSData.Softball.Logging.csproj", "{3F424CFB-59D7-45C2-B8F3-A03A33FCC0B7}"
