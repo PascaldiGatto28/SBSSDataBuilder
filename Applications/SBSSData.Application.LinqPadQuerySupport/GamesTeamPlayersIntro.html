@@ -430,16 +430,20 @@
     display: none;
     }
 </style>
+    
 </head>
 <body>
     <div class="IntroContent" style="font-size:100%;">
-        <h2 style="font-weight:500; color:firebrick;">Games Results, Team and Players Stats</h2>
+        <h2 style="font-weight:500; color:firebrick;">
+            Games Results, Team and Players Stats
+        </h2>
+        
         <div style="font-size:1.25em; margin-bottom:10px;">
             The page is a preview and preliminary version of the game results from the 9 Winter 2024 leagues. The first table,
             <span style="font-style:italic">Data Store Information</span>, is a summary of the data store (database) file statistics
             from this season. It is
             updated every weekday at 8:30 PM and reflects any changes in the completed (played or cancelled) games.
-            <div id="more" style="font-size: .90em; color: #4C74BC; font-weight:500; cursor: pointer;" onclick="toggleVisibility('moreInfo')">More &darr; ...</div>
+            <div id="more" style="font-size: .95em; color: #4C74BC; font-weight:600; cursor: pointer;" onclick="toggleVisibility('moreInfo')">More &darr; ...</div>
         </div>
         
         <div id="moreInfo" style="font-size: 1.25em; margin-bottom: 10px; display:none">
@@ -482,6 +486,123 @@
                 div.style.display = 'block';
                 sourceEl.innerText = 'Less ↑ ...';
             }
+        }
+
+        function collapseTable(level)
+        {
+            var tables = document.getElementsByTagName("TABLE");
+            for (i = 0; i < tables.length; i++) {
+                var table = tables[i];
+                if (table == null) {
+                    continue;
+                }
+                var updown = document.getElementById(table.id + 'ud');
+                if (updown == null) {
+                    continue
+                }
+
+                var collapse = updown.className == "arrow-up";
+                var depth = updown.attributes["depth"].value;
+                if ((depth >= level) && collapse) {
+                    updown.className = "arrow-down";
+                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum')) {
+
+                        table.tHead.rows[1].style.display = 'none';
+                    }
+
+                    table.querySelector("tbody").style.display = "none";
+                }
+                else ((depth < level) && !collapse)
+                {
+                    updown.className = "arrow-up";
+                    if ((table.tHead.rows.length == 2) && !table.tHead.rows[1].id.startsWith('sum')) {
+
+                        table.tHead.rows[1].style.display = '';
+                    }
+
+                    table.querySelector("tbody").style.display = "none";
+                    table.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest'
+                    });
+                }
+            }
+        }
+
+        function viewAll(expandAll) {
+            var tables = document.getElementsByTagName("TABLE");
+            for (i = 0; i < tables.length; i++) {
+                var table = tables[i];
+                if (table == null) {
+                    continue;
+                }
+                var updown = document.getElementById(table.id + 'ud');
+                if (updown == null) {
+                    continue
+                }
+
+                if (expandAll) {
+                    //var expand = (updown.className == "arrow-down")
+                    //updown.className = expand ? 'arrow-up' : 'arrow-down';
+                    updown.className = 'arrow-up';
+                    //console.info("Viewing table " + table.id + " -- Expanding is " + expand);
+
+                    //table.style.borderBottomStyle = expand ? 'solid' : 'dashed';
+                    table.style.borderBottomStyle = 'solid';
+                    if (table.rows.length < 2 || table.tBodies.length == 0) {
+                        continue;
+                    }
+
+                    table.tBodies[0].style.display = ''; // expand ? '' : 'none';
+                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                        table.tHead.rows[1].style.display = ''; // expand ? '' : 'none';
+                    //if (table.tFoot != null)
+                    //    table.tFoot.style.display = expand ? '' : 'none';
+                }
+                else {
+                    //var collapse = (updown.className == "arrow-up")
+                    updown.className = 'arrow-down'; // collapse ? 'arrow-down' : 'arrow-up';
+                    //console.info("Viewing table " + table.id + " -- collapsing is " + collapse);
+
+                    table.style.borderBottomStyle = 'dashed'; // collapse ? 'dashed' : 'solid';
+                    if (table.rows.length < 2 || table.tBodies.length == 0) {
+                        continue;
+                    }
+
+                    table.tBodies[0].style.display = 'none'; // collapse ? 'none' : '';
+                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                        table.tHead.rows[1].style.display = 'none'; // collapse ? 'none' : '';
+                    if (table.tFoot != null)
+                        table.tFoot.style.display = 'none'; // collapse ? 'none' : '';
+                }
+            }
+
+            //if (expand)
+            //    table.scrollIntoView({
+            //        behavior: 'smooth',
+            //        block: 'nearest'
+            //    });
+            return false;
+        }
+
+        function getTableNestingLevel(element)
+        {
+            console.info("Checking nesting level for " + element.id);
+            let nestingLevel = 0;
+            let currentElement = element;
+
+            while (currentElement.parentElement)
+            {
+                console.info("Parent element is " + currentElement.parentElement.tagName)
+                if (currentElement.parentElement.tagName === 'TABLE')
+                {
+                    nestingLevel++;
+                }
+
+                currentElement = currentElement.parentElement;
+            }
+
+            return nestingLevel;
         }
     </script>
     </div>

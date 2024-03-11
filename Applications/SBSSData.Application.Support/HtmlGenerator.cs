@@ -59,7 +59,7 @@ namespace SBSSData.Application.Support
 
         private static readonly string emptyDoc = """<html><body><span style="color:firebrick; font-size:1.50em; font-weight:bold;">This is an empty document; no tables were written.</span></body></html>""";
 
-        public string DumpHtml(HtmlNode? pageTitle = null, int collapseTo = 1)
+        public string DumpHtml(HtmlNode? pageTitle = null, string cssStyles = "", int collapseTo = 1)
         {
             string? docHtml = Writer?.ToString();
             HtmlNode rootNode = HtmlNode.CreateNode(emptyDoc);
@@ -73,9 +73,13 @@ namespace SBSSData.Application.Support
 
                 // First add a CSS style so that column totals are not displayed.
                 HtmlNode style = rootNode.SelectSingleNode("//style");
-                string html = style.InnerHtml + "tr.columntotal {\r\nvisibility:none;\r\n}\r\n";
-                style.InnerHtml = html;
+                string html = style.InnerHtml + "tr.columntotal {\r\ndisplay:none;\r\n}\r\n";
+                if (!string.IsNullOrEmpty(cssStyles))
+                {
+                    html += cssStyles;
+                }
 
+                style.InnerHtml = html;
 
                 // Now if a description is specified, create the heading presenter container and include in the
                 // document HTML.
@@ -132,12 +136,12 @@ namespace SBSSData.Application.Support
 
                         // Now collapse all tables whose depth is greater than or equal to the collapseTo parameter
                         int nestingLevel = GetTableNestingLevel(table);
+                        HtmlNode span = table.SelectSingleNode("thead/tr/td/a/span");
                         if (nestingLevel >= collapseTo)
                         {
-                            HtmlNode span = table.SelectSingleNode("thead/tr/td/a/span");
                             span.Attributes["class"].Value = "arrow-down";
-                            HtmlNode tableTBody = table.SelectSingleNode("tbody");
-                            tableTBody.Attributes.Add("style", "display:none");
+                            HtmlNode tableTbody = table.SelectSingleNode("tbody");
+                            tableTbody.Attributes.Add("style", "display:none");
                             HtmlNode columnHeaders = table.SelectSingleNode("thead/tr[2]");
 
                             // Some tables have just one header, and it is not represented in a row.
@@ -150,6 +154,13 @@ namespace SBSSData.Application.Support
                         {
                             table.RemoveChild(tableFooter);
                         }
+
+                        // Finally, put TableNode information in the TableNode.TableHtmlNode so that it is available to
+                        // the code (script) in the finally HTML document.
+
+                        TableNode node = new(table);
+                        span.Attributes.Add("depth", node.Depth().ToString());
+                        span.Attributes.Add("index", node.Index().ToString());
                     }
                 }
             }

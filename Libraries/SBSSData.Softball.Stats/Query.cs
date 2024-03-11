@@ -76,7 +76,7 @@ namespace SBSSData.Softball.Stats
         {
             IEnumerable<PlayerStats> leaguePlayers = GetLeaguePlayers(leagueCategory, day);
             IEnumerable<LeagueSchedule> leagueSchedules = GetLeagueSchedules(leagueCategory, day);
-            string summaryName = leagueSchedules.Select(s => s.LeagueDescription).ToString<LeagueDescription>("\r\n");
+            string summaryName = leagueSchedules.Select(s => $"{s.LeagueDescription.ToShortString()} Totals").ToString("\r\n");
             int numGames = leagueSchedules.SelectMany(l => l.ScheduledGames).Where(s => s.IsComplete && !s.WasCancelled).Count();
 
             PlayerStats summaryStats = new(GetSummaryData(leaguePlayers, summaryName))

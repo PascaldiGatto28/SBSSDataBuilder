@@ -3,11 +3,11 @@ using SBSSData.Softball.Stats;
 
 namespace SBSSData.Application.Support
 {
-    public record DataStoreInformation(string BuildDate,
+    public record DataStoreInformation(string DateOfLastUpdate,
                                        string NumberOfLeagues,
-                                       string DataStorePath,
+                                       string DataStoreFilePath,
                                        string DataStoreSize,
-                                       string NumberOfGames,
+                                       string NumberOfScheduledGames,
                                        string GamesCompleted,
                                        string GamesCancelled,
                                        string GamesPlayed,

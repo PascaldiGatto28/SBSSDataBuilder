@@ -45,13 +45,14 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 Query query = new Query(dsContainer);
 
                 DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
+                string dsInfoHeaderStyle = "font-size:1.25em;  background-color:#d62929;";
 
                 IEnumerable<Game> playedGames = query.GetPlayedGames();
                 IEnumerable<string> leagueNames = query.GetLeagueDescriptions().OrderBy(d => d.LeagueCategory).Select(d => $"{d.LeagueDay} {d.LeagueCategory}");
 
                 using (HtmlGenerator generator = new HtmlGenerator())
                 {
-                    generator.WriteRootTable(dsInfo, LinqPadCallbacks.DsInfoCallback);
+                    generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
                     Values.Add(dsInfo);
                     if (callback != null)
                     {

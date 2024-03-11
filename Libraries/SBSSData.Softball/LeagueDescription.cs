@@ -153,6 +153,11 @@ namespace SBSSData.Softball
             return $"{LeagueDay} {LeagueCategory} {Season} {Year}";
         }
 
+        public string ToShortString()
+        {
+            return $"{LeagueDay} {LeagueCategory}";
+        }
+
         /// <summary>
         /// Overrides the default <see cref="Object.Equals(object?)"/> method.
         /// </summary>

@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 
+using LINQPad;
+
 using SBSSData.Application.LinqPadQuerySupport;
 using SBSSData.Application.Support;
 using SBSSData.Softball;
@@ -12,8 +14,10 @@ namespace SBSSData.Application.Samples
     {
         private static void Main()
         {
-            L2HTML();
-            //GTP();
+            //SimpleTestHtml();
+            //TestTableCode();
+            //L2HTML();
+            GTP();
             //CheckHtml();
             /*
             string htmlOutput = @"D:\Users\Richard\AppData\Local\SBSSData-Application-Samples\HtmlOutput";
@@ -145,8 +149,8 @@ namespace SBSSData.Application.Samples
             //    value.Dump();
             //}
 
-            string folderName = @$"{dsFolder}Html Data\";
-            string fileName = "GamesTeamPlayers.html";
+            string folderName = @"D:\Temp\junk\Testing Table Generation\"; // @$"{ dsFolder}Html Data\";
+            string fileName = "vsGamesTeamPlayers.html";
             string htmlFilePath = $"{folderName}{fileName}";
 
             File.WriteAllText(htmlFilePath, html);
@@ -168,5 +172,92 @@ namespace SBSSData.Application.Samples
             File.WriteAllText(htmlFilePath, html);
             Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe", $"\"{htmlFilePath}\"");
         }
+
+        public static void TestTableCode()
+        {
+            string seasonText = "2024 Winter";
+            string season = seasonText.RemoveWhiteSpace();
+            string path = $@"J:\SBSSDataStore\{season}LeaguesData.json";
+            DataStoreContainer dsContainer = DataStoreContainer.Instance(path);
+            DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
+            dsInfo.Dump();
+
+            string bodyHtml = @"<table>
+                        <thead>
+                        <tr>
+                        <th>Hello</th><th>GoodBye</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>One</td><td>Two</td></tr>
+                        <tr><td>Two</td><td>Buckle</td></tr>
+                        <tr><td>My</td><td>Shoe</td></tr>
+                        <tr><td>Three</td><td>Four</td></tr>
+                        <tr><td>Shut</td><td>The Door</td></tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                        <tr>
+                            <td colspan=""2"">Howdy Doody</td>
+                        </tr>
+                        </table>";
+
+            string html = string.Empty;
+            using (HtmlGenerator generator = new HtmlGenerator())
+            {
+                generator.WriteRawHtml(bodyHtml);
+                html = generator.DumpHtml();
+            }
+
+            Console.WriteLine(Util.RawHtml(html)); ;
+            File.WriteAllText(@"D:\Temp\junk\Testing Table Generation\vstx.html", html);
+
+            dsContainer.Dispose();
+        }
+
+        public static void SimpleTestHtml()
+        {
+            string seasonText = "2024 Winter";
+            string season = seasonText.RemoveWhiteSpace();
+            string path = $@"J:\SBSSDataStore\{season}LeaguesData.json";
+            DataStoreContainer dsContainer = DataStoreContainer.Instance(path);
+            DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
+            //dsInfo.Dump();
+
+            List<SimpleTest> simpleTest = new()
+            {
+                new SimpleTest("One", "Two"),
+                new SimpleTest("Buckle", "My shoe"),
+                new SimpleTest("Three", "Four"),
+                new SimpleTest("Shut", "The Door"),
+                new SimpleTest("Five", "Six"),
+                new SimpleTest("Pickup", "Sticks")
+            };
+
+            Console.WriteLine(simpleTest.ToString("\r\n"));
+
+            string html = string.Empty;
+            using (HtmlGenerator generator = new HtmlGenerator())
+            {
+                generator.WriteRootTable(simpleTest, null);
+                html = generator.DumpHtml();
+            }
+            //using (TextWriter writer = Util.CreateXhtmlWriter())
+            //{
+            //    writer.Write(simpleTest);
+            //    html = writer.ToString();
+            //}
+
+            Console.WriteLine($"{html.Substring("<body>", "</body>", true, true)}");
+            File.WriteAllText(@"D:\Temp\junk\Testing Table Generation\vsSimpleTest.html", html);
+
+            dsContainer.Dispose();
+
+        }
     }
+
+    public record SimpleTest(string Hello, string Goodbye)
+    {
+    }
+
 }
