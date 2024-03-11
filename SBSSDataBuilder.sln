@@ -32,6 +32,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.Suppor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.LinqPadQuerySupport", "Applications\SBSSData.Application.LinqPadQuerySupport\SBSSData.Application.LinqPadQuerySupport.csproj", "{F62AEA50-3ADE-4A00-8DB1-2241C2AA2252}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{6389E68C-CE28-47F7-9600-AEB9C3872013}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Index.html = Docs\Index.html
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
