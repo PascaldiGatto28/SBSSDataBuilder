@@ -35,6 +35,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{6389E68C-CE28-47F7-9600-AEB9C3872013}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\.nojekyll = Docs\.nojekyll
+		Docs\index.html = Docs\index.html
 	EndProjectSection
 EndProject
 Global
