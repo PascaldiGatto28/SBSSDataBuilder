@@ -7,6 +7,12 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="PlayerStatsDisplay.cs" />
+    <Compile Remove="TeamStatsDisplay.cs" />
+    <Compile Remove="TeamSummaryStatsDisplay.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="LINQPad.Runtime" Version="7.8.7" />

@@ -2,6 +2,8 @@
 
 using HtmlAgilityPack;
 
+using SBSSData.Softball.Common;
+
 namespace SBSSData.Application.Support
 {
     /// <summary>
@@ -63,12 +65,13 @@ namespace SBSSData.Application.Support
 
                     List<HtmlNode> columnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]/th").ToList();
 
-                    for (int i = 4; i < 7; i++)
+                    for (int i = 5; i < 8; i++)
                     {
-                        HtmlNode columnHeader = columnHeaders[i];
-                        HtmlNode newHeader = HtmlNode.CreateNode(columnHeader.OuterHtml.Replace(columnHeader.InnerText, $"{i - 3}B"));
-                        columnHeader.ParentNode.ReplaceChild(newHeader, columnHeader);
+                        Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - 4}B");
                     }
+
+                    Utilities.AlterTableColumnHeader(tableHtmlNode, 15, "OB%");
+                    Utilities.AlterTableColumnHeader(tableHtmlNode, 16, "OB%+Slug");
 
                     HtmlNode name = lastRow.SelectSingleNode("./td[2]");
                     name.Attributes.Add("style", "background-color:red");
@@ -103,9 +106,126 @@ namespace SBSSData.Application.Support
                 {
                     tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
                 }
-
                 return header;
             };
+        }
+
+        public static string ProcessPlayerSummaryStats(HtmlNode tableHtmlNode, int numEntries, string shortLeagueName)
+        {
+            string imagePath = "PlayerPhotos/";
+            //if (!Directory.Exists(imagePath))
+            //{
+            //    imagePath = "file:///D:/Users/Richard/Documents/Visual Studio 2022/Github Projects/SBSS/SBSSDataBuilder/Applications/SBSSData.Application.Support/PlayerPhotos/";
+            //}
+
+            string overlayTemplate = $"""
+
+                                      <div id="overlay" class="overlay">
+                                          <div id="overlayImage" style="text-align:center;">
+                                              <img style="margin:auto;" src="{imagePath}[[imageName]].jpg"/>
+                                          </div>
+                                              <div id="overlayRankTable" style="padding-left:22px; width:220px; margin-top:10px;">[[rankTable]]</div>
+                                          </div>
+                                      </div>
+                                      """;
+            string header = string.Empty;
+
+            UpdatePlayerColumnNames(tableHtmlNode);
+
+            HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
+            lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
+
+            HtmlNode root = tableHtmlNode.Ancestors("#document").First();
+            IEnumerable<HtmlNode> rows = tableHtmlNode.SelectNodes($"./tbody/tr");
+            HtmlNode overlay = HtmlNode.CreateNode(overlayTemplate);
+            string overlayHtml = overlay.OuterHtml;
+            HtmlNode introContent = root.SelectSingleNode("//div[@id='IntroContent']");
+            int numberQualified = 0;
+            foreach (HtmlNode row in rows)
+            {
+                HtmlNode player = row.SelectSingleNode("./td[2]");
+                player.Attributes.Add("style", "cursor:pointer;");
+                string playerName = player.InnerText;
+
+                // The rank table needs to be "copied" to the overlay, but the ID needs to be changed
+                // so collapse and expand works, the title should be set to the value of the 
+                // source rank table. So we get those values, and then restore them after the source
+                // rank has been copied.
+                HtmlNode rankTable = row.SelectSingleNode("./td[last()]/table");
+                rankTable.Attributes.Add("style", "width:210px");
+                string rankTableId = rankTable.Id;
+                TableNode rankTableNode = new TableNode(rankTable);
+                //string rankTableHeader = rankTableNode.Header().InnerText.Trim();
+                string headerText = rankTable.SelectSingleNode("./tbody/tr[1]/td").InnerText;
+                string rankTableHeader = string.Empty;
+                if (headerText == "NA")
+                {
+                    rankTableHeader = "Not Enough Data for Ranking";
+                }
+                else
+                {
+                    rankTableHeader = "Ranking Among Qualified Players";
+                    numberQualified++;
+                }
+
+                if (playerName.Contains("Totals"))
+                {
+                    rankTableHeader = "Ranking Among All Players";
+                }
+
+                header = $"Player Summary Stats for the {numEntries} Players and Rankings for {numberQualified} Players Having Enough Plate Appearances in All Teams in the {shortLeagueName}";
+
+                // Set the new values and then restore the previous values
+                rankTable.Id = rankTable.Id + playerName.RemoveWhiteSpace();
+
+                // TODO: this should be not all, but just the players who qualify for ranking
+                TableTree.SetTableHeader(rankTableNode, (t) => rankTableHeader);
+                string rankTableHtml = rankTable.OuterHtml;
+                rankTable.Id = rankTableId;
+
+                // Finish up the overlay for this player. 
+
+                Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
+
+                //string imageName = string.Empty;
+
+                string playerKey = string.Empty;
+                string? imageName;
+                string[] playerNameSplit = playerName.Split(' ');
+                if (playerName.Contains("Totals") && (playerNameSplit.Length > 2))
+                {
+                    playerKey = "Totals, League";
+                    imageName = "League_Totals";
+                }
+                else
+                {
+                    playerKey = $"{playerNameSplit[1]}, {playerNameSplit[0]}";
+
+                    if (!map.TryGetValue(playerKey, out imageName))
+                    {
+                        imageName = "Available_Photo-Not";
+                    }
+                }
+
+                string overlayTemplateFN = overlayTemplate.Replace("[[imageName]]", imageName);//.Dump("after file name");
+                string newOverlayHtml = overlayTemplateFN.Replace("[[rankTable]]", rankTableHtml);//.Dump("new overlay html");
+                HtmlNode newOverlay = HtmlNode.CreateNode(newOverlayHtml);
+
+                newOverlay.Id = $"{playerName.RemoveWhiteSpace()}{shortLeagueName.RemoveWhiteSpace()}Overlay";
+                string newOverlayId = newOverlay.Id;
+                string dataName = $"{playerName.RemoveWhiteSpace()}";
+                newOverlay.Attributes.Add("dataName", dataName);
+                newOverlay.Attributes.Add("style", "display:none");
+                newOverlayHtml = newOverlay.OuterHtml.Replace("\r\n", " ");
+
+                // Insert this new overlay in the page so it can be found by the mouseover and mouseout event handlers.
+                introContent = root.SelectSingleNode("//body/div");
+                introContent.InsertAfter(newOverlay, introContent.ChildNodes[2]);
+                player.Attributes.Add("onmouseover", $"getElementById('{newOverlayId}').style.display='table-cell'");
+                player.Attributes.Add("onmouseout", $"getElementById('{newOverlayId}').style.display='none';");
+            }
+
+            return header;
         }
 
         public static Func<TableNode, string> ExtendedGamesTeamPlayers(string? info = null, object? value = null)
@@ -131,7 +251,7 @@ namespace SBSSData.Application.Support
 
                 string groupName = (group != null) ? group.InnerText.Replace("&nbsp;", " ") : string.Empty;
 
-                Console.WriteLine($"Processing {t.Id()} in group {groupName} at depth {t.Depth()} and index {t.Index()}");
+                //Console.WriteLine($"Processing {t.Id()} in group {groupName} at depth {t.Depth()} and index {t.Index()}");
 
 
                 switch (depth)
@@ -141,7 +261,6 @@ namespace SBSSData.Application.Support
                         header = $"Games, Teams and Players for the {fullLeagueName} League";
                         tableHtmlNode.SelectNodes("./tbody/tr/th").ToList().ForEach(th => th.Attributes.Add("style", "display:none"));
                         tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", "font-size:1.25em;  background-color:#d62929");
-                        //ableHtmlNode.SelectSingleNode("./thead/tr/td/a").Attributes.Add("style", "color:rgb(178, 34, 34, 1)");
                         break;
                     }
                     case 1:
@@ -150,7 +269,6 @@ namespace SBSSData.Application.Support
                         {
                             case 0:
                             {
-                                //int numGames = tableHtmlNode.SelectNodes("./tbody/tr").Count;
                                 string title = $"{shortLeagueName} Game";
                                 header = $"Game Results Data for the {numEntries.NumDesc(title)}";
                                 break;
@@ -162,13 +280,7 @@ namespace SBSSData.Application.Support
                             }
                             case 2:
                             {
-                                header = $"Player Summary Stats for the {numEntries} Players from All Teams in the {shortLeagueName} League";
-                                for (int i = 4; i < 7; i++)
-                                {
-                                    Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - 3}B");
-                                }
-                                HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
-                                lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
+                                header = ProcessPlayerSummaryStats(tableHtmlNode, numEntries, shortLeagueName);
                                 break;
                             }
                         }
@@ -176,29 +288,18 @@ namespace SBSSData.Application.Support
                     }
                     case 2:
                     {
-                        //string groupName = t.Parent.TableHtmlNode.ParentNode.PreviousSibling.InnerText;
-                        //HtmlNode headerNode = tableHtmlNode.Ancestors("table").First().ParentNode.ParentNode.SelectSingleNode("./th").ParentNode;
-                        //if (headerNode.XPath.EndsWith("tr[2]"))
                         if (groupName == "Team Players")
                         {
                             int rowNumber = index + 1;
                             string? teamName = t.Parent?.TableHtmlNode?.SelectSingleNode($"./tbody/tr[{rowNumber}]").FirstChild.InnerText;
-                            header = $"Summary Stats for all {ToSpanItalic(teamName)} Players";
+                            header = $"Summary Stats for all {ToSpanItalic(teamName ?? string.Empty)} Players";
 
                             HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
                             lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
-                            //List<HtmlNode> columnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]/th").ToList();
 
-                            for (int i = 4; i < 7; i++)
-                            {
-                                //HtmlNode columnHeader = columnHeaders[i];
-                                //HtmlNode newHeader = HtmlNode.CreateNode(columnHeader.OuterHtml.Replace(columnHeader.InnerText, $"{i - 3}B"));
-                                //columnHeader.ParentNode.ReplaceChild(newHeader, columnHeader);
-                                Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - 3}B");
-                            }
+                            UpdatePlayerColumnNames(tableHtmlNode);
 
                             HtmlNode name = lastRow.SelectSingleNode("./td[2]");
-                            name.Attributes.Add("style", "background-color:red");
                             HtmlNode newName = HtmlNode.CreateNode($"<td>{name.InnerText} Totals</td>");
                             name.ParentNode.ReplaceChild(newName, name);
 
@@ -212,8 +313,6 @@ namespace SBSSData.Application.Support
                             else
                             {
                                 string gameName = tableHtmlNode.ParentNode.PreviousSibling.SelectSingleNode("./table/tbody/tr/td").InnerText;
-                                //string visitor = tableHtmlNode.SelectSingleNode("./tbody/tr[1]/td").InnerText;
-                                //string home = tableHtmlNode.SelectSingleNode("./tbody/tr[2]/td").InnerText;
                                 header = $"Teams and Players for the {ToSpanItalic(gameName)} Game";
 
                                 Utilities.AlterTableColumnHeader(tableHtmlNode, 1, "RS");
@@ -240,18 +339,9 @@ namespace SBSSData.Application.Support
                         HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
                         lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
 
-                        //List<HtmlNode> columnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]/th").ToList();
-
-                        for (int i = 4; i < 7; i++)
-                        {
-                            //HtmlNode columnHeader = columnHeaders[i];
-                            //HtmlNode newHeader = HtmlNode.CreateNode(columnHeader.OuterHtml.Replace(columnHeader.InnerText, $"{i - 3}B"));
-                            //columnHeader.ParentNode.ReplaceChild(newHeader, columnHeader);
-                            Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - 3}B");
-                        }
+                        UpdatePlayerColumnNames(tableHtmlNode);
 
                         HtmlNode name = lastRow.SelectSingleNode("./td[2]");
-                        //name.Attributes.Add("style", "background-color:red");
                         HtmlNode newName = HtmlNode.CreateNode($"<td>{name.InnerText} Totals</td>");
                         name.ParentNode.ReplaceChild(newName, name);
 
@@ -269,6 +359,22 @@ namespace SBSSData.Application.Support
                 //header += $" &mdash; [Depth:{t.Depth()}; Index:{t.Index()}; Entries:{numEntries}]";
                 return header;
             };
+        }
+
+        private static void UpdatePlayerColumnNames(HtmlNode tableHtmlNode)
+        {
+            int columnIndex = Utilities.GetTableColumnIndex(tableHtmlNode, "Singles");
+            if (columnIndex != -1)
+                for (int i = columnIndex; i < (columnIndex + 3); i++)
+                {
+                    Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - 4}B");
+                }
+            columnIndex = Utilities.GetTableColumnIndex(tableHtmlNode, "OBP");
+            if (columnIndex != -1)
+            {
+                Utilities.AlterTableColumnHeader(tableHtmlNode, columnIndex, "OB%");
+                Utilities.AlterTableColumnHeader(tableHtmlNode, columnIndex + 1, "OB%+Slug");
+            }
         }
 
 

@@ -74,7 +74,7 @@ namespace SBSSData.Softball.Stats
 
         public IEnumerable<PlayerStats> GetLeaguePlayersSummary(string leagueCategory = "", string day = "")
         {
-            IEnumerable<PlayerStats> leaguePlayers = GetLeaguePlayers(leagueCategory, day);
+            IEnumerable<PlayerStats> leaguePlayers = GetLeaguePlayers(leagueCategory, day).OrderByDescending(s => s.PlateAppearances);
             IEnumerable<LeagueSchedule> leagueSchedules = GetLeagueSchedules(leagueCategory, day);
             string summaryName = leagueSchedules.Select(s => $"{s.LeagueDescription.ToShortString()} Totals").ToString("\r\n");
             int numGames = leagueSchedules.SelectMany(l => l.ScheduledGames).Where(s => s.IsComplete && !s.WasCancelled).Count();
@@ -86,6 +86,45 @@ namespace SBSSData.Softball.Stats
 
             leaguePlayers = leaguePlayers.Append(summaryStats);
             return leaguePlayers;
+        }
+
+        public IEnumerable<PlayerStatsRank> GetLeaguePlayerStatsRank(string leagueCategory = "", string day = "")
+        {
+            List<PlayerStatsRank> playerStatsRanks = [];
+            IEnumerable<PlayerStats> ps = GetLeaguePlayersSummary(leagueCategory, day);
+
+            string[] fieldNames = ["Average", "OnBase", "Slugging", "OnBasePlusSlugging"];
+            Dictionary<string, string[]> rankingsMap = new Dictionary<string, string[]>();
+            foreach (PlayerStats playerStats in ps)
+            {
+                rankingsMap.Add(playerStats.Name, ["NA", "NA", "NA", "NA"]);
+            }
+
+            //TODO: 12 should be a parameter
+            List<PlayerStats> psa = ps.Where(p => p.PlateAppearances > 12).ToList();
+            for (int j = 0; j < 4; j++)
+            {
+                PropertyInfo? property = typeof(PlayerStats).GetProperty(fieldNames[j]);
+                if (property != null)
+                {
+                    List<PlayerStats> fieldNameValues = psa.OrderByDescending(p => property.GetValue(p)).ToList();
+                    for (int i = 0; i < fieldNameValues.Count; i++)
+                    {
+                        PlayerStats player = fieldNameValues[i];
+                        rankingsMap[player.Name][j] = (i + 1).ToString();
+                    }
+                }
+            }
+
+            List<Ranking> rankingList = [];
+            foreach (string key in rankingsMap.Keys)
+            {
+                PlayerStats player = ps.Single(p => p.Name == key);
+                string[] values = rankingsMap[key];
+                rankingList.Add(new Ranking(player, values[0], values[1], values[2], values[3]));
+            }
+
+            return rankingList.Select(r => new PlayerStatsRank(r.Player, new Rank(r.Average, r.OnBase, r.Slugging, r.OnBasePlusSlugging))).ToList();
         }
 
         public IEnumerable<TeamSummaryStats> GetTeamsPlayersStats(string leagueCategory, string day)
@@ -104,7 +143,7 @@ namespace SBSSData.Softball.Stats
                 teamPlayersStats.Add(teamSummary);
             }
 
-            return teamPlayersStats;
+            return teamPlayersStats.OrderByDescending(t => t.NumWins).ThenByDescending(t => t.RunsScored - t.RunsAgainst);
         }
 
         public TeamSummaryStats GetTeamPlayersStats(string teamName, string leagueCategory, string day)

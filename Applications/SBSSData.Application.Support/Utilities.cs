@@ -157,6 +157,18 @@ namespace SBSSData.Application.Support
             columnHeader.ParentNode.ReplaceChild(newHeader, columnHeader);
         }
 
+        public static int GetTableColumnIndex(HtmlNode tableNode, string columnText)
+        {
+            int index = -1;
+            if ((tableNode != null) && !string.IsNullOrEmpty(columnText))
+            {
+                List<string> columnHeaders = tableNode.SelectNodes("./thead/tr[2]/th").Select(n => n.InnerText).ToList();
+                index = columnHeaders.IndexOf(columnText);
+            }
+
+            return index;
+        }
+
         public static string DisplayTree(TableNode node, StringBuilder sbTree)
         {
             sbTree.AppendLine(node.ToString());

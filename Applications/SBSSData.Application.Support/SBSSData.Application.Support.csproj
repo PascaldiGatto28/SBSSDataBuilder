@@ -133,6 +133,7 @@
     <None Remove="PlayerPhotos\Laureys_Lynn.jpg" />
     <None Remove="PlayerPhotos\Laureys_Steve.jpg" />
     <None Remove="PlayerPhotos\Lavaro_Richard.jpg" />
+    <None Remove="PlayerPhotos\League_Totals.jpg" />
     <None Remove="PlayerPhotos\Lee_Dave.jpg" />
     <None Remove="PlayerPhotos\Leierzapf_Fred.jpg" />
     <None Remove="PlayerPhotos\Leksell_Lee.jpg" />
@@ -972,6 +973,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerPhotos\Taney_Kent.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerPhotos\League_Totals.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerPhotos\Upchurch_Jeff.jpg">

@@ -5,7 +5,6 @@ using System.Reflection;
 using HtmlAgilityPack;
 
 using SBSSData.Application.Support;
-using SBSSData.Softball;
 using SBSSData.Softball.Common;
 using SBSSData.Softball.Stats;
 
@@ -14,7 +13,7 @@ using Query = SBSSData.Softball.Stats.Query;
 
 namespace SBSSData.Application.LinqPadQuerySupport
 {
-    public class GamesTeamPlayersV2
+    public class GamesTeamPlayersV4
     {
         private static readonly string SBSSExpand = """
                                                         button.SBSSexpand {
@@ -46,7 +45,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                         padding:25px;
                                                         }
                                                     """;
-        public GamesTeamPlayersV2()
+        public GamesTeamPlayersV4()
         {
             Values = [];
         }
@@ -73,17 +72,17 @@ namespace SBSSData.Application.LinqPadQuerySupport
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(path))
             {
                 Query query = new Query(dsContainer);
-                DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
-                string dsInfoHeaderStyle = "font-size:1.25em;  background-color:#d62929;";
+                //DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
+                //string dsInfoHeaderStyle = "font-size:1.25em;  background-color:#d62929;";
 
-                IEnumerable<Game> playedGames = query.GetPlayedGames();
-                var leagueNames = query.GetLeagueDescriptions().OrderBy(d => d.LeagueCategory).Select(l => new
-                {
-                    Day = l.LeagueDay,
-                    Category = l.LeagueCategory,
-                    FullLeagueName = l.ToString(),
-                    ShortLeagueNume = $"{l.LeagueDay} {l.LeagueCategory}"
-                });
+                //IEnumerable<Game> playedGames = query.GetPlayedGames();
+                //var leagueNames = query.GetLeagueDescriptions().OrderBy(d => d.LeagueCategory).Select(l => new
+                //{
+                //    Day = l.LeagueDay,
+                //    Category = l.LeagueCategory,
+                //    FullLeagueName = l.ToString(),
+                //    ShortLeagueNume = $"{l.LeagueDay} {l.LeagueCategory}"
+                //});
 
                 using (HtmlGenerator generator = new HtmlGenerator())
                 {
@@ -96,42 +95,42 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     generator.WriteRawHtml(expandCollapseHtml);
                     actionCallback(expandCollapseHtml);
 
-                    generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
-                    actionCallback(dsInfo);
+                    //generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
+                    //actionCallback(dsInfo);
 
-                    foreach (var leagueName in leagueNames)
+                    //foreach (var leagueName in leagueNames)
                     {
-                        IEnumerable<Game> leagueGames = playedGames.Where(g => (g.GameInformation.LeagueDay == leagueName.Day) &&
-                                                                               (g.GameInformation.LeagueCategory == leagueName.Category));
+                        //IEnumerable<Game> leagueGames = playedGames.Where(g => (g.GameInformation.LeagueDay == leagueName.Day) &&
+                        //                                                       (g.GameInformation.LeagueCategory == leagueName.Category));
 
-                        var games = leagueGames.Select(g => new
-                        {
-                            Games = new GameInformationDisplay(g.GameInformation),
-                            Teams = g.Teams.Select(t => new TeamStatsDisplay(new TeamStats(t))),
-                        });
+                        //var games = leagueGames.Select(g => new
+                        //{
+                        //    Games = new GameInformationDisplay(g.GameInformation),
+                        //    Teams = g.Teams.Select(t => new TeamStatsDisplay(new TeamStats(t))),
+                        //});
                         //actionCallback(games);
 
-                        string fullLeagueName = games.First().Games.League;
-                        string shortLeagueName = $"{leagueName.Day} {leagueName.Category}";
+                        //string fullLeagueName = games.First().Games.League;
+                        //string shortLeagueName = $"{leagueName.Day} {leagueName.Category}";
 
-                        IEnumerable<TeamSummaryStatsDisplay> tss = query.GetTeamsPlayersStats(leagueName.Category, leagueName.Day)
-                                                                        .Select(t => new TeamSummaryStatsDisplay(t));
+                        //IEnumerable<TeamSummaryStatsDisplay> tss = query.GetTeamsPlayersStats("Community", "Friday")
+                        //                                                .Select(t => new TeamSummaryStatsDisplay(t));
                         //actionCallback(tss);
 
-                        IEnumerable<PlayerStatsDisplay> playersStats = query.GetLeaguePlayersSummary(leagueName.Category, leagueName.Day)
+                        IEnumerable<PlayerStatsDisplay> playersStats = query.GetLeaguePlayersSummary("Community", "Friday")
                                                                             .Select(ps => new PlayerStatsDisplay(ps));
                         //actionCallback(playersStats);
 
 
-                        var gtp = new
-                        {
-                            GamesAndTeams = games,
-                            TeamPlayers = tss,
-                            Players = playersStats
-                        };
-                        actionCallback(gtp);
+                        //var gtp = new
+                        //{
+                        //    GamesAndTeams = games,
+                        //    TeamPlayers = tss,
+                        //    Players = playersStats
+                        //};
+                        actionCallback(playersStats);
 
-                        generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}"));
+                        generator.WriteRootTable(playersStats, LinqPadCallbacks.ExtendedGamesTeamPlayers("Friday Community Winter 2024"));
 
                     }
 

@@ -32,12 +32,22 @@ namespace SBSSData.Softball.Stats
             NumGames = numGames;
         }
 
+        /// <summary>
+        /// Gets and sets the number of games from which stats are recovered; The default value is 1.
+        /// </summary>
         [JsonIgnore]
         public int NumGames
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Returns the number of plate appearances (not just official bats, but at bats plus bases on balls and sacrifice flies";
+        /// </summary>
+        [JsonIgnore]
+        public int PlateAppearances => AtBats + BasesOnBalls + SacrificeFlies;
+
         /// <summary>
         /// Gets the first name of the <see cref="Player.Name"/> property. The <c>Player</c> name is of the form 
         /// "[last name],[first-name]". If the first name is not specified, the empty string is returned.
