@@ -855,6 +855,9 @@
     <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Zalewski_Paul.jpg">
       <Link>PlayerPhotos\Zalewski_Paul.jpg</Link>
     </Content>
+    <Content Include="J:\SBSSDataStore\Html Data\SBSSData.ico">
+      <Link>SBSSData.ico</Link>
+    </Content>
     <Content Include="J:\SBSSDataStore\Html Data\Scripts\Main.js">
       <Link>Scripts\Main.js</Link>
     </Content>

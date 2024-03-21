@@ -21,6 +21,14 @@ namespace SBSSData.Application.LinqPadQuerySupport
             get;
             set;
         }
+        private static HeadElement[] headElements =
+        {
+            new HeadElement("meta", [["name", "author"], ["content", "Pascal diGatto"]]),
+            new HeadElement("meta", [["data", "description"], ["content", "Log session details when the data store is updated"]]),
+            new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
+            new HeadElement("title", [["Update Log", ""]]),
+            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
+        };
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
@@ -72,7 +80,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     string htmlNode = """<span style="color:firebrick; font-size:1.50em; font-weight:500;">Log Sessions</span>""";
                     //string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
-                    changedHtml = generator.DumpHtml(pageTitle: title, collapseTo: 2);
+                    changedHtml = generator.DumpHtml(pageTitle: title, collapseTo: 2, headElements: headElements.ToList());
                 }
             }
 

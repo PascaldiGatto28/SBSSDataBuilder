@@ -5,7 +5,7 @@ namespace SBSSData.Application.Support
 {
     public record DataStoreInformation(string DateOfLastUpdate,
                                        string NumberOfLeagues,
-                                       string DataStoreFilePath,
+                                       //string DataStoreFilePath,
                                        string DataStoreSize,
                                        string NumberOfScheduledGames,
                                        string GamesCompleted,
@@ -16,7 +16,7 @@ namespace SBSSData.Application.Support
     {
         public DataStoreInformation(DataStoreContainer dsContainer) : this(dsContainer.DataStore.BuildDate.ToString("dddd MMMM d, yyyy a\\t h:mm:ss tt"),
                                                                            dsContainer.DataStore.LeagueSchedules.Count().ToString(),
-                                                                           dsContainer.DataStorePath,
+                                                                           //dsContainer.DataStorePath,
                                                                            dsContainer.DataStoreSize.FormatInt(extend: true),
                                                                            dsContainer.NumberOfGames.ToString(),
                                                                            dsContainer.GamesCompleted.ToString(),

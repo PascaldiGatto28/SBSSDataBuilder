@@ -78,6 +78,22 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         padding:25px;
                         }
                     """;
+        //private static string metadata = """
+        //            <meta name="author" content="Pascal diGatto">
+        //            <meta data="description" content="All data for games, teams and players"
+        //            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        //            <title>Games, Teams & Players</title>
+        //            <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
+        //            """;
+        private static HeadElement[] headElements =
+        {
+            new HeadElement("meta", [["name", "author"], ["content", "Pascal diGatto"]]),
+            new HeadElement("meta", [["data", "description"], ["content", "All data for games, teams and players"]]),
+            new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
+            new HeadElement("title", [["Games, Teams & Players", ""]]),
+            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
+        };
+
         public GamesTeamPlayersV3()
         {
             Values = [];
@@ -104,6 +120,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string path = $"{dataStoreFolder}{season}LeaguesData.json";
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(path))
             {
+
                 Query query = new Query(dsContainer);
                 DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
                 string dsInfoHeaderStyle = "font-size:1.25em;  background-color:#d62929;";
@@ -136,8 +153,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     //                                   <input type="checkbox" id="rankingColumn" name="ranking" value="true" onchange="setColumn(this.checked);">
                     //                                   <label for="ranking">Display the ranking column</label>
                     //                               </div>
-
-
                     //                               """;
                     generator.WriteRawHtml(expandCollapseHtml);
                     actionCallback(expandCollapseHtml);
@@ -186,7 +201,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
-                    changedHtml = generator.DumpHtml(pageTitle: title, cssStyles: localStyles, collapseTo: 2);
+                    changedHtml = generator.DumpHtml(pageTitle: title, cssStyles: localStyles, collapseTo: 1, headElements: headElements.ToList());
                 }
 
             }

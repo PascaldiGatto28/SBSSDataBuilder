@@ -59,7 +59,7 @@ namespace SBSSData.Application.Support
 
         private static readonly string emptyDoc = """<html><body><span style="color:firebrick; font-size:1.50em; font-weight:bold;">This is an empty document; no tables were written.</span></body></html>""";
 
-        public string DumpHtml(HtmlNode? pageTitle = null, string cssStyles = "", int collapseTo = 1)
+        public string DumpHtml(HtmlNode? pageTitle = null, string cssStyles = "", int collapseTo = 1, List<HeadElement>? headElements = null)
         {
             string? docHtml = Writer?.ToString();
             HtmlNode rootNode = HtmlNode.CreateNode(emptyDoc);
@@ -67,13 +67,19 @@ namespace SBSSData.Application.Support
             {
                 // Use HtmlAgilityPack to change the HTML. 
 
+                // Add meta, link and title elements to the document head for this page.
                 HtmlDocument htmlDocument = new();
                 htmlDocument.LoadHtml(docHtml);
                 rootNode = htmlDocument.DocumentNode;
+                HtmlNode headNode = rootNode.SelectSingleNode("//head");
+                if ((headElements != null) && (headElements.Count > 0))
+                {
+                    AddHeadData(htmlDocument, headNode, headElements);
+                }
 
                 // First add a CSS style so that column totals are not displayed.
                 HtmlNode style = rootNode.SelectSingleNode("//style");
-                string html = style.InnerHtml + "tr.columntotal {\r\ndisplay:none;\r\n}\r\n";
+                string html = style.InnerHtml + "tr.columntotal {\r\ndisplay:none;\r\n}\r\nbody{\r\npadding:10px 20px 10px 20px;\r\n}";
                 if (!string.IsNullOrEmpty(cssStyles))
                 {
                     html += cssStyles;
@@ -166,6 +172,32 @@ namespace SBSSData.Application.Support
             }
 
             return rootNode.OuterHtml;
+        }
+
+        private static void AddHeadData(HtmlDocument htmlDocument, HtmlNode headNode, List<HeadElement> headElements)
+        {
+            if ((htmlDocument != null) && (headNode != null))
+            {
+                foreach (HeadElement headElement in headElements)
+                {
+                    string elementName = headElement.ElementName;
+                    HtmlNode elementNode = htmlDocument.CreateElement(headElement.ElementName);
+
+                    if (elementName != "title")
+                    {
+                        foreach (string[] attribute in headElement.Attributes)
+                        {
+                            elementNode.SetAttributeValue(attribute[0], attribute[1]);
+                        }
+                    }
+                    else
+                    {
+                        elementNode.InnerHtml = headElement.Attributes.First()[0];
+                    }
+
+                    headNode?.PrependChild(elementNode);
+                }
+            }
         }
 
         private static int GetTableNestingLevel(HtmlNode table)

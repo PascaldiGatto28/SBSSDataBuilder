@@ -155,7 +155,6 @@ namespace SBSSData.Application.Support
                 rankTable.Attributes.Add("style", "width:210px");
                 string rankTableId = rankTable.Id;
                 TableNode rankTableNode = new TableNode(rankTable);
-                //string rankTableHeader = rankTableNode.Header().InnerText.Trim();
                 string headerText = rankTable.SelectSingleNode("./tbody/tr[1]/td").InnerText;
                 string rankTableHeader = string.Empty;
                 if (headerText == "NA")
@@ -171,9 +170,12 @@ namespace SBSSData.Application.Support
                 if (playerName.Contains("Totals"))
                 {
                     rankTableHeader = "Ranking Among All Players";
+
+                    // The summary table is not a qualified PLAYER
+                    numberQualified--;
                 }
 
-                header = $"Player Summary Stats for the {numEntries} Players and Rankings for {numberQualified} Players Having Enough Plate Appearances in All Teams in the {shortLeagueName}";
+                header = $"Player Summary Stats for the {numEntries} Players and Rankings for {numberQualified} Players With Enough Plate Appearances for All Teams";
 
                 // Set the new values and then restore the previous values
                 rankTable.Id = rankTable.Id + playerName.RemoveWhiteSpace();
@@ -238,6 +240,8 @@ namespace SBSSData.Application.Support
                 string header = t.Header().InnerText;
                 int depth = t.Depth();
                 int index = t.Index();
+
+                // Do not count the summary totals row.
                 int numEntries = tableHtmlNode.SelectNodes("./tbody/tr").Count();
                 HtmlNode? group = null;
                 if (depth == 1)
@@ -275,12 +279,13 @@ namespace SBSSData.Application.Support
                             }
                             case 1:
                             {
-                                header = $"Team Summary Data for the {numEntries} {shortLeagueName} Teams";
+                                header = $"Team Summary Data and Standings for the {numEntries} {shortLeagueName} Teams";
                                 break;
                             }
                             case 2:
                             {
-                                header = ProcessPlayerSummaryStats(tableHtmlNode, numEntries, shortLeagueName);
+                                // Do count summary player as an entry
+                                header = ProcessPlayerSummaryStats(tableHtmlNode, numEntries - 1, shortLeagueName);
                                 break;
                             }
                         }
