@@ -18,76 +18,9 @@ namespace SBSSData.Application.LinqPadQuerySupport
 {
     public class GamesTeamPlayersV3
     {
-        //private static readonly string SBSSExpand = """
-        //                                                button.SBSSexpand {
-        //                                                cursor:pointer; 
-        //                                                font-weight:500; 
-        //                                                font-size:12px;
-        //                                                font-family:'Segoe UI Semibold', 'sans serif';
-        //                                                border:1px solid black; 
-        //                                                padding:2px 5px 5px 5px; 
-        //                                                margin-right:10px;
-        //                                                color:white;
-        //                                                background-color: #4C74b2;
-        //                                                }
-
-        //                                                #overlay
-        //                                                {
-        //                                                position: fixed; 
-        //                                                display: block; 
-        //                                                width: 290px; 
-        //                                                height: 500px;
-        //                                                top: 200px;
-        //                                                left: 245px;
-        //                                                right: 0;
-        //                                                bottom: 0;
-        //                                                background-color: rgba(220,220,220, .9); 
-        //                                                z-index: 9; 
-        //                                                cursor: pointer; 
-        //                                                border-radius:25px;
-        //                                                padding:25px;
-        //                                                }
-        //                                            """;
-        private static readonly string localStyles = """
-                        button.SBSSexpand {
-                        cursor:pointer; 
-                        font-weight:500; 
-                        font-size:12px;
-                        font-family:'Segoe UI Semibold', 'sans serif';
-                        border:1px solid black; 
-                        padding:2px 5px 5px 5px; 
-                        margin-right:10px;
-                        color:white;
-                        background-color: #4C74b2;
-                        }
-                        
-                        div.overlay {
-                        position: fixed; 
-                        display: none; 
-                        width: 256px; 
-                        height: 486px;
-                        top: 200px;
-                        left: 245px;
-                        right: 0;
-                        bottom: 0;
-                        background-color: rgba(232,232,232,.75); 
-                        z-index: 9; 
-                        cursor: pointer; 
-                        border-radius:25px;
-                        border:2px solid firebrick;
-                        padding:25px;
-                        }
-                    """;
-        //private static string metadata = """
-        //            <meta name="author" content="Pascal diGatto">
-        //            <meta data="description" content="All data for games, teams and players"
-        //            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        //            <title>Games, Teams & Players</title>
-        //            <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
-        //            """;
         private static HeadElement[] headElements =
         {
-            new HeadElement("meta", [["name", "author"], ["content", "Pascal diGatto"]]),
+            new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
             new HeadElement("meta", [["data", "description"], ["content", "All data for games, teams and players"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
             new HeadElement("title", [["Games, Teams & Players", ""]]),
@@ -112,7 +45,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             string changedHtml = string.Empty;
 
-            Assembly assembly = typeof(GamesTeamPlayers).Assembly;
+            Assembly assembly = typeof(GamesTeamPlayersV3).Assembly;
             string resName = assembly.FormatResourceName("GamesTeamPlayersIntro.html");
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             string html = bytes.ByteArrayToString();
@@ -123,7 +56,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                 Query query = new Query(dsContainer);
                 DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
-                string dsInfoHeaderStyle = "font-size:1.25em;  background-color:#d62929;";
+                string dsInfoHeaderStyle = "background-color:#d62929;";
+                string gtpHeaderStyle = "background-color:#d62929; width:642px;";
 
                 IEnumerable<Game> playedGames = query.GetPlayedGames();
                 var leagueNames = query.GetLeagueDescriptions().OrderBy(d => d.LeagueCategory).Select(l => new
@@ -138,20 +72,20 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 {
                     string expandCollapseHtml = """
                                                 <div>
-                                                     <button class="SBSSexpand" onclick = "viewAll(true)">Expand All Tables</button>
-                                                     <button class="SBSSexpand" onclick = "viewAll(false)">Collapse All Tables</button>
+                                                     <button class="sbss" onclick = "viewAll(true)">Expand All Tables</button>
+                                                     <button class="sbss" onclick = "viewAll(false)">Collapse All Tables</button>
                                                 </div> 
                                                 """;
                     //string displayRankingColumn = """
                     //                               <script type=text/javascript>
                     //                                   function setColumn (checked)
                     //                                   {
-                    //                                        alert("check');
+                    //                                        alert(checked);
                     //                                   }
                     //                               </script>  
                     //                               <div style="text-align:right;">
                     //                                   <input type="checkbox" id="rankingColumn" name="ranking" value="true" onchange="setColumn(this.checked);">
-                    //                                   <label for="ranking">Display the ranking column</label>
+                    //                                   <label for="ranking">Hide the ranking column</label>
                     //                               </div>
                     //                               """;
                     generator.WriteRawHtml(expandCollapseHtml);
@@ -170,38 +104,36 @@ namespace SBSSData.Application.LinqPadQuerySupport
                             Games = new GameInformationDisplay(g.GameInformation),
                             Teams = g.Teams.Select(t => new TeamStatsDisplay(new TeamStats(t))),
                         });
-                        //actionCallback(games);
 
                         string fullLeagueName = games.First().Games.League;
                         string shortLeagueName = $"{leagueName.Day} {leagueName.Category}";
 
                         IEnumerable<TeamSummaryStatsDisplay> tss = query.GetTeamsPlayersStats(leagueName.Category, leagueName.Day)
                                                                         .Select(t => new TeamSummaryStatsDisplay(t));
-                        //actionCallback(tss);
-
-                        //IEnumerable<PlayerStatsDisplay> playersStats = query.GetLeaguePlayersSummary(leagueName.Category, leagueName.Day)
-                        //                                                    .Select(ps => new PlayerStatsDisplay(ps));
                         IEnumerable<PlayerStatsRank> playerStatsRanks = query.GetLeaguePlayerStatsRank(leagueName.Category, leagueName.Day);//.Dump();
                         IEnumerable<PlayerStatsRankDisplay> playerStatRankDisplay =
                                          playerStatsRanks.Select(psr => new PlayerStatsRankDisplay(psr.Player, psr.PlayerRank));
-                        //actionCallback(playersStats);
-
 
                         var gtp = new
                         {
                             GamesAndTeams = games,
                             TeamPlayers = tss,
+                            //HideRank = Util.RawHtml(displayRankingColumn),
                             Players = playerStatRankDisplay
                         };
                         actionCallback(gtp);
 
-                        generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}"));
+                        generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}", gtpHeaderStyle));
 
                     }
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
-                    changedHtml = generator.DumpHtml(pageTitle: title, cssStyles: localStyles, collapseTo: 1, headElements: headElements.ToList());
+                    changedHtml = generator.DumpHtml(pageTitle: title,
+                                                     cssStyles: StaticConstants.LocalStyles,
+                                                     javaScript: StaticConstants.LocalJavascript,
+                                                     collapseTo: 1,
+                                                     headElements: headElements.ToList());
                 }
 
             }

@@ -142,7 +142,7 @@ namespace SBSSData.Application.Samples
             string seasonText = "2024 Winter";
             string dsFolder = $@"J:\SBSSDataStore\";
 
-            GamesTeamPlayers gtp = new GamesTeamPlayers();
+            GamesTeamPlayersV3 gtp = new GamesTeamPlayersV3();
             string html = gtp.BuildHtmlPage(seasonText, dsFolder);
             //foreach (object value in gtp.Values)
             //{

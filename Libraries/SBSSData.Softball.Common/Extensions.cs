@@ -438,7 +438,7 @@ namespace SBSSData.Softball.Common
         /// <param name="source">The object to serialize; if <c>null</c>, the empty string is returned.</param>
         /// <returns>A JSON string representing the object that can deserialized to create an instance of the object. The
         /// string is formatted for indentation using space characters (rather than tabs).</returns>
-        public static string ToJsonString(this object source)
+        public static string ToJsonString(this object source, bool typeNameHandling = true)
         {
             string jsonString = string.Empty;
 
@@ -451,10 +451,11 @@ namespace SBSSData.Softball.Common
                 textWriter.Indentation = 4;
                 textWriter.IndentChar = ' ';
 
-                JsonSerializer serializer = new()
+                JsonSerializer serializer = typeNameHandling ? new()
                 {
                     TypeNameHandling = TypeNameHandling.Auto
-                };
+                } : new();
+
                 serializer.Serialize(textWriter, source);
 
                 jsonString = stringWriter.GetStringBuilder().ToString();

@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="GamesTeamPlayers.cs" />
+    <Compile Remove="GamesTeamPlayersV2.cs" />
+    <Compile Remove="StaticConstants.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="GamesTeamPlayersIntro.html" />
   </ItemGroup>
 

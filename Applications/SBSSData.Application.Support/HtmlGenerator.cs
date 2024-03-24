@@ -59,7 +59,7 @@ namespace SBSSData.Application.Support
 
         private static readonly string emptyDoc = """<html><body><span style="color:firebrick; font-size:1.50em; font-weight:bold;">This is an empty document; no tables were written.</span></body></html>""";
 
-        public string DumpHtml(HtmlNode? pageTitle = null, string cssStyles = "", int collapseTo = 1, List<HeadElement>? headElements = null)
+        public string DumpHtml(HtmlNode? pageTitle = null, string cssStyles = "", string javaScript = "", int collapseTo = 1, List<HeadElement>? headElements = null)
         {
             string? docHtml = Writer?.ToString();
             HtmlNode rootNode = HtmlNode.CreateNode(emptyDoc);
@@ -77,15 +77,23 @@ namespace SBSSData.Application.Support
                     AddHeadData(htmlDocument, headNode, headElements);
                 }
 
-                // First add a CSS style so that column totals are not displayed.
                 HtmlNode style = rootNode.SelectSingleNode("//style");
-                string html = style.InnerHtml + "tr.columntotal {\r\ndisplay:none;\r\n}\r\nbody{\r\npadding:10px 20px 10px 20px;\r\n}";
+                string styles = style.InnerHtml;
                 if (!string.IsNullOrEmpty(cssStyles))
                 {
-                    html += cssStyles;
+                    styles += cssStyles;
                 }
 
-                style.InnerHtml = html;
+                style.InnerHtml = styles;
+
+                HtmlNode script = rootNode.SelectSingleNode("//script");
+                string scripts = script.InnerHtml;
+                if (!string.IsNullOrEmpty(javaScript))
+                {
+                    scripts += javaScript;
+                }
+
+                script.InnerHtml = scripts;
 
                 // Now if a description is specified, create the heading presenter container and include in the
                 // document HTML.
@@ -99,10 +107,9 @@ namespace SBSSData.Application.Support
 
                 // If tables is null, then no tables have been  written to the page.
                 HtmlNodeCollection tables = body.SelectNodes("//table");
-                //List<HtmlNode> rootTables = [];
+
                 if ((tables != null) && (tables.Count != 0))
                 {
-
                     // First right justify all the table column headers (th tags) so they are right-justified when the values 
                     // are numeric (int or double). Also change the column to words, for example "BuildDate" becomes "Build Date".
                     HtmlNodeCollection tableColumnHeaders = rootNode.SelectNodes("//table//tr//th");

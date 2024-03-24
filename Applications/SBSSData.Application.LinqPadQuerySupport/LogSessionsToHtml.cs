@@ -30,6 +30,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
             new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
         };
 
+        private static string headerStyle = "background-color:#d62929;";
+
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
             string text = seasonText;
@@ -38,17 +40,18 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             string changedHtml = string.Empty;
 
+
             string logPath = $@"{dataStoreFolder}DataStoreManager.json";
             IEnumerable<LogSession>? sessions = logPath.Deserialize<IEnumerable<LogSession>>();
 
             var displaySessions = sessions?.Select(s => new
             {
-                s.BuildDate,
-                SessionID = s.Session,
+                //s.BuildDate,
+                //SessionID = s.Session,
                 LogEntries = s.LogEntries.Select(l => new
                 {
                     l.Date,
-                    Category = l.LogCategory,
+                    //Category = l.LogCategory,
                     Text = l.LogText
                 })
             });
@@ -58,12 +61,9 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
                 using (HtmlGenerator generator = new HtmlGenerator())
                 {
-                    generator.WriteRootTable(dsInfo, (t) =>
-                    {
-                        HtmlNode tableNode = t.TableHtmlNode;
-                        InsertTableDescription(t.TableHtmlNode, $"The Current Data Store Statistics for the {seasonText} Season");
-                        return "Data Store Information";
-                    });
+
+                    generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(headerStyle));
+
                     Values.Add(dsInfo);
                     if (callback != null)
                     {
@@ -78,9 +78,12 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     }
 
                     string htmlNode = """<span style="color:firebrick; font-size:1.50em; font-weight:500;">Log Sessions</span>""";
-                    //string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
-                    changedHtml = generator.DumpHtml(pageTitle: title, collapseTo: 2, headElements: headElements.ToList());
+                    changedHtml = generator.DumpHtml(pageTitle: title,
+                                                     collapseTo: 2,
+                                                     cssStyles: StaticConstants.LocalStyles,
+                                                     javaScript: StaticConstants.LocalJavascript,
+                                                     headElements: headElements.ToList());
                 }
             }
 
@@ -94,13 +97,14 @@ namespace SBSSData.Application.LinqPadQuerySupport
             {
                 int numSessions = t.ChildNodes.Count();
                 HtmlNode tableNode = t.TableHtmlNode;
-                string currentDate = DateTime.Parse(tableNode.SelectSingleNode("./tbody/tr[1]/td[1]").InnerText).ToString("dddd MMMM d, yyyy");
-                header = $"{numSessions} Recorded Log Sessions as of {currentDate}";
+                //string currentDate = DateTime.Parse(tableNode.SelectSingleNode("./tbody/tr[1]/td[1]").InnerText).ToString("dddd MMMM d, yyyy");
+                header = $"{numSessions} Recorded Log Sessions"; // as of {currentDate}";
                 InsertTableDescription(tableNode, "Table of all Data Store Updates Recorded by the SBSS Logging System");
+                tableNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerStyle);
             }
             else
             {
-                IEnumerable<string> textCells = t.TableHtmlNode.SelectNodes("./tbody//tr/td[3]").Select(n => n.InnerText);
+                IEnumerable<string> textCells = t.TableHtmlNode.SelectNodes("./tbody//tr/td[2]").Select(n => n.InnerText);
                 string? cell = textCells.SingleOrDefault(t => t.Contains("games have been updated"));
                 int numUpdated = 0;
                 if (!string.IsNullOrEmpty(cell))
@@ -110,7 +114,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 }
 
                 header = (numUpdated > 0) ? $"{numUpdated.NumDesc("Scheduled Game")} Updated"
-                                          : "No Scheduled Games Were Updated &mdash; tThe Data Store is Up-to-date.";
+                                          : "No Scheduled Games Were Updated &mdash; The Data Store is Up-to-date.";
             }
 
             return header;

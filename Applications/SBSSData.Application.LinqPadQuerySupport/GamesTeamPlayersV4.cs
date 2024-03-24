@@ -63,7 +63,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             string changedHtml = string.Empty;
 
-            Assembly assembly = typeof(GamesTeamPlayers).Assembly;
+            Assembly assembly = typeof(GamesTeamPlayersV4).Assembly;
             string resName = assembly.FormatResourceName("GamesTeamPlayersIntro.html");
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             string html = bytes.ByteArrayToString();
@@ -72,18 +72,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(path))
             {
                 Query query = new Query(dsContainer);
-                //DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
-                //string dsInfoHeaderStyle = "font-size:1.25em;  background-color:#d62929;";
-
-                //IEnumerable<Game> playedGames = query.GetPlayedGames();
-                //var leagueNames = query.GetLeagueDescriptions().OrderBy(d => d.LeagueCategory).Select(l => new
-                //{
-                //    Day = l.LeagueDay,
-                //    Category = l.LeagueCategory,
-                //    FullLeagueName = l.ToString(),
-                //    ShortLeagueNume = $"{l.LeagueDay} {l.LeagueCategory}"
-                //});
-
                 using (HtmlGenerator generator = new HtmlGenerator())
                 {
                     string expandCollapseHtml = """
@@ -95,44 +83,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     generator.WriteRawHtml(expandCollapseHtml);
                     actionCallback(expandCollapseHtml);
 
-                    //generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
-                    //actionCallback(dsInfo);
+                    IEnumerable<PlayerStatsDisplay> playersStats = query.GetLeaguePlayersSummary("Community", "Friday")
+                                                                        .Select(ps => new PlayerStatsDisplay(ps));
 
-                    //foreach (var leagueName in leagueNames)
-                    {
-                        //IEnumerable<Game> leagueGames = playedGames.Where(g => (g.GameInformation.LeagueDay == leagueName.Day) &&
-                        //                                                       (g.GameInformation.LeagueCategory == leagueName.Category));
-
-                        //var games = leagueGames.Select(g => new
-                        //{
-                        //    Games = new GameInformationDisplay(g.GameInformation),
-                        //    Teams = g.Teams.Select(t => new TeamStatsDisplay(new TeamStats(t))),
-                        //});
-                        //actionCallback(games);
-
-                        //string fullLeagueName = games.First().Games.League;
-                        //string shortLeagueName = $"{leagueName.Day} {leagueName.Category}";
-
-                        //IEnumerable<TeamSummaryStatsDisplay> tss = query.GetTeamsPlayersStats("Community", "Friday")
-                        //                                                .Select(t => new TeamSummaryStatsDisplay(t));
-                        //actionCallback(tss);
-
-                        IEnumerable<PlayerStatsDisplay> playersStats = query.GetLeaguePlayersSummary("Community", "Friday")
-                                                                            .Select(ps => new PlayerStatsDisplay(ps));
-                        //actionCallback(playersStats);
-
-
-                        //var gtp = new
-                        //{
-                        //    GamesAndTeams = games,
-                        //    TeamPlayers = tss,
-                        //    Players = playersStats
-                        //};
-                        actionCallback(playersStats);
-
-                        generator.WriteRootTable(playersStats, LinqPadCallbacks.ExtendedGamesTeamPlayers("Friday Community Winter 2024"));
-
-                    }
+                    actionCallback(playersStats);
+                    generator.WriteRootTable(playersStats, LinqPadCallbacks.ExtendedGamesTeamPlayers("Friday Community Winter 2024"));
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
