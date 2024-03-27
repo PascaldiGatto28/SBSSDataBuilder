@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 
+
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
@@ -832,61 +833,46 @@
             }
     </script>
 
-</head >
+</head 
+
 <body style="font-size:16px">
     <div class="IntroContent"" style="font-size:16px;">
         <h1 style="font-weight: 500; font-size:1.25em; color: firebrick;">
             Games Results, Team and Players Stats
         </h1>
-            <div id="introduction">
-                <div class="spacer">
-                    SaddleBrooke Senior Softball data is generated in the following ways:
-                    <ul style="margin-left:-20px;">
-                        <li class="sbss">
-                            Before any games are even played, the entire schedule is published as a list of scheduled games for
-                            each of the leagues for the season.
-                        </li>
-                        <li class="sbss">
-                            As games are played (or canceled), the results of the game together with player box scores for each team are posted.
-                        </li>
-                        <li class="sbss">
-                            For each league, team standings (wins, losses, runs scored and runs against) are updated as well.
-                        </li>
-                        <li class="sbss">
-                            For each team, cumulative player stats are recorded in the Rosters &amp; Stats pages including computed
-                            stats like batting and slugging averages, on base percentage and on-base percentage plus slugging.
-                        </li>
-                    </ul>
-                </div>
+        <div class="spacer">
+            Data used by this application (SBSS Data Viewer) is gathered by "scraping" the pages of the SaddleBrooke Senior Softball
+            Association (SSSA) web site and then saving to a formatted (JSON) file called the <b>Data Store</b>. After teams have
+            been built but before any games played, the SSSA site posts a schedule of all games. At this time, the Data Store
+            is created and has information for scheduled games, but nothing else. As games are played information from those
+            games, namely the player "box scores," are used to update the Data Store. Having all the data in a single file 
+            makes much easier to search, create summaries of data and display the results.
+        </div>
 
-                <div class="spacer">
-                    All the updates to the data originate from the volunteer score keepers and then posted to the
-                    <a href="https://saddlebrookesoftball.com" target="_blank">
-                        SaddleBrooke Senior Softball Association (SSSA)
-                    </a> web site by the site manager. It's an incredible amount work that's very well done.
-                </div>
-                <div class="spacer">
-                    The SBSS data builder application "scrapes" the pages of the SSSA site to recover the day's data and stores it in a file
-                    (a data store, we call it). The advantage is that all the data is in a single file that can be searched and results
-                    displayed. Moreover, additional computed computer from what's already in the data store can be computed and displayed.
-                </div>
-                <div class="spacer">
-                    There are really three fundamental ways of looking at this data: (1) From the perspective of game results; (2) Focus on
-                    the teams; (3) From the players' view. The purpose of this page is put all this information in a three main
-                    tables for each of leagues aligning with the different perspectives. In addition, you'll see a table that just
-                    describes the current state of the data store (file). As of the this writing there are over 1,100 tables
-                    representing the current season, some of which
-                    are nested deeply in other tables. That volume is driver for allowing tables collapsed to make navigation easier.
-                </div>
-                <div class="spacer">
-                    Before diving and looking at all the data, you might want to take a look at details as we guide you through the
-                    different tables. When describing a table, you can open to follow, or just click on the <span>Show me ...</span>
-                    link, and it open automatically for you.
-                    <a href="GamesTeamPlayersHelpV3.html" target="_blank">Guide to Games, Results, Teams and Players</a>
-                </div>
-
-            </div>
-            
+        <div class="spacer">
+            All the updates to the data originate from the volunteer score keepers and then posted to the
+            <a href="https://saddlebrookesoftball.com" target="_blank">
+                SaddleBrooke Senior Softball Association (SSSA)
+            </a> web site by the site manager. It's an incredible amount work that's very well done.
+        </div>
+        
+        <div class="spacer">
+            There are three fundamental ways of looking at this data: (1) From the perspective of game results; (2) Focus on
+            the teams; (3) From the players' view. The purpose of this page is put all this information in a three main
+            tables for each of leagues aligning with these different perspectives. In addition, you'll see a table that just
+            describes the current state of the Data Store (file). As of the this writing there are over 1,100 tables
+            representing the current season, some of which
+            are nested deeply in other tables. That volume is the driver for allowing tables to be collapsed in order
+            to make navigation easier. Expanding all the tables can take a couple of seconds &mdash; be patient please.
+        </div>
+        <div class="spacer">
+            Before diving into and looking at all the data tables, you'll find it useful to take a look at details as we guide 
+            you through the
+            different tables. The guide is here: 
+            <a href="GamesTeamPlayersHelpV3.html" target="_blank">Guide to Games, Results, Teams and Players</a>.
+            In the guide, when describing the details a table, you can open it to follow along, or just click on the <span>Show me</span>
+            button, and the table automatically opens for you. Try it!
+        </div>
     </div>
 </body>
 </html >

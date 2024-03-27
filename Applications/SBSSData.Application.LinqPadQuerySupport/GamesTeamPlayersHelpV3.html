@@ -916,14 +916,14 @@
 <body style="font-size:16px">
     <div class="IntroContent" style="font-size:16px;">
         <h1 style="font-weight: 500; font-size:1.25em; color: firebrick;">
-            Games Results, Team and Players Table Document Help
+            Guide to Games Results, Team and Players
         </h1>
         
         <div class="spacer">
             In this page, we provide documentation for all the tables that appear in the actual
-            <a href="GamesTeamPlayersV3.html">Games, Team and Players</a> page. Actual data is used, but just for league to make
-            navigation easier. Just click "Show me" button to open text describing the associated
-            table while viewing the table itself.
+            <a href="GamesTeamPlayersV3.html">Games, Team and Players</a> page. Actual data is used, but just for one league to make
+            navigation easier. Just click "Show me" button to open text that describes the part of the table
+            while viewing the table itself.
         </div>
         <div class="spacer">
             <!-- Data Store Information -->
@@ -937,7 +937,7 @@
             <div class="spacer help" id="dataStoreHelp">
                 <div class="spacer">
                     The <span class="tableTitle">Data Store Information</span> table is not really about game, team or player data,
-                    but describes the state of the file where all information is store (the data store). It is updated every 
+                    but describes the state of the file where all information is stored (the Data Store). It is updated every 
                     week night at 8:30 PM.
                     This table gives you an idea of the volume of data and how it is changing.
                 </div>
@@ -964,9 +964,10 @@
             <div class="spacer help" id="gameResultsHelp">
                 The <span class="tableTitle">Game Results Data for the 18 Monday Community Games</span> table
                 with all its nested tables encapsulates every bit on information that is in the data store. It also displays 
-                data calculated from the data. It is game-centric meaning the row of the table has all the information
-                for every games played. There's a row for each game. You can imagine that table and season continues.
-                Click on the  
+                data calculated from the data. It is game-centric meaning any row of the table has all the information
+                for that game played. There's a row for each game. You can imagine that table grows as more games
+                are played
+                Click on the Scheduled Game show me button to expand that table in the first cell of the first row. 
 
                 <!-- Scheduled Game Information table -->
                 <div style="padding-left:20px;">
@@ -974,12 +975,12 @@
                         Scheduled Game
                         <button class="showme" onclick="openHelp('scheduledGameHelp');
                                                         expandTable('Scheduled Game Information');">
-                            Show me ...
+                            Show me
                         </button>
                     </h3>
                     <div class="spacer help" id="scheduledGameHelp">
                         The first cell is the scheduled game information, which is determined before the
-                        first games is played. If a game has not been played, or has been cancelled it does not 
+                        any games are played. If a game has not been played, or has been cancelled it does not 
                         appear in the table &mdash; after all,
                         there's no data! 
                     </div>
@@ -996,9 +997,9 @@
                         The second cell in the row, for example, 
                         <span class="tableTitle">Teams and Players for the Ann Fraley-Long Realty vs Ambient Air Heating &amp; Cooling Game</span>,
                         actually encapsulates the results. Although these results are posted on the SSSA web site, the values
-                        for team (and game outcome) are computed from the player "box line" values. This table obvious only has
-                        two row, one for each team. For each team, the data for each player is last cell of the row in this
-                        nested table. The rows are ordered as visitor's team then home team, not by outCome.
+                        for team (and game outcome) are computed from the player "box line" values. This table obviously only has
+                        two rows, one for each team. For each team, the data for each player is the last cell of the row in this
+                        nested table. The rows are ordered as visitor's team then home team, not by outcome.
                     </div>
 
                     <div style="padding-left: 20px">
@@ -1011,14 +1012,16 @@
                             </button>
                         </h4>
                         <div class="spacer help" id="visitorsHelp">
-                            Now we're getting to heart of the data: It's all about player stats. You'll notice that the table,
+                            Now we're getting to heart of the data: It's all about player stats! You'll notice that the table,
                             for example, <span class="tableTitle">Players for Ann Fraley-Long Realty</span>, is much like what
-                            appears in SSSA web site when you on a "Schedules" menu item to look the results a played game. There
+                            appears in SSSA web site when you use the "Schedules" menu item to look the results of a played game. 
+                            There
                             are some differences, however. All the usual calculated stats (average, slugging, etc.) are present.
                             No question, that for a single game, this data not very interesting or useful, but to keep our tables
-                            consistent included those. More interesting a new stat is added: Plate appearances (PA) which is just
-                            the number offical at bats plus bases on balls and scrifice flies. The other difference which is
-                            useful is a summary line at the bottom that includes all player data and calculated stats.
+                            consistent with similar tables, these values are included. More interesting 
+                            is that a new stat is added: Plate appearances (PA) which is just
+                            the number of official at bats plus bases on balls and sacrifice flies. The other difference is
+                            the summary line at the bottom that includes all player data and calculated stats.
                         </div>
                         <!-- Players for the home team table -->
                         <h4 style="font-size: .9em; color: #4C74BC; font-weight: 500;">
@@ -1028,7 +1031,7 @@
                             </button>
                         </h4>
                         <div class="spacer help" id="homeHelp">
-                            The second cell in the second row is just like the previous is for the home team 
+                            The second cell in the second row is just like the previous one, but it is for the home team 
                             rather than the visitors.
                         </div>
                     </div>
@@ -1046,11 +1049,11 @@
             <div class="spacer help" id="teamSummaryHelp">
                 The second row in the main table, for example 
                 <span class="tableTitle">Team Summary Data and Standings for the 4 Monday Community Teams</span> turns our
-                perspective from games played to team performance. When the table is opened, a list of the teams is league 
-                is presented in "standings" order (actually, by wins and then by run differencial). You may notice, for example,
+                perspective from games played to team performance. When the table is opened, a list of the teams in the league 
+                is presented in "standings" order (actually, by wins and then by run differential). You may notice, for example,
                 that although "Andy's Irrigation-Andy McInnis" and "Barron Electric" have the same record, the former is in first
-                place because it's run differencial (runs scored less runs against) is 25 versul -3 for "Barron Electric". 
-                (Full Disclosure: I do not know that is how the SSSA handles tie won/loss records).
+                place because it's run differential (runs scored less runs against) is 25 versus -3 for "Barron Electric". 
+                (Full Disclosure: I do not know for certain that is how the SSSA handles tie won/loss records).
 
                 <div style="padding-left:20px;">
                     <!-- Summary Stats for a team table-->
@@ -1062,13 +1065,15 @@
                             Show me
                         </button>
                     </h3>
-                    <div class="spacer help" id="teamPlayers">
-                        The last cell in each row is (yet) another table, but this time is a cummulative summary of all players
-                        that played games for the team. The players that played 1,2 or 3 games like substitue players. But still
-                        they do contribute to the overall team stats, which are highlighted at the bottom of the table. Again, the
-                        line items for each player are the same when looking at single game, but in this casem the number 
-                        games in which each player played 
-                        is also presented. This data helps show the contribution players made to success of their teams.
+                    <div>
+                        <div class="spacer help" id="teamPlayers">
+                            The last cell in each row is (yet) another table, but this time is a cumulative summary of all players
+                            that played in any game for the team. The players that played 1,2 or 3 games are likely substitute players. But still
+                            they do contribute to the overall team stats, which are highlighted at the bottom of the table. Again, the
+                            line items for each player are the same when looking at single game, but in this case the number
+                            games in which each player played
+                            is also presented. This data helps show the contribution players made to the success of their teams.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1085,11 +1090,13 @@
             <div class="spacer help" id="players">
                 In this last table, for example, 
                 <span class="tableTitle">Player Summary Stats for the 59 Players and Rankings for 47 Players With Enough Plate Appearances for All Teams</span>
-                we really focus on the player. Here you see summary starts for every player in the league for all their 
-                activity on all teams. Because it's in a single, league it is reasonable to compare the stats. The player rows
-                are sorted games played and then plate appearances. You open the last cell of row to see a table of the ranking of the
-                player for the four standard computed stats &mdash Average (Avg), Slugging (Slug) Onbase percentage (OB%), and
-                Onbase percentage plus slugging (OB%+Slug). Unlike the stats per game, these have real meaning.
+                we really focus on the player. (N.B. The title may have different numbers because the Data Store may have been updated. 
+                You're looking at the latest data!) Here you see summary stats for every player in the league for all their 
+                activity on all teams. Because it's in a single league it is reasonable to compare the stats. The player rows
+                are sorted the number of games played and then plate appearances. You open the last cell of row to see a table 
+                of the ranking of the
+                player for the four standard computed stats &mdash; Average (Avg), Slugging (Slug) On-Base percentage (OB%), and
+                On-Base percentage plus slugging (OB%+Slug). Unlike the stats per game, these have real meaning.
             
                 <div class="spacer">
                     Rather than opening the Ranking tables, 
@@ -1105,10 +1112,10 @@
                     </div>
                 </div>
                 <div class="spacer">
-                    To calculate the rankings, a player must have had a minimal number of plate appearances. We choose,
-                    but the clearly subjective. The ranking are only based upon players that are qualified (that, have had enough plate
+                    To calculate the rankings, a player must have had a minimal number of plate appearances. We choose 12,
+                    but that's' clearly subjective. The ranking are only based upon players that are qualified (that is, have had enough plate
                     appearances). Finally the last row is summary for all players and also the ranking of those values compared to all
-                    the qualified players. You would expect that the league ranks would be about in the middle (that is, about the
+                    the qualified players. You would expect that the league ranks would be about in the middle (about the
                     median).
                </div>
             </div>
