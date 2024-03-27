@@ -13,11 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="GamesTeamPlayersIntro.html" />
+    <None Remove="GamesTeamPlayersHelpV3.html" />
+    <None Remove="GamesTeamPlayersV3.html" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="GamesTeamPlayersIntro.html">
+    <EmbeddedResource Include="GamesTeamPlayersHelpV3.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GamesTeamPlayersV3.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

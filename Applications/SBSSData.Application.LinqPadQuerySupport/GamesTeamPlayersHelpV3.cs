@@ -16,7 +16,7 @@ using Query = SBSSData.Softball.Stats.Query;
 
 namespace SBSSData.Application.LinqPadQuerySupport
 {
-    public class GamesTeamPlayersV3
+    public class GamesTeamPlayersHelpV3
     {
         private static HeadElement[] headElements =
         {
@@ -27,7 +27,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
         };
 
-        public GamesTeamPlayersV3()
+        public GamesTeamPlayersHelpV3()
         {
             Values = [];
         }
@@ -46,7 +46,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string changedHtml = string.Empty;
 
             Assembly assembly = typeof(GamesTeamPlayersV3).Assembly;
-            string resName = assembly.FormatResourceName("GamesTeamPlayersV3.html");
+            string resName = assembly.FormatResourceName("GamesTeamPlayersHelpV3.html");
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             string html = bytes.ByteArrayToString();
 
@@ -94,44 +94,43 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
                     actionCallback(dsInfo);
 
-                    foreach (var leagueName in leagueNames)
+                    var leagueName = leagueNames.First();
+                    //foreach (var leagueName in leagueNames)
+                    //{
+                    IEnumerable<Game> leagueGames = playedGames.Where(g => (g.GameInformation.LeagueDay == leagueName.Day) &&
+                                                                           (g.GameInformation.LeagueCategory == leagueName.Category));
+
+                    var games = leagueGames.Select(g => new
                     {
-                        IEnumerable<Game> leagueGames = playedGames.Where(g => (g.GameInformation.LeagueDay == leagueName.Day) &&
-                                                                               (g.GameInformation.LeagueCategory == leagueName.Category));
+                        Games = new GameInformationDisplay(g.GameInformation),
+                        Teams = g.Teams.Select(t => new TeamStatsDisplay(new TeamStats(t))),
+                    });
 
-                        var games = leagueGames.Select(g => new
-                        {
-                            Games = new GameInformationDisplay(g.GameInformation),
-                            Teams = g.Teams.Select(t => new TeamStatsDisplay(new TeamStats(t))),
-                        });
+                    string fullLeagueName = games.First().Games.League;
+                    string shortLeagueName = $"{leagueName.Day} {leagueName.Category}";
 
-                        string fullLeagueName = games.First().Games.League;
-                        string shortLeagueName = $"{leagueName.Day} {leagueName.Category}";
+                    IEnumerable<TeamSummaryStatsDisplay> tss = query.GetTeamsPlayersStats(leagueName.Category, leagueName.Day)
+                                                                    .Select(t => new TeamSummaryStatsDisplay(t));
+                    IEnumerable<PlayerStatsRank> playerStatsRanks = query.GetLeaguePlayerStatsRank(leagueName.Category, leagueName.Day);//.Dump();
+                    IEnumerable<PlayerStatsRankDisplay> playerStatRankDisplay =
+                                     playerStatsRanks.Select(psr => new PlayerStatsRankDisplay(psr.Player, psr.PlayerRank));
 
-                        IEnumerable<TeamSummaryStatsDisplay> tss = query.GetTeamsPlayersStats(leagueName.Category, leagueName.Day)
-                                                                        .Select(t => new TeamSummaryStatsDisplay(t));
-                        IEnumerable<PlayerStatsRank> playerStatsRanks = query.GetLeaguePlayerStatsRank(leagueName.Category, leagueName.Day);//.Dump();
-                        IEnumerable<PlayerStatsRankDisplay> playerStatRankDisplay =
-                                         playerStatsRanks.Select(psr => new PlayerStatsRankDisplay(psr.Player, psr.PlayerRank));
+                    var gtp = new
+                    {
+                        GamesAndTeams = games,
+                        TeamPlayers = tss,
+                        Players = playerStatRankDisplay
+                    };
+                    actionCallback(gtp);
 
-                        var gtp = new
-                        {
-                            GamesAndTeams = games,
-                            TeamPlayers = tss,
-                            //HideRank = Util.RawHtml(displayRankingColumn),
-                            Players = playerStatRankDisplay
-                        };
-                        actionCallback(gtp);
-
-                        generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}", gtpHeaderStyle));
-
-                    }
+                    generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}", gtpHeaderStyle));
+                    //}
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
                     changedHtml = generator.DumpHtml(pageTitle: title,
-                                                     cssStyles: StaticConstants.LocalStyles,
-                                                     javaScript: StaticConstants.LocalJavascript,
+                                                     cssStyles: StaticConstants.LocalStyles + StaticConstants.HelpStyles,
+                                                     javaScript: StaticConstants.LocalJavascript + StaticConstants.HelpJavascript,
                                                      collapseTo: 1,
                                                      headElements: headElements.ToList());
                 }

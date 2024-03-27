@@ -153,8 +153,17 @@ namespace SBSSData.Application.Support
                         if (nestingLevel >= collapseTo)
                         {
                             span.Attributes["class"].Value = "arrow-down";
+                            string? styleAttribute = table.GetAttributeValue("style", null);
+                            string styleSpec = "border-bottom-style: dashed;";
+                            if (styleAttribute != null)
+                            {
+                                styleSpec += " " + styleAttribute;
+                            }
+
+                            table.SetAttributeValue("style", styleSpec);
+
                             HtmlNode tableTbody = table.SelectSingleNode("tbody");
-                            tableTbody.Attributes.Add("style", "display:none");
+                            tableTbody.SetAttributeValue("style", "display:none");
                             HtmlNode columnHeaders = table.SelectSingleNode("thead/tr[2]");
 
                             // Some tables have just one header, and it is not represented in a row.

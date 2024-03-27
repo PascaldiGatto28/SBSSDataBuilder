@@ -1,0 +1,1119 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <style style="text/css">
+
+        *
+        {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            vertical-align: baseline;
+            font-size: 100%;
+        }
+
+        h1, h2, h3, h4, h5, h6
+        {
+            margin: 0.2em 0 0.05em;
+            padding: 0;
+            border: 0;
+            vertical-align: baseline;
+        }
+
+        i, em
+        {
+            font-style: italic;
+        }
+
+        body
+        {
+            margin: 0.5em;
+            font-family: Segoe UI, Verdana, sans-serif;
+            font-size: 1em;
+            background: rgba(255, 255, 255, 1);
+        }
+
+        pre, code, .fixedfont
+        {
+            font-family: Consolas, monospace;
+            font-size: 10pt;
+        }
+
+        a, a:visited
+        {
+            text-decoration: none;
+            font-family: Segoe UI Semibold, sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            a:hover, a:visited:hover
+            {
+                text-decoration: underline;
+            }
+
+        span.hex
+        {
+            color: rgba(200, 30, 250, 1);
+            font-family: Consolas, monospace;
+            margin-top: 1px;
+        }
+
+            span.hex::before
+            {
+                content: " 0x";
+                color: rgba(200, 200, 200, 1);
+            }
+
+        table
+        {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: 2px solid rgba(76, 116, 178, 1);
+            margin: 0.3em 0.1em 0.2em;
+        }
+
+            table.limit
+            {
+                border-bottom-color: rgba(181, 97, 114, 1);
+            }
+
+            table.expandable
+            {
+                border-bottom-style: dashed;
+            }
+
+        td, th
+        {
+            vertical-align: top;
+            border: 1px solid rgba(187, 187, 187, 1);
+            margin: 0;
+        }
+
+        th
+        {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+            th[scope="row"]
+            {
+                position: sticky;
+                left: 0;
+                z-index: 2;
+            }
+
+        th
+        {
+            padding: 0.05em 0.3em 0.15em;
+            text-align: left;
+            background-color: rgba(221, 221, 221, 1);
+            border: 1px solid rgba(119, 119, 119, 1);
+            font-size: 0.95em;
+            font-family: Segoe UI Semibold, sans-serif;
+            font-weight: bold;
+        }
+
+            th.private
+            {
+                font-family: Segoe UI;
+                font-weight: normal;
+                font-style: italic;
+            }
+
+        td.private
+        {
+            background: rgba(244, 244, 238, 1);
+        }
+
+            td.private table
+            {
+                background: rgba(255, 255, 255, 1);
+            }
+
+        td, th.member
+        {
+            padding: 0.1em 0.3em 0.2em;
+            position: initial;
+        }
+
+        tr.repeat > th
+        {
+            font-size: 90%;
+            font-family: Segoe UI Semibold, sans-serif;
+            border: none;
+            background-color: rgba(238, 238, 238, 1);
+            color: rgba(153, 153, 153, 1);
+            padding: 0 0.2em 0.15em 0.3em;
+        }
+
+        td.typeheader
+        {
+            font-size: 0.95em;
+            background-color: rgba(76, 116, 178, 1);
+            color: rgba(255, 255, 255, 1);
+            padding: 0 0.3em 0.25em 0.2em;
+        }
+
+        td.n
+        {
+            text-align: right;
+        }
+
+        a.typeheader, a:link.typeheader, a:visited.typeheader, a:link.extenser, a:visited.extenser
+        {
+            font-family: Segoe UI Semibold, sans-serif;
+            font-size: 0.95em;
+            font-weight: bold;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 1);
+            margin-bottom: -0.1em;
+            float: left;
+        }
+
+        a.difheader, a:link.difheader, a:visited.difheader
+        {
+            color: rgba(255, 255, 136, 1);
+        }
+
+        a.extenser, a:link.extenser, a:visited.extenser
+        {
+            margin: 0 0 0 0.3em;
+            padding-left: 0.5em;
+            padding-right: 0.3em;
+        }
+
+        a:hover.extenser
+        {
+            text-decoration: none;
+        }
+
+        span.extenser
+        {
+            font-size: 1.1em;
+            line-height: 0.8;
+        }
+
+        span.cyclic
+        {
+            padding: 0 0.2em 0 0;
+            margin: 2px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.5em;
+            line-height: 0;
+            vertical-align: middle;
+        }
+
+        .arrow-up, .arrow-down
+        {
+            display: inline-block;
+            margin: 0 0.3em 0.15em 0.1em;
+            width: 0;
+            height: 0;
+            cursor: pointer;
+        }
+
+        .arrow-up
+        {
+            border-left: 0.35em solid rgba(0, 0, 0, 0);
+            border-right: 0.35em solid rgba(0, 0, 0, 0);
+            border-bottom: 0.35em solid rgba(255, 255, 255, 1);
+        }
+
+        .arrow-down
+        {
+            border-left: 0.35em solid rgba(0, 0, 0, 0);
+            border-right: 0.35em solid rgba(0, 0, 0, 0);
+            border-top: 0.35em solid rgba(255, 255, 255, 1);
+        }
+
+        table.group
+        {
+            border: none;
+            margin: 0;
+        }
+
+        td.group
+        {
+            border: none;
+            padding: 0 0.1em;
+        }
+
+        div.spacer
+        {
+            margin: 0.6em 0;
+        }
+
+        div.headingpresenter
+        {
+            border-top: none;
+            border-right: none;
+            border-bottom: none;
+            border-left: 0.17em dashed rgba(17, 170, 85, 1);
+            margin: 0.8em 0 1em 0.1em;
+            padding-left: 0.5em;
+        }
+
+        div.headingcontinuation
+        {
+            border-top: none;
+            border-right: none;
+            border-bottom: none;
+            border-left: 0.2em dotted rgba(17, 170, 85, 1);
+            margin: -0.4em 0 1em 0.1em;
+            padding-left: 0.5em;
+        }
+
+        h1.headingpresenter
+        {
+            border: none;
+            padding: 0 0 0.3em;
+            margin: 0;
+            font-family: Segoe UI Semibold, Arial;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 1);
+            color: rgba(32, 144, 32, 1);
+            font-size: 1.1em;
+            line-height: 1;
+        }
+
+        td.summary
+        {
+            background-color: rgba(218, 234, 250, 1);
+            color: rgba(0, 0, 0, 1);
+            font-size: 0.95em;
+            padding: 0.05em 0.3em 0.2em;
+        }
+
+        tr.columntotal > td
+        {
+            background-color: rgba(238, 238, 238, 1);
+            font-family: Segoe UI Semibold, Verdana, sans-serif;
+            font-weight: bold;
+            font-size: 0.95em;
+            color: rgba(76, 116, 178, 1);
+            text-align: right;
+        }
+
+        .error > table
+        {
+            border-color: rgba(181, 97, 114, 1);
+        }
+
+            .error > table > thead > tr > td.summary
+            {
+                background-color: rgba(244, 222, 227, 1);
+                color: rgba(0, 0, 0, 1);
+            }
+
+            .error > table > thead > tr > td.typeheader
+            {
+                background-color: rgba(181, 97, 114, 1);
+            }
+
+        span.graphbar
+        {
+            background: rgba(218, 234, 250, 1);
+            color: rgba(218, 234, 250, 1);
+            padding-bottom: 1px;
+            margin-left: -0.2em;
+            margin-right: 0.2em;
+        }
+
+        a.graphcolumn, a:link.graphcolumn, a:visited.graphcolumn
+        {
+            color: rgba(76, 116, 178, 1);
+            text-decoration: none;
+            font-weight: bold;
+            font-family: Arial;
+            font-size: 1em;
+            line-height: 1;
+            letter-spacing: -0.2em;
+            margin-left: 0.15em;
+            margin-right: 0.2em;
+            cursor: pointer;
+        }
+
+        a.collection, a:link.collection, a:visited.collection
+        {
+            color: rgba(32, 144, 32, 1);
+        }
+
+        a.reference, a:link.reference, a:visited.reference
+        {
+            color: rgba(0, 128, 209, 1);
+        }
+
+        span.meta, span.null
+        {
+            color: rgba(32, 144, 32, 1);
+        }
+
+        span.warning
+        {
+            color: rgba(255, 0, 0, 1);
+        }
+
+        span.false
+        {
+            color: rgba(136, 136, 136, 1);
+        }
+
+        span.true
+        {
+            font-weight: bold;
+        }
+
+        .highlight
+        {
+            background: rgba(255, 255, 136, 1);
+        }
+
+        code.xml b
+        {
+            color: rgba(0, 0, 255, 1);
+            font-weight: normal;
+        }
+
+        code.xml i
+        {
+            color: rgba(165, 42, 42, 1);
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        code.xml em
+        {
+            color: rgba(255, 0, 0, 1);
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        span.cc
+        {
+            background: rgba(102, 102, 102, 1);
+            color: rgba(255, 255, 255, 1);
+            margin: 0 1.5px;
+            padding: 0 1px;
+            font-family: Consolas, monospace;
+            border-radius: 3px;
+        }
+
+        ol, ul
+        {
+            margin: 0.7em 0.3em;
+            padding-left: 2.5em;
+        }
+
+        li
+        {
+            margin: 0.3em 0;
+        }
+
+        .difadd
+        {
+            background: rgba(163, 243, 163, 1);
+            border: 1px solid rgba(136, 216, 136, 1);
+        }
+
+        .difremove
+        {
+            background: rgba(255, 200, 200, 1);
+            border: 1px solid rgba(232, 179, 179, 1);
+        }
+
+        .rendering
+        {
+            font-style: italic;
+            color: rgba(165, 42, 42, 1);
+        }
+
+        p.scriptLog
+        {
+            color: rgba(170, 119, 119, 1);
+            background: rgba(248, 246, 246, 1);
+            font-family: Consolas, monospace;
+            font-size: 9pt;
+            padding: 0.1em 0.3em;
+        }
+
+        {
+            display: none;
+        }
+
+        input, textarea, button, select
+        {
+            font-family: Segoe UI;
+            font-size: 1em;
+            padding: 0.2em;
+        }
+
+        button
+        {
+            padding: 0.2em 0.4em;
+        }
+
+        input, textarea, select
+        {
+            margin: 0.15em 0;
+        }
+
+            input[type="checkbox"], input[type="radio"]
+            {
+                margin: 0 0.4em 0 0;
+                height: 0.9em;
+                width: 0.9em;
+            }
+
+                input[type="radio"]:focus, input[type="checkbox"]:focus
+                {
+                    outline: 1px dotted rgba(255, 0, 0, 1);
+                }
+
+        .checkbox-label
+        {
+            vertical-align: middle;
+            position: relative;
+            bottom: 0.07em;
+            margin-right: 0.5em;
+        }
+
+        fieldset
+        {
+            margin: 0 0.2em 0.4em 0.1em;
+            border: 1pt solid rgba(170, 170, 170, 1);
+            padding: 0.1em 0.6em 0.4em;
+        }
+
+        legend
+        {
+            padding: 0.2em 0.1em;
+        }
+
+        body
+        {
+            padding: 10px 20px 10px 20px;
+        }
+
+        button.sbss
+        {
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 12px;
+            font-family: 'Segoe UI Semibold', 'sans serif';
+            border: 1px solid black;
+            padding: 2px 5px 5px 5px;
+            margin-right: 10px;
+            color: white;
+            background-color: #4C74b2;
+        }
+
+        div.overlay
+        {
+            position: fixed;
+            display: none;
+            width: 162px;
+            height: 360px;
+            top: 200px;
+            left: 245px;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(232,232,232,.75);
+            z-index: 9;
+            cursor: pointer;
+            border-radius: 25px;
+            border: 2px solid firebrick;
+            box-shadow: 10px 10px 50px 15px #aaaaaa;
+            padding: 20px 25px 20px 25px;
+        }
+
+        a.help
+        {
+            float: right;
+            font-weight: 500;
+            color: firebrick;
+            background-color: white;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        a
+        {
+            font-family: Segoe UI Semibold, sans-serif;
+            font-size: 0.95em;
+            font-weight: bold;
+        }
+
+        <!-- Styles to address -->
+        ul.sbss
+        {
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li
+        {
+            line-height: 1.3;
+            margin-bottom: 10px
+        }
+
+        li.sbss
+        {
+            list-style-type: square;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        li::marker
+        {
+            color: firebrick;
+        }
+
+        span.showme
+        {
+            font-size: .75em;
+            cursor: pointer;
+        }
+        .container
+        {
+            display: flex;
+            flex-direction: row; /* Arrange sub-divs horizontally */
+            overflow: hidden; /* Hide overflow content */
+        }
+
+        .sub-div
+        {
+            flex: 1; /* Distribute available space equally */
+            overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+            border: 1px solid #ccc; /* Optional: Add borders for visual clarity */
+            padding: 10px; /* Optional: Add padding for spacing */
+        }
+
+        div.help {
+            display:none;
+        }
+
+        .tableTitle {
+            font-style:italic;
+        }
+
+        button.showme
+        {
+            background-color: #fffae6;
+            border: 1px solid black;
+            color: black;
+            padding: 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            border-radius: 15px;
+            box-shadow: 2px 2px 10px 2px #aaaaaa;
+            font-size: 10px;
+            height: 24px;
+            width: 60px;
+            padding: 0px;
+            font-weight: 500;
+        }
+    </style>
+    <script type="text/javascript">
+        function toggleDetailsVisibility(detailsId, introductionId)
+        {
+            var sourceEl = document.getElementById("more");
+            var details = document.getElementById(detailsId);
+            var introduction = document.getElementById(introductionId);
+            if (details.style.display == 'block')
+            {
+                details.style.display = 'none';
+                introduction.style.display = "block";
+                sourceEl.innerText = 'More Details ↓ ...';
+
+            }
+            else
+            {
+                details.style.display = 'block';
+                introduction.style.display = "none";
+                sourceEl.innerText = 'Less Details ↑ ...';
+            }
+        }
+
+        function collapseTable(level)
+        {
+            var tables = document.getElementsByTagName("TABLE");
+            for (i = 0; i < tables.length; i++)
+            {
+                var table = tables[i];
+                if (table == null)
+                {
+                    continue;
+                }
+                var updown = document.getElementById(table.id + 'ud');
+                if (updown == null) {
+                    continue
+                }
+
+                var collapse = updown.className == "arrow-up";
+                var depth = updown.attributes["depth"].value;
+                if ((depth >= level) && collapse)
+                {
+                    updown.className = "arrow-down";
+                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                    {
+
+                        table.tHead.rows[1].style.display = 'none';
+                    }
+
+                    table.querySelector("tbody").style.display = "none";
+                }
+                else ((depth < level) && !collapse)
+                {
+                    updown.className = "arrow-up";
+                    if ((table.tHead.rows.length == 2) && !table.tHead.rows[1].id.startsWith('sum'))
+                    {
+
+                        table.tHead.rows[1].style.display = '';
+                    }
+
+                    table.querySelector("tbody").style.display = "none";
+                    table.scrollIntoView
+                    ({
+                        behavior: 'smooth',
+                        block: 'nearest'
+                    });
+                }
+            }
+        }
+
+        function viewAll(expandAll) {
+            var tables = document.getElementsByTagName("TABLE");
+            for (i = 0; i < tables.length; i++)
+            {
+                var table = tables[i];
+                if (table == null)
+                {
+                    continue;
+                }
+                var updown = document.getElementById(table.id + 'ud');
+                if (updown == null)
+                {
+                    continue
+                }
+
+                if (expandAll)
+                {
+                    updown.className = 'arrow-up';
+
+                    table.style.borderBottomStyle = 'solid';
+                    if (table.rows.length < 2 || table.tBodies.length == 0)
+                    {
+                        continue;
+                    }
+
+                    table.tBodies[0].style.display = ''; // expand ? '' : 'none';
+                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                        table.tHead.rows[1].style.display = ''; // expand ? '' : 'none';
+                }
+                else
+                {
+                    updown.className = 'arrow-down'; // collapse ? 'arrow-down' : 'arrow-up';
+
+                    table.style.borderBottomStyle = 'dashed'; // collapse ? 'dashed' : 'solid';
+                    if (table.rows.length < 2 || table.tBodies.length == 0)
+                    {
+                        continue;
+                    }
+
+                    table.tBodies[0].style.display = 'none'; // collapse ? 'none' : '';
+                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                        table.tHead.rows[1].style.display = 'none'; // collapse ? 'none' : '';
+                    if (table.tFoot != null)
+                        table.tFoot.style.display = 'none'; // collapse ? 'none' : '';
+                }
+            }
+
+            return false;
+        }
+
+        function expandTable(headerText)
+        {
+            var tableId = findTableIdFromHeader(headerText);
+            if (tableId == -1)
+            {
+                alert("Can't find the table whose header starts with " + headerText);
+                return;
+            }
+
+            var table = document.getElementById(tableId);
+            if (table != null)
+            {
+                var updown = document.getElementById(tableId + 'ud');
+                if (updown != null)
+                {
+                    updown.className = 'arrow-up';
+                }
+
+                table.style.borderBottomStyle = 'solid';
+                if (table.rows.length < 2 || table.tBodies.length == 0)
+                {
+                    return
+                }
+
+                table.tBodies[0].style.display = '';
+                if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                    table.tHead.rows[1].style.display = '';
+            }
+        }
+
+        function collapseTable(headerText)
+        {
+            var tableId = findTableIdFromHeader(headerText);
+            if (tableId == -1)
+            {
+                alert("Can't find the table whose header starts with " + headerText);
+                return;
+            }
+
+            var table = document.getElementById(tableId);
+            if (table != null)
+            {
+                var updown = document.getElementById(tableId + 'ud');
+                if (updown != null) 
+                {
+                    updown.className = 'arrow-down';
+                }
+
+                table.style.borderBottomStyle = 'dashed';
+                if (table.rows.length < 2 || table.tBodies.length == 0)
+                {
+                    return;
+                }
+
+                table.tBodies[0].style.display = 'none';
+                if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                    table.tHead.rows[1].style.display = 'none';
+                if (table.tFoot != null)
+                    table.tFoot.style.display = 'none';
+            }
+        }
+
+        function findTableIdFromHeader(headerText) {
+            var headers = document.querySelectorAll("a.typeheader")
+            var tableId = -1;
+
+            // This function is used to find table IDs of the first few tables so they can be expanded by the
+            // introductory text. On the tables in the first league need be queried.
+            for (let i = 0; i < headers.length; i++) {
+                let headerElement = headers[i];
+                //console.log(headerElement.innerText);
+                let header = headerElement.innerText;
+                //console.log("header = " + header);
+                if (header.startsWith(headerText)) {
+                    tableId = headerElement.closest('table').id;
+                    break;
+                }
+            }
+
+            return tableId
+        }
+
+        function getTableNestingLevel(element) {
+            console.info("Checking nesting level for " + element.id);
+            let nestingLevel = 0;
+            let currentElement = element;
+
+            while (currentElement.parentElement) {
+                console.info("Parent element is " + currentElement.parentElement.tagName)
+                if (currentElement.parentElement.tagName === 'TABLE') {
+                    nestingLevel++;
+                }
+
+                currentElement = currentElement.parentElement;
+            }
+
+            return nestingLevel;
+        }
+
+        function findTableId(depth, index) {
+            console.log("Finding table ID for depth=" + depth + " and index=" + index);
+            var tables = document.getElementsByTagName("TABLE");
+            var spansInHeader = document.querySelectorAll("a.typeheader span")
+            var tableId = -1;
+            for (let i = 0; i < spansInHeader.length; i++) {
+                var span = spansInHeader[i];
+                var tableDepth = span.getAttribute("depth");
+                var tableIndex = span.getAttribute("index");
+                if ((tableDepth == depth) && (tableIndex == index)) {
+                    tableId = span.closest('table').id;
+                    break;
+                }
+            }
+
+            return tableId
+        }
+
+        function toggleHelp(id)
+        {
+            var element = document.getElementById(id);
+            var display = getComputedStyle(element).getPropertyValue("display");
+
+            console.log('in toggleHelp for id=', id, " display=", display);
+            element.style.display = (display == "none") ? "block" : "none";
+        }
+
+        function openHelp(id)
+        {
+            var element = document.getElementById(id);
+            if ((element !== "") && (element != null))
+            {
+                element.style.display = "block";
+            }
+            else
+            {
+                console.log("In openHelp, cannot find element for id=[" + id + "]");
+            }
+        }
+
+        function closeHelp(id)
+        {
+            var element = document.getElementById(id);
+            if ((element !== "") && (element != null))
+            {
+                element.style.display = "none";
+            }
+            else
+            {
+                console.log("In closeHelp, cannot find element for id=[" + id + "]");
+            }
+            element.style.display = "none";
+        }
+
+        function closeAllHelpButMe(id)
+        {
+            var helpItems = document.querySelectorAll("div.spacer.help")
+            for (var i = 0; i < helpItems.length; i++)
+            {
+                var helpItem = helpItems[i];
+                var itemId = helpItem.id;
+                
+                if (itemId != id)
+                {
+                    closeHelp(itemId);
+                }
+            }
+        }
+
+
+    </script>
+
+</head >
+<body style="font-size:16px">
+    <div class="IntroContent" style="font-size:16px;">
+        <h1 style="font-weight: 500; font-size:1.25em; color: firebrick;">
+            Games Results, Team and Players Table Document Help
+        </h1>
+        
+        <div class="spacer">
+            In this page, we provide documentation for all the tables that appear in the actual
+            <a href="GamesTeamPlayersV3.html">Games, Team and Players</a> page. Actual data is used, but just for league to make
+            navigation easier. Just click "Show me" button to open text describing the associated
+            table while viewing the table itself.
+        </div>
+        <div class="spacer">
+            <!-- Data Store Information -->
+            <h2 style="font-size: 1.1em; color: #4C74BC; font-weight: 500;">
+                Data Store
+                <button class="showme" onclick="openHelp('dataStoreHelp'); closeAllHelpButMe('dataStoreHelp');
+                                                expandTable('Data Store'); collapseTable('Games, Teams and Players');">
+                    Show me   
+                </button>
+            </h2>
+            <div class="spacer help" id="dataStoreHelp">
+                <div class="spacer">
+                    The <span class="tableTitle">Data Store Information</span> table is not really about game, team or player data,
+                    but describes the state of the file where all information is store (the data store). It is updated every 
+                    week night at 8:30 PM.
+                    This table gives you an idea of the volume of data and how it is changing.
+                </div>
+                <div class="spacer">
+                    Most of the fields are obvious, but note that the number of players, like the number of teams changes as the 
+                    season progresses, because the values are determined from the actual played games. For example, the number of 
+                    players is the number of 
+                    all players that have been in at least one game in any league, that is, it's not just roster players. 
+                    Unless there
+                    are cancellations, the number of teams doesn't change after a completed full week's schedule.
+                </div>
+            </div>
+
+            <!-- Game Results Data table -->
+            <h2 style="font-size: 1.1em; color: #4C74BC; font-weight: 500;">
+                Game Results
+                <button class="showme" onclick="openHelp('gameResultsHelp'); closeAllHelpButMe('gameResultsHelp');
+                                     collapseTable('Data Store'); 
+                                     expandTable('Games, Teams and Players');
+                                     expandTable('Game Results Data');">
+                    Show me
+                </button>
+            </h2>
+            <div class="spacer help" id="gameResultsHelp">
+                The <span class="tableTitle">Game Results Data for the 18 Monday Community Games</span> table
+                with all its nested tables encapsulates every bit on information that is in the data store. It also displays 
+                data calculated from the data. It is game-centric meaning the row of the table has all the information
+                for every games played. There's a row for each game. You can imagine that table and season continues.
+                Click on the  
+
+                <!-- Scheduled Game Information table -->
+                <div style="padding-left:20px;">
+                    <h3 style="font-size: 1.0em; color: #4C74BC; font-weight: 500;">
+                        Scheduled Game
+                        <button class="showme" onclick="openHelp('scheduledGameHelp');
+                                                        expandTable('Scheduled Game Information');">
+                            Show me ...
+                        </button>
+                    </h3>
+                    <div class="spacer help" id="scheduledGameHelp">
+                        The first cell is the scheduled game information, which is determined before the
+                        first games is played. If a game has not been played, or has been cancelled it does not 
+                        appear in the table &mdash; after all,
+                        there's no data! 
+                    </div>
+
+                    <!-- Teams and Players table -->
+                    <h3 style="font-size: 1.0em; color: #4C74BC; font-weight: 500;">
+                        Teams and Players
+                        <button class="showme" onclick="openHelp('teamsPlayersHelp');
+                                                        expandTable('Teams and Players');">
+                            Show me
+                        </button>
+                    </h3>
+                    <div class="spacer help" id="teamsPlayersHelp">
+                        The second cell in the row, for example, 
+                        <span class="tableTitle">Teams and Players for the Ann Fraley-Long Realty vs Ambient Air Heating &amp; Cooling Game</span>,
+                        actually encapsulates the results. Although these results are posted on the SSSA web site, the values
+                        for team (and game outcome) are computed from the player "box line" values. This table obvious only has
+                        two row, one for each team. For each team, the data for each player is last cell of the row in this
+                        nested table. The rows are ordered as visitor's team then home team, not by outCome.
+                    </div>
+
+                    <div style="padding-left: 20px">
+                        <!-- Players for the visitors table -->
+                        <h4 style="font-size:.9em; color: #4C74BC; font-weight: 500;">
+                            Players for the Visitors
+                            <button class="showme" onclick="openHelp('visitorsHelp');
+                                                            expandTable('Players for Ann');">
+                                Show me ...
+                            </button>
+                        </h4>
+                        <div class="spacer help" id="visitorsHelp">
+                            Now we're getting to heart of the data: It's all about player stats. You'll notice that the table,
+                            for example, <span class="tableTitle">Players for Ann Fraley-Long Realty</span>, is much like what
+                            appears in SSSA web site when you on a "Schedules" menu item to look the results a played game. There
+                            are some differences, however. All the usual calculated stats (average, slugging, etc.) are present.
+                            No question, that for a single game, this data not very interesting or useful, but to keep our tables
+                            consistent included those. More interesting a new stat is added: Plate appearances (PA) which is just
+                            the number offical at bats plus bases on balls and scrifice flies. The other difference which is
+                            useful is a summary line at the bottom that includes all player data and calculated stats.
+                        </div>
+                        <!-- Players for the home team table -->
+                        <h4 style="font-size: .9em; color: #4C74BC; font-weight: 500;">
+                            Players for the Home Team
+                            <button class="showme" onclick="openHelp('homeHelp');expandTable('Players for Ambient');">
+                                Show me
+                            </button>
+                        </h4>
+                        <div class="spacer help" id="homeHelp">
+                            The second cell in the second row is just like the previous is for the home team 
+                            rather than the visitors.
+                        </div>
+                    </div>
+                 </div>
+            </div>
+            <!-- Team Summary Data table-->
+            <h2 style="font-size: 1.1em; color: #4C74BC; font-weight: 500;">
+                Team Summary Data &amp; Standings
+                <button class="showme" onclick="openHelp('teamSummaryHelp'); closeAllHelpButMe('teamSummaryHelp');
+                                              collapseTable('Game Results Data');
+                                              expandTable('Team Summary Data');">
+                    Show me
+                </button>
+            </h2>
+            <div class="spacer help" id="teamSummaryHelp">
+                The second row in the main table, for example 
+                <span class="tableTitle">Team Summary Data and Standings for the 4 Monday Community Teams</span> turns our
+                perspective from games played to team performance. When the table is opened, a list of the teams is league 
+                is presented in "standings" order (actually, by wins and then by run differencial). You may notice, for example,
+                that although "Andy's Irrigation-Andy McInnis" and "Barron Electric" have the same record, the former is in first
+                place because it's run differencial (runs scored less runs against) is 25 versul -3 for "Barron Electric". 
+                (Full Disclosure: I do not know that is how the SSSA handles tie won/loss records).
+
+                <div style="padding-left:20px;">
+                    <!-- Summary Stats for a team table-->
+                    <h3 style="font-size: 1.0em; color: #4C74BC; font-weight: 500;">
+                        Team Players Summary
+                        <button class="showme" onclick="openHelp('teamPlayers'); //closeAllHelpButMe('teamPlayers');
+                                                        //collapseTable('Game Results Data');
+                                                        expandTable('Summary Stats');">
+                            Show me
+                        </button>
+                    </h3>
+                    <div class="spacer help" id="teamPlayers">
+                        The last cell in each row is (yet) another table, but this time is a cummulative summary of all players
+                        that played games for the team. The players that played 1,2 or 3 games like substitue players. But still
+                        they do contribute to the overall team stats, which are highlighted at the bottom of the table. Again, the
+                        line items for each player are the same when looking at single game, but in this casem the number 
+                        games in which each player played 
+                        is also presented. This data helps show the contribution players made to success of their teams.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Player Summary Stats table-->
+            <h2 style="font-size: 1.1em; color: #4C74BC; font-weight: 500;">
+                Player Summary Stats
+                <button class="showme" onclick="openHelp('players'); closeAllHelpButMe('players');
+                                     collapseTable('Team Summary Data');
+                                     expandTable('Player Summary Stats');">
+                    Show me
+                </button>
+            </h2>
+            <div class="spacer help" id="players">
+                In this last table, for example, 
+                <span class="tableTitle">Player Summary Stats for the 59 Players and Rankings for 47 Players With Enough Plate Appearances for All Teams</span>
+                we really focus on the player. Here you see summary starts for every player in the league for all their 
+                activity on all teams. Because it's in a single, league it is reasonable to compare the stats. The player rows
+                are sorted games played and then plate appearances. You open the last cell of row to see a table of the ranking of the
+                player for the four standard computed stats &mdash Average (Avg), Slugging (Slug) Onbase percentage (OB%), and
+                Onbase percentage plus slugging (OB%+Slug). Unlike the stats per game, these have real meaning.
+            
+                <div class="spacer">
+                    Rather than opening the Ranking tables, 
+                    just hover over the player name (second column) to see a pop-up of their 
+                    photo and rankings. You can do that now, or ...
+                    <div>
+                        <button class="showme" onclick="getElementById('MikeKutanskyMondayCommunityOverlay').style.display='table-cell';">
+                            Show me
+                        </button>
+                        <button class="showme" onclick="getElementById('MikeKutanskyMondayCommunityOverlay').style.display='none';">
+                            Close me
+                        </button>
+                    </div>
+                </div>
+                <div class="spacer">
+                    To calculate the rankings, a player must have had a minimal number of plate appearances. We choose,
+                    but the clearly subjective. The ranking are only based upon players that are qualified (that, have had enough plate
+                    appearances). Finally the last row is summary for all players and also the ranking of those values compared to all
+                    the qualified players. You would expect that the league ranks would be about in the middle (that is, about the
+                    median).
+               </div>
+            </div>
+
+        </div>
+    </div>
+ </body>
+</html >

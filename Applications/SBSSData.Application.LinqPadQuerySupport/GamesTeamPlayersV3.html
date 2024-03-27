@@ -580,184 +580,39 @@
             font-size: .75em;
             cursor: pointer;
         }
+        .container
+        {
+            display: flex;
+            flex-direction: row; /* Arrange sub-divs horizontally */
+            overflow: hidden; /* Hide overflow content */
+        }
+
+        .sub-div
+        {
+            flex: 1; /* Distribute available space equally */
+            overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+            border: 1px solid #ccc; /* Optional: Add borders for visual clarity */
+            padding: 10px; /* Optional: Add padding for spacing */
+        }
+
     </style>
-    <!--<script type="text/javascript">
-        function toggleVisibility(id) {
-            var sourceEl = document.getElementById("more");
-            var div = document.getElementById(id);
-            if (div.style.display === 'block') {
-                div.style.display = 'none';
-                sourceEl.innerText = 'More Details ↓ ...';
-
-            }
-            else {
-                div.style.display = 'block';
-                sourceEl.innerText = 'Less Details ↑ ...';
-            }
-        }
-
-        function collapseTable(level) {
-            var tables = document.getElementsByTagName("TABLE");
-            for (i = 0; i < tables.length; i++) {
-                var table = tables[i];
-                if (table == null) {
-                    continue;
-                }
-                var updown = document.getElementById(table.id + 'ud');
-                if (updown == null) {
-                    continue
-                }
-
-                var collapse = updown.className == "arrow-up";
-                var depth = updown.attributes["depth"].value;
-                if ((depth >= level) && collapse) {
-                    updown.className = "arrow-down";
-                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum')) {
-
-                        table.tHead.rows[1].style.display = 'none';
-                    }
-
-                    table.querySelector("tbody").style.display = "none";
-                }
-                else ((depth < level) && !collapse)
-                {
-                    updown.className = "arrow-up";
-                    if ((table.tHead.rows.length == 2) && !table.tHead.rows[1].id.startsWith('sum')) {
-
-                        table.tHead.rows[1].style.display = '';
-                    }
-
-                    table.querySelector("tbody").style.display = "none";
-                    table.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'nearest'
-                    });
-                }
-            }
-        }
-
-        function viewAll(expandAll) {
-            var tables = document.getElementsByTagName("TABLE");
-            for (i = 0; i < tables.length; i++) {
-                var table = tables[i];
-                if (table == null) {
-                    continue;
-                }
-                var updown = document.getElementById(table.id + 'ud');
-                if (updown == null) {
-                    continue
-                }
-
-                if (expandAll) {
-                    //var expand = (updown.className == "arrow-down")
-                    //updown.className = expand ? 'arrow-up' : 'arrow-down';
-                    updown.className = 'arrow-up';
-                    //console.info("Viewing table " + table.id + " -- Expanding is " + expand);
-
-                    //table.style.borderBottomStyle = expand ? 'solid' : 'dashed';
-                    table.style.borderBottomStyle = 'solid';
-                    if (table.rows.length < 2 || table.tBodies.length == 0) {
-                        continue;
-                    }
-
-                    table.tBodies[0].style.display = ''; // expand ? '' : 'none';
-                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
-                        table.tHead.rows[1].style.display = ''; // expand ? '' : 'none';
-                    //if (table.tFoot != null)
-                    //    table.tFoot.style.display = expand ? '' : 'none';
-                }
-                else {
-                    //var collapse = (updown.className == "arrow-up")
-                    updown.className = 'arrow-down'; // collapse ? 'arrow-down' : 'arrow-up';
-                    //console.info("Viewing table " + table.id + " -- collapsing is " + collapse);
-
-                    table.style.borderBottomStyle = 'dashed'; // collapse ? 'dashed' : 'solid';
-                    if (table.rows.length < 2 || table.tBodies.length == 0) {
-                        continue;
-                    }
-
-                    table.tBodies[0].style.display = 'none'; // collapse ? 'none' : '';
-                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
-                        table.tHead.rows[1].style.display = 'none'; // collapse ? 'none' : '';
-                    if (table.tFoot != null)
-                        table.tFoot.style.display = 'none'; // collapse ? 'none' : '';
-                }
-            }
-
-            return false;
-        }
-
-        function getTableNestingLevel(element) {
-            console.info("Checking nesting level for " + element.id);
-            let nestingLevel = 0;
-            let currentElement = element;
-
-            while (currentElement.parentElement) {
-                console.info("Parent element is " + currentElement.parentElement.tagName)
-                if (currentElement.parentElement.tagName === 'TABLE') {
-                    nestingLevel++;
-                }
-
-                currentElement = currentElement.parentElement;
-            }
-
-            return nestingLevel;
-        }
-
-
-        function findTableId(depth, index) {
-            console.log("Finding table ID for depth=" + depth + " and index=" + index);
-            var tables = document.getElementsByTagName("TABLE");
-            var spansInHeader = document.querySelectorAll("a.typeheader span")
-            var tableId = -1;
-            for (let i = 0; i < spansInHeader.length; i++) {
-                var span = spansInHeader[i];
-                var tableDepth = span.getAttribute("depth");
-                var tableIndex = span.getAttribute("index");
-                if ((tableDepth == depth) && (tableIndex == index)) {
-                    tableId = span.closest('table').id;
-                    break;
-                }
-            }
-
-            return tableId
-        }
-
-        function findTableIdFromHeader(headerText) {
-            var tableId = -1;
-            var tables = document.getElementsByTagName("TABLE");
-            var headers = document.querySelectorAll("a.typeheader")
-            var tableId = -1;
-            for (let i = 0; i < headers.length; i++) {
-                let headerElement = headers[i];
-                console.log(headerElement.innerText);
-                let header = headerElement.innerText;
-                console.log("header = " + header);
-                if (header.startsWith(headerText)) {
-                    tableId = headerElement.closest('table').id;
-                    break;
-                }
-            }
-
-            return tableId
-        }
-
-
-    </script>-->
     <script type="text/javascript">
-        function toggleVisibility(id)
+        function toggleDetailsVisibility(detailsId, introductionId)
         {
             var sourceEl = document.getElementById("more");
-            var div = document.getElementById(id);
-            if (div.style.display === 'block')
+            var details = document.getElementById(detailsId);
+            var introduction = document.getElementById(introductionId);
+            if (details.style.display === 'block')
             {
-                div.style.display = 'none';
+                details.style.display = 'none';
+                introduction.style.display = "block";
                 sourceEl.innerText = 'More Details ↓ ...';
 
             }
             else
             {
-                div.style.display = 'block';
+                details.style.display = 'block';
+                introduction.style.display = "none";
                 sourceEl.innerText = 'Less Details ↑ ...';
             }
         }
@@ -978,114 +833,60 @@
     </script>
 
 </head >
-                <body style="font-size:16px">
-                    <div class="IntroContent" style="font-size:16px">
-                        <h1 style="font-weight: 500; font-size:1.25em; color: firebrick;">
-                            Games Results, Team and Players Stats
-                        </h1>
+<body style="font-size:16px">
+    <div class="IntroContent"" style="font-size:16px;">
+        <h1 style="font-weight: 500; font-size:1.25em; color: firebrick;">
+            Games Results, Team and Players Stats
+        </h1>
+            <div id="introduction">
+                <div class="spacer">
+                    SaddleBrooke Senior Softball data is generated in the following ways:
+                    <ul style="margin-left:-20px;">
+                        <li class="sbss">
+                            Before any games are even played, the entire schedule is published as a list of scheduled games for
+                            each of the leagues for the season.
+                        </li>
+                        <li class="sbss">
+                            As games are played (or canceled), the results of the game together with player box scores for each team are posted.
+                        </li>
+                        <li class="sbss">
+                            For each league, team standings (wins, losses, runs scored and runs against) are updated as well.
+                        </li>
+                        <li class="sbss">
+                            For each team, cumulative player stats are recorded in the Rosters &amp; Stats pages including computed
+                            stats like batting and slugging averages, on base percentage and on-base percentage plus slugging.
+                        </li>
+                    </ul>
+                </div>
 
-                        <div class="spacer">
-                            SaddleBrooke Senior Softball data is generated in the following ways:
-                            <ul style="margin-left:-20px;">
-                                <li class="sbss">
-                                    Before any games are even played, the entire schedule is published as a list of scheduled games for
-                                    each of the leagues for the season.
-                                </li>
-                                <li class="sbss">
-                                    As games are played (or canceled), the results of the game together with player box scores for each team are posted.
-                                </li>
-                                <li class="sbss">
-                                    For each league, team standings (wins, losses, runs scored and runs against) are updated as well.
-                                </li>
-                                <li class="sbss">
-                                    For each team, cumulative player stats are recorded in the Rosters &amp; Stats pages including computed
-                                    stats like batting and slugging averages, on base percentage and on-base percentage plus slugging.
-                                </li>
-                            </ul>
-                        </div>
+                <div class="spacer">
+                    All the updates to the data originate from the volunteer score keepers and then posted to the
+                    <a href="https://saddlebrookesoftball.com" target="_blank">
+                        SaddleBrooke Senior Softball Association (SSSA)
+                    </a> web site by the site manager. It's an incredible amount work that's very well done.
+                </div>
+                <div class="spacer">
+                    The SBSS data builder application "scrapes" the pages of the SSSA site to recover the day's data and stores it in a file
+                    (a data store, we call it). The advantage is that all the data is in a single file that can be searched and results
+                    displayed. Moreover, additional computed computer from what's already in the data store can be computed and displayed.
+                </div>
+                <div class="spacer">
+                    There are really three fundamental ways of looking at this data: (1) From the perspective of game results; (2) Focus on
+                    the teams; (3) From the players' view. The purpose of this page is put all this information in a three main
+                    tables for each of leagues aligning with the different perspectives. In addition, you'll see a table that just
+                    describes the current state of the data store (file). As of the this writing there are over 1,100 tables
+                    representing the current season, some of which
+                    are nested deeply in other tables. That volume is driver for allowing tables collapsed to make navigation easier.
+                </div>
+                <div class="spacer">
+                    Before diving and looking at all the data, you might want to take a look at details as we guide you through the
+                    different tables. When describing a table, you can open to follow, or just click on the <span>Show me ...</span>
+                    link, and it open automatically for you.
+                    <a href="GamesTeamPlayersHelpV3.html" target="_blank">Guide to Games, Results, Teams and Players</a>
+                </div>
 
-                        <div class="spacer">
-                            All the updates to the data originate from the volunteer score keepers and then posted to the
-                            <a href="https://saddlebrookesoftball.com" target="_blank">
-                                SaddleBrooke Senior Softball Association (SSSA)
-                            </a> web site by the site manager. It's an incredible amount work that's very well done.
-                        </div>
-                        <div class="spacer">
-                            The SBSS data builder application "scrapes" the pages of the SSSA site to recover the day's data and stores it in a file
-                            (a data store, we call it). The advantage is that all the data is in a single file that can be searched and results
-                            displayed. Moreover, additional computed computer from what's already in the data store can be computed and displayed.
-                        </div>
-                        <div class="spacer">
-                            There are really three fundamental ways of looking at this data: (1) From the perspective of game results; (2) Focus on
-                            the teams; (3) From the players' view. The purpose of this page is put all this information in a three main
-                            tables for each of leagues aligning with the different perspectives. In addition, you'll see a table that just
-                            describes the current state of the data store (file). As of the this writing there are over 1,100 tables
-                            representing the current season, some of which
-                            are nested deeply in other tables. That volume is driver for allowing tables collapsed to make navigation easier.
-                        </div>
-                        <div class="spacer">
-                            Before diving and looking at all the data, you might want to take a look at details as we guide you through the
-                            different tables. When describing a table, you can open to follow, or just click on the <span>Show me ...</span>
-                            link, and it open automatically for you.
-                        </div>
-
-                        <div class="spacer"> To start the description, click here
-                            <span id="more" display: inline;
-                            style="font-size: 1em;
-                            color: #4C74BC;
-                            font-weight:600;
-                            margin-top:10px;
-                            margin-bottom:10px;
-                            cursor: pointer;"
-                     onclick="toggleVisibility('moreInfo');">
-                            More Details &darr; ...
-                        </span>
-                    </div>
-                    <div id="moreInfo" style="margin-bottom: 10px; display: none;">
-                        <div class="spacer">
-                            <!-- Data Store Information -->
-
-                            <h2 style="font-size: 1.1em; color: #4C74BC; font-weight: 500;">
-                                Data Store
-                                <span class="showme" onclick="expandTable('Data Store');">;
-                                    Show me ...
-                                </span>
-                            </h2>
-
-                            <!-- Game Results Data table -->
-                            <h2 style="font-size: 1.1em; color: #4C74BC; font-weight: 500;">
-                                Game Results
-                                <span class="showme" onclick="collapseTable('Data Store'); expandTable('Games, Teams and Players'); expandTable('Game Results Data');">
-                                    Show me ...
-                                </span>
-                            </h2>
-                            <div class="spacer">
-                                For each league, the first table contains the game results,
-                                for example "Game Results Data for the 16 Monday Community Games". For each scheduled game (row of the table),
-                                in the first you can see schedule detail
-                                In the second column is another table having the games results, and for each team, the nested tables are score cards
-                                for each players.
-                            </div>
-                            <div class="spacer">
-                                Although the extended statistics are not terribly meaningful for a single game, they are included for consistency other
-                                tables represent summary data. There is a field is not displayed in the SSSA site, and that plate appearances (<b>PA</b>).
-                                This is used by the player ranking stats (see below).
-                            </div>
-                            <div class="spacer">
-                                Also note that data for player participating are displayed even if the player is no longer part of the softball
-                                program. In particular that means the data for the teams always reflect the individual player data.
-                            </div>
-                            <div class="spacer">
-                            </div>
-                            <div class="spacer">
-                            </div>
-                            <div class="spacer">
-                            </div>
-                            <div class="spacer">
-                            </div>
-                            <div class="spacer">
-                            </div>
-                        </div>
-                    </div>
-                </body>
+            </div>
+            
+    </div>
+</body>
 </html >

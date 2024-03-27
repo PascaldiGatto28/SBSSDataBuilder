@@ -79,23 +79,74 @@ namespace SBSSData.Application.Support
                 cursor:pointer; 
             }
 
+            div.help {
+                display:none
+            }
+
+            """;
+
+        public static readonly string HelpStyles =
+            """
+            a.help {
+                float: right;
+                font-weight: 500;
+                color: firebrick;
+                background-color: white;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            button.showme {
+                background-color: #fffae6;
+                border: 1px solid black;
+                color: black;
+                padding: 5px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;
+                margin: 4px 2px;
+                border-radius: 15px;
+                box-shadow: 2px 2px 10px 2px #aaaaaa;
+                font-size: 10px;
+                height: 24px;
+                width: 60px;
+                padding: 0px;
+                font-weight: 500;
+            }
+
+            span.showme {
+                font-size: .75em;
+                cursor: pointer;
+            }
+
+                div.help {
+                display:none;
+            }
+
+            .tableTitle {
+                font-style:italic;
+            }
             """;
 
         public static readonly string LocalJavascript =
             """
-            function toggleVisibility(id)
+            function toggleDetailsVisibility(detailsId, introductionId)
             {
                 var sourceEl = document.getElementById("more");
-                var div = document.getElementById(id);
-                if (div.style.display === 'block')
+                var details = document.getElementById(detailsId);
+                var introduction = document.getElementById(introductionId);
+                if (details.style.display === 'block')
                 {
-                    div.style.display = 'none';
+                    details.style.display = 'none';
+                    introduction.style.display = "block";
                     sourceEl.innerText = 'More Details ↓ ...';
 
                 }
                 else
                 {
-                    div.style.display = 'block';
+                    details.style.display = 'block';
+                    introduction.style.display = "none";
                     sourceEl.innerText = 'Less Details ↑ ...';
                 }
             }
@@ -103,9 +154,11 @@ namespace SBSSData.Application.Support
             function collapseTable(level)
             {
                 var tables = document.getElementsByTagName("TABLE");
-                for (i = 0; i < tables.length; i++) {
+                for (i = 0; i < tables.length; i++)
+                {
                     var table = tables[i];
-                    if (table == null) {
+                    if (table == null)
+                    {
                         continue;
                     }
                     var updown = document.getElementById(table.id + 'ud');
@@ -115,9 +168,11 @@ namespace SBSSData.Application.Support
 
                     var collapse = updown.className == "arrow-up";
                     var depth = updown.attributes["depth"].value;
-                    if ((depth >= level) && collapse) {
+                    if ((depth >= level) && collapse)
+                    {
                         updown.className = "arrow-down";
-                        if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum')) {
+                        if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                        {
 
                             table.tHead.rows[1].style.display = 'none';
                         }
@@ -127,13 +182,15 @@ namespace SBSSData.Application.Support
                     else ((depth < level) && !collapse)
                     {
                         updown.className = "arrow-up";
-                        if ((table.tHead.rows.length == 2) && !table.tHead.rows[1].id.startsWith('sum')) {
+                        if ((table.tHead.rows.length == 2) && !table.tHead.rows[1].id.startsWith('sum'))
+                        {
 
                             table.tHead.rows[1].style.display = '';
                         }
 
                         table.querySelector("tbody").style.display = "none";
-                        table.scrollIntoView({
+                        table.scrollIntoView
+                        ({
                             behavior: 'smooth',
                             block: 'nearest'
                         });
@@ -143,21 +200,26 @@ namespace SBSSData.Application.Support
 
             function viewAll(expandAll) {
                 var tables = document.getElementsByTagName("TABLE");
-                for (i = 0; i < tables.length; i++) {
+                for (i = 0; i < tables.length; i++)
+                {
                     var table = tables[i];
-                    if (table == null) {
+                    if (table == null)
+                    {
                         continue;
                     }
                     var updown = document.getElementById(table.id + 'ud');
-                    if (updown == null) {
+                    if (updown == null)
+                    {
                         continue
                     }
 
-                    if (expandAll) {
+                    if (expandAll)
+                    {
                         updown.className = 'arrow-up';
 
                         table.style.borderBottomStyle = 'solid';
-                        if (table.rows.length < 2 || table.tBodies.length == 0) {
+                        if (table.rows.length < 2 || table.tBodies.length == 0)
+                        {
                             continue;
                         }
 
@@ -165,11 +227,13 @@ namespace SBSSData.Application.Support
                         if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
                             table.tHead.rows[1].style.display = ''; // expand ? '' : 'none';
                     }
-                    else {
+                    else
+                    {
                         updown.className = 'arrow-down'; // collapse ? 'arrow-down' : 'arrow-up';
 
                         table.style.borderBottomStyle = 'dashed'; // collapse ? 'dashed' : 'solid';
-                        if (table.rows.length < 2 || table.tBodies.length == 0) {
+                        if (table.rows.length < 2 || table.tBodies.length == 0)
+                        {
                             continue;
                         }
 
@@ -197,122 +261,173 @@ namespace SBSSData.Application.Support
                 if (table != null)
                 {
                     var updown = document.getElementById(tableId + 'ud');
-                    if (updown != null) {
-                    {   
+                    if (updown != null)
+                    {
                         updown.className = 'arrow-up';
                     }
 
                     table.style.borderBottomStyle = 'solid';
-                    if (table.rows.length < 2 || table.tBodies.length == 0) 
+                    if (table.rows.length < 2 || table.tBodies.length == 0)
                     {
                         return
                     }
 
-                    table.tBodies[0].style.display = ''; 
+                    table.tBodies[0].style.display = '';
                     if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
-                        table.tHead.rows[1].style.display = ''; 
+                        table.tHead.rows[1].style.display = '';
                 }
             }
 
-            function collapseTable(headerText)
-            {
-                var tableId = findTableIdFromHeader(headerText);
-                if (tableId == -1)
+                function collapseTable(headerText)
                 {
-                    alert("Can't find the table whose header starts with " + headerText);
-                    return;
-                }
-
-                var table = document.getElementById(tableId);
-                if (table != null)
-                {
-                    var updown = document.getElementById(tableId + 'ud');
-                    if (updown != null) {
-                    {   
-                        updown.className = 'arrow-down'; 
-                    }
-
-                    table.style.borderBottomStyle = 'dashed'; 
-                    if (table.rows.length < 2 || table.tBodies.length == 0) 
+                    var tableId = findTableIdFromHeader(headerText);
+                    if (tableId == -1)
                     {
+                        alert("Can't find the table whose header starts with " + headerText);
                         return;
                     }
 
-                    table.tBodies[0].style.display = 'none'; 
-                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
-                        table.tHead.rows[1].style.display = 'none';
-                    if (table.tFoot != null)
-                        table.tFoot.style.display = 'none'; 
-                }
-            }
-
-            function findTableIdFromHeader(headerText)
-            {
-                var headers = document.querySelectorAll("a.typeheader")
-                var tableId = -1;
-
-                // This function is used to find table IDs of the first few tables so they can be expanded by the
-                // introductory text. On the tables in the first league need be queried.
-                for (let i = 0; i < headers.length; i++)
-                {
-                    let headerElement = headers[i];
-                    //console.log(headerElement.innerText);
-                    let header = headerElement.innerText;
-                    //console.log("header = " + header);
-                    if (header.startsWith(headerText))
+                    var table = document.getElementById(tableId);
+                    if (table != null)
                     {
-                        tableId = headerElement.closest('table').id;
-                        break;
+                        var updown = document.getElementById(tableId + 'ud');
+                        if (updown != null) 
+                        {
+                            updown.className = 'arrow-down';
+                        }
+
+                        table.style.borderBottomStyle = 'dashed';
+                        if (table.rows.length < 2 || table.tBodies.length == 0)
+                        {
+                            return;
+                        }
+
+                        table.tBodies[0].style.display = 'none';
+                        if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                            table.tHead.rows[1].style.display = 'none';
+                        if (table.tFoot != null)
+                            table.tFoot.style.display = 'none';
                     }
                 }
 
-                return tableId
-            }
+                function findTableIdFromHeader(headerText) {
+                    var headers = document.querySelectorAll("a.typeheader")
+                    var tableId = -1;
 
-            function getTableNestingLevel(element)
-            {
-                console.info("Checking nesting level for " + element.id);
-                let nestingLevel = 0;
-                let currentElement = element;
-
-                while (currentElement.parentElement)
-                {
-                    console.info("Parent element is " + currentElement.parentElement.tagName)
-                    if (currentElement.parentElement.tagName === 'TABLE')
-                    {
-                        nestingLevel++;
+                    // This function is used to find table IDs of the first few tables so they can be expanded by the
+                    // introductory text. On the tables in the first league need be queried.
+                    for (let i = 0; i < headers.length; i++) {
+                        let headerElement = headers[i];
+                        //console.log(headerElement.innerText);
+                        let header = headerElement.innerText;
+                        //console.log("header = " + header);
+                        if (header.startsWith(headerText)) {
+                            tableId = headerElement.closest('table').id;
+                            break;
+                        }
                     }
 
-                    currentElement = currentElement.parentElement;
+                    return tableId
                 }
 
-                return nestingLevel;
-            }
+                function getTableNestingLevel(element) {
+                    console.info("Checking nesting level for " + element.id);
+                    let nestingLevel = 0;
+                    let currentElement = element;
 
-            function findTableId(depth, index)
-            {
-                console.log("Finding table ID for depth=" + depth + " and index=" + index);
-                var tables = document.getElementsByTagName("TABLE");
-                var spansInHeader = document.querySelectorAll("a.typeheader span")
-                var tableId = -1;
-                for (let i = 0; i < spansInHeader.length; i++)
-                {
-                    var span = spansInHeader[i];
-                    var tableDepth = span.getAttribute("depth");
-                    var tableIndex = span.getAttribute("index");
-                    if ((tableDepth == depth) && (tableIndex == index))
-                    {
-                        tableId = span.closest('table').id;
-                        break;
+                    while (currentElement.parentElement) {
+                        console.info("Parent element is " + currentElement.parentElement.tagName)
+                        if (currentElement.parentElement.tagName === 'TABLE') {
+                            nestingLevel++;
+                        }
+
+                        currentElement = currentElement.parentElement;
                     }
+
+                    return nestingLevel;
                 }
 
-                return tableId
-            }
+                function findTableId(depth, index) {
+                    console.log("Finding table ID for depth=" + depth + " and index=" + index);
+                    var tables = document.getElementsByTagName("TABLE");
+                    var spansInHeader = document.querySelectorAll("a.typeheader span")
+                    var tableId = -1;
+                    for (let i = 0; i < spansInHeader.length; i++) {
+                        var span = spansInHeader[i];
+                        var tableDepth = span.getAttribute("depth");
+                        var tableIndex = span.getAttribute("index");
+                        if ((tableDepth == depth) && (tableIndex == index)) {
+                            tableId = span.closest('table').id;
+                            break;
+                        }
+                    }
+
+                    return tableId
+                }
+
+                function toggleHelp(id) {
+                    var element = document.getElementById(id);
+                    var display = getComputedStyle(element).getPropertyValue("display");
+
+                    //console.log('in toggleHele for id=', id, " display=", display);
+                    element.style.display = (display == "none") ? "block" : "none";
+                }
 
             """;
 
+        public static readonly string HelpJavascript =
+            """
+            function toggleHelp(id)
+            {
+                var element = document.getElementById(id);
+                var display = getComputedStyle(element).getPropertyValue("display");
 
+                console.log('in toggleHelp for id=', id, " display=", display);
+                element.style.display = (display == "none") ? "block" : "none";
+            }
+
+            function openHelp(id)
+            {
+                var element = document.getElementById(id);
+                if ((element !== "") && (element != null))
+                {
+                    element.style.display = "block";
+                }
+                else
+                {
+                    console.log("In openHelp, cannot find element for id=[" + id + "]");
+                }
+            }
+
+            function closeHelp(id)
+            {
+                var element = document.getElementById(id);
+                if ((element !== "") && (element != null))
+                {
+                    element.style.display = "none";
+                }
+                else
+                {
+                    console.log("In closeHelp, cannot find element for id=[" + id + "]");
+                }
+                element.style.display = "none";
+            }
+
+            function closeAllHelpButMe(id)
+            {
+                var helpItems = document.querySelectorAll("div.spacer.help")
+                for (var i = 0; i < helpItems.length; i++)
+                {
+                    var helpItem = helpItems[i];
+                    var itemId = helpItem.id;
+
+                    if (itemId != id)
+                    {
+                        closeHelp(itemId);
+                    }
+                }
+            }
+            """;
         public static string OverlayTemplate =
                                      """
                                       <div id="overlay" class="overlay">
