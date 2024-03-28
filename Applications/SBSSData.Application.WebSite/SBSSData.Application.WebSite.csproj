@@ -36,17 +36,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="J:\SBSSDataStore\Html Data\CSS\LINQPad.css">
+      <Link>CSS\LINQPad.css</Link>
+    </Content>
     <Content Include="J:\SBSSDataStore\Html Data\CSS\Main.css">
       <Link>CSS\Main.css</Link>
-    </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\GamesTeamPlayersV3.html">
-      <Link>GamesTeamPlayersV3.html</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="J:\SBSSDataStore\Html Data\index.html">
       <Link>index.html</Link>
-    </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\LogSessions.html">
-      <Link>LogSessions.html</Link>
     </Content>
     <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Adams_Harry.jpg">
       <Link>PlayerPhotos\Adams_Harry.jpg</Link>

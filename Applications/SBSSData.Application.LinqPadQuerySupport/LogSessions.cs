@@ -1,5 +1,7 @@
 ﻿// Ignore Spelling: Linq
 
+using System.Reflection;
+
 using HtmlAgilityPack;
 
 using SBSSData.Application.Support;
@@ -9,9 +11,9 @@ using SBSSData.Softball.Stats;
 
 namespace SBSSData.Application.LinqPadQuerySupport
 {
-    public class LogSessionsToHtml
+    public class LogSessions
     {
-        public LogSessionsToHtml()
+        public LogSessions()
         {
             Values = [];
         }
@@ -37,6 +39,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string text = seasonText;
             string season = seasonText.RemoveWhiteSpace();
             string dataStorePath = $@"{dataStoreFolder}{season}LeaguesData.json";
+
+            Assembly assembly = typeof(GamesTeamPlayersV3).Assembly;
+            string resName = assembly.FormatResourceName("LogSessions.html");
+            byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
+            string html = bytes.ByteArrayToString();
 
             string changedHtml = string.Empty;
 
@@ -76,13 +83,13 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     {
                         callback(displaySessions);
                     }
-
-                    string htmlNode = """<span style="color:firebrick; font-size:1.50em; font-weight:500;">Log Sessions</span>""";
+                   
+                    string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
                     changedHtml = generator.DumpHtml(pageTitle: title,
-                                                     collapseTo: 2,
                                                      cssStyles: StaticConstants.LocalStyles,
                                                      javaScript: StaticConstants.LocalJavascript,
+                                                     collapseTo: 2,
                                                      headElements: headElements.ToList());
                 }
             }
@@ -99,8 +106,9 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 HtmlNode tableNode = t.TableHtmlNode;
                 //string currentDate = DateTime.Parse(tableNode.SelectSingleNode("./tbody/tr[1]/td[1]").InnerText).ToString("dddd MMMM d, yyyy");
                 header = $"{numSessions} Recorded Log Sessions"; // as of {currentDate}";
-                InsertTableDescription(tableNode, "Table of all Data Store Updates Recorded by the SBSS Logging System");
+                InsertTableDescription(tableNode, "Table of all Data Store Updates Recorded by the SBSS Data Viewer Logging System");
                 tableNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerStyle);
+                tableNode.SelectSingleNode("./thead/tr[last()]").Attributes.Add("style", "display:none");
             }
             else
             {
@@ -121,7 +129,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
         };
         public static void InsertTableDescription(HtmlNode tableHtmlNode, string description)
         {
-            HtmlNode tableTitle = HtmlNode.CreateNode($"""<h1 class="headingpresenter">{description}</h1>""");
+            HtmlNode tableTitle = HtmlNode.CreateNode($"""<h2 style="font-size:1.1em; color:#3d5e8f; margin-top:20px; font-weight:500;">{description}</h2>""");
             tableHtmlNode.ParentNode.InsertBefore(tableTitle, tableHtmlNode);
         }
     }

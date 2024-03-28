@@ -162,7 +162,7 @@ namespace SBSSData.Application.Samples
             string seasonText = "2024 Winter";
             string dsFolder = $@"J:\SBSSDataStore\";
 
-            LogSessionsToHtml ls2Html = new LogSessionsToHtml();
+            LogSessions ls2Html = new LogSessions();
             string html = ls2Html.BuildHtmlPage(seasonText, dsFolder, null);
 
             string folderName = @$"{dsFolder}Html Data\";

@@ -83,6 +83,11 @@ namespace SBSSData.Application.Support
                 display:none
             }
 
+            a.navigate
+            {
+                font-size: .65em
+            }
+
             """;
 
         public static readonly string HelpStyles =
