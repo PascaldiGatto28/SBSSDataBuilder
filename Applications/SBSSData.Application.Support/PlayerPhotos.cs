@@ -13,7 +13,6 @@ namespace SBSSData.Application.Support
         /// </summary>
         private static readonly Dictionary<string, string> updatePlayerName2PhotoName = new()
         {
-            { "Kennedy, Summer", "Available_Photo-Not"},
             { "Weems, Russ", "Weems_Russell" },
             { "O'Donnell, Sue", "Odonnell_Sue" },
             { "O’Donnell, Sue", "Odonnell_Sue" },
@@ -22,8 +21,7 @@ namespace SBSSData.Application.Support
             { "Carbone, Bobby", "Carbonne_Bobby" },
             { "Takacs, Jim", "Talacs_Jim" },
             { "Schvartzberg, Yvette", "Schwartzberg_Yvette" },
-            { "Jones, Mike", "Available_Photo-Not" },
-            { "Levaro, Richard", "Levaro_Richard" }
+            { "Jones, Mike", "Available_Photo-Not" }
         };
         private static readonly string urlPrefix = "https://saddlebrookesoftball.com/wp-content/gallery/player-pictures/";
         private static readonly string nlpUrlPrefix = "https://saddlebrookesoftball.com/wp-content/gallery/no-longer-playing/";

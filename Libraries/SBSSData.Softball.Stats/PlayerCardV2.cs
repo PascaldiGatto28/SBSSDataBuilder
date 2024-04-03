@@ -1,33 +1,32 @@
-﻿
-namespace SBSSData.Softball.Stats
+﻿namespace SBSSData.Softball.Stats
 {
     /// <summary>
     /// Encapsulates the data for constructing a player card, that is, a summary of all stats data for an active player.
     /// </summary>
-    public class PlayerCard
+    public class PlayerCardV2
     {
-        /// <summary>
-        /// The private property is used to query the data store to populate the properties of the class.
-        /// </summary>
-        private readonly Query query = Query.Empty;
+        ///// <summary>
+        ///// The private property is used to query the data store to populate the properties of the class.
+        ///// </summary>
+        //private readonly Query query = Query.Empty;
 
         /// <summary>
         /// The default constructor that creates an instance having all properties set to their initial and default values.
         /// </summary>
-        public PlayerCard()
+        public PlayerCardV2()
         {
             PlayerName = string.Empty;
             //ImageData = string.Empty;
             Leagues = Enumerable.Empty<LeagueDescription>();
             Games = Enumerable.Empty<Game>();
             Teams = Enumerable.Empty<Team>();
-            query = Query.Empty;
+            //query = Query.Empty;
         }
 
-        public PlayerCard(DataStoreContainer dsContainer, string playerName) : this()
+        public PlayerCardV2(DataStoreContainer dsContainer, string playerName) : this()
         {
             PlayerName = playerName;
-            query = new Query(dsContainer);
+            //query = new Query(dsContainer);
             Initialize();
         }
 
@@ -40,7 +39,10 @@ namespace SBSSData.Softball.Stats
             set;
         }
 
-        public string Season => query.GetSeason();
+        public string Season
+        {
+            get; set;
+        }
 
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace SBSSData.Softball.Stats
 
         private void Initialize()
         {
-            IEnumerable<Game> playedGames = query.GetPlayedGames();
+            IEnumerable<Game> playedGames = Enumerable.Empty<Game>(); // query.GetPlayedGames();
             IEnumerable<Game> playerPlayedGames = playedGames.Where(g => g.Teams.SelectMany(t => t.Players)
                                                                                 .Where(p => p.Name == PlayerName)
                                                                                 .Any());
@@ -83,12 +85,13 @@ namespace SBSSData.Softball.Stats
             IEnumerable<string> leagueCategories = Games.Select(g => g.GameInformation.LeagueCategory).Distinct();
 
             IEnumerable<Tuple<string, string>> leagueNames = Games.Select(g => Tuple.Create(g.GameInformation.LeagueCategory, g.GameInformation.LeagueDay)).Distinct();
-            IEnumerable<LeagueDescription> descriptions = query.GetLeagueDescriptions().Where(l => leagueNames.Contains(Tuple.Create(l.LeagueCategory, l.LeagueDay)));
+            IEnumerable<LeagueDescription> descriptions = Enumerable.Empty<LeagueDescription>();// query.GetLeagueDescriptions().Where(l => leagueNames.Contains(Tuple.Create(l.LeagueCategory, l.LeagueDay)));
 
             Leagues = descriptions;
 
-            IEnumerable<Team> teams = Games.SelectMany(g => g.Teams.Where(t => t.Players.Select(p => p.Name).Contains(PlayerName)));
-            IEnumerable<IGrouping<string, Team>> groups = teams.GroupBy(t => t.Name);
+            IEnumerable<Team> allTeams = Games.SelectMany(g => g.Teams);
+            IEnumerable<string> teams = allTeams.Where(t => t.Players.Select(p => p.Name).Contains(PlayerName)).Select(t => t.Name);
+            IEnumerable<IGrouping<string, Team>> groups = allTeams.Where(t => teams.Contains(t.Name)).GroupBy(t => t.Name);
 
             IEnumerable<Team> teamGroups = groups.Select(g => new TeamSummary(g));
 

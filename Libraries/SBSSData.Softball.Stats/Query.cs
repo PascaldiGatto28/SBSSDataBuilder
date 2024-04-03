@@ -35,6 +35,17 @@ namespace SBSSData.Softball.Stats
 
         public IEnumerable<LeagueDescription> GetLeagueDescriptions() => DataStore.LeagueSchedules.Select(s => s.LeagueDescription);
 
+        //public IEnumerable<LeagueName> GetLeagueNames() => GetLeagueDescriptions().OrderBy(d => d.LeagueCategory).Select(l => new LeagueName(l)).ToList();
+
+        public IEnumerable<LeagueName> GetLeagueNames(IEnumerable<LeagueDescription>? leagueDescription = null)
+        {
+
+            IEnumerable<LeagueName> leagueNames = [];
+            IEnumerable<LeagueDescription> descriptions = leagueDescription ?? GetLeagueDescriptions();
+            return descriptions.OrderBy(d => d.LeagueCategory).Select(l => new LeagueName(l)).ToList();
+        }
+
+
         public string GetSeason()
         {
             LeagueDescription league = GetLeagueDescriptions().First();
@@ -45,6 +56,15 @@ namespace SBSSData.Softball.Stats
 
 
         public IEnumerable<Game> GetPlayedGames() => Container.GetScheduledGames().Where(s => s.IsComplete && !s.WasCancelled).Select(s => s.GameResults);
+
+        public IEnumerable<Game> GetLeaguePlayedGames(string leagueCategory = "", string day = "")
+        {
+            return GetLeagueSchedules(leagueCategory, day).SelectMany(l => l.ScheduledGames)
+                                                          .Where(s => s.IsComplete && !s.WasCancelled)
+                                                          .Select(s => s.GameResults);
+
+
+        }
 
         public IEnumerable<Player> Players => GetPlayedGames().SelectMany(g => g.Teams)
                                                               .SelectMany(t => t.Players)

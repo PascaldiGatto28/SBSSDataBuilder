@@ -14,67 +14,14 @@ namespace SBSSData.Application.Samples
     {
         private static void Main()
         {
-            //SimpleTestHtml();
+            RunUtilLP();
+            //RunLINQPad();
+            SimpleTestHtml();
             //TestTableCode();
             //L2HTML();
-            GTP();
+            //GTP();
             //CheckHtml();
-            /*
-            string htmlOutput = @"D:\Users\Richard\AppData\Local\SBSSData-Application-Samples\HtmlOutput";
-            string dataStorePath = @"TestData\LeaguesData.json";
-            DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath);
-            Console.WriteLine(dsContainer.ToString());
-
-            Query query = new(dsContainer);
-
-            //CheckQueryResults query = new CheckQueryResults(dataStorePath);
-
-
-            using (HtmlGenerator generator = new())
-            {
-                //generator.Write(dsContainer.DataStore);
-
-                //LeagueDescription ld = query.LeagueDescriptions.First();
-                //generator.Write(ld);
-                //var ldResults = CheckQueryResults<LeagueDescription>.CheckResults(ld);
-                //generator.Write(ldResults);
-                //Console.WriteLine(ldResults.ToString());
-
-                //Player player = query.Players.First();
-                //generator.Write(player);
-                //var playerResults = CheckQueryResults<Player>.CheckResults(player);
-                //generator.Write(playerResults);
-                //Console.WriteLine(playerResults.ToString());
-
-                //PlayerStats playerStats = new(player)
-                //{
-                //    NumGames = 67
-                //};
-                //generator.Write(playerStats);
-                //var statsResults = CheckQueryResults<PlayerStats>.CheckResults(playerStats);
-                //generator.Write(statsResults);
-                //Console.WriteLine(statsResults.ToString());
-
-                //Game game = query.PlayedGames.First();
-                //generator.Write(game);
-                //var gameResults = CheckQueryResults<Game>.CheckResults(game);
-                //generator.Write(gameResults);
-                //Console.WriteLine(gameResults.ToString());
-
-
-                var reportLeaguePlayers = ReportLeaguePlayers(query, "Community", "Friday", generator);
-                IEnumerable<Player> players = query.GetLeaguePlayersSummary("Community", "Friday");
-                generator.Write(players);
-
-                //generator.DumpHtml("TestResults.html");
-                generator.DumpHtml();
-                //new string[] { "A Summary of all Friday Community players", "Testing \"Summary of all Friday Community players\"" },
-                //new string[] { "Stats for players", "Test Results" });
-
-            }
-
-            dsContainer.Dispose();
-            */
+           
         }
 
         public static CheckQueryResults<IEnumerable<Player>> ReportLeaguePlayers(Query queries, string leagueCategory, string day, HtmlGenerator generator)
@@ -87,14 +34,32 @@ namespace SBSSData.Application.Samples
             return leaguePlayers;
         }
 
-        //pubic static CheckQueryResults<Player> ReportPlayer(Query query, string playerName HtmlGenerator generator)
-        //{
-        //    Player player = query.Players.Wh
-        //    var playerResults = CheckQueryResults<Player>.CheckResults(player);
-        //    generator.Write(playerResults);
-        //    Console.WriteLine(playerResults.ToString());
-        //}
+        public static void RunLP()
+        {
+            string linqPad = @"C:\Program Files\LINQPad8\LINQPad8.exe";
+            string query = @"D:\Users\Richard\OneDrive\RBL Personal\Development\LINQPad\LINQPad Queries\SBSSDataBuilder\DailyCompositeRun.linq -run";
+            //string query = @"D:\Users\Richard\OneDrive\RBL Personal\Development\LINQPad\LINQPad Queries\Working Temp\CheckingArgs.linq -run";
+            using (_ = System.Diagnostics.Process.Start(linqPad, query))
+            {
+                Thread.Sleep(5000);
+                Process.Start("taskkill", "/F /IM LinqPad8*");
+            }
+        }
 
+        public static void RunUtilLP()
+        {
+            string query = @"D:\Users\Richard\OneDrive\RBL Personal\Development\LINQPad\LINQPad Queries\Working Temp\CheckingArgs.linq";
+            string[] args = ["Help", "Me", "Please"];
+            Console.WriteLine(args.ToString<string>("\r\n"));
+            //Util.Run(query, QueryResultFormat.HtmlFragment);
+        }
+
+
+        public static void RunLINQPad()
+        {
+            // This fails because it is using the LinqPadRuntime which produces the wrong (no body) HTML
+            Util.Run(@"SBSSDataBuilder\Testing LP and VS Table Rendering", QueryResultFormat.HtmlFragment);
+        }
         public static void CheckHtml()
         {
             string seasonText = "2024 Winter";
@@ -217,13 +182,6 @@ namespace SBSSData.Application.Samples
 
         public static void SimpleTestHtml()
         {
-            string seasonText = "2024 Winter";
-            string season = seasonText.RemoveWhiteSpace();
-            string path = $@"J:\SBSSDataStore\{season}LeaguesData.json";
-            DataStoreContainer dsContainer = DataStoreContainer.Instance(path);
-            DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
-            //dsInfo.Dump();
-
             List<SimpleTest> simpleTest = new()
             {
                 new SimpleTest("One", "Two"),
@@ -234,25 +192,19 @@ namespace SBSSData.Application.Samples
                 new SimpleTest("Pickup", "Sticks")
             };
 
-            Console.WriteLine(simpleTest.ToString("\r\n"));
-
             string html = string.Empty;
-            using (HtmlGenerator generator = new HtmlGenerator())
+            using (TextWriter writer = Util.CreateXhtmlWriter())
             {
-                generator.WriteRootTable(simpleTest, null);
-                html = generator.DumpHtml();
+                writer.Write(simpleTest);
+                html = writer.ToString();
             }
-            //using (TextWriter writer = Util.CreateXhtmlWriter())
-            //{
-            //    writer.Write(simpleTest);
-            //    html = writer.ToString();
-            //}
 
-            Console.WriteLine($"{html.Substring("<body>", "</body>", true, true)}");
-            File.WriteAllText(@"D:\Temp\junk\Testing Table Generation\vsSimpleTest.html", html);
+            int bodyIndex = html.IndexOf("<body>");
 
-            dsContainer.Dispose();
+            string table = $"<html>{html.Substring(bodyIndex)}";
+            Console.WriteLine(table);
 
+            File.WriteAllText(@"D:\Temp\junk\Testing Table Generation\vsSimpleTest.html", table);
         }
     }
 

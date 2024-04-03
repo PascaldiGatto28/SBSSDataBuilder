@@ -24,7 +24,7 @@ namespace SBSSData.Softball
         /// <summary>
         /// Creates an "empty" instance. 
         /// </summary>
-        private LeagueDescription()
+        public LeagueDescription()
         {
             LeagueCategory = string.Empty;
             LeagueDay = string.Empty;

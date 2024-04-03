@@ -21,10 +21,17 @@ namespace SBSSData.Softball.Stats
         public static T SumIntProperties<T>(this IEnumerable<T> data, T instance)
         {
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                            .Where(p => p.PropertyType == typeof(int));
+                                                            .Where(p => (p.PropertyType == typeof(int)) && p.CanWrite);
             foreach (PropertyInfo property in properties)
             {
-                property.SetValue(instance, data.Select(p => (int)property.GetValue(p)).ToList().Sum());
+                //try
+                {
+                    property.SetValue(instance, data.Select(p => (int)property.GetValue(p)).ToList().Sum());
+                }
+                //catch 
+                { 
+                    // Swallow if it can't be 
+                }
             }
 
             return instance;

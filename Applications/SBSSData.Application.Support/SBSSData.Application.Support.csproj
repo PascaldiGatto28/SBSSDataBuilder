@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -1054,7 +1054,6 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
-    <PackageReference Include="LINQPad.Runtime" Version="7.8.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
@@ -1062,6 +1061,12 @@
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Common\SBSSData.Softball.Common.csproj" />
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Stats\SBSSData.Softball.Stats.csproj" />
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball\SBSSData.Softball.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LINQPad.Runtime">
+      <HintPath>..\..\..\..\..\..\..\..\..\Installation\Utilities\LINQPad8-Beta\LINQPad.Runtime.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
