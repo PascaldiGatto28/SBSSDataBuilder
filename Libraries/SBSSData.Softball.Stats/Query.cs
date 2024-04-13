@@ -45,6 +45,26 @@ namespace SBSSData.Softball.Stats
             return descriptions.OrderBy(d => d.LeagueCategory).Select(l => new LeagueName(l)).ToList();
         }
 
+        /// <summary>
+        /// Get league names for every league for which a player has played in a game in that league
+        /// </summary>
+        /// <param name="playerName">The player name must in the format "lastName, FirstName"</param>
+        /// <returns>A list of <see cref="LeagueName"/> objects.</returns>
+        public IEnumerable<LeagueName> GetLeagueNamesForPlayer(string playerName)
+        {
+            IEnumerable<LeagueName> leagueNames = [];
+            if (!string.IsNullOrEmpty(playerName))
+            {
+                IEnumerable<Game> playerPlayedGames = GetPlayedGames().Where(g => g.Teams.SelectMany(t => t.Players).Any(p => p.Name == playerName));
+                leagueNames = playerPlayedGames.Select(g => g.GameInformation)
+                                               .Select(i => new LeagueName(i))
+                                               .Distinct()
+                                               .OrderBy(n => n.Category)
+                                               .ToList();
+            }
+
+            return leagueNames;
+        }
 
         public string GetSeason()
         {
@@ -66,10 +86,10 @@ namespace SBSSData.Softball.Stats
 
         }
 
-        public IEnumerable<Player> Players => GetPlayedGames().SelectMany(g => g.Teams)
+        public IEnumerable<Player> GetActivePlayers => GetPlayedGames().SelectMany(g => g.Teams)
                                                               .SelectMany(t => t.Players)
                                                               .OrderBy(p => p.Name);
-        public IEnumerable<string> GetPlayerNames() => Players.Select(p => p.Name).Distinct().OrderBy(p => p);
+        public IEnumerable<string> GetPlayerNames() => GetActivePlayers.Select(p => p.Name).Distinct().OrderBy(p => p);
 
         public IEnumerable<PlayerStats> GetLeaguePlayers(string leagueCategory = "", string day = "")
         {
@@ -90,7 +110,7 @@ namespace SBSSData.Softball.Stats
             return leaguePlayers;
         }
 
-        public IEnumerable<PlayerStats> PlayersStats => Players.Select(p => new PlayerStats(p));
+        public IEnumerable<PlayerStats> PlayersStats => GetActivePlayers.Select(p => new PlayerStats(p));
 
         public IEnumerable<PlayerStats> GetLeaguePlayersSummary(string leagueCategory = "", string day = "")
         {

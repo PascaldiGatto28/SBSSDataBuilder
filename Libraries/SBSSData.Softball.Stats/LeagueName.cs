@@ -10,10 +10,17 @@
         {
         }
 
+        public LeagueName(GameInformation gameInfo) : this(gameInfo.LeagueDay,
+                                                           gameInfo.LeagueCategory,
+                                                           $"{gameInfo.LeagueDay} {gameInfo.LeagueCategory} {gameInfo.Season} {gameInfo.Year}",
+                                                           $"{gameInfo.LeagueDay} {gameInfo.LeagueCategory}")
+        {
+        }
+
         //public override bool Equals(object? obj)
         //{
         //    bool isEqual = false;
-        //    if ((obj != null) && (GetType() == obj.GetType()))
+        //    if ((obj != null) && (GetType() == obj.GetType())));
         //    {
         //        LeagueName leagueName = (LeagueName)obj;
         //        isEqual = string.Equals(Category, leagueName.Category, StringComparison.OrdinalIgnoreCase) &&

@@ -218,6 +218,39 @@ namespace SBSSData.Softball.Common
         }
 
         /// <summary>
+        /// Returns a string appropriate for the number of times an item occurs.
+        /// </summary>
+        /// <param name="num">The number of times the item occurs.</param>
+        /// <param name="title">The text of the item.</param>
+        /// <returns>The <paramref name="num"/> and <paramref name="title"/> as a text string. If <c>num</c> is 0 or negative,
+        /// "no [title]s"; if <c>num</c> is 1, "one [title]", if <c>num</c> is any other value, "[num] [title]s" is returned.
+        /// </returns>
+        public static string NumDesc(this int num, string title)
+        {
+            string text;
+            switch (Math.Max(num, 0))
+            {
+                case 0:
+                {
+                    text = $"no {title}s";
+                    break;
+                }
+                case 1:
+                {
+                    text = $"one {title}";
+                    break;
+                }
+                default:
+                {
+                    text = $"{num} {title}s";
+                    break;
+                }
+            }
+
+            return text;
+        }
+
+        /// <summary>
         /// The first character of the string is changed to upper case.
         /// </summary>
         /// <param name="content">The string whose first character is capitalized.</param>

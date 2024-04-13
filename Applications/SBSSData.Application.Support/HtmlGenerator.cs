@@ -118,7 +118,9 @@ namespace SBSSData.Application.Support
                         string columnHeaderTitle = n.GetAttributeValue("title", string.Empty);
                         if ((columnHeaderTitle == "System.Int32") || (columnHeaderTitle == "System.Double"))
                         {
-                            n.Attributes.Add("style", "text-align:right");
+                            string headerStyle = n.GetAttributeValue("style", null);
+                            headerStyle = string.IsNullOrEmpty(headerStyle) ? "text-align:right" : $""""text-align:right; {headerStyle}"""";
+                            n.Attributes.Add("style", headerStyle);
                         }
 
                         n.InnerHtml = n.InnerText.NameToTitle().Replace(" ", "&nbsp;");

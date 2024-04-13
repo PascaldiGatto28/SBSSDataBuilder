@@ -24,7 +24,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             new HeadElement("meta", [["data", "description"], ["content", "Guide for games, teams and players"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
             new HeadElement("meta", [["name", "http-equiv"], ["content", "no-cache"]]),
-            new HeadElement("title", [["Guide to Games, Teams & Players", ""]]),
+            new HeadElement("title", [["Guide to Games, Teams & GetActivePlayers", ""]]),
             new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
         };
 

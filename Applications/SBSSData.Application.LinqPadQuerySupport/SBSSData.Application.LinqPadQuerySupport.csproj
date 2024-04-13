@@ -16,6 +16,8 @@
     <None Remove="GamesTeamPlayersHelpV3.html" />
     <None Remove="GamesTeamPlayersV3.html" />
     <None Remove="LogSessions.html" />
+    <None Remove="PlayerSheets.html" />
+    <None Remove="PlayerSheetsContainer.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +30,10 @@
     <EmbeddedResource Include="LogSessions.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="PlayerSheets.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerSheetsContainer.html" />
   </ItemGroup>
 
 
@@ -42,6 +48,11 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Dumpify" Version="0.6.5" />
   </ItemGroup>
 
 

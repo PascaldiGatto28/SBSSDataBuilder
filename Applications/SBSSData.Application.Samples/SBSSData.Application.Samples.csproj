@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="WinSCP" Version="6.3.2" />
   </ItemGroup>
 
   <ItemGroup>

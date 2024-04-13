@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>SBSS Player League Summary</title>
+    <style>
+        *
+        {
+            font-family: 'Segoe UI', Helvetica, sans-serif;
+            font-size:16px;
+        }
+        .flex-container
+        {
+            display: flex;
+        }
+            .flex-container > div
+            {
+                background-color: #f1f1f1;
+                margin: 10px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                font-size: 12px;
+                border: 2px solid Firebrick;
+                height:600px;
+            }
+
+        .header
+        {
+            color: firebrick;
+            font-weight: 400;
+            font-size: 1.25em;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .navigate
+        {
+            cursor: pointer;
+            padding-left: 10px;
+            padding-bottom: 2px;
+            font-size:10px;
+        }
+
+        div.playersList
+        {
+            width: 175px;
+            overflow: auto;
+        }
+
+        div.playersList > div.playerOption
+        {
+            cursor: pointer;
+            padding-left: 10px;
+            padding-bottom: 2px;
+        }
+
+        iframe
+        {
+            width: 740px;
+            height: 100%;
+            border:none;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding-left:10px;">
+        <h1 class="header">
+            Player's League Summaries 
+            <a class="navigate" href="index.html">(Back to SBSS Data Viewer)</a>
+        </h1>
+        
+        <div style="max-width:915px;" >
+            For every player, this page summarizes their data for each league in which they played. Select (click on) a player name
+            to view just the data for that player; select "View All" or refresh (F5 or Ctrl+F5) to display the data for
+            all players.
+        </div>
+     </div>
+
+    <div class="flex-container">
+        <div id="playersList" class="playersList">
+            <div class="playerOption" playerName="">View All</div>
+        </div>
+        <div style="padding:0px; height:610px;">
+            <iframe id="sheets" srcdoc=""></iframe>
+        </div>
+    </div>
+
+    <script language="JavaScript" type="text/javascript">
+        let listContainer = document.getElementById("playersList");
+        listContainer.addEventListener("click", function (event) 
+        {
+            const eventName = event.target.getAttribute("playerName").trim();
+
+            var frame = document.getElementById('sheets');
+            var frameWindow = frame.contentWindow || frame;
+            var frameDocument = frame.contentDocument || frameWindow.document;
+
+            var tables = frameDocument.querySelectorAll("div.spacer>table");
+            for (i = 0; i < tables.length; i++)
+            {
+                var table = tables[i];
+                var playerName = table.getAttribute("playerName");
+                
+                if ((eventName == "") || (eventName === playerName.trim()))
+                {
+                    table.style.removeProperty("display");
+                    table.style.display = "";
+                }
+                else
+                {
+                    table.style.removeProperty("display")
+                    table.style.display = "none";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

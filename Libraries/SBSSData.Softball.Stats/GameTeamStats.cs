@@ -60,7 +60,7 @@
         //    List<PlayerStats> stats = new();
         //    //foreach (Team team in Game.Teams)
         //    //{
-        //    //    //stats.Add((new TeamPlayerStats(team)).Players);
+        //    //    //stats.Add((new TeamPlayerStats(team)).GetActivePlayers);
         //    //}
 
         //    return stats;

@@ -39,8 +39,8 @@ namespace SBSSData.Application.Support
                                      int SF,
                                      int Hits,
                                      int Bases,
-                                     double Avg,
-                                     double Slug,
+                                     double AVG,
+                                     double SLG,
                                      double OBP,
                                      double OPS)
     {

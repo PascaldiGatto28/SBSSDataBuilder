@@ -104,39 +104,6 @@ namespace SBSSData.Application.Support
             return display;
         }
 
-        /// <summary>
-        /// Returns a string appropriate for the number of times an item occurs.
-        /// </summary>
-        /// <param name="num">The number of times the item occurs.</param>
-        /// <param name="title">The text of the item.</param>
-        /// <returns>The <paramref name="num"/> and <paramref name="title"/> as a text string. If <c>num</c> is 0 or negative,
-        /// "no [title]s"; if <c>num</c> is 1, "one [title]", if <c>num</c> is any other value, "[num] [title]s" is returned.
-        /// </returns>
-        public static string NumDesc(this int num, string title)
-        {
-            string text;
-            switch (Math.Max(num, 0))
-            {
-                case 0:
-                {
-                    text = $"no {title}s";
-                    break;
-                }
-                case 1:
-                {
-                    text = $"one {title}";
-                    break;
-                }
-                default:
-                {
-                    text = $"{num} {title}s";
-                    break;
-                }
-            }
-
-            return text;
-        }
-
         #region Utilities to help in parsing LINQPad generated HTML pages
         public static bool IsRootTableNode(this HtmlNode tableNode)
         {
@@ -152,21 +119,52 @@ namespace SBSSData.Application.Support
         public static void AlterTableColumnHeader(HtmlNode tableNode, int headerIndex, string newHeaderText)
         {
             List<HtmlNode> columnHeaders = tableNode.SelectNodes("./thead/tr[2]/th").ToList();
-            HtmlNode columnHeader = columnHeaders[headerIndex];
+            // This is a real pain in the ass. Because we searching a C# list, the first element is 0-based. But the XPath
+            // is 1-based, so we really want the index that is 1-less.
+            HtmlNode columnHeader = columnHeaders[headerIndex - 1];
             HtmlNode newHeader = HtmlNode.CreateNode(columnHeader.OuterHtml.Replace(columnHeader.InnerText, newHeaderText));
             columnHeader.ParentNode.ReplaceChild(newHeader, columnHeader);
         }
 
-        public static int GetTableColumnIndex(HtmlNode tableNode, string columnText)
+        public static int GetTableColumnIndex(HtmlNode tableNode, string columnHeaderText)
         {
             int index = -1;
-            if ((tableNode != null) && !string.IsNullOrEmpty(columnText))
+            if ((tableNode != null) && !string.IsNullOrEmpty(columnHeaderText))
             {
+                // LINQ is 0-based, but HtmlAgilityPack is 1-based, that is the first cell is td[1] or th[1].
                 List<string> columnHeaders = tableNode.SelectNodes("./thead/tr[2]/th").Select(n => n.InnerText).ToList();
-                index = columnHeaders.IndexOf(columnText);
+                index = columnHeaders.IndexOf(columnHeaderText) + 1;
             }
 
             return index;
+        }
+
+        /// <summary>
+        /// Hides the specified column (that is, adds a "display:none" style)
+        /// </summary>
+        /// <param name="tableNode"></param>
+        /// <param name="columnIndex"></param>
+        /// <returns></returns>
+        public static HtmlNode? ExcludeTableColumn(HtmlNode tableNode, int columnIndex)
+        {
+            if ((tableNode != null) && (columnIndex > 0))
+            {
+                tableNode.SelectSingleNode($"./thead/tr[2]/th[{columnIndex}]").Attributes.Add("style", "display:none");
+                tableNode.SelectNodes($"./tbody/tr/td[{columnIndex}]").ToList().ForEach(n => n.Attributes.Add("style", "display:none"));
+            }
+
+            return tableNode;
+        }
+
+        //public static AddStyleAttribute(HtmlNode htmlNode, string styleAttribute)
+        //{
+        //    "text-align:right"
+        //}
+
+        public static HtmlNode? ExcludeTableColumn(HtmlNode tableNode, string columnHeaderText)
+        {
+            int columnIndex = GetTableColumnIndex(tableNode, columnHeaderText);
+            return ExcludeTableColumn(tableNode, columnIndex);
         }
 
         public static string DisplayTree(TableNode node, StringBuilder sbTree)

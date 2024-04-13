@@ -8,20 +8,106 @@ using SBSSData.Softball;
 using SBSSData.Softball.Common;
 using SBSSData.Softball.Stats;
 
+using WinSCP;
+
+using Query = SBSSData.Softball.Stats.Query;
+
 namespace SBSSData.Application.Samples
 {
     public class Program
     {
         private static void Main()
         {
-            RunUtilLP();
+            //LogSessions(true);
+            //GamesTeamPlayersV3(true);
+            //WinSCPSync();
+            PlayerSheets();
+            //RunUtilLP();
             //RunLINQPad();
-            SimpleTestHtml();
+            //SimpleTestHtml();
             //TestTableCode();
             //L2HTML();
             //GTP();
             //CheckHtml();
-           
+
+        }
+
+        public static void PlayerSheets(bool displayHtml = false, bool useCallback = false)
+        {
+            string seasonText = "2024 Winter";
+            string dsFolder = $@"J:\SBSSDataStore\";
+
+            PlayerSheets playerSheets = new PlayerSheets();
+            string html = playerSheets.BuildHtmlPage(seasonText, dsFolder, callback);
+
+            //string folderName = @"d:\Temp\"; //@$"{dsFolder}Html Data\";
+            //string fileName = "PlayerSheetsContainer.html";
+            //string htmlFilePath = @"D:\Users\Richard\Documents\Visual Studio 2022\Github Projects\SBSS\SBSSDataBuilder\Applications\SBSSData.Application.LinqPadQuerySupport\PlayerSheetsContainer.html";
+            //HtmlDocument htmlDoc = new HtmlDocument();
+            //htmlDoc = PageContentUtilities.GetPageHtmlDocument(htmlFilePath);
+            //HtmlNode root = htmlDoc.DocumentNode;
+            //HtmlNode sheets = root.SelectSingleNode("//iframe[@id='sheets']");
+            //sheets.Attributes["srcDoc"].Remove();
+            //sheets.Attributes.Add("srcDoc", html);
+
+            //List<string> optionValues = query.GetPlayerNames().Select(p => $"""<div name="{map[p]}">{p.BuildDisplayName()}</div>""").ToList();
+
+            //string html = optionValues.ToString<string>("\r\n");
+            //string playerSheetsContainer = File.ReadAllText(htmlFilePath);
+            //playerSheetsContainer
+
+            string folderName = @"d:\Temp\"; //@$"{dsFolder}Html Data\";
+            string fileName = "xx.html";
+            string htmlFilePath = $"{folderName}{fileName}";
+
+            File.WriteAllText(htmlFilePath, html);
+            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe", $"\"{htmlFilePath}\"");
+        }
+
+
+
+        public static void LogSessions(bool displayHtml = false, bool useCallback = false)
+        {
+            string seasonText = "2024 Winter";
+            string dsFolder = $@"J:\SBSSDataStore\";
+
+            LogSessions ls2Html = new LogSessions();
+            string html = ls2Html.BuildHtmlPage(seasonText, dsFolder, callback);
+
+            string folderName = @$"{dsFolder}Html Data\";
+            string fileName = "LogSessions.html";
+            string htmlFilePath = $"{folderName}{fileName}";
+
+            File.WriteAllText(htmlFilePath, html);
+            if (displayHtml)
+            {
+                Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe", $"\"{htmlFilePath}\"");
+            }
+
+            Console.WriteLine("LogSessions completed");
+        }
+
+        public static Action<object> callback = (v) => v.Dump("What the Flock!");
+
+        public static void GamesTeamPlayersV3(bool displayHtml = false, bool useCallback = false)
+        {
+            string seasonText = "2024 Winter";
+            string dsFolder = $@"J:\SBSSDataStore\";
+
+            GamesTeamPlayersV3 gtp = new GamesTeamPlayersV3();
+            string html = gtp.BuildHtmlPage(seasonText, dsFolder, useCallback ? callback : null);
+
+            string folderName = @$"{dsFolder}Html Data\";
+            string fileName = "GamesTeamPlayersV3.html";
+            string htmlFilePath = $"{folderName}{fileName}";
+
+            File.WriteAllText(htmlFilePath, html);
+            if (displayHtml)
+            {
+                Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe", $"\"{htmlFilePath}\"");
+            }
+
+            Console.WriteLine("GamesTeamPlayersV3 completed");
         }
 
         public static CheckQueryResults<IEnumerable<Player>> ReportLeaguePlayers(Query queries, string leagueCategory, string day, HtmlGenerator generator)
@@ -32,6 +118,51 @@ namespace SBSSData.Application.Samples
             var leaguePlayers = CheckQueryResults<IEnumerable<Player>>.CheckResults(players);
             generator.Write(leaguePlayers);
             return leaguePlayers;
+        }
+
+        public static void WinSCPSync()
+        {
+            // Set up session options
+            SessionOptions sessionOptions = new SessionOptions
+            {
+                Protocol = Protocol.Ftp,
+                HostName = "ftp.walkingtree.com",
+                UserName = "quietcre",
+                Password = "85232WindingWay",
+            };
+
+            using (Session session = new Session())
+            {
+                //session.FileTransferred = (s,e) => e.Dump();
+                // Connect
+                session.Open(sessionOptions);
+
+                var comparison = session.CompareDirectories(SynchronizationMode.Local, @"J:\SBSSDataStore\Html Data", "/quietcre/Data", true).Dump();
+
+                string isError = string.Empty;
+                try
+                {
+                    // Synchronize files
+                    SynchronizationResult synchronizationResult;
+                    synchronizationResult =
+                        session.SynchronizeDirectories(
+                            SynchronizationMode.Remote,
+                            @"J:\SBSSDataStore\Html Data",
+                            "/quietcre/Data", false).Dump();
+
+                    synchronizationResult.Check();
+                    Console.WriteLine($"Failures {synchronizationResult.Failures}");
+                    Console.WriteLine($"Uploads {synchronizationResult.Uploads}");
+                    Console.WriteLine($"Downloads {synchronizationResult.Downloads}");
+                }
+                catch (Exception exception)
+                {
+                    isError = $" with error {exception.Message}";
+                    Console.WriteLine($"Error: {exception}");
+                }
+
+                Console.WriteLine($"WinSCP synchronization completed{isError}");
+            }
         }
 
         public static void RunLP()
@@ -81,7 +212,7 @@ namespace SBSSData.Application.Samples
             }
 
             File.WriteAllText(outputPath, html);
-            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe", $"{outputPath}");
+            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe", $"{outputPath}");
 
             string outputBodyPath = outputPath.Replace("vsx.html", "vsxBody.html");
             string body = html.Substring("<body>", "</body>", true, true);
@@ -98,7 +229,7 @@ namespace SBSSData.Application.Samples
             {
                 headerText = t.Header().InnerText;
             }
-            Console.WriteLine($"Players header = {headerText}");
+            Console.WriteLine($"GetActivePlayers header = {headerText}");
             return headerText;
         };
 
@@ -119,7 +250,7 @@ namespace SBSSData.Application.Samples
             string htmlFilePath = $"{folderName}{fileName}";
 
             File.WriteAllText(htmlFilePath, html);
-            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe", $"\"{htmlFilePath}\"");
+            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe", $"\"{htmlFilePath}\"");
         }
 
         public static void L2HTML()
@@ -135,7 +266,7 @@ namespace SBSSData.Application.Samples
             string htmlFilePath = $"{folderName}{fileName}";
 
             File.WriteAllText(htmlFilePath, html);
-            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe", $"\"{htmlFilePath}\"");
+            Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe", $"\"{htmlFilePath}\"");
         }
 
         public static void TestTableCode()

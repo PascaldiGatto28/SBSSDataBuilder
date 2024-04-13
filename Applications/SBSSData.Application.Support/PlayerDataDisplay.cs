@@ -19,9 +19,9 @@ namespace SBSSData.Application.Support
     /// <param name="Hits">The total number of hits; <see cref="PlayerData.TotalHits"/> for details..</param>
     /// <param name="Bases">The total number of bases from hits, see <see cref="PlayerData.TotalBases"/> for details.
     /// </param>
-    /// <param name="Avg">The ratio of <paramref name="Hits"/> and official at bats. 
+    /// <param name="AVG">The ratio of <paramref name="Hits"/> and official at bats. 
     /// See <see cref="PlayerData.Average"/> for details.</param>
-    /// <param name="Slug"><see cref="PlayerData.Slugging"/> for details.</param>
+    /// <param name="SLG"><see cref="PlayerData.Slugging"/> for details.</param>
     /// <param name="OBP"><see cref="PlayerData.OnBase"/> for details.</param>
     /// <param name="OPS"><see cref="PlayerData.OnBasePlusSlugging"/> for details.</param>
     public record PlayerDataDisplay(string Name,
@@ -35,8 +35,8 @@ namespace SBSSData.Application.Support
                                     int SF,
                                     int Hits,
                                     int Bases,
-                                    double Avg,
-                                    double Slug,
+                                    double AVG,
+                                    double SLG,
                                     double OBP,
                                     double OPS)
     {

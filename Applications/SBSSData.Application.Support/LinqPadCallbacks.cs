@@ -3,6 +3,7 @@
 using HtmlAgilityPack;
 
 using SBSSData.Softball.Common;
+using SBSSData.Softball.Stats;
 
 namespace SBSSData.Application.Support
 {
@@ -37,7 +38,7 @@ namespace SBSSData.Application.Support
                     {
                         string visitor = tableHtmlNode.SelectSingleNode("./tbody/tr[1]/td").InnerText;
                         string home = tableHtmlNode.SelectSingleNode("./tbody/tr[2]/td").InnerText;
-                        header = $"Teams and Players for the {visitor} vs {home} Game";
+                        header = $"Teams and GetActivePlayers for the {visitor} vs {home} Game";
 
                         Utilities.AlterTableColumnHeader(tableHtmlNode, 1, "RS");
                         Utilities.AlterTableColumnHeader(tableHtmlNode, 2, "RA");
@@ -56,7 +57,7 @@ namespace SBSSData.Application.Support
                 {
                     int rowNumber = t.Index() + 1;
                     string teamName = t.Parent?.TableHtmlNode.SelectSingleNode($"./tbody/tr[{rowNumber}]/td").InnerText ?? "Unknown";
-                    header = $"Players for {teamName}";
+                    header = $"GetActivePlayers for {teamName}";
                     tableHtmlNode = t.TableHtmlNode;
 
                     HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
@@ -164,13 +165,13 @@ namespace SBSSData.Application.Support
 
                 if (playerName.Contains("Totals"))
                 {
-                    rankTableHeader = "All Players Ranking";
+                    rankTableHeader = "All GetActivePlayers Ranking";
 
                     // The summary table is not a qualified PLAYER
                     numberQualified--;
                 }
 
-                header = $"Player Summary Stats for the {numEntries} Players and Rankings for {numberQualified} Players With Enough Plate Appearances for All Teams";
+                header = $"Player Summary Stats for the {numEntries} GetActivePlayers and Rankings for {numberQualified} GetActivePlayers With Enough Plate Appearances for All Teams";
 
                 // Set the new values and then restore the previous values
                 rankTable.Id = rankTable.Id + playerName.RemoveWhiteSpace();
@@ -274,7 +275,7 @@ namespace SBSSData.Application.Support
                 {
                     case 0:
                     {
-                        header = $"Games, Teams and Players for the {fullLeagueName} League";
+                        header = $"Games, Teams and GetActivePlayers for the {fullLeagueName} League";
                         tableHtmlNode.SelectNodes("./tbody/tr/th").ToList().ForEach(th => th.Attributes.Add("style", "display:none"));
                         tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
 
@@ -312,11 +313,11 @@ namespace SBSSData.Application.Support
                     }
                     case 2:
                     {
-                        if (groupName == "Team Players")
+                        if (groupName == "Team GetActivePlayers")
                         {
                             int rowNumber = index + 1;
                             string? teamName = t.Parent?.TableHtmlNode?.SelectSingleNode($"./tbody/tr[{rowNumber}]").FirstChild.InnerText;
-                            header = $"Summary Stats for all {ToSpanItalic(teamName ?? string.Empty)} Players";
+                            header = $"Summary Stats for all {ToSpanItalic(teamName ?? string.Empty)} GetActivePlayers";
 
                             HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
                             lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
@@ -337,7 +338,7 @@ namespace SBSSData.Application.Support
                             else
                             {
                                 string gameName = tableHtmlNode.ParentNode.PreviousSibling.SelectSingleNode("./table/tbody/tr/td").InnerText;
-                                header = $"Teams and Players for the {ToSpanItalic(gameName)} Game";
+                                header = $"Teams and GetActivePlayers for the {ToSpanItalic(gameName)} Game";
 
                                 Utilities.AlterTableColumnHeader(tableHtmlNode, 1, "RS");
                                 Utilities.AlterTableColumnHeader(tableHtmlNode, 2, "RA");
@@ -357,7 +358,7 @@ namespace SBSSData.Application.Support
                     {
                         int rowNumber = t.Index() + 1;
                         string teamName = t.Parent?.TableHtmlNode.SelectSingleNode($"./tbody/tr[{rowNumber}]/td").InnerText ?? "Unknown";
-                        header = $"Players for {ToSpanItalic(teamName)}";
+                        header = $"GetActivePlayers for {ToSpanItalic(teamName)}";
                         tableHtmlNode = t.TableHtmlNode;
 
                         HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
@@ -385,20 +386,85 @@ namespace SBSSData.Application.Support
             };
         }
 
+        public static Func<TableNode, string> ExtendedPlayerSheets(string? headerCssStyle, PlayerSheetContainer playerSheetContainer)
+        {
+            return (t) =>
+            {
+                HtmlNode tableHtmlNode = t.TableHtmlNode;
+                string header = t.Header().InnerText;
+                string introductionHeader = $"""
+                                                <div style="font-weight:500; font-family:'Segoe UI Semibold'; font-size:14px; 
+                                                color:white; background-color:#d62929; 
+                                                border-radius:15px; 
+                                                padding:7px; margin:-8px 10px 5px 15px; width:640px; text-align:center;">
+                                                   {playerSheetContainer.Introduction}
+                                                </div>
+                                                """;
+
+                if (t.Depth() == 0)
+                {
+                    // Add an identifier (player name) to the table.
+                    tableHtmlNode.Attributes.Add("playerName", playerSheetContainer.PlayerSheetItems.First().PlayerName);
+
+                    // Add background color to the containing cell to get a contrast with the text that is placed in the anchor
+                    // tag.
+                    HtmlNode td = tableHtmlNode.SelectSingleNode("./thead/tr/td");
+                    string headerStyle = td.GetAttributeValue("style", null);
+                    headerStyle = string.IsNullOrEmpty(headerStyle) ? "background-color:#a6bad9;" : $""""background-color:#a6bad9; {headerStyle}"""";
+                    td.Attributes.Add("style", headerStyle);
+
+                    header = introductionHeader; // playerSheetContainer.Introduction;
+                }
+                else if (t.Depth() == 1)
+                {
+                    header = playerSheetContainer.PlayerSheetItems[t.Index()].Description;
+                    UpdatePlayerColumnNames(tableHtmlNode);
+                }
+
+                //tableHtmlNode.SetAttributeValue("style", "display:none");
+
+                return header; // + $" Depth = {t.Depth()} Index = {t.Index()}";
+            };
+        }
+
+        public static Func<TableNode, string> ExtendedPlayerSheets(string? headerCssStyle, PlayerSheetItem playerSheetItem)
+        {
+            return (t) =>
+            {
+                HtmlNode tableHtmlNode = t.TableHtmlNode;
+                string header = playerSheetItem.Description;
+                for (int i = 3; i > 0; i--)
+                {
+                    tableHtmlNode.SelectSingleNode($"thead/tr[2]/th[{i}]").Remove();
+                    tableHtmlNode.SelectNodes($"tbody/tr/td[{i}]").ToList().ForEach(n => n.Remove());
+                }
+                if (!string.IsNullOrWhiteSpace(headerCssStyle))
+                {
+                    tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
+                }
+
+                UpdatePlayerColumnNames(tableHtmlNode);
+
+                return header;
+            };
+        }
         private static void UpdatePlayerColumnNames(HtmlNode tableHtmlNode)
         {
             int columnIndex = Utilities.GetTableColumnIndex(tableHtmlNode, "Singles");
             if (columnIndex != -1)
+            {
                 for (int i = columnIndex; i < (columnIndex + 3); i++)
                 {
-                    Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - 4}B");
+                    Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - (columnIndex-1)}B");
                 }
-            columnIndex = Utilities.GetTableColumnIndex(tableHtmlNode, "OBP");
-            if (columnIndex != -1)
-            {
-                Utilities.AlterTableColumnHeader(tableHtmlNode, columnIndex, "OB%");
-                Utilities.AlterTableColumnHeader(tableHtmlNode, columnIndex + 1, "OB%+Slug");
             }
+
+            //columnIndex = Utilities.GetTableColumnIndex(tableHtmlNode, "OBP");
+            //if (columnIndex != -1)
+            //{
+            //    Utilities.AlterTableColumnHeader(tableHtmlNode, columnIndex, "OB%");
+            //    Utilities.AlterTableColumnHeader(tableHtmlNode, columnIndex + 1, "OB%+Slug");
+            //}
         }
 
 

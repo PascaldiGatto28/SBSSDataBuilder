@@ -13,6 +13,7 @@ namespace SBSSData.Application.Support
 
             body {
                 padding:10px 20px 10px 20px;
+                font-family: 'Segoe UI', Verdana;
             }
 
             button.sbss {
