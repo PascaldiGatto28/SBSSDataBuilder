@@ -86,10 +86,10 @@ namespace SBSSData.Softball.Stats
 
         }
 
-        public IEnumerable<Player> GetActivePlayers => GetPlayedGames().SelectMany(g => g.Teams)
-                                                              .SelectMany(t => t.Players)
-                                                              .OrderBy(p => p.Name);
-        public IEnumerable<string> GetPlayerNames() => GetActivePlayers.Select(p => p.Name).Distinct().OrderBy(p => p);
+        public IEnumerable<Player> GetActivePlayers() => GetPlayedGames().SelectMany(g => g.Teams)
+                                                                         .SelectMany(t => t.Players)
+                                                                         .OrderBy(p => p.Name).ToList();
+        public IEnumerable<string> GetActivePlayerNames() =>  GetActivePlayers().Select(p => p.Name).Distinct().OrderBy(p => p);
 
         public IEnumerable<PlayerStats> GetLeaguePlayers(string leagueCategory = "", string day = "")
         {
@@ -110,7 +110,7 @@ namespace SBSSData.Softball.Stats
             return leaguePlayers;
         }
 
-        public IEnumerable<PlayerStats> PlayersStats => GetActivePlayers.Select(p => new PlayerStats(p));
+        public IEnumerable<PlayerStats> PlayersStats => GetActivePlayers().Select(p => new PlayerStats(p));
 
         public IEnumerable<PlayerStats> GetLeaguePlayersSummary(string leagueCategory = "", string day = "")
         {

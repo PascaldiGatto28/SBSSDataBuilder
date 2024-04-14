@@ -18,8 +18,8 @@ namespace SBSSData.Application.Support
     /// <param name="HR">The number of home runs.</param>
     /// <param name="BB">The number of bases on balls.</param>
     /// <param name="SF">The number of sacrifice flies.</param>
-    /// <param name="Hits">The total number of hits; <see cref="PlayerStats.TotalHits"/> for details..</param>
-    /// <param name="Bases">The total number of bases from hits, see <see cref="PlayerStats.TotalBases"/> for details.
+    /// <param name="TH">The total number of hits; <see cref="PlayerStats.TotalHits"/> for details..</param>
+    /// <param name="TB">The total number of bases from hits, see <see cref="PlayerStats.TotalBases"/> for details.
     /// </param>
     /// <param name="Avg">The ratio of <paramref name="Hits"/> and official at bats. 
     /// See <see cref="PlayerStats.Average"/> for details.</param>
@@ -37,8 +37,8 @@ namespace SBSSData.Application.Support
                                      int HR,
                                      int BB,
                                      int SF,
-                                     int Hits,
-                                     int Bases,
+                                     int TH,
+                                     int TB,
                                      double AVG,
                                      double SLG,
                                      double OBP,

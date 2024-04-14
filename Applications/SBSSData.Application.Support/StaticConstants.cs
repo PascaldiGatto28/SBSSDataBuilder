@@ -13,7 +13,7 @@ namespace SBSSData.Application.Support
 
             body {
                 padding:10px 20px 10px 20px;
-                font-family: 'Segoe UI', Verdana;
+                font-family: 'Segoe UI', Verdana, 'sans serif';
             }
 
             button.sbss {
@@ -89,6 +89,26 @@ namespace SBSSData.Application.Support
                 font-size: .65em
             }
 
+            body.playersheets
+            {
+                padding-top:0px;
+            }
+
+            """;
+        public static readonly string PlayerSheetsStyles =
+            """
+            body
+            {
+                padding-top:0px;
+            }
+
+            td.typeheader
+            {
+                width:680px;
+            }   
+            div.overlay
+            {
+            }
             """;
 
         public static readonly string HelpStyles =
@@ -440,13 +460,13 @@ namespace SBSSData.Application.Support
                                           <div id="overlayImage" style="text-align:center;">
                                               <img style="margin:auto; height:250px;" src="[[imagePath]][[imageName]].jpg"/>
                                           </div>
-                                              <div id="overlayRankTable" style="padding-left:0px; width:160px; margin-top:5px;">[[rankTableHtml]]</div>
+                                              <div id="overlayRankTable" style="padding-left:0px; width:160px; margin-top:5px;">[[infoHtml]]</div>
                                           </div>
                                       </div>
                                       """;
-        public static string BuildOverlay(string imagePath, string imageName, string rankTable) => OverlayTemplate.Replace("[[imagePath]]", imagePath)
+        public static string BuildOverlay(string imagePath, string imageName, string infoHtml) => OverlayTemplate.Replace("[[imagePath]]", imagePath)
                                                                                                                   .Replace("[[imageName]]", imageName)
-                                                                                                                  .Replace("[[rankTableHtml]]", rankTable);
+                                                                                                                  .Replace("[[infoHtml]]", infoHtml);
 
         private static string helpNodeHtml = """
                                               <a class="help"

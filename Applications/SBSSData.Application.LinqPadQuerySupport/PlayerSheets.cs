@@ -42,6 +42,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
         {
             Action<object> actionCallback = callback == null ? (v) => Console.WriteLine(v.ToString()) : callback;
             string season = seasonText.RemoveWhiteSpace();
+            string playerPhotos = "PlayerPhotos/";
 
             string changedHtml = string.Empty;
 
@@ -65,12 +66,12 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                 List<PlayerSheetContainer> playerSheetContainers = [];
 
-                IEnumerable<string> playerNames = query.GetPlayerNames();
+                IEnumerable<string> playerNames = query.GetActivePlayerNames();
 
                 // First change the containerHtml to include the HTML that is the list of selection player options. Later I replace
                 // the iFrame source doc attribute to the HTML of the returned HTML.
                 Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
-                List<string> optionValues = playerNames.Select(p => $"""<div class="playerOption" playerName="{p}" imageName="{map[p]}.jpg">{p.BuildDisplayName()}</div>""").ToList();
+                List<string> optionValues = playerNames.Select(p => $"""<div class="playerOption" playerName="{p}" imageName="{playerPhotos}/{map[p]}.jpg">{p.BuildDisplayName()}</div>""").ToList();
 
                 foreach (string playerName in playerNames)
                 {
@@ -108,7 +109,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                             LeagueNumGames = totalGames,
                             LeagueNumTeams = totalTeams,
                             PlayerTotals = playersTotals.PlayersSummary(),
-                            LeagueTotals = leagueTotals.PlayersSummary($"{shortLeagueName} all GetActivePlayers")
+                            LeagueTotals = leagueTotals.PlayersSummary($"{shortLeagueName}")
                         };
 
                         sheetData.Add(playerSheetItem);
@@ -143,7 +144,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     //string htmlNode = introHtml.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     //HtmlNode title = HtmlNode.CreateNode(htmlNode);
                     changedHtml = generator.DumpHtml(//pageTitle: title,
-                                                     cssStyles: StaticConstants.LocalStyles,
+                                                     cssStyles: StaticConstants.LocalStyles + StaticConstants.PlayerSheetsStyles,
                                                      javaScript: StaticConstants.LocalJavascript,
                                                      collapseTo: 2,
                                                      headElements: headElements.ToList());

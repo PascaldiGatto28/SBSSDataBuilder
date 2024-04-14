@@ -20,6 +20,7 @@ namespace SBSSData.Application.Samples
         {
             //LogSessions(true);
             //GamesTeamPlayersV3(true);
+            //GamesTeamPlayersHelpV3(true);
             //WinSCPSync();
             PlayerSheets();
             //RunUtilLP();
@@ -50,14 +51,14 @@ namespace SBSSData.Application.Samples
             //sheets.Attributes["srcDoc"].Remove();
             //sheets.Attributes.Add("srcDoc", html);
 
-            //List<string> optionValues = query.GetPlayerNames().Select(p => $"""<div name="{map[p]}">{p.BuildDisplayName()}</div>""").ToList();
+            //List<string> optionValues = query.GetActivePlayerNames().Select(p => $"""<div name="{map[p]}">{p.BuildDisplayName()}</div>""").ToList();
 
             //string html = optionValues.ToString<string>("\r\n");
             //string playerSheetsContainer = File.ReadAllText(htmlFilePath);
             //playerSheetsContainer
 
-            string folderName = @"d:\Temp\"; //@$"{dsFolder}Html Data\";
-            string fileName = "xx.html";
+            string folderName = @$"{dsFolder}Html Data\";
+            string fileName = "PlayerSheets.html";
             string htmlFilePath = $"{folderName}{fileName}";
 
             File.WriteAllText(htmlFilePath, html);
@@ -108,6 +109,27 @@ namespace SBSSData.Application.Samples
             }
 
             Console.WriteLine("GamesTeamPlayersV3 completed");
+        }
+
+        public static void GamesTeamPlayersHelpV3(bool displayHtml = false, bool useCallback = false)
+        {
+            string seasonText = "2024 Winter";
+            string dsFolder = $@"J:\SBSSDataStore\";
+
+            GamesTeamPlayersHelpV3 gtph = new GamesTeamPlayersHelpV3();
+            string html = gtph.BuildHtmlPage(seasonText, dsFolder, useCallback ? callback : null);
+
+            string folderName = @$"{dsFolder}Html Data\";
+            string fileName = "GamesTeamPlayersHelpV3.html";
+            string htmlFilePath = $"{folderName}{fileName}";
+
+            File.WriteAllText(htmlFilePath, html);
+            if (displayHtml)
+            {
+                Process.Start(@"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe", $"\"{htmlFilePath}\"");
+            }
+
+            Console.WriteLine("GamesTeamPlayersHelpV3 completed");
         }
 
         public static CheckQueryResults<IEnumerable<Player>> ReportLeaguePlayers(Query queries, string leagueCategory, string day, HtmlGenerator generator)
@@ -229,7 +251,7 @@ namespace SBSSData.Application.Samples
             {
                 headerText = t.Header().InnerText;
             }
-            Console.WriteLine($"GetActivePlayers header = {headerText}");
+            Console.WriteLine($"Players header = {headerText}");
             return headerText;
         };
 

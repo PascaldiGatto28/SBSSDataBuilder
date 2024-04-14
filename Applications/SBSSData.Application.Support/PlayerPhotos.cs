@@ -96,7 +96,7 @@ namespace SBSSData.Application.Support
                 //Console.WriteLine("\r\n\r\nProcessing {filePath} season +++++++++++++++++++++++++++++++++++++++++");
                 Query query = new(dsContainer);
                 //Console.WriteLine($"{query}");
-                IEnumerable<string> playerNames = query.GetActivePlayers.Select(p => p.Name).OrderBy(p => p).Distinct();
+                IEnumerable<string> playerNames = query.GetActivePlayers().Select(p => p.Name).OrderBy(p => p).Distinct();
                 foreach (string playerName in playerNames)
                 {
                     string? imageName = imageNames.SingleOrDefault(n => string.Equals(n, playerName, StringComparison.OrdinalIgnoreCase));

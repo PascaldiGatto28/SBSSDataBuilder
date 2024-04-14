@@ -37,13 +37,13 @@ namespace SBSSData.Application.Support
                                          int HR,
                                          int BB,
                                          int SF,
-                                         int Hits,
-                                         int Bases,
-                                         double Avg,
-                                         double Slug,
+                                         int TH,
+                                         int TB,
+                                         double AVG,
+                                         double SLG,
                                          double OBP,
                                          double OPS,
-                                         Rank Ranking)
+                                         Rank Rankings)
     {
         /// <summary>
         /// Creates a record using the information the instance of the <see cref="Player"/> and <see cref="PlayerRank"/> classes.

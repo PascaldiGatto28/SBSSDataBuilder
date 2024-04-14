@@ -2,15 +2,15 @@
 
 namespace SBSSData.Application.Support
 {
-    public record PlayerSheetItemDisplay(string Description, List<PlayerDataDisplay> Totals)
+    public record PlayerSheetItemDisplay(string Description, List<PlayerStatsDisplay> Totals)
     {
         public PlayerSheetItemDisplay(PlayerSheetItem playerSheetItem) : this
             (
                 playerSheetItem.Description,
-                new List<PlayerDataDisplay>()
+                new List<PlayerStatsDisplay>()
                 {
-                    new PlayerDataDisplay(new PlayerData(playerSheetItem.PlayerTotals)),
-                    new PlayerDataDisplay(new PlayerData(playerSheetItem.LeagueTotals))
+                    new PlayerStatsDisplay(new(playerSheetItem.PlayerTotalsStats)),
+                    new PlayerStatsDisplay(new(playerSheetItem.LeagueTotalsStats))
                 }
                 //[new PlayerDataDisplay(new PlayerData(playerSheetItem.PlayerTotals)), new PlayerDataDisplay(new PlayerData(playerSheetItem.LeagueTotals))].ToList()
             )
