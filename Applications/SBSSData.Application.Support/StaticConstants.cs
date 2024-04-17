@@ -126,7 +126,7 @@ namespace SBSSData.Application.Support
                 background-color: #fffae6;
                 border: 1px solid black;
                 color: black;
-                padding: 5px;
+                padding: 3px;
                 text-align: center;
                 text-decoration: none;
                 display: inline-block;
@@ -134,9 +134,9 @@ namespace SBSSData.Application.Support
                 margin: 4px 2px;
                 border-radius: 15px;
                 box-shadow: 2px 2px 10px 2px #aaaaaa;
-                font-size: 10px;
-                height: 24px;
-                width: 60px;
+                font-size: 12px;
+                height: 20px;
+                width: 50px;
                 padding: 0px;
                 font-weight: 500;
             }

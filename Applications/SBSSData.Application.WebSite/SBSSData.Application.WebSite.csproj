@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{06FB2341-9A99-48A8-89B5-955466FE3C68}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>SBSSData.Application.WebSite</RootNamespace>
     <AssemblyName>SBSSData.Application.WebSite</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
@@ -48,6 +51,12 @@
     </Content>
     <Content Include="J:\SBSSDataStore\Html Data\index.html">
       <Link>index.html</Link>
+    </Content>
+    <Content Include="J:\SBSSDataStore\Html Data\LogSessionsGuide.html">
+      <Link>LogSessionsGuide.html</Link>
+    </Content>
+    <Content Include="J:\SBSSDataStore\Html Data\Notices.html">
+      <Link>Notices.html</Link>
     </Content>
     <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Adams_Harry.jpg">
       <Link>PlayerPhotos\Adams_Harry.jpg</Link>
@@ -855,6 +864,12 @@
     </Content>
     <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Zalewski_Paul.jpg">
       <Link>PlayerPhotos\Zalewski_Paul.jpg</Link>
+    </Content>
+    <Content Include="J:\SBSSDataStore\Html Data\PlayerSheetsGuide.html">
+      <Link>PlayerSheetsGuide.html</Link>
+    </Content>
+    <Content Include="J:\SBSSDataStore\Html Data\References.html">
+      <Link>References.html</Link>
     </Content>
     <Content Include="J:\SBSSDataStore\Html Data\SBSSData.ico">
       <Link>SBSSData.ico</Link>

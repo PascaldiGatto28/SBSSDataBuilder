@@ -108,7 +108,7 @@ namespace SBSSData.Application.DataStore
                     else
                     {
                         // For now on it will show completed so it won't be processed again.
-                        // When the game date is less than the build date, and not complete the game has been cancelled
+                        // When the game date is less than the build date, and not complete the game has been canceled
                         // and will never be played.
                         scheduledGame.VisitorScore = 0;
                         scheduledGame.HomeScore = 0;

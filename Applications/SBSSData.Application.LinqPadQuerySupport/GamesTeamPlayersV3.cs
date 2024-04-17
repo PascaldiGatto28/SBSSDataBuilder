@@ -56,8 +56,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
             {
 
                 Query query = new Query(dsContainer);
-                DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
-                string dsInfoHeaderStyle = "background-color:#d62929;";
+                //DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
+                //string dsInfoHeaderStyle = "background-color:#d62929;";
                 string gtpHeaderStyle = "background-color:#d62929; width:642px;";
 
                 IEnumerable<Game> playedGames = query.GetPlayedGames();
@@ -93,8 +93,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                     actionCallback("expandCollapseHtml raw Html written");
 
-                    generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
-                    actionCallback("dsInfo root table written");
+                    //generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
+                    //actionCallback("dsInfo root table written");
 
                     foreach (var leagueName in leagueNames)
                     {

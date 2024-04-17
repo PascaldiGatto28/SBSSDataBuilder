@@ -29,7 +29,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             new HeadElement("meta", [["data", "description"], ["content", "Log session details when the data store is updated"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
             new HeadElement("meta", [["name", "http-equiv"], ["content", "no-cache"]]),
-            new HeadElement("title", [["Update Log", ""]]),
+            new HeadElement("title", [["Data Store Log", ""]]),
             new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
         };
 
@@ -82,7 +82,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     Values.Add(dsInfo);
                     if ((callback != null) && (displaySessions != null))
                     {
-                        callback(displaySessions);
+                        callback($"{displaySessions.Count()} log sessions found");
                     }
                    
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);

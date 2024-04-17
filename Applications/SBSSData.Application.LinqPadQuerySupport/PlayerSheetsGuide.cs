@@ -4,30 +4,26 @@ using System.Reflection;
 
 using HtmlAgilityPack;
 
-using LINQPad;
-
 using SBSSData.Application.Support;
 using SBSSData.Softball;
 using SBSSData.Softball.Common;
 using SBSSData.Softball.Stats;
 
-using Query = SBSSData.Softball.Stats.Query;
-
 namespace SBSSData.Application.LinqPadQuerySupport
 {
-    public class PlayerSheets
+    public class PlayerSheetsGuide
     {
         private static HeadElement[] headElements =
         {
             new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
-            new HeadElement("meta", [["data", "description"], ["content", "Player summary league for all players and leagues"]]),
+            new HeadElement("meta", [["data", "description"], ["content", "A guide to the Player Sheets page"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
             new HeadElement("meta", [["name", "http-equiv"], ["content", "no-cache"]]),
-            new HeadElement("title", [["Player's League Summaries", ""]]),
+            new HeadElement("title", [["Player League Summaries", ""]]),
             new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
         };
 
-        public PlayerSheets()
+        public PlayerSheetsGuide()
         {
             Values = [];
         }
@@ -48,12 +44,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             Assembly assembly = typeof(PlayerSheets).Assembly;
 
-            // Not creating a title for this version -- that comes directly from the container HTML file
             //string resName = assembly.FormatResourceName("PlayerSheets.html");
             //byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             //string introHtml = bytes.ByteArrayToString();
 
-            string resName = assembly.FormatResourceName("PlayerSheetsContainer.html");
+            string resName = assembly.FormatResourceName("PlayerSheetsContainerGuide.html");
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             string containerHtml = bytes.ByteArrayToString();
 

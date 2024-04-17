@@ -18,6 +18,8 @@
     <None Remove="LogSessions.html" />
     <None Remove="PlayerSheets.html" />
     <None Remove="PlayerSheetsContainer.html" />
+    <None Remove="PlayerSheetsContainerGuide.html" />
+    <None Remove="PlayerSheetsNotUsed.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,9 +32,7 @@
     <EmbeddedResource Include="LogSessions.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="PlayerSheets.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerSheetsContainerGuide.html" />
     <EmbeddedResource Include="PlayerSheetsContainer.html" />
   </ItemGroup>
 
