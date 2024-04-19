@@ -1,882 +1,855 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{06FB2341-9A99-48A8-89B5-955466FE3C68}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>SBSSData.Application.WebSite</RootNamespace>
-    <AssemblyName>SBSSData.Application.WebSite</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <ProjectGuid>{E18C4723-87E5-4BDE-8DEE-02B52D0A8DA7}</ProjectGuid>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <Folder Include="CSS\" />
+    <Folder Include="PlayerPhotos\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="J:\SBSSDataStore\Html Data\CSS\LINQPad.css">
+    <Content Include="J:\SBSSDataStore\HtmlData\CSS\LINQPad.css">
       <Link>CSS\LINQPad.css</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\CSS\Main.css">
+    <Content Include="J:\SBSSDataStore\HtmlData\CSS\Main.css">
       <Link>CSS\Main.css</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\CSS\Main2.css">
+    <Content Include="J:\SBSSDataStore\HtmlData\CSS\Main2.css">
       <Link>CSS\Main2.css</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\index.html">
-      <Link>index.html</Link>
-    </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\LogSessionsGuide.html">
-      <Link>LogSessionsGuide.html</Link>
-    </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\Notices.html">
+    <Content Include="J:\SBSSDataStore\HtmlData\index.html" Link="index.html" />
+    <Content Include="J:\SBSSDataStore\HtmlData\Notices.html">
       <Link>Notices.html</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Adams_Harry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Adams_Harry.jpg">
       <Link>PlayerPhotos\Adams_Harry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Adolph_Mark.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Adolph_Mark.jpg">
       <Link>PlayerPhotos\Adolph_Mark.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Agnone_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Agnone_John.jpg">
       <Link>PlayerPhotos\Agnone_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Agnone_Linda.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Agnone_Linda.jpg">
       <Link>PlayerPhotos\Agnone_Linda.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Alkhoury_Sam.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Alkhoury_Sam.jpg">
       <Link>PlayerPhotos\Alkhoury_Sam.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Arffa_Dave.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Arffa_Dave.jpg">
       <Link>PlayerPhotos\Arffa_Dave.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Argabright_Marc.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Argabright_Marc.jpg">
       <Link>PlayerPhotos\Argabright_Marc.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Atkins_Misty.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Atkins_Misty.jpg">
       <Link>PlayerPhotos\Atkins_Misty.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Auster_Paul.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Auster_Paul.jpg">
       <Link>PlayerPhotos\Auster_Paul.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Available_Photo-Not.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Available_Photo-Not.jpg">
       <Link>PlayerPhotos\Available_Photo-Not.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Avrutik_Tom.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Avrutik_Tom.jpg">
       <Link>PlayerPhotos\Avrutik_Tom.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Baker_Roger.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Baker_Roger.jpg">
       <Link>PlayerPhotos\Baker_Roger.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Battagello_Rich.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Battagello_Rich.jpg">
       <Link>PlayerPhotos\Battagello_Rich.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Beals_Ken.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Beals_Ken.jpg">
       <Link>PlayerPhotos\Beals_Ken.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Becker_Keith.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Becker_Keith.jpg">
       <Link>PlayerPhotos\Becker_Keith.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Benjamin_Tim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Benjamin_Tim.jpg">
       <Link>PlayerPhotos\Benjamin_Tim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Bigos_Jerry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Bigos_Jerry.jpg">
       <Link>PlayerPhotos\Bigos_Jerry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Blaize_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Blaize_John.jpg">
       <Link>PlayerPhotos\Blaize_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Blandford_Bill.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Blandford_Bill.jpg">
       <Link>PlayerPhotos\Blandford_Bill.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Block_Allan.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Block_Allan.jpg">
       <Link>PlayerPhotos\Block_Allan.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Bohlman_David.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Bohlman_David.jpg">
       <Link>PlayerPhotos\Bohlman_David.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Borland_Dominic.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Borland_Dominic.jpg">
       <Link>PlayerPhotos\Borland_Dominic.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Boschke_Dale.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Boschke_Dale.jpg">
       <Link>PlayerPhotos\Boschke_Dale.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Bradley_Greg.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Bradley_Greg.jpg">
       <Link>PlayerPhotos\Bradley_Greg.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Bragan_Bob.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Bragan_Bob.jpg">
       <Link>PlayerPhotos\Bragan_Bob.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Buchanan_p.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Buchanan_p.jpg">
       <Link>PlayerPhotos\Buchanan_p.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Buonarigo_Rick.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Buonarigo_Rick.jpg">
       <Link>PlayerPhotos\Buonarigo_Rick.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Butzer_Dave.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Butzer_Dave.jpg">
       <Link>PlayerPhotos\Butzer_Dave.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Cangeme_Al.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Cangeme_Al.jpg">
       <Link>PlayerPhotos\Cangeme_Al.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Carbonne_Bobby.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Carbonne_Bobby.jpg">
       <Link>PlayerPhotos\Carbonne_Bobby.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Cartwright_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Cartwright_Steve.jpg">
       <Link>PlayerPhotos\Cartwright_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Cavicchia_Phil.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Cavicchia_Phil.jpg">
       <Link>PlayerPhotos\Cavicchia_Phil.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Chesney_Bob.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Chesney_Bob.jpg">
       <Link>PlayerPhotos\Chesney_Bob.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Cheszek_Ed.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Cheszek_Ed.jpg">
       <Link>PlayerPhotos\Cheszek_Ed.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Chiarello_Bob.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Chiarello_Bob.jpg">
       <Link>PlayerPhotos\Chiarello_Bob.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Cholvin_Craig.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Cholvin_Craig.jpg">
       <Link>PlayerPhotos\Cholvin_Craig.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Clark_Ed.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Clark_Ed.jpg">
       <Link>PlayerPhotos\Clark_Ed.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Cole_Bob.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Cole_Bob.jpg">
       <Link>PlayerPhotos\Cole_Bob.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Conway_Dean.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Conway_Dean.jpg">
       <Link>PlayerPhotos\Conway_Dean.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Corrick_George.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Corrick_George.jpg">
       <Link>PlayerPhotos\Corrick_George.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Cowart_Jerry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Cowart_Jerry.jpg">
       <Link>PlayerPhotos\Cowart_Jerry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Cox_Don.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Cox_Don.jpg">
       <Link>PlayerPhotos\Cox_Don.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Crenshaw_Jay.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Crenshaw_Jay.jpg">
       <Link>PlayerPhotos\Crenshaw_Jay.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Crossman_Ken.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Crossman_Ken.jpg">
       <Link>PlayerPhotos\Crossman_Ken.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Cussick_Ed.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Cussick_Ed.jpg">
       <Link>PlayerPhotos\Cussick_Ed.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Daus_Ed.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Daus_Ed.jpg">
       <Link>PlayerPhotos\Daus_Ed.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Dawson_Brian.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Dawson_Brian.jpg">
       <Link>PlayerPhotos\Dawson_Brian.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Dawson_Stacy.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Dawson_Stacy.jpg">
       <Link>PlayerPhotos\Dawson_Stacy.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Deal_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Deal_Mike.jpg">
       <Link>PlayerPhotos\Deal_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\DeHaan_Curt.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\DeHaan_Curt.jpg">
       <Link>PlayerPhotos\DeHaan_Curt.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Dial_Diane.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Dial_Diane.jpg">
       <Link>PlayerPhotos\Dial_Diane.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Dickey_Jim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Dickey_Jim.jpg">
       <Link>PlayerPhotos\Dickey_Jim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Diericks_Dave.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Diericks_Dave.jpg">
       <Link>PlayerPhotos\Diericks_Dave.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Dunbar_Dick.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Dunbar_Dick.jpg">
       <Link>PlayerPhotos\Dunbar_Dick.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Dzbinski_Rick.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Dzbinski_Rick.jpg">
       <Link>PlayerPhotos\Dzbinski_Rick.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Eigen_Brand.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Eigen_Brand.jpg">
       <Link>PlayerPhotos\Eigen_Brand.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Emmons_Barry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Emmons_Barry.jpg">
       <Link>PlayerPhotos\Emmons_Barry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Emmons_Howie.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Emmons_Howie.jpg">
       <Link>PlayerPhotos\Emmons_Howie.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Ervin_Rick.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Ervin_Rick.jpg">
       <Link>PlayerPhotos\Ervin_Rick.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Fagotti_Bob.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Fagotti_Bob.jpg">
       <Link>PlayerPhotos\Fagotti_Bob.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Farland_Jef.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Farland_Jef.jpg">
       <Link>PlayerPhotos\Farland_Jef.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Felzien_Bill.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Felzien_Bill.jpg">
       <Link>PlayerPhotos\Felzien_Bill.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Figueroa_Rich.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Figueroa_Rich.jpg">
       <Link>PlayerPhotos\Figueroa_Rich.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Finelli_Ron.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Finelli_Ron.jpg">
       <Link>PlayerPhotos\Finelli_Ron.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Fink_Bruce.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Fink_Bruce.jpg">
       <Link>PlayerPhotos\Fink_Bruce.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Fitzgerald_Tom.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Fitzgerald_Tom.jpg">
       <Link>PlayerPhotos\Fitzgerald_Tom.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Flanagan_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Flanagan_Mike.jpg">
       <Link>PlayerPhotos\Flanagan_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Floyd_Kim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Floyd_Kim.jpg">
       <Link>PlayerPhotos\Floyd_Kim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Fortis_Dave.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Fortis_Dave.jpg">
       <Link>PlayerPhotos\Fortis_Dave.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Freel_Jack.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Freel_Jack.jpg">
       <Link>PlayerPhotos\Freel_Jack.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Frels_Julie.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Frels_Julie.jpg">
       <Link>PlayerPhotos\Frels_Julie.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Fuller_David.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Fuller_David.jpg">
       <Link>PlayerPhotos\Fuller_David.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Furash_Dick.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Furash_Dick.jpg">
       <Link>PlayerPhotos\Furash_Dick.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Gallo_Tom.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Gallo_Tom.jpg">
       <Link>PlayerPhotos\Gallo_Tom.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Gann_Leonard.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Gann_Leonard.jpg">
       <Link>PlayerPhotos\Gann_Leonard.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Garceau_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Garceau_Steve.jpg">
       <Link>PlayerPhotos\Garceau_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Gentner_Don.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Gentner_Don.jpg">
       <Link>PlayerPhotos\Gentner_Don.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Good_Dave.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Good_Dave.jpg">
       <Link>PlayerPhotos\Good_Dave.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Graef_Jack.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Graef_Jack.jpg">
       <Link>PlayerPhotos\Graef_Jack.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Green_Jon.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Green_Jon.jpg">
       <Link>PlayerPhotos\Green_Jon.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Guralnick_Howard.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Guralnick_Howard.jpg">
       <Link>PlayerPhotos\Guralnick_Howard.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Gurewitz_Greg.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Gurewitz_Greg.jpg">
       <Link>PlayerPhotos\Gurewitz_Greg.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hamm_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hamm_Mike.jpg">
       <Link>PlayerPhotos\Hamm_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hanson_Rick.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hanson_Rick.jpg">
       <Link>PlayerPhotos\Hanson_Rick.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hart_Barry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hart_Barry.jpg">
       <Link>PlayerPhotos\Hart_Barry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hart_Rocky.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hart_Rocky.jpg">
       <Link>PlayerPhotos\Hart_Rocky.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hastings_Morlin.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hastings_Morlin.jpg">
       <Link>PlayerPhotos\Hastings_Morlin.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hauschildt_Jack.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hauschildt_Jack.jpg">
       <Link>PlayerPhotos\Hauschildt_Jack.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hayes_Mark.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hayes_Mark.jpg">
       <Link>PlayerPhotos\Hayes_Mark.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Heaton_Ken.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Heaton_Ken.jpg">
       <Link>PlayerPhotos\Heaton_Ken.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Henderlong_Art.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Henderlong_Art.jpg">
       <Link>PlayerPhotos\Henderlong_Art.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hendryx_Charles.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hendryx_Charles.jpg">
       <Link>PlayerPhotos\Hendryx_Charles.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hirschfeld_Jim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hirschfeld_Jim.jpg">
       <Link>PlayerPhotos\Hirschfeld_Jim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hoedel_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hoedel_Mike.jpg">
       <Link>PlayerPhotos\Hoedel_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hojnacki_Mark.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hojnacki_Mark.jpg">
       <Link>PlayerPhotos\Hojnacki_Mark.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Horrigan_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Horrigan_Steve.jpg">
       <Link>PlayerPhotos\Horrigan_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Hurley_Terry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Hurley_Terry.jpg">
       <Link>PlayerPhotos\Hurley_Terry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Imes_Julian.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Imes_Julian.jpg">
       <Link>PlayerPhotos\Imes_Julian.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Jackson_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Jackson_Steve.jpg">
       <Link>PlayerPhotos\Jackson_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Jacobson_Jake.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Jacobson_Jake.jpg">
       <Link>PlayerPhotos\Jacobson_Jake.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Jarzembinski_Janet.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Jarzembinski_Janet.jpg">
       <Link>PlayerPhotos\Jarzembinski_Janet.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Jarzembinski_Paul.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Jarzembinski_Paul.jpg">
       <Link>PlayerPhotos\Jarzembinski_Paul.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Jennings_Dwight.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Jennings_Dwight.jpg">
       <Link>PlayerPhotos\Jennings_Dwight.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Johnson_Corey.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Johnson_Corey.jpg">
       <Link>PlayerPhotos\Johnson_Corey.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Johnson_Leroy.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Johnson_Leroy.jpg">
       <Link>PlayerPhotos\Johnson_Leroy.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Jones_Brad.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Jones_Brad.jpg">
       <Link>PlayerPhotos\Jones_Brad.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Jones_Debbie.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Jones_Debbie.jpg">
       <Link>PlayerPhotos\Jones_Debbie.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Jones_Don.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Jones_Don.jpg">
       <Link>PlayerPhotos\Jones_Don.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Keagy_Rick.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Keagy_Rick.jpg">
       <Link>PlayerPhotos\Keagy_Rick.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Keefer_Bruce.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Keefer_Bruce.jpg">
       <Link>PlayerPhotos\Keefer_Bruce.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Keefer_Debbie.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Keefer_Debbie.jpg">
       <Link>PlayerPhotos\Keefer_Debbie.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kennedy_Charlie.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kennedy_Charlie.jpg">
       <Link>PlayerPhotos\Kennedy_Charlie.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kennedy_Summer.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kennedy_Summer.jpg">
       <Link>PlayerPhotos\Kennedy_Summer.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kill_Chuck.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kill_Chuck.jpg">
       <Link>PlayerPhotos\Kill_Chuck.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kingsley_Robin.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kingsley_Robin.jpg">
       <Link>PlayerPhotos\Kingsley_Robin.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Klein_Tom.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Klein_Tom.jpg">
       <Link>PlayerPhotos\Klein_Tom.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Klem_Tom.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Klem_Tom.jpg">
       <Link>PlayerPhotos\Klem_Tom.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kohl_Tina.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kohl_Tina.jpg">
       <Link>PlayerPhotos\Kohl_Tina.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kraft_Stu.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kraft_Stu.jpg">
       <Link>PlayerPhotos\Kraft_Stu.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kraut_David.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kraut_David.jpg">
       <Link>PlayerPhotos\Kraut_David.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kravitz_Alan.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kravitz_Alan.jpg">
       <Link>PlayerPhotos\Kravitz_Alan.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Krom_Gloria.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Krom_Gloria.jpg">
       <Link>PlayerPhotos\Krom_Gloria.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kroppe_Cathe.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kroppe_Cathe.jpg">
       <Link>PlayerPhotos\Kroppe_Cathe.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kunde_Jack.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kunde_Jack.jpg">
       <Link>PlayerPhotos\Kunde_Jack.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Kutansky_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Kutansky_Mike.jpg">
       <Link>PlayerPhotos\Kutansky_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\LaNeve_Charlie.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\LaNeve_Charlie.jpg">
       <Link>PlayerPhotos\LaNeve_Charlie.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lang_Laura.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lang_Laura.jpg">
       <Link>PlayerPhotos\Lang_Laura.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lauder_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lauder_John.jpg">
       <Link>PlayerPhotos\Lauder_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Laureys_Lynn.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Laureys_Lynn.jpg">
       <Link>PlayerPhotos\Laureys_Lynn.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Laureys_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Laureys_Steve.jpg">
       <Link>PlayerPhotos\Laureys_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lavaro_Richard.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lavaro_Richard.jpg">
       <Link>PlayerPhotos\Lavaro_Richard.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\League_Totals.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\League_Totals.jpg">
       <Link>PlayerPhotos\League_Totals.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lee_Dave.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lee_Dave.jpg">
       <Link>PlayerPhotos\Lee_Dave.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Leierzapf_Fred.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Leierzapf_Fred.jpg">
       <Link>PlayerPhotos\Leierzapf_Fred.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Leksell_Lee.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Leksell_Lee.jpg">
       <Link>PlayerPhotos\Leksell_Lee.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lenihan_Bob.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lenihan_Bob.jpg">
       <Link>PlayerPhotos\Lenihan_Bob.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lesser_Jeff.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lesser_Jeff.jpg">
       <Link>PlayerPhotos\Lesser_Jeff.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Levaro_Richard.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Levaro_Richard.jpg">
       <Link>PlayerPhotos\Levaro_Richard.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lewis_Sean.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lewis_Sean.jpg">
       <Link>PlayerPhotos\Lewis_Sean.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Logan_Chris.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Logan_Chris.jpg">
       <Link>PlayerPhotos\Logan_Chris.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Longo_Nick.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Longo_Nick.jpg">
       <Link>PlayerPhotos\Longo_Nick.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lopez_Eddie.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lopez_Eddie.jpg">
       <Link>PlayerPhotos\Lopez_Eddie.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lowry_Rob.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lowry_Rob.jpg">
       <Link>PlayerPhotos\Lowry_Rob.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lueck_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lueck_Mike.jpg">
       <Link>PlayerPhotos\Lueck_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lulek_Tony.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lulek_Tony.jpg">
       <Link>PlayerPhotos\Lulek_Tony.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Lundgren_Scott.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Lundgren_Scott.jpg">
       <Link>PlayerPhotos\Lundgren_Scott.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\MacDonald_Jim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\MacDonald_Jim.jpg">
       <Link>PlayerPhotos\MacDonald_Jim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Magdanz_Mark.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Magdanz_Mark.jpg">
       <Link>PlayerPhotos\Magdanz_Mark.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Maki_Rick.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Maki_Rick.jpg">
       <Link>PlayerPhotos\Maki_Rick.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Malberg_Joe.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Malberg_Joe.jpg">
       <Link>PlayerPhotos\Malberg_Joe.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Malone_Tim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Malone_Tim.jpg">
       <Link>PlayerPhotos\Malone_Tim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Marano_Gus.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Marano_Gus.jpg">
       <Link>PlayerPhotos\Marano_Gus.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Massara_Paul.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Massara_Paul.jpg">
       <Link>PlayerPhotos\Massara_Paul.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Mazujian_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Mazujian_John.jpg">
       <Link>PlayerPhotos\Mazujian_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Mazujian_Rebecca.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Mazujian_Rebecca.jpg">
       <Link>PlayerPhotos\Mazujian_Rebecca.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\McInnis_Andy.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\McInnis_Andy.jpg">
       <Link>PlayerPhotos\McInnis_Andy.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\McKniff_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\McKniff_John.jpg">
       <Link>PlayerPhotos\McKniff_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\McNellis_Terry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\McNellis_Terry.jpg">
       <Link>PlayerPhotos\McNellis_Terry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Merlin_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Merlin_John.jpg">
       <Link>PlayerPhotos\Merlin_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Mihora_Janice.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Mihora_Janice.jpg">
       <Link>PlayerPhotos\Mihora_Janice.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Mihora_Terry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Mihora_Terry.jpg">
       <Link>PlayerPhotos\Mihora_Terry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Miller_Debra.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Miller_Debra.jpg">
       <Link>PlayerPhotos\Miller_Debra.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Millican_Dan.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Millican_Dan.jpg">
       <Link>PlayerPhotos\Millican_Dan.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Mitchell_Mitch.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Mitchell_Mitch.jpg">
       <Link>PlayerPhotos\Mitchell_Mitch.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Mitchell_Ryan.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Mitchell_Ryan.jpg">
       <Link>PlayerPhotos\Mitchell_Ryan.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Moffatt_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Moffatt_Mike.jpg">
       <Link>PlayerPhotos\Moffatt_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Morgan_Greg.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Morgan_Greg.jpg">
       <Link>PlayerPhotos\Morgan_Greg.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Mullen_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Mullen_Mike.jpg">
       <Link>PlayerPhotos\Mullen_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Mundahl_Bruce.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Mundahl_Bruce.jpg">
       <Link>PlayerPhotos\Mundahl_Bruce.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Nagy_Zoltan.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Nagy_Zoltan.jpg">
       <Link>PlayerPhotos\Nagy_Zoltan.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Nicolich_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Nicolich_John.jpg">
       <Link>PlayerPhotos\Nicolich_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Noah_Sam.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Noah_Sam.jpg">
       <Link>PlayerPhotos\Noah_Sam.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Noffsinger_Jason.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Noffsinger_Jason.jpg">
       <Link>PlayerPhotos\Noffsinger_Jason.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Nola_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Nola_John.jpg">
       <Link>PlayerPhotos\Nola_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Norgard_Dale.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Norgard_Dale.jpg">
       <Link>PlayerPhotos\Norgard_Dale.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Norgard_Denise.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Norgard_Denise.jpg">
       <Link>PlayerPhotos\Norgard_Denise.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Oberg_Gary.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Oberg_Gary.jpg">
       <Link>PlayerPhotos\Oberg_Gary.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Oczak_Joe.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Oczak_Joe.jpg">
       <Link>PlayerPhotos\Oczak_Joe.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Odonnell_Sue.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Odonnell_Sue.jpg">
       <Link>PlayerPhotos\Odonnell_Sue.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Ottaway_Tom.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Ottaway_Tom.jpg">
       <Link>PlayerPhotos\Ottaway_Tom.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Overhaug_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Overhaug_Steve.jpg">
       <Link>PlayerPhotos\Overhaug_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Oxnam_Rose.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Oxnam_Rose.jpg">
       <Link>PlayerPhotos\Oxnam_Rose.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Oxnam_Tom.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Oxnam_Tom.jpg">
       <Link>PlayerPhotos\Oxnam_Tom.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Parker_Hugh.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Parker_Hugh.jpg">
       <Link>PlayerPhotos\Parker_Hugh.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Passoni_Joe.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Passoni_Joe.jpg">
       <Link>PlayerPhotos\Passoni_Joe.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Payne_Arch.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Payne_Arch.jpg">
       <Link>PlayerPhotos\Payne_Arch.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Pede_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Pede_Steve.jpg">
       <Link>PlayerPhotos\Pede_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Pennington_Rich.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Pennington_Rich.jpg">
       <Link>PlayerPhotos\Pennington_Rich.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Peters_Ed.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Peters_Ed.jpg">
       <Link>PlayerPhotos\Peters_Ed.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Peters_Saul.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Peters_Saul.jpg">
       <Link>PlayerPhotos\Peters_Saul.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Pizzitola_Dale.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Pizzitola_Dale.jpg">
       <Link>PlayerPhotos\Pizzitola_Dale.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Polak_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Polak_Mike.jpg">
       <Link>PlayerPhotos\Polak_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Purcell_Dennis.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Purcell_Dennis.jpg">
       <Link>PlayerPhotos\Purcell_Dennis.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Quarantino_Ron.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Quarantino_Ron.jpg">
       <Link>PlayerPhotos\Quarantino_Ron.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Rangno_Art.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Rangno_Art.jpg">
       <Link>PlayerPhotos\Rangno_Art.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Reed_Dan.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Reed_Dan.jpg">
       <Link>PlayerPhotos\Reed_Dan.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Reingruber_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Reingruber_John.jpg">
       <Link>PlayerPhotos\Reingruber_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Reingruber_Tracy.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Reingruber_Tracy.jpg">
       <Link>PlayerPhotos\Reingruber_Tracy.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Rischall_Mordy.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Rischall_Mordy.jpg">
       <Link>PlayerPhotos\Rischall_Mordy.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Romac_Ron.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Romac_Ron.jpg">
       <Link>PlayerPhotos\Romac_Ron.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Romano_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Romano_Mike.jpg">
       <Link>PlayerPhotos\Romano_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Romeo_Peter.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Romeo_Peter.jpg">
       <Link>PlayerPhotos\Romeo_Peter.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Rossman_Judy.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Rossman_Judy.jpg">
       <Link>PlayerPhotos\Rossman_Judy.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Rowe_William.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Rowe_William.jpg">
       <Link>PlayerPhotos\Rowe_William.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Rupp_Adrian.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Rupp_Adrian.jpg">
       <Link>PlayerPhotos\Rupp_Adrian.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Sachse_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Sachse_Mike.jpg">
       <Link>PlayerPhotos\Sachse_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Sahl_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Sahl_Steve.jpg">
       <Link>PlayerPhotos\Sahl_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Sanders_Joe.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Sanders_Joe.jpg">
       <Link>PlayerPhotos\Sanders_Joe.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Santos_Vern.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Santos_Vern.jpg">
       <Link>PlayerPhotos\Santos_Vern.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schauer_Mark.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schauer_Mark.jpg">
       <Link>PlayerPhotos\Schauer_Mark.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schmitt_Buzz.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schmitt_Buzz.jpg">
       <Link>PlayerPhotos\Schmitt_Buzz.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schneck_Mary.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schneck_Mary.jpg">
       <Link>PlayerPhotos\Schneck_Mary.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schneck_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schneck_Steve.jpg">
       <Link>PlayerPhotos\Schneck_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schneiderman_Stan.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schneiderman_Stan.jpg">
       <Link>PlayerPhotos\Schneiderman_Stan.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schumacher_Michael.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schumacher_Michael.jpg">
       <Link>PlayerPhotos\Schumacher_Michael.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schuttler_Ken.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schuttler_Ken.jpg">
       <Link>PlayerPhotos\Schuttler_Ken.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schwartzberg_Yvette.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schwartzberg_Yvette.jpg">
       <Link>PlayerPhotos\Schwartzberg_Yvette.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schweitzer_Jay.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schweitzer_Jay.jpg">
       <Link>PlayerPhotos\Schweitzer_Jay.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Schwin_Paul.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Schwin_Paul.jpg">
       <Link>PlayerPhotos\Schwin_Paul.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Scott_Charlie.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Scott_Charlie.jpg">
       <Link>PlayerPhotos\Scott_Charlie.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Searcy_Mike.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Searcy_Mike.jpg">
       <Link>PlayerPhotos\Searcy_Mike.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Seguin_Debbie.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Seguin_Debbie.jpg">
       <Link>PlayerPhotos\Seguin_Debbie.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Selk_Jim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Selk_Jim.jpg">
       <Link>PlayerPhotos\Selk_Jim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Sentowski_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Sentowski_John.jpg">
       <Link>PlayerPhotos\Sentowski_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Shaughnessy_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Shaughnessy_John.jpg">
       <Link>PlayerPhotos\Shaughnessy_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Sherby_Scott.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Sherby_Scott.jpg">
       <Link>PlayerPhotos\Sherby_Scott.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Skoneczka_Dennis.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Skoneczka_Dennis.jpg">
       <Link>PlayerPhotos\Skoneczka_Dennis.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Smith_Chuck.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Smith_Chuck.jpg">
       <Link>PlayerPhotos\Smith_Chuck.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Smith_JIm.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Smith_JIm.jpg">
       <Link>PlayerPhotos\Smith_JIm.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Spevak_Bill.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Spevak_Bill.jpg">
       <Link>PlayerPhotos\Spevak_Bill.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\St-Jules_Barbara.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\St-Jules_Barbara.jpg">
       <Link>PlayerPhotos\St-Jules_Barbara.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\St-Jules_David.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\St-Jules_David.jpg">
       <Link>PlayerPhotos\St-Jules_David.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Stafford_Wayne.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Stafford_Wayne.jpg">
       <Link>PlayerPhotos\Stafford_Wayne.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Steffes_Phil.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Steffes_Phil.jpg">
       <Link>PlayerPhotos\Steffes_Phil.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Stein_Alan.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Stein_Alan.jpg">
       <Link>PlayerPhotos\Stein_Alan.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Stevens_Dave.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Stevens_Dave.jpg">
       <Link>PlayerPhotos\Stevens_Dave.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Stewart_Gary.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Stewart_Gary.jpg">
       <Link>PlayerPhotos\Stewart_Gary.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Stobbe_Terry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Stobbe_Terry.jpg">
       <Link>PlayerPhotos\Stobbe_Terry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Stolze_Jeff.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Stolze_Jeff.jpg">
       <Link>PlayerPhotos\Stolze_Jeff.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Stroud_Greg.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Stroud_Greg.jpg">
       <Link>PlayerPhotos\Stroud_Greg.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Sweetland_Doug.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Sweetland_Doug.jpg">
       <Link>PlayerPhotos\Sweetland_Doug.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Szpakowski_Ray.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Szpakowski_Ray.jpg">
       <Link>PlayerPhotos\Szpakowski_Ray.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Talacs_Jim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Talacs_Jim.jpg">
       <Link>PlayerPhotos\Talacs_Jim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Talkington_Jack.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Talkington_Jack.jpg">
       <Link>PlayerPhotos\Talkington_Jack.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Taney_Kent.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Taney_Kent.jpg">
       <Link>PlayerPhotos\Taney_Kent.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Upchurch_Jeff.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Upchurch_Jeff.jpg">
       <Link>PlayerPhotos\Upchurch_Jeff.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Vaaler_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Vaaler_John.jpg">
       <Link>PlayerPhotos\Vaaler_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Vaughan_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Vaughan_John.jpg">
       <Link>PlayerPhotos\Vaughan_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Walder_Bill.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Walder_Bill.jpg">
       <Link>PlayerPhotos\Walder_Bill.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Ward_Jim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Ward_Jim.jpg">
       <Link>PlayerPhotos\Ward_Jim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Ward_Tim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Ward_Tim.jpg">
       <Link>PlayerPhotos\Ward_Tim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Watts_Jim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Watts_Jim.jpg">
       <Link>PlayerPhotos\Watts_Jim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Weber_Larry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Weber_Larry.jpg">
       <Link>PlayerPhotos\Weber_Larry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Webster_Bill.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Webster_Bill.jpg">
       <Link>PlayerPhotos\Webster_Bill.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Weems_Russell.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Weems_Russell.jpg">
       <Link>PlayerPhotos\Weems_Russell.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Weinenger_Harold.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Weinenger_Harold.jpg">
       <Link>PlayerPhotos\Weinenger_Harold.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Weiss_Herb.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Weiss_Herb.jpg">
       <Link>PlayerPhotos\Weiss_Herb.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Wescoe_Bill.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Wescoe_Bill.jpg">
       <Link>PlayerPhotos\Wescoe_Bill.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\West_Brad.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\West_Brad.jpg">
       <Link>PlayerPhotos\West_Brad.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\West_Greg.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\West_Greg.jpg">
       <Link>PlayerPhotos\West_Greg.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\White_Larry.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\White_Larry.jpg">
       <Link>PlayerPhotos\White_Larry.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Wlach_Mark.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Wlach_Mark.jpg">
       <Link>PlayerPhotos\Wlach_Mark.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Woehr_Charles.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Woehr_Charles.jpg">
       <Link>PlayerPhotos\Woehr_Charles.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Wolfe_Steve.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Wolfe_Steve.jpg">
       <Link>PlayerPhotos\Wolfe_Steve.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Wollack_Jim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Wollack_Jim.jpg">
       <Link>PlayerPhotos\Wollack_Jim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Woolmington_John.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Woolmington_John.jpg">
       <Link>PlayerPhotos\Woolmington_John.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Yester_Jim.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Yester_Jim.jpg">
       <Link>PlayerPhotos\Yester_Jim.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Young_Dennis.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Young_Dennis.jpg">
       <Link>PlayerPhotos\Young_Dennis.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerPhotos\Zalewski_Paul.jpg">
+    <Content Include="J:\SBSSDataStore\HtmlData\PlayerPhotos\Zalewski_Paul.jpg">
       <Link>PlayerPhotos\Zalewski_Paul.jpg</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\PlayerSheetsGuide.html">
-      <Link>PlayerSheetsGuide.html</Link>
-    </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\References.html">
+    <Content Include="J:\SBSSDataStore\HtmlData\References.html">
       <Link>References.html</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\SBSSData.ico">
+    <Content Include="J:\SBSSDataStore\HtmlData\SBSSData.ico">
       <Link>SBSSData.ico</Link>
     </Content>
-    <Content Include="J:\SBSSDataStore\Html Data\Scripts\Main.js">
+    <Content Include="J:\SBSSDataStore\HtmlData\Scripts\Main.js">
       <Link>Scripts\Main.js</Link>
     </Content>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

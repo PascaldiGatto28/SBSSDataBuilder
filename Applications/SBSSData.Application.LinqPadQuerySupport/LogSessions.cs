@@ -6,12 +6,11 @@ using HtmlAgilityPack;
 
 using SBSSData.Application.Support;
 using SBSSData.Softball.Common;
-using SBSSData.Softball.Logging;
 using SBSSData.Softball.Stats;
 
 namespace SBSSData.Application.LinqPadQuerySupport
 {
-    public class LogSessions
+    public class LogSessions : IHtmlCreator
     {
         public LogSessions()
         {
@@ -26,10 +25,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
         private static HeadElement[] headElements =
         {
             new HeadElement("meta", [["name", "author"], ["content", "Pascal diGatto"]]),
-            new HeadElement("meta", [["data", "description"], ["content", "Log session details when the data store is updated"]]),
+            new HeadElement("meta", [["data", "description"], ["content", "Data Store information on usage"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
             new HeadElement("meta", [["name", "http-equiv"], ["content", "no-cache"]]),
-            new HeadElement("title", [["Data Store Log", ""]]),
+            new HeadElement("title", [["Data Store Information", ""]]),
             new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
         };
 
@@ -41,7 +40,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string season = seasonText.RemoveWhiteSpace();
             string dataStorePath = $@"{dataStoreFolder}{season}LeaguesData.json";
 
-            Assembly assembly = typeof(GamesTeamPlayersV3).Assembly;
+            Assembly assembly = typeof(LogSessions).Assembly;
             string resName = assembly.FormatResourceName("LogSessions.html");
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             string html = bytes.ByteArrayToString();
@@ -49,20 +48,20 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string changedHtml = string.Empty;
 
 
-            string logPath = $@"{dataStoreFolder}DataStoreManager.json";
-            IEnumerable<LogSession>? sessions = logPath.Deserialize<IEnumerable<LogSession>>();
+            //string logPath = $@"{dataStoreFolder}DataStoreManager.json";
+            //IEnumerable<LogSession>? sessions = logPath.Deserialize<IEnumerable<LogSession>>();
 
-            var displaySessions = sessions?.Select(s => new
-            {
-                //s.BuildDate,
-                //SessionID = s.Session,
-                LogEntries = s.LogEntries.Select(l => new
-                {
-                    l.Date,
-                    //Category = l.LogCategory,
-                    Text = l.LogText
-                })
-            });
+            //var displaySessions = sessions?.Select(s => new
+            //{
+            //    //s.BuildDate,
+            //    //SessionID = s.Session,
+            //    LogEntries = s.LogEntries.Select(l => new
+            //    {
+            //        l.Date,
+            //        //Category = l.LogCategory,
+            //        Text = l.LogText
+            //    })
+            //});
 
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
             {
@@ -78,12 +77,12 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         callback(dsInfo);
                     }
 
-                    generator.WriteRootTable(displaySessions, LogSessionsCallback);
-                    Values.Add(dsInfo);
-                    if ((callback != null) && (displaySessions != null))
-                    {
-                        callback($"{displaySessions.Count()} log sessions found");
-                    }
+                    //generator.WriteRootTable(displaySessions, LogSessionsCallback);
+                    //Values.Add(dsInfo);
+                    //if ((callback != null) && (displaySessions != null))
+                    //{
+                    //    callback($"{displaySessions.Count()} log sessions found");
+                    //}
                    
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
@@ -107,7 +106,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 HtmlNode tableNode = t.TableHtmlNode;
                 //string currentDate = DateTime.Parse(tableNode.SelectSingleNode("./tbody/tr[1]/td[1]").InnerText).ToString("dddd MMMM d, yyyy");
                 header = $"{numSessions} Recorded Log Sessions"; // as of {currentDate}";
-                InsertTableDescription(tableNode, "Table of all Data Store Updates Recorded by the SBSS Data Viewer Logging System");
+                InsertTableDescription(tableNode, "Table of all Data Store Updates Recorded by SBSS Data Viewer for the Current Season");
                 tableNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerStyle);
                 tableNode.SelectSingleNode("./thead/tr[last()]").Attributes.Add("style", "display:none");
             }

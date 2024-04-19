@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Remove="GamesTeamPlayers.cs" />
     <Compile Remove="GamesTeamPlayersV2.cs" />
+    <Compile Remove="GamesTeamPlayersV4.cs" />
     <Compile Remove="StaticConstants.cs" />
   </ItemGroup>
 

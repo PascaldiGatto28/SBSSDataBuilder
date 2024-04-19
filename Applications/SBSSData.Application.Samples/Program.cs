@@ -44,7 +44,7 @@ namespace SBSSData.Application.Samples
             string dsFolder = $@"J:\SBSSDataStore\";
 
             PlayerSheets playerSheets = new PlayerSheets();
-            string html = playerSheets.BuildHtmlPage(seasonText, dsFolder, callback);
+            string html = playerSheets.BuildHtmlPage(seasonText, dsFolder, useCallback ? callback : null);
 
             string folderName = @$"{dsFolder}Html Data\";
             string fileName = "PlayerSheets.html";
@@ -76,7 +76,7 @@ namespace SBSSData.Application.Samples
             string dsFolder = $@"J:\SBSSDataStore\";
 
             LogSessions ls2Html = new LogSessions();
-            string html = ls2Html.BuildHtmlPage(seasonText, dsFolder, callback);
+            string html = ls2Html.BuildHtmlPage(seasonText, dsFolder, useCallback ? callback : null);
 
             string folderName = @$"{dsFolder}Html Data\";
             string fileName = "LogSessions.html";
@@ -162,7 +162,7 @@ namespace SBSSData.Application.Samples
                 // Connect
                 session.Open(sessionOptions);
 
-                var comparison = session.CompareDirectories(SynchronizationMode.Local, @"J:\SBSSDataStore\Html Data", "/quietcre/Data", true).Dump();
+                var comparison = session.CompareDirectories(SynchronizationMode.Local, @"J:\SBSSDataStore\HtmlData", "/quietcre/Data", true).Dump();
 
                 string isError = string.Empty;
                 try
@@ -172,7 +172,7 @@ namespace SBSSData.Application.Samples
                     synchronizationResult =
                         session.SynchronizeDirectories(
                             SynchronizationMode.Remote,
-                            @"J:\SBSSDataStore\Html Data",
+                            @"J:\SBSSDataStore\HtmlData",
                             "/quietcre/Data", false).Dump();
 
                     synchronizationResult.Check();

@@ -112,7 +112,7 @@ namespace SBSSData.Application.Support
 
         public static string ProcessPlayerSummaryStats(HtmlNode tableHtmlNode, int numEntries, string shortLeagueName)
         {
-            string imagePath = "PlayerPhotos/";
+            string imagePath = "../PlayerPhotos/";
             string header = string.Empty;
 
             UpdatePlayerColumnNames(tableHtmlNode);

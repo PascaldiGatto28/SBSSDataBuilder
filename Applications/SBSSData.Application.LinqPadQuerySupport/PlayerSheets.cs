@@ -15,7 +15,7 @@ using Query = SBSSData.Softball.Stats.Query;
 
 namespace SBSSData.Application.LinqPadQuerySupport
 {
-    public class PlayerSheets
+    public class PlayerSheets : IHtmlCreator
     {
         private static HeadElement[] headElements =
         {
@@ -42,7 +42,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
         {
             Action<object> actionCallback = callback == null ? (v) => Console.WriteLine(v.ToString()) : callback;
             string season = seasonText.RemoveWhiteSpace();
-            string playerPhotos = "PlayerPhotos/";
+            string playerPhotos = "../PlayerPhotos/";
 
             string changedHtml = string.Empty;
 

@@ -16,7 +16,7 @@ using Query = SBSSData.Softball.Stats.Query;
 
 namespace SBSSData.Application.LinqPadQuerySupport
 {
-    public class GamesTeamPlayersHelpV3
+    public class GamesTeamPlayersHelpV3 : IHtmlCreator
     {
         private static HeadElement[] headElements =
         {
