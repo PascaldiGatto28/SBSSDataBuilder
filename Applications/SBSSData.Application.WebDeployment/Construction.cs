@@ -179,7 +179,7 @@ namespace SBSSData.Application.WebDeployment
                 // Connect
                 session.Open(sessionOptions);
 
-                var comparison = session.CompareDirectories(SynchronizationMode.Local, @"J:\SBSSDataStore\Html Data", "/quietcre/Data", true).Dump();
+                var comparison = session.CompareDirectories(SynchronizationMode.Local, @"J:\SBSSDataStore\HtmlData", "/quietcre/Data", true);
 
                 string isError = string.Empty;
                 try
@@ -189,8 +189,8 @@ namespace SBSSData.Application.WebDeployment
                     synchronizationResult =
                         session.SynchronizeDirectories(
                             SynchronizationMode.Remote,
-                            @"J:\SBSSDataStore\Html Data",
-                            "/quietcre/Data", false).Dump();
+                            @"J:\SBSSDataStore\HtmlData",
+                            "/quietcre/Data", false);
 
                     synchronizationResult.Check();
                     Console.WriteLine($"Failures {synchronizationResult.Failures.Count}");

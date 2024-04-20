@@ -193,7 +193,14 @@ namespace SBSSData.Application.Support
                 }
                 else
                 {
-                    playerKey = $"{playerNameSplit[1]}, {playerNameSplit[0]}";
+                    if (playerNameSplit.Length == 2)
+                    {
+                        playerKey = $"{playerNameSplit[1]}, {playerNameSplit[0]}";
+                    }
+                    else
+                    {
+                        playerKey = $"Unknown, {string.Empty}";
+                    }
 
                     if (!map.TryGetValue(playerKey, out imageName))
                     {

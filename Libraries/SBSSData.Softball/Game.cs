@@ -174,13 +174,20 @@ namespace SBSSData.Softball
         /// implementation is different. For <see cref="ScheduledGame.IsComplete"/> is true if and only if both the
         /// visiting and home scores have values. Here it <c>true</c> if only if the <see cref="Teams"/> is not the empty
         /// list. The reason for the difference is twofold: (1) want to use just the properties from the class instance,
-        /// and (2) more importantly to be able to recognize cancelled games. When a game is cancelled, <c>Teams</c> is
+        /// and (2) more importantly to be able to recognize canceled games. When a game is canceled, <c>Teams</c> is
         /// empty, but because the score for cancelled games is 0 for both visiting and home, the scheduled game is
         /// considered completed so it won't be checked again for team data.
         /// </remarks>
         /// <returns><c>true</c> if the <c>Teams</c> property is neither <c>null</c> nor empty.</returns>
         [JsonIgnore]
         public bool IsCompleted => (Teams != null) && (Teams.Count > 0);
+
+        /// <summary>
+        /// Returns <c>true</c> if the game was completed, but no hits were recorded. This occurs only when the game was
+        /// forfeited.
+        /// </summary>
+        [JsonIgnore]
+        public bool IsForfeited => IsCompleted && (Teams.Sum(t => t.Hits) == 0);
 
         ///// <remarks>
         ///// <para>
@@ -223,14 +230,34 @@ namespace SBSSData.Softball
                                                  .Where(n => n.NodeType == HtmlNodeType.Element)
                                                  .Select(n => n.InnerHtml)
                                                  .ToArray();
-                    Team team = new()
+
+
+                    Team team = new();
+
+                    // Hits may not be included if the game results are forfeit, in which case there are only three
+                    // results and the last one is outcome. I can't set the properties because the setter is "init".
+                    if (results.Length == 3)
                     {
-                        Name = results[0].CleanNameText(),
-                        RunsScored = results[1].ParseInt() ?? 0,
-                        Hits = results[2].ParseInt() ?? 0,
-                        HomeTeam = homeTeam,  // The first team is the visiting team
-                        Outcome = results[3]
-                    };
+                        team = new()
+                        {
+                            Name = results[0].CleanNameText(),
+                            RunsScored = results[1].ParseInt() ?? 0,
+                            Hits = 0,
+                            HomeTeam = homeTeam,
+                            Outcome = results[2]
+                        };
+                    }
+                    else
+                    {
+                        team = new()
+                        {
+                            Name = results[0].CleanNameText(),
+                            RunsScored = results[1].ParseInt() ?? 0,
+                            Hits = results[2].ParseInt() ?? 0,
+                            HomeTeam = homeTeam,  // The first team is the visiting team
+                            Outcome = results[3]
+                        };
+                    }
 
                     homeTeam = !homeTeam;
                     teams.Add(team);
