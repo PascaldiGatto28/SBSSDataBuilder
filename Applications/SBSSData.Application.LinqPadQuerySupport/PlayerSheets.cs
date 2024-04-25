@@ -20,11 +20,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
         private static HeadElement[] headElements =
         {
             new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
-            new HeadElement("meta", [["data", "description"], ["content", "Player summary league for all players and leagues"]]),
+            new HeadElement("meta", [["data", "description"], ["content", "Player summary league data for all players and leagues"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
             new HeadElement("meta", [["name", "http-equiv"], ["content", "no-cache"]]),
             new HeadElement("title", [["Player's League Summaries", ""]]),
-            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
+            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
         };
 
         public PlayerSheets()

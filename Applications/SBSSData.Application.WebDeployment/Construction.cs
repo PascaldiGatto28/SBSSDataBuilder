@@ -162,7 +162,7 @@ namespace SBSSData.Application.WebDeployment
         Console.WriteLine("PlayerSheetsGuide completed");
     }
 
-        public  void WinSCPSync()
+        public void WinSCPSync(bool isTest = false)
         {
             // Set up session options
             SessionOptions sessionOptions = new SessionOptions
@@ -173,6 +173,7 @@ namespace SBSSData.Application.WebDeployment
                 Password = "85232WindingWay",
             };
 
+            string target = isTest ? "/quietcre/Data/Test" : "/quietcre/Data";
             using (Session session = new Session())
             {
                 //session.FileTransferred = (s,e) => e.Dump();
@@ -184,13 +185,14 @@ namespace SBSSData.Application.WebDeployment
                 string isError = string.Empty;
                 try
                 {
+                    
                     // Synchronize files
                     SynchronizationResult synchronizationResult;
                     synchronizationResult =
                         session.SynchronizeDirectories(
                             SynchronizationMode.Remote,
                             @"J:\SBSSDataStore\HtmlData",
-                            "/quietcre/Data", false);
+                            target, false);
 
                     synchronizationResult.Check();
                     Console.WriteLine($"Failures {synchronizationResult.Failures.Count}");
@@ -203,7 +205,7 @@ namespace SBSSData.Application.WebDeployment
                     Console.WriteLine($"Error: {exception}");
                 }
 
-                Console.WriteLine($"WinSCP synchronization completed{isError}");
+                Console.WriteLine($"WinSCP synchronization to {target} completed {isError}");
             }
         }
 

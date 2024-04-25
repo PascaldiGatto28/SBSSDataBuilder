@@ -3,16 +3,23 @@
 <head>
     <meta charset="utf-8" />
     <title>SBSS Player League Summary</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../SBSSData.ico">
+    <meta name="http-equiv" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta data="description" content="Summary league data for all players and leagues">
+    <meta name="author" content="Richard Levaro">
     <style>
         *
         {
             font-family: 'Segoe UI', Helvetica, sans-serif;
-            font-size:16px;
+            font-size: 16px;
         }
+
         .flex-container
         {
             display: flex;
         }
+
             .flex-container > div
             {
                 background-color: #f1f1f1;
@@ -21,7 +28,7 @@
                 padding-bottom: 5px;
                 font-size: 12px;
                 border: 2px solid Firebrick;
-                height:600px;
+                height: 600px;
             }
 
         .header
@@ -38,7 +45,7 @@
             cursor: pointer;
             padding-left: 10px;
             padding-bottom: 2px;
-            font-size:10px;
+            font-size: 10px;
         }
 
         div.playersList
@@ -47,19 +54,19 @@
             overflow: auto;
         }
 
-        div.playersList > div.playerOption
-        {
-            cursor: pointer;
-            padding-left: 10px;
-            padding-bottom: 1px;
-            width:150px;
-        }
+            div.playersList > div.playerOption
+            {
+                cursor: pointer;
+                padding-left: 10px;
+                padding-bottom: 1px;
+                width: 150px;
+            }
 
         iframe
         {
             width: 740px;
             height: 100%;
-            border:none;
+            border: none;
         }
 
         div.overlay
@@ -68,7 +75,7 @@
             display: none;
             width: 162px;
             height: 360px;
-           /* top: 200px;
+            /* top: 200px;
             left: 245px;
             right: 0;
             bottom: 0;*/

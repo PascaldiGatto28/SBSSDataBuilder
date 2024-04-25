@@ -21,11 +21,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
         private static HeadElement[] headElements =
         {
             new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
-            new HeadElement("meta", [["data", "description"], ["content", "Guide for games, teams and players"]]),
+            new HeadElement("meta", [["data", "description"], ["content", "Guide to games, teams and players"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
             new HeadElement("meta", [["name", "http-equiv"], ["content", "no-cache"]]),
-            new HeadElement("title", [["Guide to Games, Teams & Players", ""]]),
-            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
+            new HeadElement("title", [["Guide to Games,Teams & Players", ""]]),
+            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
         };
 
         public GamesTeamPlayersHelpV3()
@@ -90,7 +90,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     //                               </div>
                     //                               """;
                     generator.WriteRawHtml(expandCollapseHtml);
-                    actionCallback(expandCollapseHtml);
+                    //actionCallback(expandCollapseHtml);
 
                     //generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
                     //actionCallback(dsInfo);
@@ -122,7 +122,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         TeamPlayers = tss,
                         Players = playerStatRankDisplay
                     };
-                    actionCallback(gtp);
+                    //actionCallback(gtp);
 
                     generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}", gtpHeaderStyle));
                     //}

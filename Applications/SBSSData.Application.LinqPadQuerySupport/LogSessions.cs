@@ -6,6 +6,7 @@ using HtmlAgilityPack;
 
 using SBSSData.Application.Support;
 using SBSSData.Softball.Common;
+using SBSSData.Softball.Logging;
 using SBSSData.Softball.Stats;
 
 namespace SBSSData.Application.LinqPadQuerySupport
@@ -24,12 +25,12 @@ namespace SBSSData.Application.LinqPadQuerySupport
         }
         private static HeadElement[] headElements =
         {
-            new HeadElement("meta", [["name", "author"], ["content", "Pascal diGatto"]]),
-            new HeadElement("meta", [["data", "description"], ["content", "Data Store information on usage"]]),
+            new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
+            new HeadElement("meta", [["data", "description"], ["content", "Logging Information"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
             new HeadElement("meta", [["name", "http-equiv"], ["content", "no-cache"]]),
-            new HeadElement("title", [["Data Store Information", ""]]),
-            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "SBSSData.ico"]])
+            new HeadElement("title", [["Logging Information", ""]]),
+            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
         };
 
         private static string headerStyle = "background-color:#d62929;";
@@ -48,42 +49,34 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string changedHtml = string.Empty;
 
 
-            //string logPath = $@"{dataStoreFolder}DataStoreManager.json";
-            //IEnumerable<LogSession>? sessions = logPath.Deserialize<IEnumerable<LogSession>>();
+            string logPath = $@"{dataStoreFolder}DataStoreManager.json";
+            IEnumerable<LogSession>? sessions = logPath.Deserialize<IEnumerable<LogSession>>();
 
-            //var displaySessions = sessions?.Select(s => new
-            //{
-            //    //s.BuildDate,
-            //    //SessionID = s.Session,
-            //    LogEntries = s.LogEntries.Select(l => new
-            //    {
-            //        l.Date,
-            //        //Category = l.LogCategory,
-            //        Text = l.LogText
-            //    })
-            //});
+            var displaySessions = sessions?.Select(s => new
+            {
+                //s.BuildDate,
+                //SessionID = s.Session,
+                LogEntries = s.LogEntries.Select(l => new
+                {
+                    l.Date,
+                    //Category = l.LogCategory,
+                    Text = l.LogText
+                })
+            });
 
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
             {
-                DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
+                //DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
                 using (HtmlGenerator generator = new HtmlGenerator())
                 {
 
-                    generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(headerStyle));
-
-                    Values.Add(dsInfo);
-                    if (callback != null)
+                    generator.WriteRootTable(displaySessions, LogSessionsCallback);
+                    //Values.Add(dsInfo);
+                    if ((callback != null) && (displaySessions != null))
                     {
-                        callback(dsInfo);
+                        callback($"{displaySessions.Count()} log sessions found");
                     }
 
-                    //generator.WriteRootTable(displaySessions, LogSessionsCallback);
-                    //Values.Add(dsInfo);
-                    //if ((callback != null) && (displaySessions != null))
-                    //{
-                    //    callback($"{displaySessions.Count()} log sessions found");
-                    //}
-                   
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
                     changedHtml = generator.DumpHtml(pageTitle: title,
