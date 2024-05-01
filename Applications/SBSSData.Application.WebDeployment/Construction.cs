@@ -70,8 +70,10 @@ namespace SBSSData.Application.WebDeployment
 
         }
 
+        private static Action<object> Callback = (o) => o.Dump();
+        private void DisplayInBrowser(string filePath) => Process.Start(edgeFolder, $"\"{filePath}\"");
 
-        private Func<IHtmlCreator, bool, string> createHtml => (i, c) => i.BuildHtmlPage(SeasonText, DsFolder, c ? Callback : null);
+        public Func<IHtmlCreator, Action<object>?, string> BuildHtml => (i, a) => i.BuildHtmlPage(SeasonText, DsFolder, a ?? Callback);
 
         public string Build<T>(bool useCallback) where T : IHtmlCreator, new()
         {
@@ -81,88 +83,8 @@ namespace SBSSData.Application.WebDeployment
             return html;
         }
 
-        //public void LogSessions(bool displayHtml = false, bool useCallback = false)
-        //{
-        //    //LogSessions ls = new();
-        //    //string html = ls.BuildHtmlPage(SeasonText, DsFolder, useCallback ? Callback : null);
-        //    WriteOutput("LogSessions", logSessionsHtml, displayHtml:true);
-        //}
 
-        public void GamesTeamPlayersV3(bool displayHtml = false, bool useCallback = false)
-        {
-            GamesTeamPlayersV3 gtp = new GamesTeamPlayersV3();
-            string html = gtp.BuildHtmlPage(SeasonText, DsFolder, useCallback ? Callback : null);
-
-            string folderName = @$"{DsFolder}{htmlFolder}";
-            string fileName = "GamesTeamPlayersV3.html";
-            string htmlFilePath = $"{OutputPath}{fileName}";
-
-            File.WriteAllText(htmlFilePath, html);
-
-            if (displayHtml)
-            {
-                DisplayInBrowser(htmlFilePath);
-            }
-
-            Console.WriteLine("GamesTeamPlayersV3 completed");
-        }
-
-        public void GamesTeamPlayersHelpV3(bool displayHtml = false, bool useCallback = false)
-        {
-            GamesTeamPlayersHelpV3 gtph = new GamesTeamPlayersHelpV3();
-            string html = gtph.BuildHtmlPage(SeasonText, DsFolder, useCallback ? Callback : null);
-
-            string folderName = @$"{DsFolder}{htmlFolder}";
-            string fileName = "GamesTeamPlayersHelpV3.html";
-            string htmlFilePath = $"{folderName}{fileName}";
-
-            File.WriteAllText(htmlFilePath, html);
-            if (displayHtml)
-            {
-                DisplayInBrowser(htmlFilePath);
-            
-            }
-
-            Console.WriteLine("GamesTeamPlayersHelpV3 completed");
-        }
-
-    public void PlayerSheets(bool displayHtml = false, bool useCallback = false)
-    {
-        PlayerSheets playerSheets = new PlayerSheets();
-        string html = playerSheets.BuildHtmlPage(SeasonText, DsFolder, useCallback ? Callback : null);
-
-        string folderName = @$"{DsFolder}{htmlFolder}";
-        string fileName = "PlayerSheets.html";
-        string htmlFilePath = $"{folderName}{fileName}";
-
-        File.WriteAllText(htmlFilePath, html);
-        if (displayHtml)
-        {
-            DisplayInBrowser(htmlFilePath);
-        }
-
-        Console.WriteLine("PlayerSheets completed");
-    }
-
-    public void PlayerSheetsGuide(bool displayHtml = false, bool useCallback = false)
-    {
-        PlayerSheetsGuide playerSheetsGuide = new PlayerSheetsGuide();
-        string html = playerSheetsGuide.BuildHtmlPage(SeasonText, DsFolder, useCallback ? Callback : null);
-
-        string folderName = @$"{DsFolder}{htmlFolder}";
-        string fileName = "PlayerSheetsGuide.html";
-        string htmlFilePath = $"{folderName}{fileName}";
-
-        File.WriteAllText(htmlFilePath, html);
-        if (displayHtml)
-        {
-            DisplayInBrowser(htmlFilePath);
-        }
-
-        Console.WriteLine("PlayerSheetsGuide completed");
-    }
-
-        public void WinSCPSync(bool isTest = false)
+        public void WinSCPSync(bool isTest = true)
         {
             // Set up session options
             SessionOptions sessionOptions = new SessionOptions
@@ -208,9 +130,5 @@ namespace SBSSData.Application.WebDeployment
                 Console.WriteLine($"WinSCP synchronization to {target} completed {isError}");
             }
         }
-
-
-        private static Action<object> Callback = (o) => o.Dump();
-        private void DisplayInBrowser(string filePath) => Process.Start(edgeFolder, $"\"{filePath}\""); 
     }
 }

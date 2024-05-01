@@ -10,6 +10,8 @@ namespace SBSSData.Application.Support
                 new List<PlayerStatsDisplay>()
                 {
                     new PlayerStatsDisplay(new(playerSheetItem.PlayerTotalsStats)),
+                    //new PlayerStatsDisplay(new PlayerStats(Player.Empty.ChangeName("Rankings"))),
+                    // new PlayerStatsDisplay(new PlayerStats(Player.Empty.ChangeName("Percentiles"))),
                     new PlayerStatsDisplay(new(playerSheetItem.LeagueTotalsStats))
                 }
                 //[new PlayerDataDisplay(new PlayerData(playerSheetItem.PlayerTotals)), new PlayerDataDisplay(new PlayerData(playerSheetItem.LeagueTotals))].ToList()

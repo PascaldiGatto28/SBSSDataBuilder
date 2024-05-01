@@ -30,13 +30,27 @@ namespace SBSSData.Application.LinqPadQuerySupport
         public PlayerSheets()
         {
             Values = [];
+            HtmlContainerName = "PlayerSheetsContainer.html";
         }
+
+        public PlayerSheets(string containerName) : this()
+        {
+            HtmlContainerName = containerName;
+        }
+        
 
         public List<object> Values
         {
             get;
             set;
         }
+
+        public string HtmlContainerName
+        {
+            get;
+            set;
+        }
+
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
@@ -53,7 +67,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             //byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             //string introHtml = bytes.ByteArrayToString();
 
-            string resName = assembly.FormatResourceName("PlayerSheetsContainer.html");
+            string resName = assembly.FormatResourceName(HtmlContainerName);
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             string containerHtml = bytes.ByteArrayToString();
 
@@ -87,7 +101,9 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         PlayerSheetItem playerSheetItem = new();
 
                         IEnumerable<Game> leagueGames = query.GetLeaguePlayedGames(league.Category, league.Day);
-                        IEnumerable<Player> playerData = leagueGames.SelectMany(g => g.Teams).SelectMany(t => t.Players).Where(p => p.Name == playerName);
+                        IEnumerable<Player> playerData = leagueGames.SelectMany(g => g.Teams)
+                                                                    .SelectMany(t => t.Players)
+                                                                    .Where(p => p.Name == playerName);
 
                         IEnumerable<Team> teams = leagueGames.SelectMany(g => g.Teams.Where(t => t.Players.Select(p => p.Name).Contains(playerName)));
                         numTeams = query.GetTeamsPlayersStats(league.Category, league.Day).SelectMany(ts => ts.Players).Where(p => p.Name == playerName).Count();
@@ -109,8 +125,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
                             LeagueNumGames = totalGames,
                             LeagueNumTeams = totalTeams,
                             PlayerTotals = playersTotals.PlayersSummary(),
-                            LeagueTotals = leagueTotals.PlayersSummary($"{shortLeagueName}")
+                            LeagueTotals = leagueTotals.PlayersSummary($"{shortLeagueName}"),
+                            PlayerPercentiles = GetRankPercentile(playerName, league, query)
                         };
+
+
 
                         sheetData.Add(playerSheetItem);
                     }
@@ -169,6 +188,42 @@ namespace SBSSData.Application.LinqPadQuerySupport
             }
 
             return changedHtml;
+        }
+
+        public List<PlayerSheetPercentile> GetRankPercentile(string playerName, LeagueName league, Query query)
+        {
+            List<PlayerSheetPercentile>? piList = [];
+            List<PlayerStats> ps = query.GetLeaguePlayers(league.Category, league.Day)
+                                        .Where(p => p.PlateAppearances > 12).ToList();
+            int n = ps.Count();
+            List<string> propertyNames = ["Average","Slugging","OnBase", "OnBasePlusSlugging"];
+            List<PlayerSheetPercentile> playersInfo = [];
+            foreach (string propertyName in propertyNames)
+            {
+                PropertyInfo? property = typeof(PlayerStats).GetProperty(propertyName);
+                if (property != null)
+                {
+                    List<PlayerStats> propertyNameStats = ps.OrderBy(p => property.GetValue(p)).ThenBy(p => p.PlateAppearances).ToList();
+                    for (int i = 0; i < n; i++)
+                    {
+                        int percentile = (int)Math.Round(((double)((i == 0) ? 0 : i) / (double)n) * 100, 0);
+                        int rank = n - i;
+                        PlayerSheetPercentile pInfo = new PlayerSheetPercentile(n, propertyNameStats[i].Name, propertyName, (double)(property.GetValue(propertyNameStats[i]) ?? 0), rank, percentile);
+                        playersInfo.Add(pInfo);
+                    }
+                }
+            }
+
+            IEnumerable<IGrouping<string, PlayerSheetPercentile>> groups = playersInfo.GroupBy(i => i.PlayerName);//.Dump("PlayerSheetPercentils Groups");
+            IEnumerable<PlayerSheetPercentile>? group = groups.SingleOrDefault(g => g.Key == playerName);
+
+            if ((group != null) && group.Any())
+            {
+                piList = group.ToList();
+            }
+
+            return piList;
+
         }
     }
 }

@@ -1,17 +1,8 @@
 ﻿// Ignore Spelling: Linq
 
-using System.Reflection;
-
 using HtmlAgilityPack;
 
-using LINQPad;
-
 using SBSSData.Application.Support;
-using SBSSData.Softball;
-using SBSSData.Softball.Common;
-using SBSSData.Softball.Stats;
-
-using Query = SBSSData.Softball.Stats.Query;
 
 
 namespace SBSSData.Application.LinqPadQuerySupport
@@ -41,103 +32,35 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            Action<object> actionCallback = callback == null ? (v) => Console.WriteLine(v.ToString()) : callback;
-            string season = seasonText.RemoveWhiteSpace();
+            GamesTeamPlayersV3  gtpV3 = new GamesTeamPlayersV3();
+            gtpV3.ResourceName = $"{this.GetType().Name}.html";
 
-            string changedHtml = string.Empty;
+            string html = gtpV3.BuildHtmlPage(seasonText, dataStoreFolder, callback);
+            string changedHtml = html;
 
-            Assembly assembly = typeof(GamesTeamPlayersV3).Assembly;
-            string resName = assembly.FormatResourceName("GamesTeamPlayersHelpV3.html");
-            byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
-            string html = bytes.ByteArrayToString();
+            // Add meta, link and title elements to the document head for this page.
+            HtmlDocument htmlDocument = new();
+            htmlDocument.LoadHtml(html);
+            HtmlNode rootNode = htmlDocument.DocumentNode;
+            HtmlNode headNode = rootNode.SelectSingleNode("//head");
+            HtmlGenerator.AddHeadData(htmlDocument, headNode, GamesTeamPlayersHelpV3.headElements.ToList());
 
-            string path = $"{dataStoreFolder}{season}LeaguesData.json";
-            using (DataStoreContainer dsContainer = DataStoreContainer.Instance(path))
+            List<HtmlNode> nodesToRemove = [];
+            HtmlNodeCollection tableNodes = rootNode.SelectNodes("//body//div[@class='spacer']/table");
+            if ((tableNodes != null) && (tableNodes.Count > 1))
             {
-
-                Query query = new Query(dsContainer);
-                //DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
-                //string dsInfoHeaderStyle = "background-color:#d62929;";
-                string gtpHeaderStyle = "background-color:#d62929; width:642px;";
-
-                IEnumerable<Game> playedGames = query.GetPlayedGames();
-                var leagueNames = query.GetLeagueDescriptions().OrderBy(d => d.LeagueCategory).Select(l => new
+                for (int i = 1; i < tableNodes.Count; i++)
                 {
-                    Day = l.LeagueDay,
-                    Category = l.LeagueCategory,
-                    FullLeagueName = l.ToString(),
-                    ShortLeagueNume = $"{l.LeagueDay} {l.LeagueCategory}"
-                });
-
-                using (HtmlGenerator generator = new HtmlGenerator())
-                {
-                    string expandCollapseHtml = """
-                                                <div>
-                                                     <button class="sbss" onclick = "viewAll(true)">Expand All Tables</button>
-                                                     <button class="sbss" onclick = "viewAll(false)">Collapse All Tables</button>
-                                                </div> 
-                                                """;
-                    //string displayRankingColumn = """
-                    //                               <script type=text/javascript>
-                    //                                   function setColumn (checked)
-                    //                                   {
-                    //                                        alert(checked);
-                    //                                   }
-                    //                               </script>  
-                    //                               <div style="text-align:right;">
-                    //                                   <input type="checkbox" id="rankingColumn" name="ranking" value="true" onchange="setColumn(this.checked);">
-                    //                                   <label for="ranking">Hide the ranking column</label>
-                    //                               </div>
-                    //                               """;
-                    generator.WriteRawHtml(expandCollapseHtml);
-                    //actionCallback(expandCollapseHtml);
-
-                    //generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
-                    //actionCallback(dsInfo);
-
-                    var leagueName = leagueNames.First();
-                    //foreach (var leagueName in leagueNames)
-                    //{
-                    IEnumerable<Game> leagueGames = playedGames.Where(g => (g.GameInformation.LeagueDay == leagueName.Day) &&
-                                                                           (g.GameInformation.LeagueCategory == leagueName.Category));
-
-                    var games = leagueGames.Select(g => new
-                    {
-                        Games = new GameInformationDisplay(g.GameInformation),
-                        Teams = g.Teams.Select(t => new TeamStatsDisplay(new TeamStats(t))),
-                    });
-
-                    string fullLeagueName = games.First().Games.League;
-                    string shortLeagueName = $"{leagueName.Day} {leagueName.Category}";
-
-                    IEnumerable<TeamSummaryStatsDisplay> tss = query.GetTeamsPlayersStats(leagueName.Category, leagueName.Day)
-                                                                    .Select(t => new TeamSummaryStatsDisplay(t));
-                    IEnumerable<PlayerStatsRank> playerStatsRanks = query.GetLeaguePlayerStatsRank(leagueName.Category, leagueName.Day);//.Dump();
-                    IEnumerable<PlayerStatsRankDisplay> playerStatRankDisplay =
-                                     playerStatsRanks.Select(psr => new PlayerStatsRankDisplay(psr.Player, psr.PlayerRank));
-
-                    var gtp = new
-                    {
-                        GamesAndTeams = games,
-                        TeamPlayers = tss,
-                        Players = playerStatRankDisplay
-                    };
-                    //actionCallback(gtp);
-
-                    generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}", gtpHeaderStyle));
-                    //}
-
-                    string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
-                    HtmlNode title = HtmlNode.CreateNode(htmlNode);
-                    changedHtml = generator.DumpHtml(pageTitle: title,
-                                                     cssStyles: StaticConstants.LocalStyles + StaticConstants.HelpStyles,
-                                                     javaScript: StaticConstants.LocalJavascript + StaticConstants.HelpJavascript,
-                                                     collapseTo: 1,
-                                                     headElements: headElements.ToList());
+                    nodesToRemove.Add(tableNodes[i]);
                 }
 
+                foreach (HtmlNode node in nodesToRemove)
+                {
+                    node.Remove();
+                }
             }
 
+            changedHtml = rootNode.OuterHtml;
             return changedHtml;
         }
     }

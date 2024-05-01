@@ -163,7 +163,7 @@ namespace SBSSData.Application.Support
 
                 if (playerName.Contains("Totals"))
                 {
-                    rankTableHeader = "All Players Rankings";
+                    rankTableHeader = "No Rankings for Totals";
 
                     // The summary table is not a qualified PLAYER
                     numberQualified--;
@@ -299,18 +299,38 @@ namespace SBSSData.Application.Support
                             case 0:
                             {
                                 string title = $"{shortLeagueName} Game";
-                                header = $"Game Results Data for the {numEntries.NumDesc(title)}";
+                                if (numEntries == 0)
+                                {
+                                    header = "No Games Have Been Played";
+                                }
+                                else
+                                {
+                                    header = $"Game Results Data for the {numEntries.NumDesc(title)}";
+                                }
                                 break;
                             }
                             case 1:
                             {
-                                header = $"Team Summary Data and Standings for the {numEntries} {shortLeagueName} Teams";
+                                if (numEntries == 0)
+                                {
+                                    header = "No Teams Have Played";
+                                }
+                                else
+                                {
+                                    header = $"Team Summary Data and Standings for the {numEntries} {shortLeagueName} Teams";
+                                }
                                 break;
                             }
                             case 2:
                             {
-                                // Do count summary player as an entry
-                                header = ProcessPlayerSummaryStats(tableHtmlNode, numEntries - 1, shortLeagueName);
+                                if (numEntries == 0)
+                                {
+                                    header = "No Players Have Played";
+                                }
+                                else
+                                {
+                                    header = ProcessPlayerSummaryStats(tableHtmlNode, numEntries - 1, shortLeagueName);
+                                }
                                 break;
                             }
                         }
@@ -426,6 +446,54 @@ namespace SBSSData.Application.Support
                     UpdatePlayerColumnNames(tableHtmlNode);
                     tableHtmlNode.SelectSingleNode("./thead/tr[2]/th[1]").Remove();
                     tableHtmlNode.SelectNodes("./tbody/tr/td[1]").ToList().ForEach(n => n.Remove());
+
+                    string ranksTR = """
+                                    <tr style="background-color:#e8efff">
+                                    <td colspan="12" class="n";>This is the Ranks </td>
+                                    <td class="n">A</td>
+                                    <td class="n">B</td>
+                                    <td class="n">C</td>
+                                    <td class="n">D</td>
+                                    </tr>
+                                    """;
+                    string percentilesTR = """
+                                            <tr style="background-color:#e8efff">
+                                            <td colspan="12" class="n"; style="text-align:left;">This is the Percentiles </td>
+                                            <td class="n">A</td>
+                                            <td class="n">B</td>
+                                            <td class="n">C</td>
+                                            <td class="n">D</td>
+                                            </tr>
+                                            """;
+                    List<PlayerSheetItem> psItems = playerSheetContainer.PlayerSheetItems;
+                    string league = tableHtmlNode.SelectSingleNode("./tbody/tr[2]/td[1]").InnerText;
+                    for (int i = 0; i <psItems.Count; i++)
+                    {
+                        PlayerSheetItem psItem = psItems[i];
+                        if (psItem.PlayerPercentiles.Any() && (league == psItem.LeagueName))
+                        {
+                            HtmlNode ranksRow = HtmlNode.CreateNode(ranksTR);
+                            HtmlNode firstRow = tableHtmlNode.SelectSingleNode("./tbody/tr");
+                            tableHtmlNode.SelectSingleNode("./tbody").InsertAfter(ranksRow, firstRow);
+                            HtmlNode percentilesRow = HtmlNode.CreateNode(percentilesTR);
+                            //percentilesRow.SelectSingleNode("./td[1]").InnerHtml = "This is the percentiles!!!";
+                            tableHtmlNode.SelectSingleNode("./tbody").InsertAfter(percentilesRow, firstRow);
+                            List<HtmlNode> percentTds = percentilesRow.SelectNodes(".//td").ToList();
+                            List<HtmlNode> rankTds = ranksRow.SelectNodes(".//td").ToList();
+                            for (int j = 1; j < percentTds.Count; j++)
+                            {
+                                PlayerSheetPercentile percentile = psItem.PlayerPercentiles[j - 1];
+                                percentTds[j].InnerHtml = percentile.PercentileToString();
+                                rankTds[j].InnerHtml = percentile.Rank.ToString();
+                            }
+
+                            percentTds[0].InnerHtml = $"{psItem.PlayerPercentiles[0].NumPlayers} players having more than 12 plate appearance used for calculations. <span style='float:right'>Percentiles =></span>";
+                            rankTds[0].InnerHtml = $"Rankings =>";
+
+                        }
+                    }
+
+
                 }
 
                 //tableHtmlNode.SetAttributeValue("style", "display:none");

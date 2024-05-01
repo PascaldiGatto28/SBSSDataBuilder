@@ -1,6 +1,6 @@
 {
     "DataStoreFolder": "J:\\SBSSDataStore\\",
-    "DataStoreFileName": "2024WinterLeaguesData.json",
+    "DataStoreFileName": "2024SpringLeaguesData.json",
     "LogFileName": "DataStoreManager.log",
     "LogSessionFileName": "DataStoreManager.json",
     "BuildOption": "Build" // Build a new instance; Update to update

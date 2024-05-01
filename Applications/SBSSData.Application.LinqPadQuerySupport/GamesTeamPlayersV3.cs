@@ -31,6 +31,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
         public GamesTeamPlayersV3()
         {
             Values = [];
+            ResourceName = $"{this.GetType().Name}.html";
         }
 
         public List<object> Values
@@ -38,6 +39,13 @@ namespace SBSSData.Application.LinqPadQuerySupport
             get;
             set;
         }
+
+        public string ResourceName
+        {
+            get;
+            set;
+        }
+
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
@@ -47,7 +55,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string changedHtml = string.Empty;
 
             Assembly assembly = typeof(GamesTeamPlayersV3).Assembly;
-            string resName = assembly.FormatResourceName("GamesTeamPlayersV3.html");
+            string resName = assembly.FormatResourceName(ResourceName);
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             string html = bytes.ByteArrayToString();
 
@@ -91,7 +99,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     //                               """;
                     generator.WriteRawHtml(expandCollapseHtml);
 
-                    actionCallback("expandCollapseHtml raw Html written");
+                    //actionCallback("expandCollapseHtml raw Html written");
 
                     //generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(dsInfoHeaderStyle));
                     //actionCallback("dsInfo root table written");
@@ -101,40 +109,46 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         IEnumerable<Game> leagueGames = playedGames.Where(g => (g.GameInformation.LeagueDay == leagueName.Day) &&
                                                                                (g.GameInformation.LeagueCategory == leagueName.Category));
 
-                        var games = leagueGames.Select(g => new
+                        if (leagueGames.Any())
                         {
-                            Games = new GameInformationDisplay(g.GameInformation),
-                            Teams = g.Teams.Select(t => new TeamStatsDisplay(new TeamStats(t))),
-                        });
 
-                        string fullLeagueName = games.First().Games.League;
-                        string shortLeagueName = $"{leagueName.Day} {leagueName.Category}";
+                            var games = leagueGames.Select(g => new
+                            {
+                                Games = new GameInformationDisplay(g.GameInformation),
+                                Teams = g.Teams.Select(t => new TeamStatsDisplay(new TeamStats(t))),
+                            });
 
-                        IEnumerable<TeamSummaryStatsDisplay> tss = query.GetTeamsPlayersStats(leagueName.Category, leagueName.Day)
-                                                                        .Select(t => new TeamSummaryStatsDisplay(t));
-                        IEnumerable<PlayerStatsRank> playerStatsRanks = query.GetLeaguePlayerStatsRank(leagueName.Category, leagueName.Day);//.Dump();
-                        IEnumerable<PlayerStatsRankDisplay> playerStatRankDisplay =
-                                         playerStatsRanks.Select(psr => new PlayerStatsRankDisplay(psr.Player, psr.PlayerRank));
+                            string fullLeagueName = leagueName.FullLeagueName;
+                            string shortLeagueName = $"{leagueName.Day} {leagueName.Category}";
 
-                        var gtp = new
-                        {
-                            GamesAndTeams = games,
-                            TeamPlayers = tss,
-                            //HideRank = Util.RawHtml(displayRankingColumn),
-                            Players = playerStatRankDisplay
-                        };
+                            IEnumerable<TeamSummaryStatsDisplay> tss = query.GetTeamsPlayersStats(leagueName.Category, leagueName.Day)
+                                                                            .Select(t => new TeamSummaryStatsDisplay(t));
+                            IEnumerable<PlayerStatsRank> playerStatsRanks = query.GetLeaguePlayerStatsRank(leagueName.Category, leagueName.Day);//.Dump();
+                            IEnumerable<PlayerStatsRankDisplay> playerStatRankDisplay =
+                                             playerStatsRanks.Select(psr => new PlayerStatsRankDisplay(psr.Player, psr.PlayerRank));
 
-                        actionCallback("GamesTeamPlayers root table written");
+                            var gtp = new
+                            {
+                                GamesAndTeams = games,
+                                TeamPlayers = tss,
+                                //HideRank = Util.RawHtml(displayRankingColumn),
+                                Players = playerStatRankDisplay
+                            };
 
-                        generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}", gtpHeaderStyle));
+                            actionCallback("GamesTeamPlayers root table written");
+
+                            generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}", gtpHeaderStyle));
+                        }
 
                     }
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
                     changedHtml = generator.DumpHtml(pageTitle: title,
-                                                     cssStyles: StaticConstants.LocalStyles,
-                                                     javaScript: StaticConstants.LocalJavascript,
+                                                     //cssStyles: StaticConstants.LocalStyles,
+                                                     //javaScript: StaticConstants.LocalJavascript,
+                                                     cssStyles: StaticConstants.LocalStyles + StaticConstants.HelpStyles,
+                                                     javaScript: StaticConstants.LocalJavascript + StaticConstants.HelpJavascript,
                                                      collapseTo: 1,
                                                      headElements: headElements.ToList());
                 }

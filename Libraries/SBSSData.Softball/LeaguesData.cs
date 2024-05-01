@@ -105,8 +105,15 @@
                 foreach (KeyValuePair<string, string> kvp in leagues.Locations)
                 {
                     LeagueSchedule schedule = LeagueSchedule.ConstructLeagueSchedule(kvp.Value);
-                    schedules.Add(schedule);
-                    callback($"Created schedule for {schedule.LeagueDescription}");
+                    if (!schedule.IsEmpty)
+                    {
+                        schedules.Add(schedule);
+                        callback($"Created schedule for {schedule.LeagueDescription}");
+                    }
+                    else
+                    {
+                        callback($"No scheduled games found for {kvp.Key}");
+                    }
                 }
 
                 leaguesData = new()

@@ -46,7 +46,17 @@ namespace SBSSData.Softball.Stats
 
         public PlayerStats LeagueTotalsStats => new PlayerStats(LeagueTotals, LeagueNumGames);
 
-        private string Season { get; set; }
+        public List<PlayerSheetPercentile> PlayerPercentiles 
+        { 
+            get; 
+            set; 
+        }
+
+        private string Season 
+        { 
+            get; 
+            set; 
+        }
 
     }
 }

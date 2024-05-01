@@ -845,6 +845,7 @@
     <Content Include="J:\SBSSDataStore\HtmlData\References.html">
       <Link>References.html</Link>
     </Content>
+    <Content Include="J:\SBSSDataStore\HtmlData\ReleaseNotes.html" Link="ReleaseNotes.html" />
     <Content Include="J:\SBSSDataStore\HtmlData\SBSSData.ico">
       <Link>SBSSData.ico</Link>
     </Content>

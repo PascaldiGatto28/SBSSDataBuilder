@@ -9,8 +9,9 @@ namespace SBSSData.Application.Support
                                        string DataStoreSize,
                                        string NumberOfScheduledGames,
                                        string GamesCompleted,
-                                       string GamesCancelled,
                                        string GamesPlayed,
+                                       string GamesCancelled,
+                                       string GamesForfeited,
                                        string NumberOfTeams,
                                        string NumberOfPlayers)
     {
@@ -20,8 +21,9 @@ namespace SBSSData.Application.Support
                                                                            dsContainer.DataStoreSize.FormatInt(extend: true),
                                                                            dsContainer.NumberOfGames.ToString(),
                                                                            dsContainer.GamesCompleted.ToString(),
-                                                                           dsContainer.GamesCanceled.ToString(),
                                                                            dsContainer.GamesPlayed.ToString(),
+                                                                           dsContainer.GamesCanceled.ToString(),
+                                                                           dsContainer.GamesForfeited.ToString(),
                                                                            dsContainer.NumberOfTeams.ToString(),
                                                                            dsContainer.NumberOfPlayers.ToString())
         { }

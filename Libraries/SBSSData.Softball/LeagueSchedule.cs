@@ -112,56 +112,30 @@ namespace SBSSData.Softball
                 HtmlDocument htmlDocument = PageContentUtilities.GetPageHtmlDocument(uri);
                 LeagueDescription leagueDescription = LeagueDescription.ConstructionLeagueDescription(uri, htmlDocument);
 
-                HtmlNode article = htmlDocument.DocumentNode.SelectSingleNode("//article");
-
-                // Now the individual games that are part of the schedule for this league
-
-                IEnumerable<HtmlNode> rows = article.SelectNodes("//table/tbody/tr").Cast<HtmlNode>();
-                //rows.Select(n => n.Attributes["class"].Value); //.Dump();
                 List<ScheduledGame> scheduledGames = [];
-                foreach (HtmlNode row in rows)
+                HtmlNode article = htmlDocument.DocumentNode.SelectSingleNode("//article");
+                HtmlNodeCollection tableRows = article.SelectNodes("//table/tbody/tr");
+
+                // If rows is null, that means that even though the league location is on the SSSA web site, there are
+                // no scheduled games, that is, really no league.
+                if (tableRows != null)
                 {
-                    //HtmlNode resultsHtmlNode = row.SelectSingleNode("td[@class='data-results']/a");
-                    //Uri? resultsUrl = new Uri(resultsHtmlNode.GetAttributeValue("href", string.Empty));
+                    IEnumerable<HtmlNode> rows = tableRows.Cast<HtmlNode>();
 
-                    //ScheduledGame scheduledGame = new()
-                    //{
-                    //    Date = DateTime.Parse(row.SelectSingleNode("td/a/date").InnerText),
+                    // Now the individual games that are part of the schedule for this league
+                    foreach (HtmlNode row in rows)
+                    {
+                        // N.B. HTML entities in the team names are decoded using the CleanNameText extension method.
+                        scheduledGames.Add(ScheduledGame.ConstructionScheduleGame(row));
+                    }
 
-                    //    VisitingTeamName = row.SelectSingleNode("td[@class='data-home']").InnerText.CleanNameText(),
-                    //    HomeTeamName = row.SelectSingleNode("td[@class='data-away']").InnerText.CleanNameText(),
-                    //    ResultsUrl = resultsUrl
-                    //};
-
-                    //string scoreText = resultsHtmlNode.InnerText;
-                    //string[] score = scoreText.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    //if (score.Length > 1)
-                    //{
-                    //    scheduledGame.VisitorScore = int.Parse(score[0].Trim());
-                    //    scheduledGame.HomeScore = int.Parse(score[1].Trim());
-                    //}
-
-                    //// Use the data from the game results page to construct the game information
-                    //scheduledGame.GameResults = Game.ConstructGame(scheduledGame, update: false); ;
-
-                    //// Setting the scores even though there is no team/player data indicates that the game was cancelled.
-                    //if (scheduledGame.IsRecorded && !scheduledGame.IsComplete)
-                    //{
-                    //    scheduledGame.HomeScore = 0;
-                    //    scheduledGame.VisitorScore = 0;
-                    //}
-
-                    // N.B. HTML entities in the team names are decoded using the CleanNameText extension method.
-                    scheduledGames.Add(ScheduledGame.ConstructionScheduleGame(row));
+                    leagueSchedule = new LeagueSchedule()
+                    {
+                        IsEmpty = false,
+                        LeagueDescription = leagueDescription,
+                        ScheduledGames = scheduledGames
+                    };
                 }
-
-                leagueSchedule = new LeagueSchedule()
-                {
-                    IsEmpty = false,
-                    LeagueDescription = leagueDescription,
-                    ScheduledGames = scheduledGames
-                };
             }
 
             return leagueSchedule;

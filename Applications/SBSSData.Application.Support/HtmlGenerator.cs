@@ -152,39 +152,44 @@ namespace SBSSData.Application.Support
                         // Now collapse all tables whose depth is greater than or equal to the collapseTo parameter
                         int nestingLevel = GetTableNestingLevel(table);
                         HtmlNode span = table.SelectSingleNode("thead/tr/td/a/span");
-                        if (nestingLevel >= collapseTo)
+
+                        // If there is no data, then the span element is null
+                        if (span != null)
                         {
-                            span.Attributes["class"].Value = "arrow-down";
-                            string? styleAttribute = table.GetAttributeValue("style", null);
-                            string styleSpec = "border-bottom-style: dashed;";
-                            if (styleAttribute != null)
+                            if (nestingLevel >= collapseTo)
                             {
-                                styleSpec += " " + styleAttribute;
+                                span.Attributes["class"].Value = "arrow-down";
+                                string? styleAttribute = table.GetAttributeValue("style", null);
+                                string styleSpec = "border-bottom-style: dashed;";
+                                if (styleAttribute != null)
+                                {
+                                    styleSpec += " " + styleAttribute;
+                                }
+
+                                table.SetAttributeValue("style", styleSpec);
+
+                                HtmlNode tableTbody = table.SelectSingleNode("tbody");
+                                tableTbody.SetAttributeValue("style", "display:none");
+                                HtmlNode columnHeaders = table.SelectSingleNode("thead/tr[2]");
+
+                                // Some tables have just one header, and it is not represented in a row.
+                                columnHeaders?.Attributes.Add("style", "display:none");
                             }
 
-                            table.SetAttributeValue("style", styleSpec);
+                            // Remove the footer
+                            HtmlNode tableFooter = table.SelectSingleNode("./tfoot");
+                            if (tableFooter != null)
+                            {
+                                table.RemoveChild(tableFooter);
+                            }
 
-                            HtmlNode tableTbody = table.SelectSingleNode("tbody");
-                            tableTbody.SetAttributeValue("style", "display:none");
-                            HtmlNode columnHeaders = table.SelectSingleNode("thead/tr[2]");
+                            // Finally, put TableNode information in the TableNode.TableHtmlNode so that it is available to
+                            // the code (script) in the finally HTML document.
 
-                            // Some tables have just one header, and it is not represented in a row.
-                            columnHeaders?.Attributes.Add("style", "display:none");
+                            TableNode node = new(table);
+                            span.Attributes.Add("depth", node.Depth().ToString());
+                            span.Attributes.Add("index", node.Index().ToString());
                         }
-
-                        // Remove the footer
-                        HtmlNode tableFooter = table.SelectSingleNode("./tfoot");
-                        if (tableFooter != null)
-                        {
-                            table.RemoveChild(tableFooter);
-                        }
-
-                        // Finally, put TableNode information in the TableNode.TableHtmlNode so that it is available to
-                        // the code (script) in the finally HTML document.
-
-                        TableNode node = new(table);
-                        span.Attributes.Add("depth", node.Depth().ToString());
-                        span.Attributes.Add("index", node.Index().ToString());
                     }
                 }
             }
@@ -192,7 +197,7 @@ namespace SBSSData.Application.Support
             return rootNode.OuterHtml;
         }
 
-        private static void AddHeadData(HtmlDocument htmlDocument, HtmlNode headNode, List<HeadElement> headElements)
+        public static void AddHeadData(HtmlDocument htmlDocument, HtmlNode headNode, List<HeadElement> headElements)
         {
             if ((htmlDocument != null) && (headNode != null))
             {

@@ -279,7 +279,7 @@ namespace SBSSData.Application.Support
                 var tableId = findTableIdFromHeader(headerText);
                 if (tableId == -1)
                 {
-                    alert("Can't find the table whose header starts with " + headerText);
+                    //alert("Can't find the table whose header starts with " + headerText);
                     return;
                 }
 
@@ -309,7 +309,7 @@ namespace SBSSData.Application.Support
                     var tableId = findTableIdFromHeader(headerText);
                     if (tableId == -1)
                     {
-                        alert("Can't find the table whose header starts with " + headerText);
+                        //alert("Can't find the table whose header starts with " + headerText);
                         return;
                     }
 

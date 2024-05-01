@@ -206,11 +206,22 @@ namespace SBSSData.Softball.Stats
         public int GamesCanceled => GetScheduledGames().Count(g => g.WasCancelled);
 
         /// <summary>
-        /// The number of games actually played (not canceled) in all leagues, that is, games where there are player stats 
-        /// for the teams.
+        /// Gets the number of scheduled games in all leagues that were canceled.
+        /// </summary>
+        /// <remarks>
+        /// Although forfeited games have not really been played, the team scored are recorded but are no player stats 
+        /// for the teams, completed. They are quite rare and a real pain to account.
+        /// </remarks>
+        /// <seealso cref="GetScheduledGames()"/>
+        /// <seealso cref="GamesPlayed"/>
+        public int GamesForfeited => GetScheduledGames().Count(g => g.IsComplete && g.GameResults.IsForfeited);
+
+        /// <summary>
+        /// The number of games actually played (neither canceled nor forfeited) in all leagues, that is, 
+        /// games where there are player stats for the teams.
         /// </summary>
         /// <seealso cref="GetScheduledGames()"/>
-        public int GamesPlayed => GetScheduledGames().Count(g => g.IsComplete && !g.WasCancelled);
+        public int GamesPlayed => GetScheduledGames().Count(g => g.IsComplete && !g.WasCancelled && !g.GameResults.IsForfeited);
 
         /// <summary>
         /// Returns the number of team names in all scheduled games, ordered by name.
