@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Dumpify" Version="0.6.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="WinSCP" Version="6.3.2" />
+    <PackageReference Include="WinSCP" Version="6.3.3" />
   </ItemGroup>
 
   <ItemGroup>

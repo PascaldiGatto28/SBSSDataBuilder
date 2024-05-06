@@ -29,8 +29,13 @@ namespace SBSSData.Application.DataStore
         /// <param name="update">If true, and an existing data store exists, it is updated with games that have been played since 
         /// the last update. If false the data store is created unless there already exists a data store in which it is updated,
         /// </param>
-        public static void Run(bool update)
+        /// <returns>
+        /// A value indicating whether the data store has changed: <c>true</c> if it's been updated or created; <c>false</c>
+        /// otherwise.
+        /// </returns>
+        public static bool Run(bool update)
         {
+            bool modified = false;
             DataStoreManager manager = new();
             DataStoreContainer dsContainer = DataStoreContainer.Instance(DataStorePath);
             LeaguesData dataStore = dsContainer.DataStore;
@@ -51,6 +56,7 @@ namespace SBSSData.Application.DataStore
                     log.WriteLine($"{updated} games have been updated");
                     bytesWritten = dsContainer.Save();
                     log.WriteLine($"The data has been serialized to {DataStorePath}; {bytesWritten:#,###} bytes written.");
+                    modified = true;
                 }
                 else
                 {
@@ -71,8 +77,11 @@ namespace SBSSData.Application.DataStore
 
                 dsContainer = DataStoreManager.Build(dataStorePath);
                 bytesWritten = dsContainer.Save();
+                modified = true;
                 log.WriteLine($"New data store constructed {bytesWritten:#,###} bytes written, and the created container:\r\n{dsContainer}");
             }
+
+            return modified;
         }
 
         /// <summary>

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="WinSCPSync.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="PlayerPhotos\Adams_Harry.jpg" />
     <None Remove="PlayerPhotos\Adolph_Mark.jpg" />
     <None Remove="PlayerPhotos\Agnone_John.jpg" />
@@ -1055,6 +1059,7 @@
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="WinSCP" Version="6.3.3" />
   </ItemGroup>
 
   <ItemGroup>

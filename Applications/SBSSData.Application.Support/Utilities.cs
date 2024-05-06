@@ -2,6 +2,8 @@
 
 using HtmlAgilityPack;
 
+using WinSCP;
+
 namespace SBSSData.Application.Support
 {
     /// <summary>
@@ -102,6 +104,54 @@ namespace SBSSData.Application.Support
             }
 
             return display;
+        }
+
+        /// <summary>
+        /// Moves any changes from the local to the remove ftp.walkingtree.com Data folder. This is the location
+        /// of the sbssdata.info web site.
+        /// </summary>
+        /// <param name="source">The local folder where the web site files are located. The default is 
+        /// J:\SBSSDataStore\HtmlData<
+        /// /param>
+        /// <param name="isTest">If <c>true</c>, the target folder is "/quietcre/TestSync" (a test site); otherwise
+        /// is is "/quietcre/Data". In the first case you need to access the text site via walkingtree.com/TestSync,
+        /// in the production, you can use sbssdata URL, sbssdata.info.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">If any failures, it is translated to an exceptions of this
+        /// type. This is done so consumers of this method do not need to reference the WinSCP package directly.</exception>
+        public static WinSCPSyncResults PublishSBSSData(string source = @"J:SBSSDataStore\HtmlData\", bool isTest = true)
+        {
+            // Set up session options
+            SessionOptions sessionOptions = new SessionOptions
+            {
+                Protocol = Protocol.Ftp,
+                HostName = "ftp.walkingtree.com",
+                UserName = "quietcre",
+                Password = "85232WindingWay",
+            };
+
+            string target = isTest ? "/quietcre/TestSync" : "/quietcre/Data";
+            SynchronizationResult? syncResult = default;
+
+            using (Session session = new Session())
+            {
+                session.Open(sessionOptions);
+
+                try
+                {
+                    syncResult = session.SynchronizeDirectories(SynchronizationMode.Remote,
+                                                                @"J:\SBSSDataStore\HtmlData",
+                                                                target,
+                                                                false);
+                    syncResult.Check();
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidOperationException("Result Check Failure", exception);
+                }
+            }
+
+            return new WinSCPSyncResults(syncResult);
         }
 
         #region Utilities to help in parsing LINQPad generated HTML pages

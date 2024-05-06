@@ -2,25 +2,23 @@
 
 using System.Diagnostics;
 
-using Dumpify;
-
 using SBSSData.Application.LinqPadQuerySupport;
 using SBSSData.Softball.Common;
 
-namespace SBSSData.Application.WebDeployment
+namespace SBSSData.Application.DataStore
 {
     public class Construction
     {
         public static readonly string edgeFolder = @"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe";
         public static readonly string nppFolder = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
-        public static readonly string dsFolder = $@"J:\SBSSDataStore\";
-        public static readonly string htmlFolder = @"HtmlData\";
+        public static readonly string dsTopFolder = $@"J:\SBSSDataStore\";
+        public static readonly string htmlTopFolder = @"HtmlData\";
 
         public Construction()
         {
-            DsFolder = dsFolder;
+            DsFolder = dsTopFolder;
             SeasonText = string.Empty;
-            HtmlFolder = string.Empty;
+            HtmlFolder = htmlTopFolder;
         }
 
         public Construction(string seasonText): this()
@@ -28,7 +26,7 @@ namespace SBSSData.Application.WebDeployment
             SeasonText = seasonText;
 
             // For example, HtmlData\2024Winter\
-            HtmlFolder = $"{htmlFolder}{seasonText.RemoveWhiteSpace()}\\";
+            HtmlFolder = $"{htmlTopFolder}{seasonText.RemoveWhiteSpace()}\\";
         }
 
 
@@ -74,9 +72,9 @@ namespace SBSSData.Application.WebDeployment
         {
             get;
             set;
-        } = (o) => o.Dump();
+        }
 
-        private void DisplayInBrowser(string filePath) => Process.Start(edgeFolder, $"\"{filePath}\"");
+        private static void DisplayInBrowser(string filePath) => Process.Start(edgeFolder, $"\"{filePath}\"");
 
         public Func<IHtmlCreator, Action<object>?, string> BuildHtml => (i, a) => i.BuildHtmlPage(SeasonText, DsFolder, a ?? Callback);
 

@@ -239,15 +239,15 @@ namespace SBSSData.Application.Support
             return header;
         }
 
-        private static string helpNodeHtml = """
-                                              <a style="float:right; 
-                                                  font-weight:500; 
-                                                  color:firebrick; 
-                                                  background-color:white; 
-                                                  padding-left:10px; 
-                                                  padding-right:10px" 
-                                                  onclick="console.log(getElementById('helpOverlay')); getElementById('helpOverlay').style.display='block';">Help</a>
-                                            """;
+        //private static string helpNodeHtml = """
+        //                                      <a style="float:right; 
+        //                                          font-weight:500; 
+        //                                          color:firebrick; 
+        //                                          background-color:white; 
+        //                                          padding-left:10px; 
+        //                                          padding-right:10px" 
+        //                                          onclick="console.log(getElementById('helpOverlay')); getElementById('helpOverlay').style.display='block';">Help</a>
+        //                                    """;
         public static Func<TableNode, string> ExtendedGamesTeamPlayers(string? info = null, string? headerCssStyle = null, object? value = null)
         {
             return (t) =>
@@ -362,7 +362,7 @@ namespace SBSSData.Application.Support
                             }
                             else
                             {
-                                string gameName = tableHtmlNode.ParentNode.PreviousSibling.SelectSingleNode("./table/tbody/tr/td").InnerText;
+                                string gameName = tableHtmlNode.ParentNode?.PreviousSibling.SelectSingleNode("./table/tbody/tr/td").InnerText ?? "Unknown";
                                 header = $"Teams and Players for the {ToSpanItalic(gameName)} Game";
 
                                 Utilities.AlterTableColumnHeader(tableHtmlNode, 1, "RS");

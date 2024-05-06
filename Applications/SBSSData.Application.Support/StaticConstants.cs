@@ -468,10 +468,10 @@ namespace SBSSData.Application.Support
                                                                                                                   .Replace("[[imageName]]", imageName)
                                                                                                                   .Replace("[[infoHtml]]", infoHtml);
 
-        private static string helpNodeHtml = """
-                                              <a class="help"
-                                                 onclick="getElementById('helpOverlay').style.display='block';">Help</a>
-                                            """;
+        //private static string helpNodeHtml = """
+        //                                      <a class="help"
+        //                                         onclick="getElementById('helpOverlay').style.display='block';">Help</a>
+        //                                    """;
 
     }
 }

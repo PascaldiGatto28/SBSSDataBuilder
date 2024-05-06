@@ -32,6 +32,9 @@ namespace SBSSData.Application.DataStore
             LogFileName = string.Empty;
             LogSessionFileName = string.Empty;
             BuildOption = string.Empty;
+            HtmlFolder = string.Empty;
+            Test = false;
+            Season = string.Empty;
         }
 
         /// <summary>
@@ -107,6 +110,15 @@ namespace SBSSData.Application.DataStore
         }
 
         /// <summary>
+        /// Gets and initializes the season name. It is of the YYYY CalendarSeason, for example "Spring 2024"
+        /// </summary>
+        public string Season
+        {
+            get;
+            init;
+        }
+
+        /// <summary>
         /// Gets and initializes the data store file name when the <see cref="AppSettings"/> is deserialized.
         /// </summary>
         public string DataStoreFileName
@@ -147,6 +159,24 @@ namespace SBSSData.Application.DataStore
         }
 
         /// <summary>
+        /// Specifies if the Web publishes to a test site of the production folder on the web server
+        /// </summary>
+        public bool Test
+        {
+            get;
+            init;
+        }
+
+        /// <summary>
+        /// Specifies where the constructed HTML files are relative to the Data Store folder.
+        /// </summary>
+        public string HtmlFolder
+        {
+            get;
+            init;
+        }
+
+        /// <summary>
         /// Gets the data store path; it is the concatenation of the <see cref="DataStoreFolder"/> and 
         /// the <see cref="DataStoreFileName"/> properties.
         /// </summary>
@@ -154,7 +184,13 @@ namespace SBSSData.Application.DataStore
         /// When a data store is created up date, the <c>DataStoreFolder</c> is the location of the data store, the log file and
         /// generated log session file
         /// </remarks>
-        public string DataStorePath => $"{DataStoreFolder}{DataStoreFileName}";
+        public string DataStorePath
+        {
+            get
+            {
+                return $"{DataStoreFolder}{Season.RemoveWhiteSpace()}{DataStoreFileName}";
+            }
+        }
 
         /// <summary>
         /// Gets the log file name; it is the concatenation of the <see cref="DataStoreFolder"/> and 
@@ -180,5 +216,17 @@ namespace SBSSData.Application.DataStore
         /// Returns a value indicating the build option is to update.
         /// </summary>
         public bool Update => !string.Equals(BuildOption, "Build", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Returns the full path of the folder containing the constructed HTML files
+        /// </summary>
+        public string HtmlLocation => $"{DataStoreFolder}{HtmlFolder}";
+
+        /// <summary>
+        /// Returns the <c>true</c> if deployment to the TestSync folder on the web server; <c>false</c> if deployment is to
+        /// the production server folder. The returned value is just the <see cref="Test"/> property.
+        /// </summary>
+        public bool IsTest => Test;
+
     }
 }

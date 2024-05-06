@@ -14,7 +14,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
             new HeadElement("meta", [["data", "description"], ["content", "Guide to games, teams and players"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
-            new HeadElement("meta", [["name", "http-equiv"], ["content", "no-cache"]]),
+            new HeadElement("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
             new HeadElement("title", [["Guide to Games,Teams & Players", ""]]),
             new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
         };
@@ -35,7 +35,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             GamesTeamPlayersV3  gtpV3 = new GamesTeamPlayersV3();
             gtpV3.ResourceName = $"{this.GetType().Name}.html";
 
-            string html = gtpV3.BuildHtmlPage(seasonText, dataStoreFolder, callback);
+            string html = gtpV3.BuildHtmlPage(seasonText, dataStoreFolder, null);
             string changedHtml = html;
 
             // Add meta, link and title elements to the document head for this page.
@@ -58,6 +58,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 {
                     node.Remove();
                 }
+            }
+
+            if (callback != null)
+            {
+                callback(this);
             }
 
             changedHtml = rootNode.OuterHtml;

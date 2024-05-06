@@ -1,4 +1,6 @@
-﻿using HtmlAgilityPack;
+﻿// Ignore Spelling: css
+
+using HtmlAgilityPack;
 
 using LINQPad;
 

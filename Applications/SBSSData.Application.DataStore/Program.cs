@@ -36,16 +36,20 @@ namespace SBSSData.Application.DataStore
         /// </remarks>
         internal static void Main()
         {
-            Console.WriteLine($"\r\nSBSS Data Store Manager -- Building and updating the SBSS data store (Built on {DateTime.Now:dddd MMMM d, yyyy})\r\n");
+            Console.WriteLine($"\r\nSBSS Data Store Manager & Web Publisher building and updating the SBSS data store (Built on {DateTime.Now:dddd MMMM d, yyyy})\r\n");
 
             AppContext context = AppContext.Instance;
             try
             {
                 using Log log = context.Log;
-                log.WriteLine("Starting the Data store manager");
+                log.WriteLine("Starting the Data store manager and Web Publisher");
                 try
                 {
-                    DataStoreManager.Run((context.Settings).Update);
+                    bool dsModified = DataStoreManager.Run((context.Settings).Update);
+                    if (dsModified)
+                    {
+                        WebPublisher.Run(null, null);
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -81,12 +85,8 @@ namespace SBSSData.Application.DataStore
                 sessions.ToList().AddRange(loggedSessions);
             }
 
-            //sessions.Serialize(logSessionsFilePath);
             string json = JsonConvert.SerializeObject(sessions).FormatJsonString();
             File.WriteAllText(logSessionsFilePath, json);
-
-            //Console.Write("Press any key to quit ...");
-            //Console.ReadKey();
         }
     }
 }

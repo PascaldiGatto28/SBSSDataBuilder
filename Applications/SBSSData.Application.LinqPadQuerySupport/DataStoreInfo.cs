@@ -27,7 +27,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
             new HeadElement("meta", [["data", "description"], ["content", "Data Store information"]]),
             new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
-            new HeadElement("meta", [["name", "http-equiv"], ["content", "no-cache"]]),
+            new HeadElement("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
             new HeadElement("title", [["Data Store Information", ""]]),
             new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
         };
@@ -58,7 +58,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     Values.Add(dsInfo);
                     if (callback != null)
                     {
-                        callback(dsInfo);
+                        callback(this);
                     }
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);

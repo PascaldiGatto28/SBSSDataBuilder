@@ -1,4 +1,8 @@
-﻿using SBSSData.Application.LinqPadQuerySupport;
+﻿
+using Dumpify;
+
+using SBSSData.Application.LinqPadQuerySupport;
+using SBSSData.Application.Support;
 
 namespace SBSSData.Application.WebDeployment
 {
@@ -6,21 +10,36 @@ namespace SBSSData.Application.WebDeployment
     {
         private static void Main(string[] args)
         {
-            string[] seasons = ["2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
-            foreach (string season in seasons)
+            bool buildHtml = false;
+            bool publish = true;
+            bool publishToTest = true;
+
+
+            if (buildHtml)
             {
-                Construction construction = new(season);
-                construction.Build<DataStoreInfo>(true);
-                construction.Build<LogSessions>(true);
-                construction.Build<GamesTeamPlayersV3>(true);
-                construction.Build<GamesTeamPlayersHelpV3>(true);
-                construction.Build<PlayerSheets>(true);
-                construction.Build<PlayerSheetsGuide>(true);
+                string[] seasons = ["2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+                foreach (string season in seasons)
+                {
+                    Construction construction = new(season);
+                    _ = construction.Build<DataStoreInfo>(true);
+                    _ = construction.Build<LogSessions>(true);
+                    _ = construction.Build<GamesTeamPlayersV3>(true);
+                    _ = construction.Build<GamesTeamPlayersHelpV3>(true);
+                    _ = construction.Build<PlayerSheets>(true);
+                    _ = construction.Build<PlayerSheetsGuide>(true);
+                }
             }
 
 
-            Construction constructionSync = new();
-            constructionSync.WinSCPSync(false);  // true is testing (default) false is production
+            //Construction constructionSync = new();
+            //constructionSync.WinSCPSync(true);  // true is testing (default) false is production
+
+            if (publish)
+            {
+
+                WinSCPSyncResults results = Utilities.PublishSBSSData(isTest:publishToTest);
+                results.Dump();
+            }
         }
     }
 }
