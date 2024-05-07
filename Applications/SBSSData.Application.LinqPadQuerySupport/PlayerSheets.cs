@@ -85,7 +85,26 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 // First change the containerHtml to include the HTML that is the list of selection player options. Later I replace
                 // the iFrame source doc attribute to the HTML of the returned HTML.
                 Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
-                List<string> optionValues = playerNames.Select(p => $"""<div class="playerOption" playerName="{p}" imageName="{playerPhotos}{map[p]}.jpg">{p.BuildDisplayName()}</div>""").ToList();
+
+                // Just in case the map doesn't have everyone in it, for each player name, if they're not in the map, put
+                // them in.
+
+                foreach (string player in playerNames)
+                {
+                    if (!map.ContainsKey(player))
+                    {
+                        map.Add(player, "Available_Photo-Not");
+                    }
+                }
+
+                List<string> optionValues = playerNames.Select(p => 
+                                                       $"""
+                                                        <div 
+                                                            class="playerOption" playerName="{p}" 
+                                                            imageName="{playerPhotos}{map[p]}.jpg">
+                                                            {p.BuildDisplayName()}
+                                                        </div>
+                                                        """).ToList();
 
                 foreach (string playerName in playerNames)
                 {

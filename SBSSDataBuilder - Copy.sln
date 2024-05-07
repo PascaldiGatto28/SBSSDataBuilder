@@ -24,8 +24,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Stats", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.DataStore", "Applications\SBSSData.Application.DataStore\SBSSData.Application.DataStore.csproj", "{DDC92FC1-4850-4777-A50E-E77C8ADE4CF7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.WebDeployment", "Applications\SBSSData.Application.WebDeployment\SBSSData.Application.WebDeployment.csproj", "{E93E3C41-1D63-4951-916C-90EE6DA44749}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Softball.Storage", "Libraries\SBSSData.Softball.Storage\SBSSData.Softball.Storage.csproj", "{C1729ECB-7106-461B-9977-04869C500694}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.Samples", "Applications\SBSSData.Application.Samples\SBSSData.Application.Samples.csproj", "{A36362ED-4DFB-47C2-ADC3-C95EEBC49A91}"
@@ -33,6 +31,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.Support", "Applications\SBSSData.Application.Support\SBSSData.Application.Support.csproj", "{8A87A88D-7505-405A-B479-409DC3CA4023}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.LinqPadQuerySupport", "Applications\SBSSData.Application.LinqPadQuerySupport\SBSSData.Application.LinqPadQuerySupport.csproj", "{F62AEA50-3ADE-4A00-8DB1-2241C2AA2252}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.WebDeployment", "Applications\SBSSData.Application.WebDeployment\SBSSData.Application.WebDeployment.csproj", "{E93E3C41-1D63-4951-916C-90EE6DA44749}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBSSData.Application.WebSite", "Applications\SBSSData.Application.WebSite\SBSSData.Application.WebSite.csproj", "{E18C4723-87E5-4BDE-8DEE-02B52D0A8DA7}"
 EndProject

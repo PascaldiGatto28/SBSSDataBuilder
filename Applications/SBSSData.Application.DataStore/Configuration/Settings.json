@@ -6,7 +6,7 @@
     "LogSessionFileName": "DataStoreManager.json",
     "BuildOption": "Build", // Build a new instance; Update to update
     "HtmlFolder": "HtmlData\\",
-    "Test": true
+    "Test": false
 }
 
 

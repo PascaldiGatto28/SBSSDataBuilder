@@ -12,12 +12,12 @@ namespace SBSSData.Application.WebDeployment
         {
             bool buildHtml = false;
             bool publish = true;
-            bool publishToTest = true;
+            bool publishToTest = (args == null) || (args.Length == 0) || (args[0] == "Test");
 
 
             if (buildHtml)
             {
-                string[] seasons = ["2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+                string[] seasons = ["2024 Spring"]; //, "2024 Winter", "2023 Fall", "2023 Summer"];
                 foreach (string season in seasons)
                 {
                     Construction construction = new(season);
