@@ -919,13 +919,24 @@
 </head >
 <body style="font-size:16px">
     <div class="IntroContent" style="font-size:16px;">
-        <h1 style="font-weight: 500; font-size:1.25em; color: firebrick;">
-            Guide to Game Results, Team and Players 
+        <!--<h1 style="font-weight: 500; font-size:1.25em; color: firebrick;">
+            Guide to Game Results, Team and Players
             <a class="navigate" href="GamesTeamPlayersV3.html">(Go to Game Results,Team and Players)</a>
             <span style="font-size:.68em;">or</span>
             <a class="navigate" href="../index.html">(Back to SBSS Data Viewer Home)</a>
-        </h1>
-        
+        </h1>-->
+        <div overflow="hidden">
+            <div style="display:inline-block;">
+                <h1 class="header">
+                   Guide to Game Results, Teams and Players
+               </h1>
+                <a class="navigate" href="GamesTeamPlayersV3.html">(Go to Game Results,Team and Players)</a>
+                <span style="font-size:.68em;">or</span>
+                <a class="navigate" href="../index.html">(Back to SBSS Data Viewer Home)</a>
+            </div>
+            <div class="season">For the [[Season YYYY]] Season</div>
+        </div>
+
         <div class="spacer">
             In this page, we provide documentation for all the tables that appear in the actual
             <a href="GamesTeamPlayersV3.html">Game Results, Team and Players</a> page. Actual data is used, but just for one league to make
@@ -935,66 +946,71 @@
         <div class="spacer">
             <!-- Data Store Information -->
             <!--<h2 style="font-size: 1.1em; color: #4C74BC; font-weight: 500;">
-                Data Store
-                <button class="showme" onclick="openHelp('dataStoreHelp'); closeAllHelpButMe('dataStoreHelp');
-                                                expandTable('Data Store'); collapseTable('Games, Teams and Players');">
-                    Show me   
-                </button>
-            </h2>
-            <div class="spacer help" id="dataStoreHelp">
-                <div class="spacer">
-                    The <span class="tableTitle">Data Store Information</span> table is not really about game, team or player data.
-                    It describes the state of the file where all information is stored (the Data Store). It is updated every 
-                    week night at 8:30 PM.
-                    This table gives you an idea of the volume of data and how it is changing.
-                </div>
-                <div class="spacer">
-                    Most of the fields are obvious, but note that the number of players, like the number of teams changes as the 
-                    season progresses, because the values are determined from the actual played games. For example, the number of 
-                    players is the number of 
-                    all players that have been in at least one game in any league, that is, it's not just roster players. 
-                    Unless there
-                    are cancellations, the number of teams doesn't change after a completed full week's schedule.
-                </div>
-            </div>-->
-
+            Data Store
+            <button class="showme" onclick="openHelp('dataStoreHelp'); closeAllHelpButMe('dataStoreHelp');
+                                            expandTable('Data Store'); collapseTable('Games, Teams and Players');">
+                Show me
+            </button>
+        </h2>
+        <div class="spacer help" id="dataStoreHelp">
+            <div class="spacer">
+                The <span class="tableTitle">Data Store Information</span> table is not really about game, team or player data.
+                It describes the state of the file where all information is stored (the Data Store). It is updated every
+                week night at 8:30 PM.
+                This table gives you an idea of the volume of data and how it is changing.
+            </div>
+            <div class="spacer">
+                Most of the fields are obvious, but note that the number of players, like the number of teams changes as the
+                season progresses, because the values are determined from the actual played games. For example, the number of
+                players is the number of
+                all players that have been in at least one game in any league, that is, it's not just roster players.
+                Unless there
+                are cancellations, the number of teams doesn't change after a completed full week's schedule.
+            </div>
+        </div>-->
             <!-- Game Results Data table -->
             <h2 style="font-size: 1.1em; color: #4C74BC; font-weight: 500;">
                 Game Results
                 <button class="showme" onclick="openHelp('gameResultsHelp'); closeAllHelpButMe('gameResultsHelp');
                                      expandTable('Games, Teams and Players');
-                                     expandTable('Game Results Data');">Show</button>
+                                     expandTable('Game Results Data');">
+                    Show
+                </button>
             </h2>
             <div class="spacer help" id="gameResultsHelp">
                 The <span class="tableTitle">Game Results Data for the  Monday Community Games</span> table
-                with all its nested tables encapsulates every bit of information that is in the data store. It also displays 
+                with all its nested tables encapsulates every bit of information that is in the data store. It also displays
                 data calculated using the stored data. It is game-centric, meaning any row of the table has all the information
                 for that played game. There's a row for each game. You can imagine that the table grows as more games
                 are played.
-                Click on the Scheduled Game "Show" button to expand that table in the first cell of the first row. 
+                Click on the Scheduled Game "Show" button to expand that table in the first cell of the first row.
 
                 <!-- Scheduled Game Information table -->
                 <div style="padding-left:20px;">
                     <h3 style="font-size: 1.0em; color: #4C74BC; font-weight: 500;">
                         Scheduled Game
                         <button class="showme" onclick="openHelp('scheduledGameHelp');
-                                                        expandTable('Scheduled Game Information');">Show</button>
+                                                        expandTable('Scheduled Game Information');">
+                            Show
+                        </button>
                     </h3>
                     <div class="spacer help" id="scheduledGameHelp">
-                        The first cell is the scheduled game information, which is determined before 
-                        any games are played. If a game has not been played or has been canceled, it does not 
+                        The first cell is the scheduled game information, which is determined before
+                        any games are played. If a game has not been played or has been canceled, it does not
                         appear in the table &mdash; after all,
-                        there's no data! 
+                        there's no data!
                     </div>
 
                     <!-- Teams and Players table -->
                     <h3 style="font-size: 1.0em; color: #4C74BC; font-weight: 500;">
                         Teams and Players
                         <button class="showme" onclick="openHelp('teamsPlayersHelp');
-                                                        expandTable('Teams and Players');">Show</button>
+                                                        expandTable('Teams and Players');">
+                            Show
+                        </button>
                     </h3>
                     <div class="spacer help" id="teamsPlayersHelp">
-                        The second cell in the row, for example, 
+                        The second cell in the row, for example,
                         <span class="tableTitle">Teams and Players for the Ann Fraley-Long Realty vs Ambient Air Heating &amp; Cooling Game</span>,
                         actually encapsulates the results. Although these results are posted on the SSSA web site, the values
                         for team (and game) outcome are computed from the player "box line" values. This table obviously only has
@@ -1007,16 +1023,18 @@
                         <h4 style="font-size:.9em; color: #4C74BC; font-weight: 500;">
                             Players for the Visitors
                             <button class="showme" onclick="openHelp('visitorsHelp');
-                                                            expandTable('Players for Ann');">Show</button>
+                                                            expandTable('Players for Ann');">
+                                Show
+                            </button>
                         </h4>
                         <div class="spacer help" id="visitorsHelp">
                             Now we're getting to heart of the data: It's all about player stats! You'll notice that the table,
                             for example, <span class="tableTitle">Players for Ann Fraley-Long Realty</span>, is much like what
-                            appears on the SSSA web site when you use the "Schedules" menu item to view the results of a played game. 
+                            appears on the SSSA web site when you use the "Schedules" menu item to view the results of a played game.
                             There
                             are some differences, however: All the usual calculated stats (average, slugging, etc.) are present.
                             No question, that for a single game, this data are not very interesting or useful, but to keep the tables
-                            consistent with similar tables, these values are included. More interesting 
+                            consistent with similar tables, these values are included. More interesting
                             is that a new stat is added: Plate appearances (PA) which is just
                             the number of official at bats plus bases on balls and sacrifice flies. The other difference is
                             the summary line at the bottom that includes all player data and calculated stats.
@@ -1027,11 +1045,11 @@
                             <button class="showme" onclick="openHelp('homeHelp');expandTable('Players for Ambient');">Show</button>
                         </h4>
                         <div class="spacer help" id="homeHelp">
-                            The second cell in the second row is just like the previous one, but it is for the home team 
+                            The second cell in the second row is just like the previous one, but it is for the home team
                             rather than the visitors.
                         </div>
                     </div>
-                 </div>
+                </div>
             </div>
             <!-- Team Summary Data table-->
             <h2 style="font-size: 1.1em; color: #4C74BC; font-weight: 500;">
@@ -1039,15 +1057,17 @@
                 <button class="showme" onclick="openHelp('teamSummaryHelp'); closeAllHelpButMe('teamSummaryHelp');
                                                 collapseTable('Game Results Data');
                                                 expandTable('Games, Teams and Players');
-                                                expandTable('Team Summary Data');">Show</button>
+                                                expandTable('Team Summary Data');">
+                    Show
+                </button>
             </h2>
             <div class="spacer help" id="teamSummaryHelp">
-                The second row in the main table, for example 
+                The second row in the main table, for example
                 <span class="tableTitle">Team Summary Data and Standings for the 4 Monday Community Teams</span> turns our
-                perspective from games played to team performance. When the table is opened, a list of the teams in the league 
+                perspective from games played to team performance. When the table is opened, a list of the teams in the league
                 is presented in "standings" order (actually, by wins and then by run differential). You may notice, for example,
                 that although "Andy's Irrigation-Andy McInnis" and "Barron Electric" have the same record, the former is in first
-                place because the run differential (runs scored less runs against) is 25 versus -3 for "Barron Electric". 
+                place because the run differential (runs scored less runs against) is 25 versus -3 for "Barron Electric".
                 (Full Disclosure: We do not know for certain that is how the SSSA handles tie won/loss records).
 
                 <div style="padding-left:20px;">
@@ -1056,7 +1076,9 @@
                         Team Players Summary
                         <button class="showme" onclick="openHelp('teamPlayers'); //closeAllHelpButMe('teamPlayers');
                                                         //collapseTable('Game Results Data');
-                                                        expandTable('Summary Stats');">Show</button>
+                                                        expandTable('Summary Stats');">
+                            Show
+                        </button>
                     </h3>
                     <div>
                         <div class="spacer help" id="teamPlayers">
@@ -1077,42 +1099,44 @@
                 <button class="showme" onclick="openHelp('players'); closeAllHelpButMe('players');
                                                 collapseTable('Team Summary Data');
                                                 expandTable('Games, Teams and Players');
-                                                expandTable('Player Summary Stats');">Show</button>
+                                                expandTable('Player Summary Stats');">
+                    Show
+                </button>
             </h2>
             <div class="spacer help" id="players">
-                In this last table, for example, 
+                In this last table, for example,
                 <span class="tableTitle">Player Summary Stats for the 59 Players and Rankings for 47 Players With Enough Plate Appearances for All Teams</span>,
-                we really focus on the player. (N.B. The title may have different numbers because the Data Store may have been updated. 
-                You're looking at the latest data!) Here you see summary stats for every player in the league for all their 
+                we really focus on the player. (N.B. The title may have different numbers because the Data Store may have been updated.
+                You're looking at the latest data!) Here you see summary stats for every player in the league for all their
                 activity on all teams. Because it's in a single league, it's reasonable to compare the stats. The player rows
-                are sorted by the number of games played and then plate appearances. You open the last cell of a row to see a table 
+                are sorted by the number of games played and then plate appearances. You open the last cell of a row to see a table
                 of the ranking of the
                 player for the four standard computed stats &mdash; Average (Avg), Slugging (Slug) On-Base percentage (OBP), and
                 On-Base percentage plus slugging (OBS). Unlike the stats per game, these have real meaning.
-            
+
                 <div class="spacer">
-                    Rather than opening the Ranking tables, 
-                    just hover over the player name (second column) to see a pop-up of their 
+                    Rather than opening the Ranking tables,
+                    just hover over the player name (second column) to see a pop-up of their
                     photo and rankings. You can do that now, or you could just ...
                     <div>
                         <button class="showme" id="openPlayer"
                                 onclick="getElementById('MikeKutanskyMondayCommunityOverlay').style.display = 'table-cell'">
-                                         
-                                Show
+
+                            Show
                         </button>
                         <button class="showme" id="closePlayer"
                                 onclick="getElementById('MikeKutanskyMondayCommunityOverlay').style.display = 'none'">
-                             Close
+                            Close
                         </button>
                     </div>
                 </div>
                 <div class="spacer">
-                    To calculate the rankings, a player must have had a minimal number of plate appearances. We've chosen 12 (likely
-                    some where between 2 and 3 games),
+                    To calculate the rankings, a player must have had a minimal number of plate appearances. We've chosen 6 (likely
+                    having played in at least 2 games),
                     but that's clearly subjective. The rankings are only based upon players who are qualified (that is, have had enough plate
                     appearances). Finally the last row is the summary for all players. The league summary is not included in the
                     calculation of the player ranks and is not ranked itself.
-               </div>
+                </div>
             </div>
 
         </div>

@@ -395,7 +395,8 @@ namespace SBSSData.Softball.Stats
         }
 
         /// <summary>
-        /// Sets the <see cref="instance"/> field to <c>null</c> and the other properties to initial "empty" values.
+        /// Sets the <see cref="instance"/> field and other static fields to <c>null</c> and the other 
+        /// properties to initial "empty" values.
         /// </summary>
         /// <remarks>
         /// This method is required to implement the <see cref="IDisposable"/> interface.
@@ -406,6 +407,8 @@ namespace SBSSData.Softball.Stats
             DataStorePath = string.Empty;
             DataStore = LeaguesData.Empty;
             _scheduledGames = null;
+            _playerNames = null;
+            _teamNames = null;
         }
     }
 }

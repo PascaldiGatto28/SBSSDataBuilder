@@ -87,16 +87,46 @@
             box-shadow: 10px 10px 50px 15px #aaaaaa;
             padding: 20px 25px 20px 25px;
         }
+        h1.header
+        {
+            display: inline-block;
+            font-weight: 500;
+            font-size: 1.25em;
+            color: firebrick;
+        }
+
+        div.season
+        {
+            padding-top: 10px;
+            float: right;
+            font-weight: 500;
+            color: #4C74B2;
+        }
+
+        div.para
+        {
+            max-width: 915px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <div style="padding-left:10px;">
-        <h1 class="header">
-            Player Sheets 
+        <!--<h1 class="header">
+            Player Sheets
             <a class="navigate" href="../index.html">(Back to SBSS Data Viewer)</a>
-        </h1>
-        
-        <div style="max-width:915px;" >
+        </h1>-->
+        <div overflow="hidden" class="para">
+            <div style="display:inline-block;">
+                <h1 class="header">
+                    Player Sheets
+                </h1>
+                <a class="navigate" href="../index.html">(Back to SBSS Data Viewer)</a>
+            </div>
+            <div class="season">For the [[Season YYYY]] Season</div>
+        </div>
+
+        <div class="para">
             For every player, this page summarizes their data for each league in which they played. Also include for each league
             is their percentile (the percentage of other players whose statistic is less than their's) and their rank (the
             order of the statistics from the top (low number) to lower (higher number). See the
@@ -105,8 +135,8 @@
             to view just the data for that player; select "View All" or refresh (F5 or Ctrl+F5) to display the data for
             all players.
         </div>
-        
-     </div>
+
+    </div>
 
     <div class="flex-container">
         <div id="playersList" class="playersList">

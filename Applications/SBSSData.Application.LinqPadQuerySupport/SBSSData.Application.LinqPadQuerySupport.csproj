@@ -21,8 +21,11 @@
     <None Remove="PlayerSheets.html" />
     <None Remove="PlayerSheetsContainer.html" />
     <None Remove="PlayerSheetsContainerGuide.html" />
-    <None Remove="PlayerSheetsContainerV2.html" />
     <None Remove="PlayerSheetsNotUsed.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="J:\SBSSDataStore\HtmlData\CSS\Main2.css" Link="CSS\Main2.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,7 +41,6 @@
     <EmbeddedResource Include="LogSessions.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="PlayerSheetsContainerV2.html" />
     <EmbeddedResource Include="PlayerSheetsContainerGuide.html" />
     <EmbeddedResource Include="PlayerSheetsContainer.html" />
   </ItemGroup>

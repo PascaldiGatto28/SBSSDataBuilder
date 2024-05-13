@@ -25,8 +25,7 @@ namespace SBSSData.Application.Support
                 $"""
                  Uploaded files ({NumUploads}):
                  {Uploads.ToString<string>("\r\n")}
-                 Downloaded files ({NumDownloads}):
-                 {Downloads.ToString<string>("\r\n")}
+                 {NumDownloads} downloaded files
                  {NumFailures} Failures 
                  Copy was {success}successful 
                  """;

@@ -30,11 +30,17 @@
         public int Percentile { get; set; }
         public int NumPlayers {get; set; }
 
+
+        /// <summary>
+        /// Not going to report 0th percentile. Embarrassing, so instead report 1.
+        /// </summary>
+        /// <returns></returns>
         public string PercentileToString()
         {
-            int lastDigit = Percentile % 10;
+            int reportingPercentile = Percentile > 0 ? Percentile : 1;
+            int lastDigit = reportingPercentile % 10;
             string suffix = "th";
-            if ((Percentile < 10) || (Percentile > 20))
+            if ((reportingPercentile < 10) || (reportingPercentile > 20))
             {
                 if (lastDigit == 1)
                 {
@@ -50,7 +56,7 @@
                 }
             }
 
-            return $"{Percentile}{suffix}";
+            return $"{reportingPercentile}{suffix}";
 
         }
 

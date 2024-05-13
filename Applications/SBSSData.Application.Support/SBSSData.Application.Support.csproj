@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="PlayerCardDataSummary.cs" />
+    <Compile Remove="PlayerCardDisplay.cs" />
+    <Compile Remove="PlayerDataDisplay.cs" />
     <Compile Remove="WinSCPSync.cs" />
   </ItemGroup>
 

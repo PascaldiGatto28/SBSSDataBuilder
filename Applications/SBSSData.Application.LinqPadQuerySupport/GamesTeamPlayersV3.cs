@@ -49,7 +49,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            Action<object> actionCallback = callback == null ? (v) => Console.WriteLine(v.ToString()) : callback;
+            Action<object>? actionCallback = callback; // == null ? (v) => Console.WriteLine(v.ToString()) : callback;
             string season = seasonText.RemoveWhiteSpace();
 
             string changedHtml = string.Empty;
@@ -58,6 +58,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string resName = assembly.FormatResourceName(ResourceName);
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             string html = bytes.ByteArrayToString();
+            html = html.Replace("[[Season YYYY]]", Utilities.SwapSeasonText(seasonText));
 
             string path = $"{dataStoreFolder}{season}LeaguesData.json";
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(path))
@@ -79,12 +80,20 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                 using (HtmlGenerator generator = new HtmlGenerator())
                 {
+                    string seasonDiv = $"""
+                                       <div id="seasonText">
+                                            {seasonText}  
+                                       </div>
+                                       """;
+
                     string expandCollapseHtml = """
                                                 <div>
                                                      <button class="sbss" onclick = "viewAll(true)">Expand All Tables</button>
                                                      <button class="sbss" onclick = "viewAll(false)">Collapse All Tables</button>
                                                 </div> 
                                                 """;
+                    //generator.WriteRawHtml(seasonDiv);
+
                     //string displayRankingColumn = """
                     //                               <script type=text/javascript>
                     //                                   function setColumn (checked)
@@ -97,6 +106,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     //                                   <label for="ranking">Hide the ranking column</label>
                     //                               </div>
                     //                               """;
+
                     generator.WriteRawHtml(expandCollapseHtml);
 
                     //actionCallback("expandCollapseHtml raw Html written");
@@ -111,7 +121,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                         if (leagueGames.Any())
                         {
-
                             var games = leagueGames.Select(g => new
                             {
                                 Games = new GameInformationDisplay(g.GameInformation),
@@ -135,11 +144,14 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                 Players = playerStatRankDisplay
                             };
 
-                            actionCallback(this);
-
                             generator.WriteRootTable(gtp, LinqPadCallbacks.ExtendedGamesTeamPlayers($"{fullLeagueName}", gtpHeaderStyle));
                         }
 
+                    }
+
+                    if (actionCallback != null)
+                    {
+                        actionCallback($"{this.GetType().Name} HTML page created.");
                     }
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);

@@ -1,28 +1,48 @@
-﻿
-using Dumpify;
-
-using SBSSData.Application.LinqPadQuerySupport;
+﻿using SBSSData.Application.LinqPadQuerySupport;
 using SBSSData.Application.Support;
+using SBSSData.Softball.Logging;
+
+using AppContext = SBSSData.Application.Infrastructure.AppContext;
+
 
 namespace SBSSData.Application.WebDeployment
 {
-    internal class Build
+    public sealed class Build
     {
-        private static void Main(string[] args)
+        private static readonly string DataStoreFolder = AppContext.Instance.Settings.DataStoreFolder;
+        private static readonly Log log = AppContext.Instance.Log;
+        private static readonly string HtmlData = AppContext.Instance.Settings.HtmlFolder;
+        private static readonly bool PublishToTest = AppContext.Instance.Settings.Test;
+
+        public Build()
+        { 
+        }
+
+        public void Run()
         {
-            bool buildHtml = false;
+            bool buildHtml = true;
             bool publish = true;
-            bool publishToTest = (args == null) || (args.Length == 0) || (args[0] == "Test");
+            bool publishToTest = false; //PublishToTest; // (args == null) || (args.Length == 0) || (args[0] == "Test");
 
 
             if (buildHtml)
             {
-                string[] seasons = ["2024 Spring"]; //, "2024 Winter", "2023 Fall", "2023 Summer"];
+                string[] seasons = ["2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+                Construction construction = new()
+                {
+                    SeasonText = seasons[0],
+                    DsFolder = DataStoreFolder,
+                    HtmlFolder = HtmlData,
+                    Callback = (t) => log.WriteLine(t.ToString() ?? "Bad logging comment!")
+                };
+
+                _ = construction.Build<DataStoreInfo>(true);
+                _ = construction.Build<LogSessions>(true);
+
                 foreach (string season in seasons)
                 {
-                    Construction construction = new(season);
-                    _ = construction.Build<DataStoreInfo>(true);
-                    _ = construction.Build<LogSessions>(true);
+                    log.WriteLine($"Beginning construction of HTML pages for {season}");
+                    construction.SeasonText = season;
                     _ = construction.Build<GamesTeamPlayersV3>(true);
                     _ = construction.Build<GamesTeamPlayersHelpV3>(true);
                     _ = construction.Build<PlayerSheets>(true);
@@ -30,15 +50,16 @@ namespace SBSSData.Application.WebDeployment
                 }
             }
 
-
-            //Construction constructionSync = new();
-            //constructionSync.WinSCPSync(true);  // true is testing (default) false is production
-
             if (publish)
             {
-
-                WinSCPSyncResults results = Utilities.PublishSBSSData(isTest:publishToTest);
-                results.Dump();
+                string where = publishToTest ? "testing" : "production";
+                log.WriteLine($"Publishing to the {where} folder on sbssdata.info");
+                WinSCPSyncResults results = Utilities.PublishSBSSData(isTest: publishToTest);
+                log.WriteLine(results.ToString());
+            }
+            else
+            {
+                log.WriteLine("HTML pages have been constructed but not published.");
             }
         }
     }

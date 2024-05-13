@@ -36,6 +36,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
             gtpV3.ResourceName = $"{this.GetType().Name}.html";
 
             string html = gtpV3.BuildHtmlPage(seasonText, dataStoreFolder, null);
+            html = html.Replace("[[Season YYYY]]", Utilities.SwapSeasonText(seasonText));
+
             string changedHtml = html;
 
             // Add meta, link and title elements to the document head for this page.
@@ -62,7 +64,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             if (callback != null)
             {
-                callback(this);
+                callback($"{this.GetType().Name} HTML page created.");
             }
 
             changedHtml = rootNode.OuterHtml;

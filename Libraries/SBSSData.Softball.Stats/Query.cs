@@ -144,7 +144,7 @@ namespace SBSSData.Softball.Stats
             }
 
             //TODO: 12 should be a parameter
-            List<PlayerStats> psa = ps.Where(p => (p.PlateAppearances > 12) && (p.FirstName != string.Empty)).ToList();
+            List<PlayerStats> psa = ps.Where(p => (p.PlateAppearances > 5) && (p.FirstName != string.Empty)).ToList();
             for (int j = 0; j < 4; j++)
             {
                 PropertyInfo? property = typeof(PlayerStats).GetProperty(fieldNames[j]);

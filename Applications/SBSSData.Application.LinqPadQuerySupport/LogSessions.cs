@@ -7,7 +7,6 @@ using HtmlAgilityPack;
 using SBSSData.Application.Support;
 using SBSSData.Softball.Common;
 using SBSSData.Softball.Logging;
-using SBSSData.Softball.Stats;
 
 namespace SBSSData.Application.LinqPadQuerySupport
 {
@@ -37,9 +36,9 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            string text = seasonText;
-            string season = seasonText.RemoveWhiteSpace();
-            string dataStorePath = $@"{dataStoreFolder}{season}LeaguesData.json";
+            //string text = seasonText;
+            //string season = seasonText.RemoveWhiteSpace();
+            //string dataStorePath = $@"{dataStoreFolder}{season}LeaguesData.json";
 
             Assembly assembly = typeof(LogSessions).Assembly;
             string resName = assembly.FormatResourceName("LogSessions.html");
@@ -64,8 +63,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 })
             });
 
-            using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
-            {
+            //using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
+            //{
                 //DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
                 using (HtmlGenerator generator = new HtmlGenerator())
                 {
@@ -74,7 +73,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     //Values.Add(dsInfo);
                     if ((callback != null) && (displaySessions != null))
                     {
-                        callback(this);
+                        callback($"{this.GetType().Name} HTML page created.");
                     }
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
@@ -85,7 +84,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                      collapseTo: 2,
                                                      headElements: headElements.ToList());
                 }
-            }
+            //}
 
             return changedHtml;
         }
@@ -114,7 +113,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     int.TryParse(cell.Substring(0, index), out numUpdated);
                 }
 
-                header = (numUpdated > 0) ? $"{numUpdated.NumDesc("Scheduled Game")} Updated"
+                header = (numUpdated > 0) ? $"{numUpdated.NumDesc("Scheduled Game").Capitalize()} Updated"
                                           : "No Scheduled Games Were Updated &mdash; The Data Store is Up-to-date.";
             }
 

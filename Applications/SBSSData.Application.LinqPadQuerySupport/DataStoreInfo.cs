@@ -36,9 +36,9 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            string text = seasonText;
-            string season = seasonText.RemoveWhiteSpace();
-            string dataStorePath = $@"{dataStoreFolder}{season}LeaguesData.json";
+            //string text = seasonText;
+            //string season = seasonText.RemoveWhiteSpace();
+            //string dataStorePath = $@"{dataStoreFolder}{season}LeaguesData.json";
 
             Assembly assembly = typeof(LogSessions).Assembly;
             string resName = assembly.FormatResourceName("DataStoreInfo.html");
@@ -47,31 +47,66 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             string changedHtml = string.Empty;
 
-            using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
+            List<string> seasons = ["2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+            List<DSInformationDisplay> dsInfoList = [];
+            foreach (string season in seasons)
             {
-                DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
-                using (HtmlGenerator generator = new HtmlGenerator())
+                string dataStorePath = $@"{dataStoreFolder}{season.RemoveWhiteSpace()}LeaguesData.json";
+
+                using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
                 {
-
-                    generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(headerStyle));
-
-                    Values.Add(dsInfo);
-                    if (callback != null)
-                    {
-                        callback(this);
-                    }
-
-                    string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
-                    HtmlNode title = HtmlNode.CreateNode(htmlNode);
-                    changedHtml = generator.DumpHtml(pageTitle: title,
-                                                     cssStyles: StaticConstants.LocalStyles,
-                                                     javaScript: StaticConstants.LocalJavascript,
-                                                     collapseTo: 1,
-                                                     headElements: headElements.ToList());
+                    dsInfoList.Add(new DSInformationDisplay(season, dsContainer));
                 }
             }
 
+            string headerStyle = "background-color:#d62929;";
+            using (HtmlGenerator generator = new HtmlGenerator())
+            {
+
+                generator.WriteRootTable(dsInfoList, LinqPadCallbacks.ExtendedDSInformationDisplay(headerStyle));
+
+                Values.Add(dsInfoList);
+                if (callback != null)
+                {
+                    callback($"{this.GetType().Name} HTML page created.");
+                }
+
+                string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
+                HtmlNode title = HtmlNode.CreateNode(htmlNode);
+                changedHtml = generator.DumpHtml(pageTitle: title,
+                                                 cssStyles: StaticConstants.LocalStyles,
+                                                 javaScript: StaticConstants.LocalJavascript,
+                                                 collapseTo: 1,
+                                                 headElements: headElements.ToList());
+            }
+
             return changedHtml;
+
+            //using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
+            //{
+            //    DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
+            //    using (HtmlGenerator generator = new HtmlGenerator())
+            //    {
+
+            //        generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(headerStyle));
+
+            //        Values.Add(dsInfo);
+            //        if (callback != null)
+            //        {
+            //            callback($"{this.GetType().Name} HTML page created.");
+            //        }
+
+            //        string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
+            //        HtmlNode title = HtmlNode.CreateNode(htmlNode);
+            //        changedHtml = generator.DumpHtml(pageTitle: title,
+            //                                         cssStyles: StaticConstants.LocalStyles,
+            //                                         javaScript: StaticConstants.LocalJavascript,
+            //                                         collapseTo: 1,
+            //                                         headElements: headElements.ToList());
+            //    }
+            //}
+
+            //return changedHtml;
         }
     }
 

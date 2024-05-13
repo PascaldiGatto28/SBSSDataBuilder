@@ -154,6 +154,12 @@ namespace SBSSData.Application.Support
             return new WinSCPSyncResults(syncResult);
         }
 
+        public static string SwapSeasonText(string seasonText)
+        {
+            string[] parts = seasonText.Split(' ');
+            return $"{parts[1]} {parts[0]}";
+        }
+
         #region Utilities to help in parsing LINQPad generated HTML pages
         public static bool IsRootTableNode(this HtmlNode tableNode)
         {
@@ -205,11 +211,6 @@ namespace SBSSData.Application.Support
 
             return tableNode;
         }
-
-        //public static AddStyleAttribute(HtmlNode htmlNode, string styleAttribute)
-        //{
-        //    "text-align:right"
-        //}
 
         public static HtmlNode? ExcludeTableColumn(HtmlNode tableNode, string columnHeaderText)
         {

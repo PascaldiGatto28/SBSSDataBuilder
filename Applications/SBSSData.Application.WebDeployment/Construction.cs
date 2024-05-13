@@ -7,14 +7,17 @@ using Dumpify;
 using SBSSData.Application.LinqPadQuerySupport;
 using SBSSData.Softball.Common;
 
+using AppContext = SBSSData.Application.Infrastructure.AppContext;
+
+
 namespace SBSSData.Application.WebDeployment
 {
     public class Construction
     {
         public static readonly string edgeFolder = @"C:\Program Files (x86)\Microsoft\Edge Beta\Application\msedge.exe";
         public static readonly string nppFolder = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
-        public static readonly string dsFolder = $@"J:\SBSSDataStore\";
-        public static readonly string htmlFolder = @"HtmlData\";
+        public static readonly string dsFolder = AppContext.Instance.Settings.DataStoreFolder;
+        public static readonly string htmlFolder = AppContext.Instance.Settings.HtmlFolder;
 
         public Construction()
         {
@@ -31,6 +34,16 @@ namespace SBSSData.Application.WebDeployment
             HtmlFolder = $"{htmlFolder}{seasonText.RemoveWhiteSpace()}\\";
         }
 
+        public Construction(string seasonText, 
+                            string dsFolder, 
+                            string htmlFolder,  
+                            Action<object>? callback) 
+        {
+            SeasonText = seasonText;
+            DsFolder = dsFolder;
+            HtmlFolder = htmlFolder;
+            Callback = callback;
+        }
 
         public string SeasonText
         {
@@ -50,12 +63,17 @@ namespace SBSSData.Application.WebDeployment
             set;
         }
 
-        public string OutputPath => $"{DsFolder}{HtmlFolder}";
+        public string OutputPath => $"{dsFolder}{HtmlFolder}{SeasonText.RemoveWhiteSpace()}\\";
 
 
-        public void WriteOutput(string fileName, string html, bool displayHtml = false, bool displayConsole = true)
+        public void WriteOutput(string fileName, string html, bool displayHtml = false, bool displayConsole = false)
         {
             string htmlFilePath = $"{OutputPath}{fileName}.html";
+            if ((fileName == "LogSessions") || (fileName == "DataStoreInfo"))
+            {
+               htmlFilePath = $"{dsFolder}{HtmlFolder}{fileName}.html";
+            }
+
             File.WriteAllText(htmlFilePath, html);
 
             if (displayHtml)
@@ -70,7 +88,7 @@ namespace SBSSData.Application.WebDeployment
 
         }
 
-        public Action<object> Callback
+        public Action<object>? Callback
         {
             get;
             set;

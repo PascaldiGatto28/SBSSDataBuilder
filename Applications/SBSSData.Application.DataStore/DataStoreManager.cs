@@ -1,6 +1,10 @@
 ﻿using SBSSData.Softball;
+using SBSSData.Softball.Common;
 using SBSSData.Softball.Logging;
 using SBSSData.Softball.Stats;
+
+using AppContext = SBSSData.Application.Infrastructure.AppContext;
+
 
 namespace SBSSData.Application.DataStore
 {
@@ -21,7 +25,8 @@ namespace SBSSData.Application.DataStore
         /// Executes the code to either create or update the data store.
         /// </summary>
         /// <remarks>
-        /// An instance of a <see cref="DataStoreContainer"/> is created based up the <see cref="AppSettings.DataStorePath"/>
+        /// An instance of a <see cref="DataStoreContainer"/> is created based up the 
+        /// <see cref="SBSSData.Application.Infrastructure.AppSettings.DataStorePath"/>
         /// value and has then a reference to the current data store. If a data store is altered or created, the 
         /// <see cref="DataStoreContainer.Save(string?, bool, string)"/> method is called to serialize the data to the data store
         /// JSON file.
@@ -53,9 +58,9 @@ namespace SBSSData.Application.DataStore
                 int updated = DataStoreManager.Update(scheduledGames);
                 if (updated > 0)
                 {
-                    log.WriteLine($"{updated} games have been updated");
+                    log.WriteLine($"{updated.NumDesc("game")} updated");
                     bytesWritten = dsContainer.Save();
-                    log.WriteLine($"The data has been serialized to {DataStorePath}; {bytesWritten:#,###} bytes written.");
+                    log.WriteLine($"The data saved to {DataStorePath}; {bytesWritten.FormatInt(extend:true)} bytes written.");
                     modified = true;
                 }
                 else

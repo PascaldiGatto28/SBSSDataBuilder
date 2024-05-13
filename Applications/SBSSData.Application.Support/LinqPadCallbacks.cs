@@ -94,18 +94,54 @@ namespace SBSSData.Application.Support
             return header;
         };
 
-        public static Func<TableNode, string> ExtendedDsInfo(string? headerCssStyle = null, object? value = null)
+        //public static Func<TableNode, string> ExtendedDsInfo(string? headerCssStyle = null, object? value = null)
+        //{
+        //    return (t) =>
+        //    {
+        //        string header = "Data Store Information";
+        //        HtmlNode tableHtmlNode = t.TableHtmlNode;
+        //        int depth = t.Depth();
+        //        int index = t.Index();
+        //        if (!string.IsNullOrWhiteSpace(headerCssStyle))
+        //        {
+        //            tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
+        //        }
+
+        //        return header;
+        //    };
+        //}
+
+        public static Func<TableNode, string> ExtendedDSInformationDisplay(string? headerCssStyle = null, object? value = null)
         {
             return (t) =>
             {
-                string header = "Data Store Information";
                 HtmlNode tableHtmlNode = t.TableHtmlNode;
-                int depth = t.Depth();
-                int index = t.Index();
+                int numSeasons = tableHtmlNode.SelectNodes("./tbody//tr").Count;
+                string header = $"Data Store Information for all {numSeasons} Seasons";
                 if (!string.IsNullOrWhiteSpace(headerCssStyle))
                 {
                     tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
                 }
+
+                HtmlNodeCollection tableColumnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]//th");
+                foreach (HtmlNode th in tableColumnHeaders)
+                {
+                    string columnHeaderTitle = th.GetAttributeValue("title", string.Empty);
+                    if ((columnHeaderTitle == "System.Int32") && th.InnerHtml.Contains("&nbsp;"))
+                    {
+                        th.InnerHtml = th.InnerHtml.Replace("&nbsp;", "<br/>");
+                        th.SetAttributeValue("style", "text-align:center");
+                    }
+                    else
+                    {
+                        th.SetAttributeValue("style", "vertical-align:middle");
+                        //if (tableColumnHeaders.IndexOf(th) == 3)
+                        //{
+                        //    th.InnerHtml = $"Data&nbsp;Store&nbsp;{th.InnerHtml}";
+                        //}
+                    }
+                }
+
                 return header;
             };
         }
@@ -166,10 +202,14 @@ namespace SBSSData.Application.Support
                     rankTableHeader = "No Rankings for Totals";
 
                     // The summary table is not a qualified PLAYER
-                    numberQualified--;
+                    numberQualified = Math.Max(numberQualified--, 0);
                 }
 
-                header = $"Player Summary Stats for the {numEntries} Players and Rankings for {numberQualified} Players With Enough Plate Appearances for All Teams";
+                header = $"Player Summary Stats for the {numEntries} Players";
+                if (numberQualified > 0)
+                {
+                    header += $" and Rankings for {numberQualified} Players With Enough Plate Appearances for All Teams";
+                }
 
                 // Set the new values and then restore the previous values
                 rankTable.Id = rankTable.Id + playerName.RemoveWhiteSpace();
@@ -365,8 +405,8 @@ namespace SBSSData.Application.Support
                                 string gameName = tableHtmlNode.ParentNode?.PreviousSibling.SelectSingleNode("./table/tbody/tr/td").InnerText ?? "Unknown";
                                 header = $"Teams and Players for the {ToSpanItalic(gameName)} Game";
 
-                                Utilities.AlterTableColumnHeader(tableHtmlNode, 1, "RS");
-                                Utilities.AlterTableColumnHeader(tableHtmlNode, 2, "RA");
+                                Utilities.AlterTableColumnHeader(tableHtmlNode, 2, "RS");
+                                Utilities.AlterTableColumnHeader(tableHtmlNode, 3, "RA");
 
                                 HtmlNode outcomeCell = tableHtmlNode.SelectSingleNode("./tbody/tr[1]/td[5]");
                                 HtmlNode centered = HtmlNode.CreateNode($"<td style=\"text-align:center;\">{outcomeCell.InnerHtml}</td>");
@@ -487,7 +527,7 @@ namespace SBSSData.Application.Support
                                 rankTds[j].InnerHtml = percentile.Rank.ToString();
                             }
 
-                            percentTds[0].InnerHtml = $"{psItem.PlayerPercentiles[0].NumPlayers} players having more than 12 plate appearance used for calculations. <span style='float:right'>Percentiles =></span>";
+                            percentTds[0].InnerHtml = $"{psItem.PlayerPercentiles[0].NumPlayers} players having more than 5 plate appearance used for calculations. <span style='float:right'>Percentiles =></span>";
                             rankTds[0].InnerHtml = $"Rankings =>";
 
                         }
@@ -533,13 +573,6 @@ namespace SBSSData.Application.Support
                     Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - (columnIndex-1)}B");
                 }
             }
-
-            //columnIndex = Utilities.GetTableColumnIndex(tableHtmlNode, "OBP");
-            //if (columnIndex != -1)
-            //{
-            //    Utilities.AlterTableColumnHeader(tableHtmlNode, columnIndex, "OB%");
-            //    Utilities.AlterTableColumnHeader(tableHtmlNode, columnIndex + 1, "OB%+Slug");
-            //}
         }
 
 

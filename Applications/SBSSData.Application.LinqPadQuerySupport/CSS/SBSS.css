@@ -89,3 +89,21 @@ span.showme
     font-size: .75em;
     cursor: pointer;
 }
+
+h1.header
+{
+    display: inline-block;
+    font-weight: 500;
+    font-size: 1.25em;
+    color: firebrick;
+}
+
+div.season
+{
+    padding-top: 10px;
+    float: right;
+    color: #4C74B2;
+    margin-right: 20px;
+    font-weight: 500;
+}
+

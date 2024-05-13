@@ -33,7 +33,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string html =  playerSheetsGuide.BuildHtmlPage(seasonText, dataStoreFolder, null);
             if (callback != null)
             {
-                callback(this);
+                callback($"{this.GetType().Name} HTML page created.");
             }
 
             return html;

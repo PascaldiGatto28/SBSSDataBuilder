@@ -9,11 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Configuration\Settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Configuration\Settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dumpify" Version="0.6.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SBSSData.Application.Infrastructure\SBSSData.Application.Infrastructure.csproj" />
     <ProjectReference Include="..\SBSSData.Application.LinqPadQuerySupport\SBSSData.Application.LinqPadQuerySupport.csproj" />
     <ProjectReference Include="..\SBSSData.Application.Support\SBSSData.Application.Support.csproj" />
   </ItemGroup>

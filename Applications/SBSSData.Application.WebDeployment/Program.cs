@@ -1,15 +1,18 @@
 ﻿using Newtonsoft.Json;
 
+using SBSSData.Application.Infrastructure;
 using SBSSData.Softball.Common;
 using SBSSData.Softball.Logging;
 
 using AppContext = SBSSData.Application.Infrastructure.AppContext;
 
-namespace SBSSData.Application.DataStore
+
+namespace SBSSData.Application.WebDeployment
 {
     /// <summary>
     /// The entry point for the application, setting up the environment for the actual work to create
-    /// and maintain the data store.
+    /// HTML pages that require the latest data store and then copying all changed files the HtmlData
+    /// folder to the Web site.
     /// </summary>
     internal sealed class Program
     {
@@ -26,8 +29,7 @@ namespace SBSSData.Application.DataStore
         ///     </item>
         ///     <item>
         ///         Once the <c>AppContext</c> is created, the <see cref="DataStoreManager.Run"/> method
-        ///         is invoked, passing an <see cref="SBSSData.Application.Infrastructure.AppSettings"/> 
-        ///         property to it. The instance of the
+        ///         is invoked, passing an <see cref="AppSettings"/> property to it. The instance of the
         ///         <c>AppSettings</c> class is constructed by the <c>AppContext</c> when it is created.
         ///     </item>
         ///     <item>
@@ -39,20 +41,17 @@ namespace SBSSData.Application.DataStore
         /// </remarks>
         internal static void Main()
         {
-            Console.WriteLine($"\r\nSBSS Data Store Manager -- Building and Updating the SBSS Data Store ({DateTime.Now:dddd MMMM d, yyyy})\r\n");
+            Console.WriteLine($"\r\nSBSS Web Deployment -- Constructing HTML Pages and Deploying to the Web Server ({DateTime.Now:dddd MMMM d, yyyy})\r\n");
 
             AppContext context = AppContext.Instance;
             try
             {
                 using Log log = context.Log;
-                log.WriteLine("Starting the Data Store Manager");
+                log.WriteLine("Starting the Web Publisher");
                 try
                 {
-                    bool dsModified = DataStoreManager.Run((context.Settings).Update);
-                    //if (dsModified)
-                    //{
-                    //    WebPublisher.Run(null, null);
-                    //}
+                    Build build = new Build();
+                    build.Run();
                 }
                 catch (Exception exception)
                 {

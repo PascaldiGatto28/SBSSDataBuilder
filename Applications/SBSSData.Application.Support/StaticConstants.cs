@@ -94,6 +94,22 @@ namespace SBSSData.Application.Support
                 padding-top:0px;
             }
 
+            h1.header
+            {
+                display: inline-block;
+                font-weight: 500;
+                font-size: 1.25em;
+                color: firebrick;
+            }
+
+            div.season
+            {
+                padding-top: 10px;
+                float: right;
+                font-weight: 500;
+                color: #4C74B2;
+            }
+
             """;
         public static readonly string PlayerSheetsStyles =
             """
@@ -108,6 +124,22 @@ namespace SBSSData.Application.Support
             }   
             div.overlay
             {
+            }
+
+            h1.header
+            {
+                display: inline-block;
+                font-weight: 500;
+                font-size: 1.25em;
+                color: firebrick;
+            }
+
+            div.season
+            {
+                padding-top: 10px;
+                float: right;
+                font-weight: 500;
+                color: #4C74B2;
             }
             """;
 

@@ -10,7 +10,7 @@ namespace SBSSData.Application.Support
                                        string NumberOfScheduledGames,
                                        string GamesCompleted,
                                        string GamesPlayed,
-                                       string GamesCancelled,
+                                       string GamesCanceled,
                                        string GamesForfeited,
                                        string NumberOfTeams,
                                        string NumberOfPlayers)

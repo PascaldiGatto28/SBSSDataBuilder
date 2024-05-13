@@ -119,6 +119,21 @@
         {
             display: none;
         }
+        h1.header
+        {
+            display: inline-block;
+            font-weight: 500;
+            font-size: 1.25em;
+            color: firebrick;
+        }
+
+        div.season
+        {
+            padding-top: 10px;
+            float: right;
+            font-weight: 500;
+            color: #4C74B2;
+        }
     </style>
     <script type="text/javascript">
         function openHelp(id)
@@ -150,13 +165,25 @@
     </script>
 </head>
 <body style="margin-left:20px;">
-    <h1 class="header">
+    <!--<h1 class="header">
         Player Sheets Guide
         <span style="font-size:12px; padding-bottom:5px; cursor:pointer; display:inline-block">
             <a href="../index.html" class="navigate">Back to SBSS Data Viewer</a> or
             <a href="PlayerSheets.html" class="navigate" style="padding-left:0px;">Player Sheets</a>
         </span>
-    </h1>
+    </h1>-->
+
+    <div overflow="hidden" class="para">
+        <div style="display:inline-block;">
+            <h1 class="header">
+                Guide to Player Sheets
+            </h1>
+            <a href="PlayerSheets.html" class="navigate">(Go to Player Sheets</a>
+            <span style="font-size:.68em;">or</span>
+            <a style="padding-left:0px;" href="../index.html" class="navigate">Back to SBSS Data Viewer)</a> 
+        </div>
+        <div class="season">For the [[Season YYYY]] Season</div>
+    </div>
 
     <div class="para">
         Player Sheets summarize and display player data for each league in which they played. This page provides a guide
@@ -203,14 +230,14 @@
     <div class="help" id="playerDataHelp">
         <div class="para">
             For every player, this page summarizes their data for each league in which they played. Each league has its own table.
-            the first row of which is the cumulative stats for all games in the league in which the player played. 
+            the first row of which is the cumulative stats for all games in the league in which the player played.
             The last row is the cumulative stats for all players in the league. The second row and third rows display the
             players percentile and rank among players in the league. If the player does not have a enough plate appearances (more
-            than 12), the percentile and rank data does not appear.
+            than 6), the percentile and rank data rows do not appear.
         </div>
         <div class="para">
-            The header of each of the data tables indicates how many the games the player played in, and in how many teams the player 
-            played for. As mentioned above, there's a table for each league played in. 
+            The header of each of the data tables indicates how many the games the player played in, and in how many teams the player
+            played for. As mentioned above, there's a table for each league played in.
             The rows contain data and are organized similarly to what is on SAAA web site. The column abbreviations are essentially
             the same as well.
             There are three additional columns, plate appearances (PA), total number of hits (TH)
@@ -236,7 +263,7 @@
         <div style="padding:0px; height:410px;">
             <iframe id="sheets" srcdoc="" style="scroll-behavior:smooth;"></iframe>
         </div>
-       
+
 
         <div id="overlay" class="overlay">
             <div id="overlayImage" style="text-align:center;">
@@ -259,7 +286,7 @@
             {
                 overlayDiv.style.display = "block";
                 playerPhoto.src = event.target.getAttribute("imageName").trim()
-               
+
             }
             else
             {

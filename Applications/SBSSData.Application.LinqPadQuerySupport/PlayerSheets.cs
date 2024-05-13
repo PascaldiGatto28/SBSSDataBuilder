@@ -70,6 +70,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string resName = assembly.FormatResourceName(HtmlContainerName);
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
             string containerHtml = bytes.ByteArrayToString();
+            containerHtml = containerHtml.Replace("[[Season YYYY]]", Utilities.SwapSeasonText(seasonText));
 
             string headerStyle = "background-color:#d62929; width:680px";
             string path = $"{dataStoreFolder}{season}LeaguesData.json";
@@ -201,9 +202,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         playersList.AppendChild(HtmlNode.CreateNode(playerOption));
                     }
 
+                    HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
+                    viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
                     changedHtml = root.OuterHtml;
 
-                    actionCallback(this);
+                    actionCallback($"{this.GetType().Name} HTML page created.");
                 }
 
             }
@@ -215,7 +218,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
         {
             List<PlayerSheetPercentile>? piList = [];
             List<PlayerStats> ps = query.GetLeaguePlayers(league.Category, league.Day)
-                                        .Where(p => p.PlateAppearances > 12).ToList();
+                                        .Where(p => p.PlateAppearances > 5).ToList();
             int n = ps.Count();
             List<string> propertyNames = ["Average","Slugging","OnBase", "OnBasePlusSlugging"];
             List<PlayerSheetPercentile> playersInfo = [];
