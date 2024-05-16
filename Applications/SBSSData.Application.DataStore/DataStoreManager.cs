@@ -58,7 +58,8 @@ namespace SBSSData.Application.DataStore
                 int updated = DataStoreManager.Update(scheduledGames);
                 if (updated > 0)
                 {
-                    log.WriteLine($"{updated.NumDesc("game")} updated");
+                    string numGames = updated == 1 ? "1 game" : $"{updated} games";
+                    log.WriteLine($"{numGames} updated");
                     bytesWritten = dsContainer.Save();
                     log.WriteLine($"The data saved to {DataStorePath}; {bytesWritten.FormatInt(extend:true)} bytes written.");
                     modified = true;
@@ -94,7 +95,7 @@ namespace SBSSData.Application.DataStore
         /// </summary>
         /// <param name="scheduledGames">
         /// The sequence of <see cref="ScheduledGame"/> which are checked see if they are completed and recorded. If so
-        /// the information is gathered for SSSA web site and the game information recorded in the data store.
+        /// the information is gathered for SSSA Web site and the game information recorded in the data store.
         /// </param>
         /// <returns>The number of games that have been updated; 0 is none have been altered.</returns>
         public static int Update(IEnumerable<ScheduledGame> scheduledGames)

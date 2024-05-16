@@ -12,7 +12,7 @@ League (Replicated for each league)
 There's a lot of data here: 9 leagues, 154 games (5 were cancelled) 298 team records (2 for each game played) 3040 player line scores from the 298 team scores and 159 distinct players (names) for the Fall 2023 season. For that reason, summarizing data with additional information is useful. Here's a list of the more obvious ways of looking at the and comparing data that is supported by SBSSData.Softball.Stats class library. In general. when comparing stats it only really makes sense by league or league category. For example, For example, comparing a community player with recreation player is dubious because capabilities are much different and the teams themselves are much different.
 
 Teams
-There is plenty of data in SSSA web site on the Standings page and Rosters and Stats pages. We want to address the lack of summary data however and make sure the data is in one place so that it's easy to compare.
+There is plenty of data in SSSA Web site on the Standings page and Rosters and Stats pages. We want to address the lack of summary data however and make sure the data is in one place so that it's easy to compare.
 
 For a given league, the team scoring records for each team are aggregatted for each game as well for the all the played games
 

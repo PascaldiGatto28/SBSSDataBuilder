@@ -76,14 +76,14 @@ namespace SBSSData.Softball.Stats
 
 
         public IEnumerable<Game> GetPlayedGames() => Container.GetScheduledGames()
-                                                              .Where(s => s.IsComplete && !s.WasCancelled)
+                                                              .Where(s => s.IsComplete && !s.WasCanceled)
                                                               .Select(s => s.GameResults)
                                                               .Where(s => !s.IsForfeited);
 
         public IEnumerable<Game> GetLeaguePlayedGames(string leagueCategory = "", string day = "")
         {
             return GetLeagueSchedules(leagueCategory, day).SelectMany(l => l.ScheduledGames)
-                                                          .Where(s => s.IsComplete && !s.WasCancelled && !s.GameResults.IsForfeited)
+                                                          .Where(s => s.IsComplete && !s.WasCanceled && !s.GameResults.IsForfeited)
                                                           .Select(s => s.GameResults);
 
 
@@ -99,7 +99,7 @@ namespace SBSSData.Softball.Stats
             IEnumerable<PlayerStats> leaguePlayers = new List<PlayerStats>();
             leaguePlayers = GetLeagueSchedules(leagueCategory, day)
                                           .SelectMany(l => l.ScheduledGames)
-                                          .Where(s => s.IsComplete && !s.WasCancelled && !s.GameResults.IsForfeited)
+                                          .Where(s => s.IsComplete && !s.WasCanceled && !s.GameResults.IsForfeited)
                                           .Select(s => s.GameResults)
                                           .SelectMany(g => g.Teams)
                                           .SelectMany(t => t.Players)
@@ -120,7 +120,7 @@ namespace SBSSData.Softball.Stats
             IEnumerable<PlayerStats> leaguePlayers = GetLeaguePlayers(leagueCategory, day).OrderByDescending(s => s.PlateAppearances);
             IEnumerable<LeagueSchedule> leagueSchedules = GetLeagueSchedules(leagueCategory, day);
             string summaryName = leagueSchedules.Select(s => $"{s.LeagueDescription.ToShortString()} Totals").ToString("\r\n");
-            int numGames = leagueSchedules.SelectMany(l => l.ScheduledGames).Where(s => s.IsComplete && !s.WasCancelled).Count();
+            int numGames = leagueSchedules.SelectMany(l => l.ScheduledGames).Where(s => s.IsComplete && !s.WasCanceled).Count();
 
             PlayerStats summaryStats = new(GetSummaryData(leaguePlayers, summaryName))
             {
@@ -175,7 +175,7 @@ namespace SBSSData.Softball.Stats
         {
             IEnumerable<Game> playedGames = GetLeagueSchedule(leagueCategory, day)
                                            .ScheduledGames
-                                           .Where(s => s.IsComplete && !s.WasCancelled)
+                                           .Where(s => s.IsComplete && !s.WasCanceled)
                                            .Select(s => s.GameResults);
 
             IEnumerable<IGrouping<string, Team>> teamGroups = playedGames.SelectMany(g => g.Teams).GroupBy(t => t.Name);

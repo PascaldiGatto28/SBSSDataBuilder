@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="PlayerCard.cs" />
+    <Compile Remove="PlayerCardV2.cs" />
+    <Compile Remove="PlayerData.cs" />
     <Compile Remove="PlayerStatsDisplay.cs" />
     <Compile Remove="TeamStatsDisplay.cs" />
     <Compile Remove="TeamSummaryStatsDisplay.cs" />

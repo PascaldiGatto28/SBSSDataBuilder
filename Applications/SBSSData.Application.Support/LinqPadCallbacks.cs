@@ -1,10 +1,5 @@
 ﻿// Ignore Spelling: Linq Css
 
-using HtmlAgilityPack;
-
-using SBSSData.Softball.Common;
-using SBSSData.Softball.Stats;
-
 namespace SBSSData.Application.Support
 {
     /// <summary>
@@ -12,573 +7,90 @@ namespace SBSSData.Application.Support
     /// </summary>
     public static class LinqPadCallbacks
     {
-        public static Func<TableNode, string> DsInfoCallback = (t) => $"Data Store Information"; // &mdash; [Table ID={t.Id()}; Depth,Index=({t.Depth()},{t.Index()})]";
-        public static Func<TableNode, string> GamesCallback = (t) =>
-        {
-            string header = string.Empty;
-            HtmlNode tableHtmlNode = t.TableHtmlNode;
-            switch (t.Depth())
-            {
-                case 0:
-                {
-                    int numGames = tableHtmlNode.SelectNodes("./tbody/tr").Count;
-                    HtmlNode gameInfo = tableHtmlNode.SelectSingleNode("./tbody//table/tbody");
-                    string league = gameInfo.SelectNodes("./tr")[4].SelectSingleNode("./td").InnerText;
-                    string title = $"{league} Game";
-                    header = $"Game Results Data for the {numGames.NumDesc(title)}";
-                    break;
-                }
-                case 1:
-                {
-                    if (int.IsEvenInteger(t.Index()))
-                    {
-                        header = "Scheduled Game Information";
-                    }
-                    else
-                    {
-                        string visitor = tableHtmlNode.SelectSingleNode("./tbody/tr[1]/td").InnerText;
-                        string home = tableHtmlNode.SelectSingleNode("./tbody/tr[2]/td").InnerText;
-                        header = $"Teams and Players for the {visitor} vs {home} Game";
 
-                        Utilities.AlterTableColumnHeader(tableHtmlNode, 1, "RS");
-                        Utilities.AlterTableColumnHeader(tableHtmlNode, 2, "RA");
-
-                        HtmlNode outcomeCell = tableHtmlNode.SelectSingleNode("./tbody/tr[1]/td[5]");
-                        HtmlNode centered = HtmlNode.CreateNode($"<td style=\"text-align:center;\">{outcomeCell.InnerHtml}</td>");
-                        outcomeCell.ParentNode.ReplaceChild(centered, outcomeCell);
-
-                        outcomeCell = tableHtmlNode.SelectSingleNode("./tbody/tr[2]/td[5]");
-                        centered = HtmlNode.CreateNode($"<td style=\"text-align:center;\">{outcomeCell.InnerHtml}</td>");
-                        outcomeCell.ParentNode.ReplaceChild(centered, outcomeCell);
-                    }
-                    break;
-                }
-                case 2:
-                {
-                    int rowNumber = t.Index() + 1;
-                    string teamName = t.Parent?.TableHtmlNode.SelectSingleNode($"./tbody/tr[{rowNumber}]/td").InnerText ?? "Unknown";
-                    header = $"Players for {teamName}";
-                    tableHtmlNode = t.TableHtmlNode;
-
-                    HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
-                    lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
-
-                    List<HtmlNode> columnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]/th").ToList();
-
-                    for (int i = 5; i < 8; i++)
-                    {
-                        Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - 4}B");
-                    }
-
-                    Utilities.AlterTableColumnHeader(tableHtmlNode, 15, "OB%");
-                    Utilities.AlterTableColumnHeader(tableHtmlNode, 16, "OB%+Slug");
-
-                    HtmlNode name = lastRow.SelectSingleNode("./td[2]");
-                    name.Attributes.Add("style", "background-color:red");
-                    HtmlNode newName = HtmlNode.CreateNode($"<td>{name.InnerText} Totals</td>");
-                    name.ParentNode.ReplaceChild(newName, name);
-
-                    // Remove the number of games column
-                    tableHtmlNode.SelectSingleNode("thead/tr[2]/th").Remove();
-                    tableHtmlNode.SelectNodes("tbody/tr/td[1]").ToList().ForEach(n => n.Remove());
-
-                    break;
-                }
-
-                default:
-                {
-                    break;
-                }
-            }
-
-            return header;
-        };
-
-        //public static Func<TableNode, string> ExtendedDsInfo(string? headerCssStyle = null, object? value = null)
+        //public static void UpdatePlayerColumnNames(HtmlNode tableHtmlNode)
         //{
-        //    return (t) =>
+        //    int columnIndex = Utilities.GetTableColumnIndex(tableHtmlNode, "Singles");
+        //    if (columnIndex != -1)
         //    {
-        //        string header = "Data Store Information";
-        //        HtmlNode tableHtmlNode = t.TableHtmlNode;
-        //        int depth = t.Depth();
-        //        int index = t.Index();
-        //        if (!string.IsNullOrWhiteSpace(headerCssStyle))
+        //        for (int i = columnIndex; i < (columnIndex + 3); i++)
         //        {
-        //            tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
+        //            Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - (columnIndex - 1)}B");
         //        }
-
-        //        return header;
-        //    };
+        //    }
         //}
 
-        public static Func<TableNode, string> ExtendedDSInformationDisplay(string? headerCssStyle = null, object? value = null)
-        {
-            return (t) =>
-            {
-                HtmlNode tableHtmlNode = t.TableHtmlNode;
-                int numSeasons = tableHtmlNode.SelectNodes("./tbody//tr").Count;
-                string header = $"Data Store Information for all {numSeasons} Seasons";
-                if (!string.IsNullOrWhiteSpace(headerCssStyle))
-                {
-                    tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
-                }
-
-                HtmlNodeCollection tableColumnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]//th");
-                foreach (HtmlNode th in tableColumnHeaders)
-                {
-                    string columnHeaderTitle = th.GetAttributeValue("title", string.Empty);
-                    if ((columnHeaderTitle == "System.Int32") && th.InnerHtml.Contains("&nbsp;"))
-                    {
-                        th.InnerHtml = th.InnerHtml.Replace("&nbsp;", "<br/>");
-                        th.SetAttributeValue("style", "text-align:center");
-                    }
-                    else
-                    {
-                        th.SetAttributeValue("style", "vertical-align:middle");
-                        //if (tableColumnHeaders.IndexOf(th) == 3)
-                        //{
-                        //    th.InnerHtml = $"Data&nbsp;Store&nbsp;{th.InnerHtml}";
-                        //}
-                    }
-                }
-
-                return header;
-            };
-        }
-
-        public static string ProcessPlayerSummaryStats(HtmlNode tableHtmlNode, int numEntries, string shortLeagueName)
-        {
-            string imagePath = "../PlayerPhotos/";
-            string header = string.Empty;
-
-            UpdatePlayerColumnNames(tableHtmlNode);
-
-            HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
-            lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
-
-            HtmlNode root = tableHtmlNode.Ancestors("#document").First();
-            IEnumerable<HtmlNode> rows = tableHtmlNode.SelectNodes($"./tbody/tr");
-
-            tableHtmlNode.SelectNodes("./tbody//tr/td[last()]/table").ToList().ForEach(n =>
-            {
-                n.Attributes.Add("style", "width:160px");
-            });
-
-            HtmlNode overlay = HtmlNode.CreateNode(StaticConstants.OverlayTemplate);
-            //string overlayHtml = overlay.OuterHtml;
-            HtmlNode body = root.SelectSingleNode("//body");
-            HtmlNode introContent = root.SelectSingleNode("//div[@id='IntroContent']");
-            HtmlNode overlayContainer = HtmlNode.CreateNode($"""<div id="{shortLeagueName.RemoveWhiteSpace()}OverlayContainer"></div>""");
-            body.InsertAfter(overlayContainer, body.FirstChild);
-            int numberQualified = 0;
-            foreach (HtmlNode row in rows)
-            {
-                HtmlNode player = row.SelectSingleNode("./td[2]");
-                player.Attributes.Add("style", "cursor:pointer;");
-                string playerName = player.InnerText;
-
-                // The rank table needs to be "copied" to the overlay, but the ID needs to be changed
-                // so collapse and expand works, the title should be set to the value of the 
-                // source rank table. So we get those values, and then restore them after the source
-                // rank has been copied.
-                HtmlNode rankTable = row.SelectSingleNode("./td[last()]/table");
-                rankTable.Attributes.Add("style", "width:160px");
-                string rankTableId = rankTable.Id;
-                TableNode rankTableNode = new TableNode(rankTable);
-                string headerText = rankTable.SelectSingleNode("./tbody/tr[1]/td").InnerText;
-                string rankTableHeader = string.Empty;
-                if (headerText == "NA")
-                {
-                    rankTableHeader = "Not Enough Data";
-                }
-                else
-                {
-                    rankTableHeader = "Player Rankings";
-                    numberQualified++;
-                }
-
-                if (playerName.Contains("Totals"))
-                {
-                    rankTableHeader = "No Rankings for Totals";
-
-                    // The summary table is not a qualified PLAYER
-                    numberQualified = Math.Max(numberQualified--, 0);
-                }
-
-                header = $"Player Summary Stats for the {numEntries} Players";
-                if (numberQualified > 0)
-                {
-                    header += $" and Rankings for {numberQualified} Players With Enough Plate Appearances for All Teams";
-                }
-
-                // Set the new values and then restore the previous values
-                rankTable.Id = rankTable.Id + playerName.RemoveWhiteSpace();
-
-                // The players who qualify for ranking
-                TableTree.SetTableHeader(rankTableNode, (t) => rankTableHeader);
-                string rankTableHtml = rankTable.OuterHtml;
-                rankTable.Id = rankTableId;
-
-                // Finish up the overlay for this player. 
-
-                Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
-
-                string playerKey = string.Empty;
-                string? imageName;
-                string[] playerNameSplit = playerName.Split(' ');
-                if (playerName.Contains("Totals") && (playerNameSplit.Length > 2))
-                {
-                    playerKey = "Totals, League";
-                    imageName = "League_Totals";
-                }
-                else
-                {
-                    if (playerNameSplit.Length == 2)
-                    {
-                        playerKey = $"{playerNameSplit[1]}, {playerNameSplit[0]}";
-                    }
-                    else
-                    {
-                        playerKey = $"Unknown, {string.Empty}";
-                    }
-
-                    if (!map.TryGetValue(playerKey, out imageName))
-                    {
-                        imageName = "Available_Photo-Not";
-                    }
-                }
-
-                string newOverlayHtml = StaticConstants.BuildOverlay(imagePath, imageName, rankTableHtml);
-                HtmlNode newOverlay = HtmlNode.CreateNode(newOverlayHtml);
-
-                newOverlay.Id = $"{playerName.RemoveWhiteSpace()}{shortLeagueName.RemoveWhiteSpace()}Overlay";
-                string newOverlayId = newOverlay.Id;
-                string dataName = $"{playerName.RemoveWhiteSpace()}";
-                newOverlay.Attributes.Add("dataName", dataName);
-                newOverlay.Attributes.Add("style", "display:none");
-                newOverlayHtml = newOverlay.OuterHtml.Replace("\r\n", " ");
-
-                // Insert this new overlay in the page so it can be found by the mouseover and mouseout event handlers.
-
-                //HtmlNode overlayContainer = HtmlNode.CreateNode("""<div style="display:none" id="overlayContainer"></div>""");
-                //body.InsertAfter(overlayContainer, body.FirstChild);
-                overlayContainer.AppendChild(newOverlay);
-                //body.InsertAfter(newOverlay, body.Child);
-                //body.InsertAfter(newOverlay, body.FirstChild);
-                player.Attributes.Add("onmouseover", $"getElementById('{newOverlayId}').style.display='table-cell'");
-                player.Attributes.Add("onmouseout", $"getElementById('{newOverlayId}').style.display='none';");
-
-                //tableHtmlNode.SelectNodes("./tbody//tr/td[last()]").ToList().ForEach(n =>
-                //{
-                //    n.Attributes.Add("style", "width:160px; display:none");
-                //});
-
-                //tableHtmlNode.SelectSingleNode("./thead/tr[2]/th[last()]").Attributes.Add("style", "display:none");
-            }
-
-            return header;
-        }
-
-        //private static string helpNodeHtml = """
-        //                                      <a style="float:right; 
-        //                                          font-weight:500; 
-        //                                          color:firebrick; 
-        //                                          background-color:white; 
-        //                                          padding-left:10px; 
-        //                                          padding-right:10px" 
-        //                                          onclick="console.log(getElementById('helpOverlay')); getElementById('helpOverlay').style.display='block';">Help</a>
-        //                                    """;
-        public static Func<TableNode, string> ExtendedGamesTeamPlayers(string? info = null, string? headerCssStyle = null, object? value = null)
-        {
-            return (t) =>
-            {
-                string fullLeagueName = info ?? "league";
-                string shortLeagueName = fullLeagueName.Substring(0, fullLeagueName.LastIndexOf(' '));
-                HtmlNode tableHtmlNode = t.TableHtmlNode;
-                string header = t.Header().InnerText;
-                int depth = t.Depth();
-                int index = t.Index();
-
-                // Do not count the summary totals row. (see below)
-                int numEntries = tableHtmlNode.SelectNodes("./tbody/tr").Count();
-                HtmlNode? group = null;
-                if (depth == 1)
-                {
-                    group = tableHtmlNode.ParentNode?.PreviousSibling;
-                }
-                else if (depth == 2)
-                {
-                    group = t.Parent?.TableHtmlNode.ParentNode.PreviousSibling;
-                }
-
-                string groupName = (group != null) ? group.InnerText.Replace("&nbsp;", " ") : string.Empty;
-
-                //Console.WriteLine($"Processing {t.Id()} in group {groupName} at depth {t.Depth()} and index {t.Index()}");
-
-
-                switch (depth)
-                {
-                    case 0:
-                    {
-                        header = $"Games, Teams and Players for the {fullLeagueName} League";
-                        tableHtmlNode.SelectNodes("./tbody/tr/th").ToList().ForEach(th => th.Attributes.Add("style", "display:none"));
-                        tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
-
-                        //HtmlNode headerNode = t.Header();
-                        //HtmlNode helpNode = HtmlNode.CreateNode(helpNodeHtml);
-                        //headerNode.ParentNode.AppendChild(helpNode);
-                        break;
-                    }
-                    case 1:
-                    {
-                        //HtmlNode headerNode = t.Header();
-                        //HtmlNode helpNode = HtmlNode.CreateNode(helpNodeHtml);
-                        //headerNode.ParentNode.AppendChild(helpNode);
-                        switch (index)
-                        {
-                            case 0:
-                            {
-                                string title = $"{shortLeagueName} Game";
-                                if (numEntries == 0)
-                                {
-                                    header = "No Games Have Been Played";
-                                }
-                                else
-                                {
-                                    header = $"Game Results Data for the {numEntries.NumDesc(title)}";
-                                }
-                                break;
-                            }
-                            case 1:
-                            {
-                                if (numEntries == 0)
-                                {
-                                    header = "No Teams Have Played";
-                                }
-                                else
-                                {
-                                    header = $"Team Summary Data and Standings for the {numEntries} {shortLeagueName} Teams";
-                                }
-                                break;
-                            }
-                            case 2:
-                            {
-                                if (numEntries == 0)
-                                {
-                                    header = "No Players Have Played";
-                                }
-                                else
-                                {
-                                    header = ProcessPlayerSummaryStats(tableHtmlNode, numEntries - 1, shortLeagueName);
-                                }
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    case 2:
-                    {
-                        if (groupName == "Team Players")
-                        {
-                            int rowNumber = index + 1;
-                            string? teamName = t.Parent?.TableHtmlNode?.SelectSingleNode($"./tbody/tr[{rowNumber}]").FirstChild.InnerText;
-                            header = $"Summary Stats for all {ToSpanItalic(teamName ?? string.Empty)} Players";
-
-                            HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
-                            lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
-
-                            UpdatePlayerColumnNames(tableHtmlNode);
-
-                            HtmlNode name = lastRow.SelectSingleNode("./td[2]");
-                            HtmlNode newName = HtmlNode.CreateNode($"<td>{name.InnerText} Totals</td>");
-                            name.ParentNode.ReplaceChild(newName, name);
-
-                        }
-                        else if (groupName == "Games and Teams")
-                        {
-                            if (int.IsEvenInteger(index))
-                            {
-                                header = "Scheduled Game Information";
-                            }
-                            else
-                            {
-                                string gameName = tableHtmlNode.ParentNode?.PreviousSibling.SelectSingleNode("./table/tbody/tr/td").InnerText ?? "Unknown";
-                                header = $"Teams and Players for the {ToSpanItalic(gameName)} Game";
-
-                                Utilities.AlterTableColumnHeader(tableHtmlNode, 2, "RS");
-                                Utilities.AlterTableColumnHeader(tableHtmlNode, 3, "RA");
-
-                                HtmlNode outcomeCell = tableHtmlNode.SelectSingleNode("./tbody/tr[1]/td[5]");
-                                HtmlNode centered = HtmlNode.CreateNode($"<td style=\"text-align:center;\">{outcomeCell.InnerHtml}</td>");
-                                outcomeCell.ParentNode.ReplaceChild(centered, outcomeCell);
-
-                                outcomeCell = tableHtmlNode.SelectSingleNode("./tbody/tr[2]/td[5]");
-                                centered = HtmlNode.CreateNode($"<td style=\"text-align:center;\">{outcomeCell.InnerHtml}</td>");
-                                outcomeCell.ParentNode.ReplaceChild(centered, outcomeCell);
-                            }
-                        }
-                        break;
-                    }
-                    case 3:
-                    {
-                        int rowNumber = t.Index() + 1;
-                        string teamName = t.Parent?.TableHtmlNode.SelectSingleNode($"./tbody/tr[{rowNumber}]/td").InnerText ?? "Unknown";
-                        header = $"Players for {ToSpanItalic(teamName)}";
-                        tableHtmlNode = t.TableHtmlNode;
-
-                        HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
-                        lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
-
-                        UpdatePlayerColumnNames(tableHtmlNode);
-
-                        HtmlNode name = lastRow.SelectSingleNode("./td[2]");
-                        HtmlNode newName = HtmlNode.CreateNode($"<td>{name.InnerText} Totals</td>");
-                        name.ParentNode.ReplaceChild(newName, name);
-
-                        // Remove the number of games column
-                        tableHtmlNode.SelectSingleNode("thead/tr[2]/th").Remove();
-                        tableHtmlNode.SelectNodes("tbody/tr/td[1]").ToList().ForEach(n => n.Remove());
-                        break;
-                    }
-                    default:
-                    {
-                        break;
-                    }
-                }
-
-                //header += $" &mdash; [Depth:{t.Depth()}; Index:{t.Index()}; Entries:{numEntries}]";
-                return header;
-            };
-        }
-
-        public static Func<TableNode, string> ExtendedPlayerSheets(string? headerCssStyle, PlayerSheetContainer playerSheetContainer)
-        {
-            return (t) =>
-            {
-                HtmlNode tableHtmlNode = t.TableHtmlNode;
-                string header = t.Header().InnerText;
-                string introductionHeader = $"""
-                                                <div style="font-weight:500; font-family:'Segoe UI Semibold'; font-size:14px; 
-                                                color:white; background-color:#d62929; 
-                                                border-radius:15px; 
-                                                padding:7px; margin:-8px 10px 5px 15px; width:640px; text-align:center;">
-                                                   {playerSheetContainer.Introduction}
-                                                </div>
-                                                """;
-
-                if (t.Depth() == 0)
-                {
-                    // Add an identifier (player name) to the table.
-                    tableHtmlNode.Attributes.Add("playerName", playerSheetContainer.PlayerSheetItems.First().PlayerName);
-
-                    // Add background color to the containing cell to get a contrast with the text that is placed in the anchor
-                    // tag.
-                    HtmlNode td = tableHtmlNode.SelectSingleNode("./thead/tr/td");
-                    string headerStyle = td.GetAttributeValue("style", null);
-                    headerStyle = string.IsNullOrEmpty(headerStyle) ? "background-color:#a6bad9;" : $""""background-color:#a6bad9; {headerStyle}"""";
-                    td.Attributes.Add("style", headerStyle);
-
-                    header = introductionHeader; // playerSheetContainer.Introduction;
-                }
-                else if (t.Depth() == 1)
-                {
-                    header = playerSheetContainer.PlayerSheetItems[t.Index()].Description;
-                    UpdatePlayerColumnNames(tableHtmlNode);
-                    tableHtmlNode.SelectSingleNode("./thead/tr[2]/th[1]").Remove();
-                    tableHtmlNode.SelectNodes("./tbody/tr/td[1]").ToList().ForEach(n => n.Remove());
-
-                    string ranksTR = """
-                                    <tr style="background-color:#e8efff">
-                                    <td colspan="12" class="n";>This is the Ranks </td>
-                                    <td class="n">A</td>
-                                    <td class="n">B</td>
-                                    <td class="n">C</td>
-                                    <td class="n">D</td>
-                                    </tr>
-                                    """;
-                    string percentilesTR = """
-                                            <tr style="background-color:#e8efff">
-                                            <td colspan="12" class="n"; style="text-align:left;">This is the Percentiles </td>
-                                            <td class="n">A</td>
-                                            <td class="n">B</td>
-                                            <td class="n">C</td>
-                                            <td class="n">D</td>
-                                            </tr>
-                                            """;
-                    List<PlayerSheetItem> psItems = playerSheetContainer.PlayerSheetItems;
-                    string league = tableHtmlNode.SelectSingleNode("./tbody/tr[2]/td[1]").InnerText;
-                    for (int i = 0; i <psItems.Count; i++)
-                    {
-                        PlayerSheetItem psItem = psItems[i];
-                        if (psItem.PlayerPercentiles.Any() && (league == psItem.LeagueName))
-                        {
-                            HtmlNode ranksRow = HtmlNode.CreateNode(ranksTR);
-                            HtmlNode firstRow = tableHtmlNode.SelectSingleNode("./tbody/tr");
-                            tableHtmlNode.SelectSingleNode("./tbody").InsertAfter(ranksRow, firstRow);
-                            HtmlNode percentilesRow = HtmlNode.CreateNode(percentilesTR);
-                            //percentilesRow.SelectSingleNode("./td[1]").InnerHtml = "This is the percentiles!!!";
-                            tableHtmlNode.SelectSingleNode("./tbody").InsertAfter(percentilesRow, firstRow);
-                            List<HtmlNode> percentTds = percentilesRow.SelectNodes(".//td").ToList();
-                            List<HtmlNode> rankTds = ranksRow.SelectNodes(".//td").ToList();
-                            for (int j = 1; j < percentTds.Count; j++)
-                            {
-                                PlayerSheetPercentile percentile = psItem.PlayerPercentiles[j - 1];
-                                percentTds[j].InnerHtml = percentile.PercentileToString();
-                                rankTds[j].InnerHtml = percentile.Rank.ToString();
-                            }
-
-                            percentTds[0].InnerHtml = $"{psItem.PlayerPercentiles[0].NumPlayers} players having more than 5 plate appearance used for calculations. <span style='float:right'>Percentiles =></span>";
-                            rankTds[0].InnerHtml = $"Rankings =>";
-
-                        }
-                    }
-
-
-                }
-
-                //tableHtmlNode.SetAttributeValue("style", "display:none");
-
-                return header; // + $" Depth = {t.Depth()} Index = {t.Index()}";
-            };
-        }
-
-        //public static Func<TableNode, string> ExtendedPlayerSheets(string? headerCssStyle, PlayerSheetItem playerSheetItem)
+        //public static List<HtmlNode> GetTableColumnHeaders(HtmlNode tableHtmlNode)
         //{
-        //    return (t) =>
+        //    HtmlNodeCollection tableColumnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]//th");
+        //    if (tableColumnHeaders == null)
         //    {
-        //        HtmlNode tableHtmlNode = t.TableHtmlNode;
-        //        string header = playerSheetItem.Description;
-        //        for (int i = 3; i > 0; i--)
-        //        {
-        //            tableHtmlNode.SelectSingleNode($"thead/tr[2]/th[{i}]").Remove();
-        //            tableHtmlNode.SelectNodes($"tbody/tr/td[{i}]").ToList().ForEach(n => n.Remove());
-        //        }
-        //        if (!string.IsNullOrWhiteSpace(headerCssStyle))
-        //        {
-        //            tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
-        //        }
-
-        //        UpdatePlayerColumnNames(tableHtmlNode);
-
-        //        return header;
-        //    };
+        //        tableColumnHeaders = tableHtmlNode.SelectNodes("./tbody//tr/th");
+        //    }
+                
+        //    return tableColumnHeaders.ToList();
         //}
-        private static void UpdatePlayerColumnNames(HtmlNode tableHtmlNode)
-        {
-            int columnIndex = Utilities.GetTableColumnIndex(tableHtmlNode, "Singles");
-            if (columnIndex != -1)
-            {
-                for (int i = columnIndex; i < (columnIndex + 3); i++)
-                {
-                    Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - (columnIndex-1)}B");
-                }
-            }
-        }
+
+        //public static string ToSpanItalic(string text)
+        //{
+        //    return $"""<span style="font-style:italic">{text}</span>""";
+        //}
+
+        //public static HtmlNode UpdatePlayerHeaderTitles(HtmlNode tableHtmlNode, bool includeGames, bool includeRankings = false)
+        //{
+        //    List<HtmlNode> tableColumnHeaders = GetTableColumnHeaders(tableHtmlNode);
+
+        //    int j = 0;
+        //    int numHeaders = tableColumnHeaders.Count;
+        //    if (includeRankings)
+        //    {
+        //        numHeaders--;
+        //    }
+
+        //    for (int i = 0; i < numHeaders; i++)
+        //    {
+
+        //        HtmlNode th = tableColumnHeaders[i];
+        //        if (!includeGames && (i == 0))
+        //        {
+        //            j++;
+        //        }
+
+        //        th.SetAttributeValue("title", playerTitles[j++]);
+        //    }
+
+        //    if (includeRankings)
+        //    {
+        //        tableColumnHeaders[numHeaders--].SetAttributeValue("title", playerTitles.Last());
+        //    }
+
+        //    return tableHtmlNode;
+        //}
+
+        //public static readonly List<string> playerTitles =
+        //                  [
+        //                    "Number of games played",
+        //                    "Player name",
+        //                    "Plate appearances",
+        //                    "Official at bats",
+        //                    "Runs",
+        //                    "Singles",
+        //                    "Doubles",
+        //                    "Triples",
+        //                    "Home Runs",
+        //                    "Bases on Balls (walks)",
+        //                    "Sacrifice Files",
+        //                    "Total Hits = sum of singles, doubles, triples and home runs",
+        //                    "Total Bases = singles + 2*doubles + 3*triples + 4*home runs",
+        //                    "Average = TH / AB",
+        //                    "Slugging = TB / AB",
+        //                    "On-Base Percentage = Sum of total hits and walks divided by the plate appearances; (tH+BB)/PA",
+        //                    "On-Base Plus Slugging = Sum of On-base percentage and slugging; OBP + SLG",
+        //                    "Rankings for each player for AVG, SLG, OBP, OPS",
+        //                  ];
 
 
-        private static string ToSpanItalic(string text)
-        {
-            return $"""<span style="font-style:italic">{text}</span>""";
-        }
+
+
     }
 }

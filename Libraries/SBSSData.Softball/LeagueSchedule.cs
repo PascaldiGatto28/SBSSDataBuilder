@@ -15,7 +15,7 @@ namespace SBSSData.Softball
     /// Because the default constructor is private and all property setters are "private init", instances of this class are
     /// essentially immutable, although because the <see cref="ScheduledGames"/> property is a sequence of 
     /// <see cref="ScheduledGame"/> objects, the individual scheduled game information is altered when the game is played or
-    /// cancelled.
+    /// canceled.
     /// </para>
     /// </remarks>
     /// <seealso cref="LeaguesData"/>
@@ -116,7 +116,7 @@ namespace SBSSData.Softball
                 HtmlNode article = htmlDocument.DocumentNode.SelectSingleNode("//article");
                 HtmlNodeCollection tableRows = article.SelectNodes("//table/tbody/tr");
 
-                // If rows is null, that means that even though the league location is on the SSSA web site, there are
+                // If rows is null, that means that even though the league location is on the SSSA Web site, there are
                 // no scheduled games, that is, really no league.
                 if (tableRows != null)
                 {

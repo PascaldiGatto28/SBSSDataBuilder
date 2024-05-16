@@ -108,9 +108,9 @@ namespace SBSSData.Application.Support
 
         /// <summary>
         /// Moves any changes from the local to the remove ftp.walkingtree.com Data folder. This is the location
-        /// of the sbssdata.info web site.
+        /// of the sbssdata.info Web site.
         /// </summary>
-        /// <param name="source">The local folder where the web site files are located. The default is 
+        /// <param name="source">The local folder where the Web site files are located. The default is 
         /// J:\SBSSDataStore\HtmlData<
         /// /param>
         /// <param name="isTest">If <c>true</c>, the target folder is "/quietcre/TestSync" (a test site); otherwise
@@ -160,7 +160,7 @@ namespace SBSSData.Application.Support
             return $"{parts[1]} {parts[0]}";
         }
 
-        #region Utilities to help in parsing LINQPad generated HTML pages
+        #region Utilities to help in parsing LINQPad generated HTML pages and to modify the HTML
         public static bool IsRootTableNode(this HtmlNode tableNode)
         {
             bool isRoot = false;
@@ -242,6 +242,87 @@ namespace SBSSData.Application.Support
 
             return tableTree;
         }
+
+        public static void UpdatePlayerColumnNames(HtmlNode tableHtmlNode)
+        {
+            int columnIndex = Utilities.GetTableColumnIndex(tableHtmlNode, "Singles");
+            if (columnIndex != -1)
+            {
+                for (int i = columnIndex; i < (columnIndex + 3); i++)
+                {
+                    Utilities.AlterTableColumnHeader(tableHtmlNode, i, $"{i - (columnIndex - 1)}B");
+                }
+            }
+        }
+
+        public static List<HtmlNode> GetTableColumnHeaders(HtmlNode tableHtmlNode)
+        {
+            HtmlNodeCollection tableColumnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]//th");
+            if (tableColumnHeaders == null)
+            {
+                tableColumnHeaders = tableHtmlNode.SelectNodes("./tbody//tr/th");
+            }
+
+            return tableColumnHeaders.ToList();
+        }
+
+        public static string ToSpanItalic(string text)
+        {
+            return $"""<span style="font-style:italic">{text}</span>""";
+        }
+
+        public static HtmlNode UpdatePlayerHeaderTitles(HtmlNode tableHtmlNode, bool includeGames, bool includeRankings = false)
+        {
+            List<HtmlNode> tableColumnHeaders = GetTableColumnHeaders(tableHtmlNode);
+
+            int j = 0;
+            int numHeaders = tableColumnHeaders.Count;
+            if (includeRankings)
+            {
+                numHeaders--;
+            }
+
+            for (int i = 0; i < numHeaders; i++)
+            {
+
+                HtmlNode th = tableColumnHeaders[i];
+                if (!includeGames && (i == 0))
+                {
+                    j++;
+                }
+
+                th.SetAttributeValue("title", playerTitles[j++]);
+            }
+
+            if (includeRankings)
+            {
+                tableColumnHeaders[numHeaders--].SetAttributeValue("title", playerTitles.Last());
+            }
+
+            return tableHtmlNode;
+        }
+
+        public static readonly List<string> playerTitles =
+                          [
+                            "Number of games played",
+                            "Player name",
+                            "Plate appearances",
+                            "Official at bats",
+                            "Runs",
+                            "Singles",
+                            "Doubles",
+                            "Triples",
+                            "Home Runs",
+                            "Bases on Balls (walks)",
+                            "Sacrifice Files",
+                            "Total Hits = sum of singles, doubles, triples and home runs",
+                            "Total Bases = singles + 2*doubles + 3*triples + 4*home runs",
+                            "Average = TH / AB",
+                            "Slugging = TB / AB",
+                            "On-Base Percentage = Sum of total hits and walks divided by the plate appearances; (tH+BB)/PA",
+                            "On-Base Plus Slugging = Sum of On-base percentage and slugging; OBP + SLG",
+                            "Rankings for each player for AVG, SLG, OBP, OPS",
+                          ];
         #endregion
 
     }

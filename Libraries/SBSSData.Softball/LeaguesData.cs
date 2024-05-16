@@ -78,7 +78,7 @@
         /// </param>
         /// <returns>A <c>LeaguesData</c> instance; <c>null</c> is never returned.</returns>
         /// <exception cref="InvalidOperationException">If any error occurs that prevents the data store to be built. The
-        /// most common error occurs if code that extracts the information from the web site pages is not valid. 
+        /// most common error occurs if code that extracts the information from the Web site pages is not valid. 
         /// </exception>
         public static LeaguesData ConstructLeaguesData(string? saddleBrookeSeniorSoftball = null, Action<string>? message = null)
         {

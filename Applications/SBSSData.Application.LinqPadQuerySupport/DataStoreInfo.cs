@@ -1,4 +1,4 @@
-﻿// Ignore Spelling: Linq
+﻿// Ignore Spelling: Linq Css
 
 using System.Reflection;
 
@@ -36,10 +36,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            //string text = seasonText;
-            //string season = seasonText.RemoveWhiteSpace();
-            //string dataStorePath = $@"{dataStoreFolder}{season}LeaguesData.json";
-
             Assembly assembly = typeof(LogSessions).Assembly;
             string resName = assembly.FormatResourceName("DataStoreInfo.html");
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
@@ -59,11 +55,9 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 }
             }
 
-            string headerStyle = "background-color:#d62929;";
             using (HtmlGenerator generator = new HtmlGenerator())
             {
-
-                generator.WriteRootTable(dsInfoList, LinqPadCallbacks.ExtendedDSInformationDisplay(headerStyle));
+                generator.WriteRootTable(dsInfoList, ExtendedDSInformationDisplay(headerStyle));
 
                 Values.Add(dsInfoList);
                 if (callback != null)
@@ -81,33 +75,56 @@ namespace SBSSData.Application.LinqPadQuerySupport
             }
 
             return changedHtml;
-
-            //using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
-            //{
-            //    DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
-            //    using (HtmlGenerator generator = new HtmlGenerator())
-            //    {
-
-            //        generator.WriteRootTable(dsInfo, LinqPadCallbacks.ExtendedDsInfo(headerStyle));
-
-            //        Values.Add(dsInfo);
-            //        if (callback != null)
-            //        {
-            //            callback($"{this.GetType().Name} HTML page created.");
-            //        }
-
-            //        string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
-            //        HtmlNode title = HtmlNode.CreateNode(htmlNode);
-            //        changedHtml = generator.DumpHtml(pageTitle: title,
-            //                                         cssStyles: StaticConstants.LocalStyles,
-            //                                         javaScript: StaticConstants.LocalJavascript,
-            //                                         collapseTo: 1,
-            //                                         headElements: headElements.ToList());
-            //    }
-            //}
-
-            //return changedHtml;
         }
+
+        public static Func<TableNode, string> ExtendedDSInformationDisplay(string? headerCssStyle = null, object? value = null)
+        {
+            return (t) =>
+            {
+                HtmlNode tableHtmlNode = t.TableHtmlNode;
+                int numSeasons = tableHtmlNode.SelectNodes("./tbody//tr").Count;
+                string header = $"Data Store Information for all {numSeasons} Seasons";
+                if (!string.IsNullOrWhiteSpace(headerCssStyle))
+                {
+                    tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
+                }
+
+                HtmlNodeCollection tableColumnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]//th");
+
+                //foreach (HtmlNode th in tableColumnHeaders)
+                for (int i = 0; i < tableColumnHeaders.Count; i++)
+                {
+                    HtmlNode th = tableColumnHeaders[i];
+                    string columnHeaderTitle = th.GetAttributeValue("title", string.Empty);
+                    if ((columnHeaderTitle == "System.Int32") && th.InnerHtml.Contains("&nbsp;"))
+                    {
+                        th.InnerHtml = th.InnerHtml.Replace("&nbsp;", "<br/>");
+                        th.SetAttributeValue("style", "text-align:center");
+                    }
+                    else
+                    {
+                        th.SetAttributeValue("style", "vertical-align:middle");
+                    }
+
+                    tableColumnHeaders[i].SetAttributeValue("title", titles[i]);
+                }
+
+                return header;
+            };
+        }
+
+        public static readonly List<string> titles = 
+                          ["Calendar season followed by year",
+                           "When the Data Store was last updated and saved",
+                           "Number of leagues in the season",
+                           "The size of the Data Store on disk",
+                           "Number of scheduled games",
+                           "Number of completed games - sum of played, canceled and forfeited games",
+                           "Scheduled games that were played",
+                           "Scheduled games that were canceled",
+                           "Scheduled games that were forfeited",
+                           "Number of teams that have participated in at least one game",
+                           "Number of players who have played in at least one game"];
     }
 
 

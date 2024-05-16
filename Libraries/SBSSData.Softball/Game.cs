@@ -48,7 +48,7 @@ namespace SBSSData.Softball
         /// </summary>
         /// <remarks>
         /// The <see cref="ConstructGame(ScheduledGame, bool)"/> method initializes this property.If a game has not been played 
-        /// or is cancelled, it is initialized to an empty list. If the <see cref="Game"/> class is updated or initialized when a
+        /// or is canceled, it is initialized to an empty list. If the <see cref="Game"/> class is updated or initialized when a
         /// game is completed, each of the elements of the list (visitor and home teams) include all the team and player stats
         /// for that game.
         /// </remarks>
@@ -86,7 +86,7 @@ namespace SBSSData.Softball
                 htmlDocument = PageContentUtilities.GetPageHtmlDocument(scheduledGame.ResultsUrl);
                 if (htmlDocument.DocumentNode.SelectSingleNode("//body").HasClass("maintenance"))
                 {
-                    throw new InvalidOperationException("The data is not available, web site data is currently being updated.");
+                    throw new InvalidOperationException("The data is not available, Web site data is currently being updated.");
                 }
             }
             else
@@ -104,8 +104,8 @@ namespace SBSSData.Softball
         /// scheduled game. 
         /// </param>
         /// <param name="update">If <c>true</c>, the <see cref="Teams"/> property is updated with team and player stats if 
-        /// the game is completed but not cancelled. Otherwise, the <see cref="GameInformation"/> and <c>Teams</c> properties
-        /// are both initialized, then if the game is completed and not cancelled, the stats information is also recorded.
+        /// the game is completed but not canceled. Otherwise, the <see cref="GameInformation"/> and <c>Teams</c> properties
+        /// are both initialized, then if the game is completed and not canceled, the stats information is also recorded.
         /// </param>
         /// <returns>A new <see cref="Game"/> instance; <c>null</c> is never returned</returns>
         public static Game ConstructGame(ScheduledGame scheduledGame, bool update = false)
@@ -132,12 +132,12 @@ namespace SBSSData.Softball
                     gameInformation = scheduledGame.GameResults?.GameInformation ?? GameInformation.Empty;
                 }
 
-                // If this not an update, and because the game has been played, but not cancelled, then we need to recover the Teams
+                // If this not an update, and because the game has been played, but not canceled, then we need to recover the Teams
                 // list, and if it is an update, we always need to recover the Teams data.
 
                 if (!update)
                 {
-                    if (scheduledGame.IsComplete && (!scheduledGame.WasCancelled))
+                    if (scheduledGame.IsComplete && (!scheduledGame.WasCanceled))
                     {
                         teams = Game.ConstructTeams(htmlDocument);
                     }
@@ -175,7 +175,7 @@ namespace SBSSData.Softball
         /// visiting and home scores have values. Here it <c>true</c> if only if the <see cref="Teams"/> is not the empty
         /// list. The reason for the difference is twofold: (1) want to use just the properties from the class instance,
         /// and (2) more importantly to be able to recognize canceled games. When a game is canceled, <c>Teams</c> is
-        /// empty, but because the score for cancelled games is 0 for both visiting and home, the scheduled game is
+        /// empty, but because the score for canceled games is 0 for both visiting and home, the scheduled game is
         /// considered completed so it won't be checked again for team data.
         /// </remarks>
         /// <returns><c>true</c> if the <c>Teams</c> property is neither <c>null</c> nor empty.</returns>

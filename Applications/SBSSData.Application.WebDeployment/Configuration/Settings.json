@@ -6,7 +6,7 @@
     "LogSessionFileName": "WebPublisher.json",
     "BuildOption": "", // Not used for WebDeployment
     "HtmlFolder": "HtmlData\\",
-    "Test": true
+    "Test": false
 }
 
 

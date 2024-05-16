@@ -159,7 +159,7 @@ namespace SBSSData.Application.Infrastructure
         }
 
         /// <summary>
-        /// Specifies if the Web publishes to a test site of the production folder on the web server
+        /// Specifies if the Web publishes to a test site of the production folder on the Web server
         /// </summary>
         public bool Test
         {
@@ -223,7 +223,7 @@ namespace SBSSData.Application.Infrastructure
         public string HtmlLocation => $"{DataStoreFolder}{HtmlFolder}";
 
         /// <summary>
-        /// Returns the <c>true</c> if deployment to the TestSync folder on the web server; <c>false</c> if deployment is to
+        /// Returns the <c>true</c> if deployment to the TestSync folder on the Web server; <c>false</c> if deployment is to
         /// the production server folder. The returned value is just the <see cref="Test"/> property.
         /// </summary>
         public bool IsTest => Test;

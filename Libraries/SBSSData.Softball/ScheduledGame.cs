@@ -15,7 +15,7 @@ namespace SBSSData.Softball
     public sealed class ScheduledGame
     {
         // TODO: This should be set by some configuration rather than hard-coded in the class.
-        private static readonly int checkHours = 16;
+        private static readonly int checkHours = 14;
 
         // Separator value used split score value.
         private static readonly char[] separator = ['-'];
@@ -75,7 +75,7 @@ namespace SBSSData.Softball
                 // used to access the game information, team and player stats.
                 scheduledGame.GameResults = Game.ConstructGame(scheduledGame, update: false); ;
 
-                // Setting the scores even though there is no team/player data indicates that the game was cancelled.
+                // Setting the scores even though there is no team/player data indicates that the game was canceled.
                 if (scheduledGame.IsRecorded && !scheduledGame.IsComplete)
                 {
                     scheduledGame.HomeScore = 0;
@@ -141,7 +141,7 @@ namespace SBSSData.Softball
         /// Gets and sets the visiting team's score.
         /// </summary>
         /// <remarks>
-        /// Because the value can only be set after the game is played or cancelled, it is initialized to <c>null</c>.
+        /// Because the value can only be set after the game is played or canceled, it is initialized to <c>null</c>.
         /// </remarks>
         public int? VisitorScore
         {
@@ -153,7 +153,7 @@ namespace SBSSData.Softball
         /// Gets and sets the home team's score.
         /// </summary>
         /// <remarks>
-        /// Because the value can only be set after the game is played or cancelled, it is initialized to <c>null</c>.
+        /// Because the value can only be set after the game is played or canceled, it is initialized to <c>null</c>.
         /// </remarks>
         public int? HomeScore
         {
@@ -178,7 +178,7 @@ namespace SBSSData.Softball
 
         /// <summary>
         /// Gets the value of the readonly field <c>checkHours</c> which is used to help determine if a game should be
-        /// marked as cancelled.
+        /// marked as canceled.
         /// </summary>
         private static int CheckHours => checkHours;
 
@@ -194,25 +194,25 @@ namespace SBSSData.Softball
         public bool IsRecorded => Recorded();
 
         /// <summary>
-        /// Get a <c>bool</c> value indicating whether the game has played (or cancelled).
+        /// Get a <c>bool</c> value indicating whether the game has played (or canceled).
         /// </summary>
         /// <remarks>
-        /// <c>true</c> if the game has been played (or cancelled); false other wise.
+        /// <c>true</c> if the game has been played (or canceled); false other wise.
         /// </remarks>
         /// <seealso cref="Recorded()"/>
         [JsonIgnore]
         public bool IsComplete => VisitorScore.HasValue && HomeScore.HasValue;
 
         /// <summary>
-        /// Returns <c>true</c> if the game has been cancelled.
+        /// Returns <c>true</c> if the game has been canceled.
         /// </summary>
         /// <remarks>
-        /// A game is cancelled if the game has been recorded (<see cref="IsRecorded"/> is <c>true</c>, yet there is no team data
-        /// indicating the game has not bee played, that is, it has been cancelled. This is indicated by setting the visitor and 
+        /// A game is canceled if the game has been recorded (<see cref="IsRecorded"/> is <c>true</c>, yet there is no team data
+        /// indicating the game has not bee played, that is, it has been canceled. This is indicated by setting the visitor and 
         /// home scores to 0.
         /// </remarks>
         [JsonIgnore]
-        public bool WasCancelled => (VisitorScore == 0) && (HomeScore == 0);
+        public bool WasCanceled => (VisitorScore == 0) && (HomeScore == 0);
 
         /// <summary>
         /// Indicates whether the game results have been recorded by the SBSS supervisor.
@@ -220,7 +220,7 @@ namespace SBSSData.Softball
         /// <remarks>
         /// The assumption is that the information is available from the SBSS Web site no later <see cref="CheckHours"/>
         /// (the minimal value of which is 16) less the hour of game start time. At that point, if there is no team data, 
-        /// it is assumed that the game has been cancelled and will not be played.
+        /// it is assumed that the game has been canceled and will not be played.
         /// </remarks>
         /// <returns><c>true</c> if it has been more than number of hours after the start time of the game.</returns>
         /// <seealso cref="LeagueSchedule.ConstructLeagueSchedule(string)"/>

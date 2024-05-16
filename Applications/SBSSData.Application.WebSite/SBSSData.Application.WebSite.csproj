@@ -31,6 +31,7 @@
     <Content Include="J:\SBSSDataStore\HtmlData\CSS\Main2.css">
       <Link>CSS\Main2.css</Link>
     </Content>
+    <Content Include="J:\SBSSDataStore\HtmlData\DescriptiveStatistics.html" Link="DescriptiveStatistics.html" />
     <Content Include="J:\SBSSDataStore\HtmlData\index.html" Link="index.html" />
     <Content Include="J:\SBSSDataStore\HtmlData\Notices.html">
       <Link>Notices.html</Link>

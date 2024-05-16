@@ -1,4 +1,4 @@
-﻿// Ignore Spelling: Linq
+﻿// Ignore Spelling: Linq Css
 
 using System.Reflection;
 
@@ -176,7 +176,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         IEnumerable<PlayerSheetItemDisplay> psd = psc.PlayerSheetItems.Select(si => new PlayerSheetItemDisplay(si));
                         PlayerSheetContainerDisplay pscd = new PlayerSheetContainerDisplay(psc);
                         //List<List<PlayerStatsDisplay>> sheetStats = pscd.SheetItems.Select(s => s.Totals).ToList();
-                        generator.WriteRootTable(pscd.SheetItems.Select(s => s.Totals), LinqPadCallbacks.ExtendedPlayerSheets(headerStyle, psc));
+                        generator.WriteRootTable(pscd.SheetItems.Select(s => s.Totals), ExtendedPlayerSheets(headerStyle, psc));
                     }
 
 
@@ -248,6 +248,105 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             return piList;
 
+        }
+
+        public static Func<TableNode, string> ExtendedPlayerSheets(string? headerCssStyle, PlayerSheetContainer playerSheetContainer)
+        {
+            return (t) =>
+            {
+                HtmlNode tableHtmlNode = t.TableHtmlNode;
+                string header = t.Header().InnerText;
+                string introductionHeader = $"""
+                                                <div style="font-weight:500; font-family:'Segoe UI Semibold'; font-size:14px; 
+                                                color:white; background-color:#d62929; 
+                                                border-radius:15px; 
+                                                padding:7px; margin:-8px 10px 5px 15px; width:640px; text-align:center;">
+                                                   {playerSheetContainer.Introduction}
+                                                </div>
+                                                """;
+
+                if (t.Depth() == 0)
+                {
+                    // Add an identifier (player name) to the table.
+                    tableHtmlNode.Attributes.Add("playerName", playerSheetContainer.PlayerSheetItems.First().PlayerName);
+
+                    // Add background color to the containing cell to get a contrast with the text that is placed in the anchor
+                    // tag.
+                    HtmlNode td = tableHtmlNode.SelectSingleNode("./thead/tr/td");
+                    string headerStyle = td.GetAttributeValue("style", null);
+                    headerStyle = string.IsNullOrEmpty(headerStyle) ? "background-color:#a6bad9;" : $""""background-color:#a6bad9; {headerStyle}"""";
+                    td.Attributes.Add("style", headerStyle);
+
+                    header = introductionHeader; // playerSheetContainer.Introduction;
+                }
+                else if (t.Depth() == 1)
+                {
+                    header = playerSheetContainer.PlayerSheetItems[t.Index()].Description;
+                    Utilities.UpdatePlayerColumnNames(tableHtmlNode);
+                    tableHtmlNode.SelectSingleNode("./thead/tr[2]/th[1]").Remove();
+                    tableHtmlNode.SelectNodes("./tbody/tr/td[1]").ToList().ForEach(n => n.Remove());
+
+                    string ranksTR = """
+                                    <tr style="background-color:#e8efff">
+                                    <td colspan="12" class="n";>This is the Ranks </td>
+                                    <td class="n" title="[[playerName]]'s position in the list of all players AVG values">A</td>
+                                    <td class="n" title="[[playerName]]'s position in the list of all players SLG values">B</td>
+                                    <td class="n" title="[[playerName]]'s position in the list of all players OBP values">C</td>
+                                    <td class="n" title="[[playerName]]'s position in the list of all players OPS values">D</td>
+                                    </tr>
+                                    """;
+                    string percentilesTR = """
+                                            <tr style="background-color:#e8efff">
+                                            <td colspan="12" class="n"; style="text-align:left;">This is the Percentiles </td>
+                                            <td class="n" title="The percentage of all players having an AVG value less than [[playerName]]'s">A</td>
+                                            <td class="n" title="The percentage of all players having an SLG value less than [[playerName]]'s">B</td>
+                                            <td class="n" title="The percentage of all players having an OBP value less than [[playerName]]'s">C</td>
+                                            <td class="n" title="The percentage of all players having an OPS value less than [[playerName]]'s">D</td>
+                                            </tr>
+                                            """;
+
+                    List<PlayerSheetItem> psItems = playerSheetContainer.PlayerSheetItems;
+                    string league = tableHtmlNode.SelectSingleNode("./tbody/tr[2]/td[1]").InnerText;
+                    for (int i = 0; i < psItems.Count; i++)
+                    {
+                        PlayerSheetItem psItem = psItems[i];
+                        string playerName = psItem.PlayerName;
+                        string firstName = playerName.Substring(playerName.IndexOf(' ') + 1);
+                        if (psItem.PlayerPercentiles.Any() && (league == psItem.LeagueName))
+                        {
+                            string ranks = ranksTR.Replace("[[playerName]]", firstName);
+                            HtmlNode ranksRow = HtmlNode.CreateNode(ranks);
+                            HtmlNode firstRow = tableHtmlNode.SelectSingleNode("./tbody/tr");
+                            tableHtmlNode.SelectSingleNode("./tbody").InsertAfter(ranksRow, firstRow);
+
+                            string percentiles = percentilesTR.Replace("[[playerName]]", firstName);
+                            HtmlNode percentilesRow = HtmlNode.CreateNode(percentiles);
+                            tableHtmlNode.SelectSingleNode("./tbody").InsertAfter(percentilesRow, firstRow);
+
+                            List<HtmlNode> percentTds = percentilesRow.SelectNodes(".//td").ToList();
+                            List<HtmlNode> rankTds = ranksRow.SelectNodes(".//td").ToList();
+                            for (int j = 1; j < percentTds.Count; j++)
+                            {
+                                PlayerSheetPercentile percentile = psItem.PlayerPercentiles[j - 1];
+                                percentTds[j].InnerHtml = percentile.PercentileToString();
+                                rankTds[j].InnerHtml = percentile.Rank.ToString();
+                            }
+
+                            percentTds[0].InnerHtml = $"{psItem.PlayerPercentiles[0].NumPlayers} players having more than 5 plate appearance used for calculations. <span style='float:right'>Percentiles =></span>";
+                            rankTds[0].InnerHtml = $"Rankings =>";
+
+                        }
+                    }
+
+                    Utilities.UpdatePlayerHeaderTitles(tableHtmlNode, false);
+
+
+                }
+
+                //tableHtmlNode.SetAttributeValue("style", "display:none");
+
+                return header; // + $" Depth = {t.Depth()} Index = {t.Index()}";
+            };
         }
     }
 }

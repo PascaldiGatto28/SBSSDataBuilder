@@ -171,7 +171,7 @@ namespace SBSSData.Softball.Stats
         public List<string> GetPlayerNames()
         {
 
-            _playerNames ??= GetScheduledGames().Where(g => g.IsComplete && !g.WasCancelled)
+            _playerNames ??= GetScheduledGames().Where(g => g.IsComplete && !g.WasCanceled)
                                                 .SelectMany(g => g.GameResults.Teams)
                                                 .SelectMany(t => t.Players)
                                                 .Select(p => p.Name)
@@ -203,7 +203,7 @@ namespace SBSSData.Softball.Stats
         /// completed.
         /// </remarks>
         /// <seealso cref="GetScheduledGames()"/>
-        public int GamesCanceled => GetScheduledGames().Count(g => g.WasCancelled);
+        public int GamesCanceled => GetScheduledGames().Count(g => g.WasCanceled);
 
         /// <summary>
         /// Gets the number of scheduled games in all leagues that were canceled.
@@ -221,7 +221,7 @@ namespace SBSSData.Softball.Stats
         /// games where there are player stats for the teams.
         /// </summary>
         /// <seealso cref="GetScheduledGames()"/>
-        public int GamesPlayed => GetScheduledGames().Count(g => g.IsComplete && !g.WasCancelled && !g.GameResults.IsForfeited);
+        public int GamesPlayed => GetScheduledGames().Count(g => g.IsComplete && !g.WasCanceled && !g.GameResults.IsForfeited);
 
         /// <summary>
         /// Returns the number of team names in all scheduled games, ordered by name.

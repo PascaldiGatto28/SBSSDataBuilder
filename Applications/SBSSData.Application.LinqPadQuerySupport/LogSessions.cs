@@ -36,10 +36,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            //string text = seasonText;
-            //string season = seasonText.RemoveWhiteSpace();
-            //string dataStorePath = $@"{dataStoreFolder}{season}LeaguesData.json";
-
             Assembly assembly = typeof(LogSessions).Assembly;
             string resName = assembly.FormatResourceName("LogSessions.html");
             byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
@@ -57,55 +53,52 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 //SessionID = s.Session,
                 LogEntries = s.LogEntries.Select(l => new
                 {
-                    l.Date,
-                    //Category = l.LogCategory,
-                    Text = l.LogText
+                    Date = l.Date,
+                    EventDescription = l.LogText
                 })
             });
 
-            //using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
-            //{
-                //DataStoreInformation dsInfo = new DataStoreInformation(dsContainer ?? DataStoreContainer.Empty);
-                using (HtmlGenerator generator = new HtmlGenerator())
+            using (HtmlGenerator generator = new HtmlGenerator())
+            {
+                string topOfTable = $"""
+                                     <h2 style="font-size:1.1em; color:#3d5e8f; margin-top:20px; font-weight:500;">
+                                       Table of all Data Store Updates Recorded by SBSS Data Viewer for the Current Season
+                                     </h2>
+                                     """;
+                generator.WriteRawHtml(topOfTable);
+                generator.WriteRootTable(displaySessions, LogSessionsCallback);
+                if ((callback != null) && (displaySessions != null))
                 {
-
-                    generator.WriteRootTable(displaySessions, LogSessionsCallback);
-                    //Values.Add(dsInfo);
-                    if ((callback != null) && (displaySessions != null))
-                    {
-                        callback($"{this.GetType().Name} HTML page created.");
-                    }
-
-                    string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
-                    HtmlNode title = HtmlNode.CreateNode(htmlNode);
-                    changedHtml = generator.DumpHtml(pageTitle: title,
-                                                     cssStyles: StaticConstants.LocalStyles,
-                                                     javaScript: StaticConstants.LocalJavascript,
-                                                     collapseTo: 2,
-                                                     headElements: headElements.ToList());
+                    callback($"{this.GetType().Name} HTML page created.");
                 }
-            //}
+
+                string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
+                HtmlNode title = HtmlNode.CreateNode(htmlNode);
+                changedHtml = generator.DumpHtml(pageTitle: title,
+                                                 cssStyles: StaticConstants.LocalStyles,
+                                                 javaScript: StaticConstants.LocalJavascript,
+                                                 collapseTo: 2,
+                                                 headElements: headElements.ToList());
+            }
 
             return changedHtml;
         }
 
         public static Func<TableNode, string> LogSessionsCallback = (t) =>
         {
+            HtmlNode tableNode = t.TableHtmlNode;
             string header = string.Empty;
             if (t.Depth() == 0)
             {
                 int numSessions = t.ChildNodes.Count();
-                HtmlNode tableNode = t.TableHtmlNode;
-                //string currentDate = DateTime.Parse(tableNode.SelectSingleNode("./tbody/tr[1]/td[1]").InnerText).ToString("dddd MMMM d, yyyy");
-                header = $"{numSessions} Recorded Log Sessions"; // as of {currentDate}";
-                InsertTableDescription(tableNode, "Table of all Data Store Updates Recorded by SBSS Data Viewer for the Current Season");
+                header = $"{numSessions} Recorded Log Sessions";
                 tableNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerStyle);
                 tableNode.SelectSingleNode("./thead/tr[last()]").Attributes.Add("style", "display:none");
             }
             else
             {
-                IEnumerable<string> textCells = t.TableHtmlNode.SelectNodes("./tbody//tr/td[2]").Select(n => n.InnerText);
-                string? cell = textCells.SingleOrDefault(t => t.Contains("games have been updated"));
+                IEnumerable<string> textCells = tableNode.SelectNodes("./tbody//tr/td[2]").Select(n => n.InnerText);
+                string? cell = textCells.SingleOrDefault(t => t.Contains("game") && t.Contains("updated"));
                 int numUpdated = 0;
                 if (!string.IsNullOrEmpty(cell))
                 {
@@ -113,17 +106,15 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     int.TryParse(cell.Substring(0, index), out numUpdated);
                 }
 
+                HtmlNodeCollection tableColumnHeaders = tableNode.SelectNodes("./thead/tr[2]//th");
+                tableColumnHeaders[0].SetAttributeValue("title", "Date and time the event was recorded");
+                tableColumnHeaders[1].SetAttributeValue("title", "The description of the log event");
                 header = (numUpdated > 0) ? $"{numUpdated.NumDesc("Scheduled Game").Capitalize()} Updated"
                                           : "No Scheduled Games Were Updated &mdash; The Data Store is Up-to-date.";
             }
 
             return header;
         };
-        public static void InsertTableDescription(HtmlNode tableHtmlNode, string description)
-        {
-            HtmlNode tableTitle = HtmlNode.CreateNode($"""<h2 style="font-size:1.1em; color:#3d5e8f; margin-top:20px; font-weight:500;">{description}</h2>""");
-            tableHtmlNode.ParentNode.InsertBefore(tableTitle, tableHtmlNode);
-        }
     }
 
 }
