@@ -199,7 +199,7 @@ namespace SBSSData.Softball
             string description = "No description available";
             if (!string.IsNullOrEmpty(Title))
             {
-                description = $"{Title} [{Season} {LeagueDay} {LeagueCategory}] on {Date:dddd MMMM, d yyyy}";
+                description = $"{Title} {LeagueDay} {LeagueCategory} {Season} {Year} on {Date:dddd MMMM, d yyyy}";
             }
 
             return description;

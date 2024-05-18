@@ -8,7 +8,7 @@ namespace SBSSData.Application.Support
                                        //string DataStoreFilePath,
                                        string DataStoreSize,
                                        string NumberOfScheduledGames,
-                                       string GamesCompleted,
+                                       string GamesRecorded,
                                        string GamesPlayed,
                                        string GamesCanceled,
                                        string GamesForfeited,

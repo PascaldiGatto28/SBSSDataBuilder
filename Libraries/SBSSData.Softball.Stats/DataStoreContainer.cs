@@ -373,9 +373,12 @@ namespace SBSSData.Softball.Stats
         /// Data Store Path : D:\Softball\WorkingStorage\LeaguesData-Fall2023.json
         /// Data Store Size : 1.27 MB (1,269,123 bytes)
         /// Number of Scheduled Games : 154
-        /// Games Completed : 138
+        /// Games Recorded : 138
         /// Games Canceled : 5
+        /// Games Forfeited : 0
         /// Games Played : 133
+        /// Number of Teams : 23
+        /// Number of Players: 114
         /// </code>
         /// </returns>
         public override string ToString()
@@ -385,7 +388,12 @@ namespace SBSSData.Softball.Stats
 
             string text = properties.ToString<PropertyInfo>(x =>
             {
-                string title = (x.Name).NameToTitle();
+                string name = x.Name;
+                if (name == "GamesCompleted")
+                {
+                    name = "GamesRecorded";
+                }
+                string title = name.NameToTitle();
                 object objValue = x.GetValue(this) ?? string.Empty;
                 string? value = (x.Name == "DataStoreSize") ? ((int)objValue).FormatInt(extend: true) : objValue.ToString();
                 return $"{title} : {value}";

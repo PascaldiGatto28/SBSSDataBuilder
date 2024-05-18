@@ -8,7 +8,7 @@ namespace SBSSData.Application.Support
                                        int Leagues,
                                        string DataStoreFileSize,
                                        int ScheduledGames,
-                                       int CompletedGames,
+                                       int RecordedGames,
                                        int PlayedGames,
                                        int CanceledGames,
                                        int ForfeitedGames,

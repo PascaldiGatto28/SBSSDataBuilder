@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.LinqPa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.WebSite", "Applications\SBSSData.Application.WebSite\SBSSData.Application.WebSite.csproj", "{E18C4723-87E5-4BDE-8DEE-02B52D0A8DA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBSSData.Application.Infrastructure", "Applications\SBSSData.Application.Infrastructure\SBSSData.Application.Infrastructure.csproj", "{2707D3EF-EC8B-4098-9375-5CC26A1089A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.Infrastructure", "Applications\SBSSData.Application.Infrastructure\SBSSData.Application.Infrastructure.csproj", "{2707D3EF-EC8B-4098-9375-5CC26A1089A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

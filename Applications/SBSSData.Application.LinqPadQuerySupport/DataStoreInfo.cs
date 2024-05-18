@@ -119,7 +119,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                            "Number of leagues in the season",
                            "The size of the Data Store on disk",
                            "Number of scheduled games",
-                           "Number of completed games - sum of played, canceled and forfeited games",
+                           "Number of Recorded games (when box scores are recorded) - It is sum of played, canceled and forfeited games",
                            "Scheduled games that were played",
                            "Scheduled games that were canceled",
                            "Scheduled games that were forfeited",

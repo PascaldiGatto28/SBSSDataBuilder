@@ -219,11 +219,12 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 // so collapse and expand works, the title should be set to the value of the 
                 // source rank table. So we get those values, and then restore them after the source
                 // rank has been copied.
-                HtmlNode rankTable = row.SelectSingleNode("./td[last()]/table");
-                rankTable.Attributes.Add("style", "width:160px");
-                string rankTableId = rankTable.Id;
-                TableNode rankTableNode = new TableNode(rankTable);
-                string headerText = rankTable.SelectSingleNode("./tbody/tr[1]/td").InnerText;
+                HtmlNode originalRankTable = row.SelectSingleNode("./td[last()]/table");
+                HtmlNode rankTableNode = HtmlNode.CreateNode(originalRankTable.OuterHtml);
+                rankTableNode.Id = playerName.RemoveWhiteSpace() + originalRankTable.Id;
+
+                //TableNode rankTableNode = new TableNode(rankTable);
+                string headerText = originalRankTable.SelectSingleNode("./tbody/tr[1]/td").InnerText;
                 string rankTableHeader = string.Empty;
                 if (headerText == "NA")
                 {
@@ -249,15 +250,12 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     header += $" and Rankings for {numberQualified} Players With Enough Plate Appearances for All Teams";
                 }
 
-                // Set the new values and then restore the previous values
-                rankTable.Id = rankTable.Id + playerName.RemoveWhiteSpace();
+               
+                TableTree.SetTableHeader(new TableNode(originalRankTable), (t) => rankTableHeader);
 
-                // The players who qualify for ranking
-                TableTree.SetTableHeader(rankTableNode, (t) => rankTableHeader);
-                string rankTableHtml = rankTable.OuterHtml;
-                rankTable.Id = rankTableId;
-
-                // Finish up the overlay for this player. 
+                HtmlNode headerNode = rankTableNode.SelectSingleNode("./thead");
+                headerNode.Remove();
+                string rankTableHtml = rankTableNode.OuterHtml;
 
                 Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
 
