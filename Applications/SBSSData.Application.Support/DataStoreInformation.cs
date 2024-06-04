@@ -20,7 +20,7 @@ namespace SBSSData.Application.Support
                                                                            //dsContainer.DataStorePath,
                                                                            dsContainer.DataStoreSize.FormatInt(extend: true),
                                                                            dsContainer.NumberOfGames.ToString(),
-                                                                           dsContainer.GamesCompleted.ToString(),
+                                                                           dsContainer.GamesRecorded.ToString(),
                                                                            dsContainer.GamesPlayed.ToString(),
                                                                            dsContainer.GamesCanceled.ToString(),
                                                                            dsContainer.GamesForfeited.ToString(),

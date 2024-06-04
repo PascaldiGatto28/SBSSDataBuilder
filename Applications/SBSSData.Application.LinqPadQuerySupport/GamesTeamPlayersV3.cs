@@ -63,8 +63,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
             {
 
                 Query query = new Query(dsContainer);
-                //DataStoreInformation dsInfo = new DataStoreInformation(dsContainer);
-                //string dsInfoHeaderStyle = "background-color:#d62929;";
                 string gtpHeaderStyle = "background-color:#d62929; width:642px;";
 
                 IEnumerable<Game> playedGames = query.GetPlayedGames();

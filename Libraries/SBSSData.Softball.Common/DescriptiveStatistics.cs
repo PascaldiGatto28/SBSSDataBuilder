@@ -15,7 +15,7 @@
         /// constructor is required to initialized the non-nullable properties and to set the <see cref="IsEmpty"/> property
         /// to <c>true</c>.
         /// </summary>
-        private DescriptiveStatistics()
+        public DescriptiveStatistics()
         {
             Title = string.Empty;
             OrderedSequence = Enumerable.Empty<double>();
@@ -131,7 +131,9 @@
         /// </param>
         /// <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source"/> is <c>null</c> or of length
         /// zero, the empty instance (<c>IsEmpty</c> is <c>true</c>) is returned.</returns>
-        public static DescriptiveStatistics GetStatistics(IEnumerable<double> source, string? title = null, double? mean = null)
+        public static DescriptiveStatistics GetStatistics(IEnumerable<double> source, 
+                                                          string? title = null, 
+                                                          double? mean = null)
         {
             DescriptiveStatistics stats = new();
             if ((source != null) && source.Any())
@@ -166,6 +168,100 @@
                     average = mean.Value;
                     variance = sumOfSquares / n;
                 }
+
+                double stdDev = Math.Sqrt(variance);
+                double min = source.ToList().Min();
+                double max = source.ToList().Max();
+                double median = 0.0;
+
+                List<double> orderedList = source.ToList().OrderBy(x => x).ToList();
+                if (count % 2 == 0)
+                {
+                    median = orderedList.Skip((count / 2) - 1).Take(2).Average();
+                }
+                else
+                {
+                    median = orderedList[count / 2];
+                }
+
+                stats = new DescriptiveStatistics()
+                {
+                    IsEmpty = false,
+                    Title = description,
+                    Minimum = Math.Round(min, 3),
+                    Maximum = Math.Round(max, 3),
+                    Mean = Math.Round(average, 3),
+                    Median = Math.Round(median, 3),
+                    Variance = Math.Round(variance, 3),
+                    StdDev = Math.Round(stdDev, 3),
+                    Count = count,
+                    OrderedSequence = orderedList.Select(e => Math.Round(e, 3))
+                };
+            }
+
+            return stats;
+        }
+
+
+        /// <summary>
+        /// Constructs a <c>DescriptiveStatistics</c> object using the specified sequence of <c>double</c> items.
+        /// </summary>
+        /// <param name="source">The sequence of items of type <c>double</c></param>
+        /// <param name="title">An optional title. The default is just "Statistics for [count] items" where [count] is
+        /// the number of items in the <paramref name="source"/> sequence.</param>
+        /// <param name="weights">
+        /// If <c>null</c> (which is the default), the data is not weighted and results returned are the same as
+        /// the <see cref="GetStatistics"/> method. Also unless the count of the sequence is the as <paramref name="source"/>
+        /// the sequence is ignored.
+        /// </param>
+        /// <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source"/> is <c>null</c> or of length
+        /// zero, the empty instance (<c>IsEmpty</c> is <c>true</c>) is returned.</returns>
+        /// <remarks>
+        /// This method should be used instead of <see cref="GetStatistics(IEnumerable{double}, string?, double?)"/> as
+        /// it handles both conditions, weighted and unweighted data.
+        /// </remarks>
+        public static DescriptiveStatistics GetWeightedStatistics(IEnumerable<double> source,
+                                                                  string? title = null,
+                                                                  IEnumerable<double>? weights = null)
+
+        {
+            DescriptiveStatistics stats = new();
+
+            if ((source != null) && source.Any())
+            {
+                double sum = 0.0;
+                double sumOfSquares = 0.0;
+                List<double> sourceList = source.ToList();
+                int count = sourceList.Count;
+
+                // if weights is null or the number of items is not equal count, the use the default weight (all 1s)
+                List<double> weightsList = weights?.ToList() ?? [];
+                if (weightsList.Count != count) 
+                {
+                    double[] doubleArray = new double[count];
+                    Array.Fill(doubleArray, 1.0);
+                    weightsList = doubleArray.ToList();
+                }
+
+                double totalWeight = weightsList.Sum();
+                double n = totalWeight;
+
+                string prefix = (totalWeight > count) ? "Weighted " : string.Empty;
+                string description = title ?? $"{prefix}Statistics for {count:#,###} items";
+
+                double average;
+                double variance;
+               
+                for (int i = 0; i < count; i++)
+                {
+                    double value = sourceList[i];
+                    double weight = weightsList[i];
+                    sum += value * weight;
+                    sumOfSquares += (value * value * weight);
+                }
+
+                average = sum / n;
+                variance = (sumOfSquares / n) - (average * average);
 
                 double stdDev = Math.Sqrt(variance);
                 double min = source.ToList().Min();

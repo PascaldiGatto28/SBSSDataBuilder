@@ -75,10 +75,9 @@ namespace SBSSData.Softball.Stats
         public IEnumerable<ScheduledGame> ScheduledGames => Container.GetScheduledGames();
 
 
-        public IEnumerable<Game> GetPlayedGames() => Container.GetScheduledGames()
-                                                              .Where(s => s.IsComplete && !s.WasCanceled)
-                                                              .Select(s => s.GameResults)
-                                                              .Where(s => !s.IsForfeited);
+        public IEnumerable<Game> GetPlayedGames() => ScheduledGames.Where(s => s.IsComplete && !s.WasCanceled)
+                                                                   .Select(s => s.GameResults)
+                                                                   .Where(s => !s.IsForfeited);
 
         public IEnumerable<Game> GetLeaguePlayedGames(string leagueCategory = "", string day = "")
         {

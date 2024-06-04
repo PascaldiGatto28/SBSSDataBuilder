@@ -468,6 +468,9 @@ namespace SBSSData.Softball.Common
         /// <summary>
         /// Serializes an object to a JSON string.
         /// </summary>
+        /// <param name="typeNameHandling">If <c>true</c>, the type names are included in the JSON string. This
+        /// is the default and is necessary if you have a subclass but want only the base class to be 
+        /// serialized.</param>
         /// <param name="source">The object to serialize; if <c>null</c>, the empty string is returned.</param>
         /// <returns>A JSON string representing the object that can deserialized to create an instance of the object. The
         /// string is formatted for indentation using space characters (rather than tabs).</returns>
@@ -539,7 +542,7 @@ namespace SBSSData.Softball.Common
         /// Serializes the object as JSON text to the file who path <paramref name="filePath"/> is specified. T
         /// </summary>
         /// <remarks>
-        /// The object is serialized to a JSON string using the <see cref="ToJsonString(object)"/> and then written to
+        /// The object is serialized to a JSON string using the <see cref="ToJsonString(object, bool)"/> and then written to
         /// the specified file, which is overwritten if it exists.
         /// </remarks>
         /// <typeparam name="T">The type of the file</typeparam>
@@ -572,14 +575,14 @@ namespace SBSSData.Softball.Common
         }
 
         /// <summary>
-        /// Formats a JSON string using the <c>JsonTextWriter</c> used in <see cref="ToJsonString(object)"/>.
+        /// Formats a JSON string using the <c>JsonTextWriter</c> used in <see cref="ToJsonString(object, bool)"/>.
         /// </summary>
         /// <param name="source">The JSON text to format</param>
         /// <returns>
         /// The formatted JSON text or the empty string if the <paramref name="source"/> is <c>null</c> or not a valid
         /// JSON string.
         /// </returns>
-        /// <seealso cref="ToJsonString(object)"/>
+        /// <seealso cref="ToJsonString(object, bool)"/>
         public static string FormatJsonString(this string source)
         {
             string jsonText = string.Empty;
@@ -851,16 +854,18 @@ namespace SBSSData.Softball.Common
         /// <param name="source">The sequence of items of type <c>double</c></param>
         /// <param name="title">An optional title. The default is just "Statistics for [count] items" where [count] is
         /// the number of items in the <paramref name="source"/> sequence.</param>
-        /// <param name="mean">
-        /// If <c>null</c> (which is the default), the value is calculated from the <c>source</c> sequence. Otherwise it used
-        /// to calculate the variance and sums of squares. Generally this should not be set unless it is part of data
-        /// normalization.
+        /// <param name="weights">
+        /// The sequences of weights for each the items of the <paramref name="source"/> sequence. The parameter is
+        /// optional but if specified and it length the same as <c>source</c>, the weighted statistics are 
+        /// calculated. The default is not to return weighted statistics.
         /// </param>
         /// <returns>A <c>DescriptiveStatistics</c> instance. If the <paramref name="source"/> is <c>null</c> or of length
         /// zero, the empty (<c>IsEmpty</c> is <c>true</c>) instance is returned.</returns>
-        public static DescriptiveStatistics GetStatistics(this IEnumerable<double> source, string? title = null, double? mean = null)
+        public static DescriptiveStatistics GetStatistics(this IEnumerable<double> source, 
+                                                         string? title = null,
+                                                         IEnumerable<double>? weights = null)
         {
-            return DescriptiveStatistics.GetStatistics(source, title, mean);
+            return DescriptiveStatistics.GetWeightedStatistics(source, title, weights);
         }
     }
 }

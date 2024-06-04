@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DataStoreInformation.cs" />
     <Compile Remove="PlayerCardDataSummary.cs" />
     <Compile Remove="PlayerCardDisplay.cs" />
     <Compile Remove="PlayerDataDisplay.cs" />

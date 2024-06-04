@@ -22,7 +22,7 @@ namespace SBSSData.Application.Support
                                                           //dsContainer.DataStorePath,
                                                           dsContainer.DataStoreSize.FormatInt(extend: true),
                                                           dsContainer.NumberOfGames,
-                                                          dsContainer.GamesCompleted,
+                                                          dsContainer.GamesRecorded,
                                                           dsContainer.GamesPlayed,
                                                           dsContainer.GamesCanceled,
                                                           dsContainer.GamesForfeited,
@@ -30,6 +30,18 @@ namespace SBSSData.Application.Support
                                                           dsContainer.NumberOfPlayers)
         { }
 
-
+        public DSInformationDisplay() : this(string.Empty,
+            string.Empty,
+            0,
+            string.Empty,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0)
+        {
+        }
     }
 }

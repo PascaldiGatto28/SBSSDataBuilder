@@ -50,7 +50,7 @@ namespace SBSSData.Application.DataStore
             if (updating)
             {
                 List<ScheduledGame> scheduledGames = dataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).ToList();
-                //log.WriteLine($"There are {dsContainer.NumberOfGames} scheduled games, of which {dsContainer.GamesCompleted} " +
+                //log.WriteLine($"There are {dsContainer.NumberOfGames} scheduled games, of which {dsContainer.GamesRecorded} " +
                 //              $"are completed, and of those, {dsContainer.GamesCanceled} were canceled " +
                 //              $"as of {dataStore.BuildDate:dddd MMMM d, yyyy a\\t h:mm tt}");
                 log.WriteLine($"The recovered data store:\r\n{dsContainer}");

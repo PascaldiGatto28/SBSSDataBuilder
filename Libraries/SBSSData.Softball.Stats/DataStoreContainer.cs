@@ -193,7 +193,7 @@ namespace SBSSData.Softball.Stats
         /// Gets the number of scheduled games in all leagues that have been completed, that is no longer waiting to be played.
         /// </summary>
         /// <seealso cref="GetScheduledGames()"/>
-        public int GamesCompleted => GetScheduledGames().Count(g => g.IsComplete);
+        public int GamesRecorded => GetScheduledGames().Count(g => g.IsComplete);
 
         /// <summary>
         /// Gets the number of scheduled games in all leagues that have been canceled.
