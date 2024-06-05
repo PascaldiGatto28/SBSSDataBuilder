@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "WebDeployment": {
+      "commandName": "Project"
+    },
+    "Test WebDeployment": {
+      "commandName": "Project",
+      "commandLineArgs": "Test"
+    }
+  }
+}

@@ -3,16 +3,18 @@ using SBSSData.Application.Support;
 using SBSSData.Softball.Logging;
 
 using AppContext = SBSSData.Application.Infrastructure.AppContext;
+using AppSettings = SBSSData.Application.Infrastructure.AppSettings;
 
 
 namespace SBSSData.Application.WebDeployment
 {
     public sealed class Build
     {
-        private static readonly string DataStoreFolder = AppContext.Instance.Settings.DataStoreFolder;
+        private static readonly AppSettings settings = AppSettings.Instance($@"Configuration\Settings.json");
+        private static readonly string DataStoreFolder = settings.DataStoreFolder;
         private static readonly Log log = AppContext.Instance.Log;
-        private static readonly string HtmlData = AppContext.Instance.Settings.HtmlFolder;
-        private static readonly bool PublishToTest = AppContext.Instance.Settings.Test;
+        private static readonly string HtmlData = settings.HtmlFolder;
+        private static readonly bool PublishToTest = settings.Test;
 
         public Build()
         { 

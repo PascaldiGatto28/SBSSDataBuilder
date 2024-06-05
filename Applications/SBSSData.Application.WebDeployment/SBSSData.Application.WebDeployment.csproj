@@ -10,9 +10,13 @@
 
   <ItemGroup>
     <None Remove="Configuration\Settings.json" />
+    <None Remove="Configuration\SettingsTest.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Configuration\SettingsTest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configuration\Settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
