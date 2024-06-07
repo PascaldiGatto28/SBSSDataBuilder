@@ -9,26 +9,57 @@
             PropertyValue = 0;
             Rank = 0;
             Percentile = 0;
+            ZScore = 0;
             NumPlayers = 0;
         }
 
-        public PlayerSheetPercentile(int numPlayers, string playerName, string propertyName="", double propertyValue=0.0, int rank=0, int percentile=0) 
+        public PlayerSheetPercentile(int numPlayers, 
+                                     string playerName, 
+                                     string propertyName = "", 
+                                     double propertyValue = 0.0, 
+                                     int rank = 0, 
+                                     int percentile = 0,
+                                     double zScore = 0.0)
         {
             PlayerName = playerName;
             PropertyName = propertyName;
-            PropertyValue = propertyValue;  
+            PropertyValue = propertyValue;
             Rank = rank;
             Percentile = percentile;
+            ZScore = zScore;
             NumPlayers = numPlayers;
 
         }
 
-        public string PlayerName { get; set; }
-        public string PropertyName { get; set; }
-        public double PropertyValue { get; set; }
-        public int Rank { get; set; }
-        public int Percentile { get; set; }
-        public int NumPlayers {get; set; }
+        public string PlayerName
+        {
+            get; set;
+        }
+        public string PropertyName
+        {
+            get; set;
+        }
+        public double PropertyValue
+        {
+            get; set;
+        }
+        public int Rank
+        {
+            get; set;
+        }
+        public int Percentile
+        {
+            get; set;
+        }
+
+        public double ZScore
+        {
+            get; set;
+        }
+        public int NumPlayers
+        {
+            get; set;
+        }
 
 
         /// <summary>
@@ -57,8 +88,6 @@
             }
 
             return $"{reportingPercentile}{suffix}";
-
         }
-
     }
 }

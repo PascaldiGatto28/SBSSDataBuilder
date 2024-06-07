@@ -51,7 +51,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
             set;
         }
 
-
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
             Action<object> actionCallback = callback == null ? (v) => Console.WriteLine(v.ToString()) : callback;
@@ -107,6 +106,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                         </div>
                                                         """).ToList();
 
+                Dictionary<string, LeaguesAndPlayersStatistics> leaguesAndPlayersStatistics = GetLeaguesAndPlayersStatistics(query);
                 foreach (string playerName in playerNames)
                 {
                     IEnumerable<LeagueName> leagueNames = query.GetLeagueNamesForPlayer(playerName);
@@ -146,10 +146,9 @@ namespace SBSSData.Application.LinqPadQuerySupport
                             LeagueNumTeams = totalTeams,
                             PlayerTotals = playersTotals.PlayersSummary(),
                             LeagueTotals = leagueTotals.PlayersSummary($"{shortLeagueName}"),
-                            PlayerPercentiles = GetRankPercentile(playerName, league, query)
+                            PlayerPercentiles = GetRankPercentile(playerName, league, leaguesAndPlayersStatistics),
+                            LeagueStatistics = leaguesAndPlayersStatistics[shortLeagueName].LeagueStatistics.ToList()
                         };
-
-
 
                         sheetData.Add(playerSheetItem);
                     }
@@ -175,7 +174,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                         IEnumerable<PlayerSheetItemDisplay> psd = psc.PlayerSheetItems.Select(si => new PlayerSheetItemDisplay(si));
                         PlayerSheetContainerDisplay pscd = new PlayerSheetContainerDisplay(psc);
-                        //List<List<PlayerStatsDisplay>> sheetStats = pscd.SheetItems.Select(s => s.Totals).ToList();
                         generator.WriteRootTable(pscd.SheetItems.Select(s => s.Totals), ExtendedPlayerSheets(headerStyle, psc));
                     }
 
@@ -214,40 +212,35 @@ namespace SBSSData.Application.LinqPadQuerySupport
             return changedHtml;
         }
 
-        public List<PlayerSheetPercentile> GetRankPercentile(string playerName, LeagueName league, Query query)
+        public Dictionary<string, LeaguesAndPlayersStatistics> GetLeaguesAndPlayersStatistics(Query query)
         {
-            List<PlayerSheetPercentile>? piList = [];
-            List<PlayerStats> ps = query.GetLeaguePlayers(league.Category, league.Day)
-                                        .Where(p => p.PlateAppearances > 5).ToList();
-            int n = ps.Count();
-            List<string> propertyNames = ["Average","Slugging","OnBase", "OnBasePlusSlugging"];
-            List<PlayerSheetPercentile> playersInfo = [];
-            foreach (string propertyName in propertyNames)
+            Dictionary<string, IEnumerable<LeagueStatistics>> ls = query.GetLeaguesStatistics()     
+                                                                        .ToDictionary(k => k.Key, k => k.Value.Select(v => new LeagueStatistics(v)));
+                 
+
+            IEnumerable<LeagueName> leagueNames = query.GetLeagueNames();
+            Dictionary<string, LeaguesAndPlayersStatistics> allLeagues = [];
+            foreach (LeagueName leagueName in leagueNames)
             {
-                PropertyInfo? property = typeof(PlayerStats).GetProperty(propertyName);
-                if (property != null)
-                {
-                    List<PlayerStats> propertyNameStats = ps.OrderBy(p => property.GetValue(p)).ThenBy(p => p.PlateAppearances).ToList();
-                    for (int i = 0; i < n; i++)
-                    {
-                        int percentile = (int)Math.Round(((double)((i == 0) ? 0 : i) / (double)n) * 100, 0);
-                        int rank = n - i;
-                        PlayerSheetPercentile pInfo = new PlayerSheetPercentile(n, propertyNameStats[i].Name, propertyName, (double)(property.GetValue(propertyNameStats[i]) ?? 0), rank, percentile);
-                        playersInfo.Add(pInfo);
-                    }
-                }
+                var groups = query.GetAllPlayersStatistics(leagueName, 5);
+                allLeagues.Add(leagueName.ShortLeagueName, new LeaguesAndPlayersStatistics(ls[leagueName.ShortLeagueName], groups));
             }
 
-            IEnumerable<IGrouping<string, PlayerSheetPercentile>> groups = playersInfo.GroupBy(i => i.PlayerName);//.Dump("PlayerSheetPercentils Groups");
-            IEnumerable<PlayerSheetPercentile>? group = groups.SingleOrDefault(g => g.Key == playerName);
-
-            if ((group != null) && group.Any())
+            return allLeagues;
+        }
+        
+        public List<PlayerSheetPercentile> GetRankPercentile(string playerName, 
+                                                             LeagueName leagueName, 
+                                                             Dictionary<string, LeaguesAndPlayersStatistics> allLeagues)
+        {
+            List<PlayerSheetPercentile> percentiles = [];
+            LeaguesAndPlayersStatistics lps = allLeagues[leagueName.ShortLeagueName];
+            if (lps.PlayerStatistics.TryGetValue(playerName, out IEnumerable<PlayerSheetPercentile>? ptiles))
             {
-                piList = group.ToList();
+                percentiles = ptiles?.ToList() ?? [];
             }
 
-            return piList;
-
+            return percentiles;
         }
 
         public static Func<TableNode, string> ExtendedPlayerSheets(string? headerCssStyle, PlayerSheetContainer playerSheetContainer)
@@ -304,6 +297,15 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                             <td class="n" title="The percentage of all players having an OPS value less than [[playerName]]'s">D</td>
                                             </tr>
                                             """;
+                    string zScoresTR = """
+                                        <tr style="background-color:#e8efff">
+                                        <td colspan="12" class="n"; style="text-align:left;">This is the ZScores </td>
+                                        <td class="n" title="[[playerName]]'s [[value]] AVG is [[zscore]] StdDevs [[AboveBelow]] the league mean, and is [[Mean]] for AVG">A</td>
+                                        <td class="n" title="[[playerName]]'s [[value]] SLG is [[zscore]] StdDevs [[AboveBelow]] the league mean, and is [[Mean]] for SLG">B</td>
+                                        <td class="n" title="[[playerName]]'s [[value]] OBP is [[zscore]] StdDevs [[AboveBelow]] the league mean, and is [[Mean]] for OPB">C</td>
+                                        <td class="n" title="[[playerName]]'s [[value]] OPS is [[zscore]] StdDevs [[AboveBelow]] the league mean, and is [[Mean]] for OPS">D</td>
+                                        </tr>
+                                        """;
 
                     List<PlayerSheetItem> psItems = playerSheetContainer.PlayerSheetItems;
                     string league = tableHtmlNode.SelectSingleNode("./tbody/tr[2]/td[1]").InnerText;
@@ -314,9 +316,18 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         string firstName = playerName.Substring(playerName.IndexOf(' ') + 1);
                         if (psItem.PlayerPercentiles.Any() && (league == psItem.LeagueName))
                         {
+                            List<LeagueStatistics> leagueStatistics = psItem.LeagueStatistics;
+                            
+                            string zScores = zScoresTR.Replace("[[playerName]]", firstName);
+                            HtmlNode zScoresRow = HtmlNode.CreateNode(zScores);
+
+                            List<HtmlNode> zTdWithTitle = zScoresRow.SelectNodes(".//td[@title]").ToList();
+
+                            HtmlNode firstRow = tableHtmlNode.SelectSingleNode("./tbody/tr");
+                            tableHtmlNode.SelectSingleNode("./tbody").InsertAfter(zScoresRow, firstRow);
+
                             string ranks = ranksTR.Replace("[[playerName]]", firstName);
                             HtmlNode ranksRow = HtmlNode.CreateNode(ranks);
-                            HtmlNode firstRow = tableHtmlNode.SelectSingleNode("./tbody/tr");
                             tableHtmlNode.SelectSingleNode("./tbody").InsertAfter(ranksRow, firstRow);
 
                             string percentiles = percentilesTR.Replace("[[playerName]]", firstName);
@@ -325,27 +336,49 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                             List<HtmlNode> percentTds = percentilesRow.SelectNodes(".//td").ToList();
                             List<HtmlNode> rankTds = ranksRow.SelectNodes(".//td").ToList();
+                            List<HtmlNode> zScoreTds = zScoresRow.SelectNodes(".//td").ToList();
                             for (int j = 1; j < percentTds.Count; j++)
                             {
                                 PlayerSheetPercentile percentile = psItem.PlayerPercentiles[j - 1];
                                 percentTds[j].InnerHtml = percentile.PercentileToString();
+
+                                double zScore = percentile.ZScore;
+                                string prefix = zScore > 0 ? "+" : "-";
+                                string zScoreAbsValue = Math.Abs(zScore).ToString("0.00");
+                                zScoreTds[j].InnerHtml = $"{prefix}{zScoreAbsValue}";
+
+                                // Fix up the titles
+                                string zScoreTdTitle = zScoreTds[j].GetAttributeValue("title", null);
+                                zScoreTdTitle = zScoreTdTitle.Replace("[[value]]", $"{percentile.PropertyValue:#.000}")
+                                                             .Replace("[[zscore]]", zScoreAbsValue);
+                                string aboveBelow = (prefix == "+") ? "above" : "below";
+                                zScoreTdTitle = zScoreTdTitle.Replace("[[AboveBelow]]", aboveBelow)
+                                                             .Replace("[[Mean]]", $"{leagueStatistics[j - 1].Mean:#.000}");
+                                zScoreTds[j].SetAttributeValue("title", zScoreTdTitle);
+
+
                                 rankTds[j].InnerHtml = percentile.Rank.ToString();
                             }
 
                             percentTds[0].InnerHtml = $"{psItem.PlayerPercentiles[0].NumPlayers} players having more than 5 plate appearance used for calculations. <span style='float:right'>Percentiles =></span>";
                             rankTds[0].InnerHtml = $"Rankings =>";
+                            zScoreTds[0].InnerHtml = $"<span style='float:right'>Z-scores =></span>";
 
+                            
+                            HtmlNode lastRow = tableHtmlNode.SelectSingleNode("./tbody/tr[last()]");
+                            List<HtmlNode> leagueTds = lastRow.SelectNodes(".//td").ToList();
+                            List<string> sdName = Query.ComputedStatDisplayNames;
+                            for (int j = 0; j < sdName.Count; j++) 
+                            {
+                                leagueTds[12+j].SetAttributeValue("title", $"League mean for {sdName[j]}={leagueStatistics[j].Mean:#.000} and StdDev={leagueStatistics[j].StdDev:0.00}");
+                            }
                         }
                     }
 
                     Utilities.UpdatePlayerHeaderTitles(tableHtmlNode, false);
-
-
                 }
 
-                //tableHtmlNode.SetAttributeValue("style", "display:none");
-
-                return header; // + $" Depth = {t.Depth()} Index = {t.Index()}";
+                return header; 
             };
         }
     }

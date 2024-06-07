@@ -11,6 +11,10 @@ namespace SBSSData.Softball.Stats
     {
         private static Dictionary<string, List<string>> validLeaguesDictionary = [];
 
+        public static readonly List<string> ComputedStatNames = ["Average", "Slugging", "OnBase", "OnBasePlusSlugging"];
+
+        public static readonly List<string> ComputedStatDisplayNames = ["AVG", "SLG", "OB", "OPS"];
+
         private Query()
         {
             Container = DataStoreContainer.Empty;
@@ -43,6 +47,67 @@ namespace SBSSData.Softball.Stats
             IEnumerable<LeagueName> leagueNames = [];
             IEnumerable<LeagueDescription> descriptions = leagueDescription ?? GetLeagueDescriptions();
             return descriptions.OrderBy(d => d.LeagueCategory).Select(l => new LeagueName(l)).ToList();
+        }
+
+        public Dictionary<string, IEnumerable<PlayerSheetPercentile>> GetAllPlayersStatistics(LeagueName league,
+                                                                                             int qualifyingPlateAppearances)
+        {
+            IEnumerable<IGrouping<string, PlayerSheetPercentile>> groups = [];
+
+            List<PlayerStats> psAll = GetLeaguePlayers(league.Category, league.Day).ToList();
+            List<double> weights = psAll.Select(p => (double)p.PlateAppearances).ToList();
+
+            List<PlayerStats> ps = GetLeaguePlayers(league.Category, league.Day).Where(p => p.PlateAppearances > qualifyingPlateAppearances)
+                                                                                .ToList();
+            int n = ps.Count();
+            //List<string> propertyNames = ["Average", "Slugging", "OnBase", "OnBasePlusSlugging"];
+            List<PlayerSheetPercentile> playersInfo = [];
+            foreach (string propertyName in ComputedStatNames)
+            {
+                PropertyInfo? property = typeof(PlayerStats).GetProperty(propertyName);
+                if (property != null)
+                {
+                    List<double> data = psAll.Select(p => (double)property.GetValue(p)).ToList();
+                    DescriptiveStatistics ds = data.GetStatistics(propertyName, weights);
+                    List<PlayerStats> propertyNameStats = ps.OrderBy(p => property.GetValue(p)).ThenBy(p => p.PlateAppearances).ToList();
+                    for (int i = 0; i < n; i++)
+                    {
+                        int percentile = (int)Math.Round(((double)((i == 0) ? 0 : i) / (double)n) * 100, 0);
+                        int rank = n - i;
+                        double propertyValue = (double)property.GetValue(propertyNameStats[i]);
+                        double zScore = (propertyValue - ds.Mean) / ds.StdDev;
+                        PlayerSheetPercentile pInfo = new PlayerSheetPercentile(n, propertyNameStats[i].Name, propertyName, (double)(property.GetValue(propertyNameStats[i]) ?? 0), rank, percentile, zScore);
+                        playersInfo.Add(pInfo);
+                    }
+                }
+            }
+
+            groups = playersInfo.GroupBy(i => i.PlayerName);
+            return groups.ToDictionary(g => g.Key, g => g.AsEnumerable<PlayerSheetPercentile>());
+        }
+        public Dictionary<string, IEnumerable<DescriptiveStatistics>> GetLeaguesStatistics()
+        {
+            Dictionary<string, IEnumerable<DescriptiveStatistics>> leagueStatistics = [];
+            foreach (LeagueName leagueName in GetLeagueNames())
+            {
+                List<PlayerStats> psAll = GetLeaguePlayers(leagueName.Category, leagueName.Day).ToList();
+                List<double> weights = psAll.Select(p => (double)p.PlateAppearances).ToList();
+                List<DescriptiveStatistics> descriptiveStatistics = [];
+                foreach (string propertyName in ComputedStatNames)
+                {
+                    PropertyInfo? property = typeof(PlayerStats).GetProperty(propertyName);
+                    if (property != null)
+                    {
+                        List<double> data = psAll.Select(p => (double)property.GetValue(p)).ToList();
+                        DescriptiveStatistics ds = data.GetStatistics(propertyName, weights);
+                        descriptiveStatistics.Add(ds);
+                    }
+                }
+
+                leagueStatistics.Add(leagueName.ShortLeagueName, descriptiveStatistics);
+            }
+
+            return leagueStatistics;
         }
 
         /// <summary>

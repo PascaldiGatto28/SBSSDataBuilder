@@ -52,6 +52,12 @@ namespace SBSSData.Softball.Stats
             set; 
         }
 
+        public List<LeagueStatistics> LeagueStatistics 
+        {
+            get;
+            set; 
+        }
+
         private string Season 
         { 
             get; 
