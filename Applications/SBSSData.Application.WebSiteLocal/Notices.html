@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="description" content="Saddlebrooke Senior Softball data viewer">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="Richard Levaro">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <title>Notices</title>
+    <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
+    <link rel="stylesheet" href="CSS/LINQPad.css" />
+    <link rel="stylesheet" href="CSS/Main2.css?v=0.v=0.24107" />
+    <style type="text/css">
+        h1
+        {
+            font-weight: 500;
+            font-size: 1.25em;
+            color: firebrick;
+        }
+        span.emphasis
+        {
+            font-weight:500;
+        }
+        /*ul
+        {
+            display: flex;
+            justify-content: space-between;
+        }*/
+        li
+        {
+            padding-top:5px;
+            padding-bottom:5px;
+        }
+    </style>
+    <script type="text/javascript" src="Scripts/Main.js?v=0.24107"></script>
+</head>
+<body>
+    <h1 style="font-weight: 500; font-size:1.25em; color: firebrick;">
+        Notes &amp; Information
+        <a class="navigate" href="index.html">(Back to SBSS Data Viewer Home)</a>
+    </h1>
+    <div class="spacer">
+        Thank you for taking the time and energy to look at this Web site and hope you'll offer any comments and suggestions. There
+        are some items of which we'd like to offer to provide a context when looking at SBSS Data Viewer.
+    </div>
+
+    
+    <ul class="sbss">
+        <li class="sbss" stye="margin-bottom:15px;">
+            Although all the data is recovered from the SaddleBrook Senior Softball Association (SSSA) Web site, here the
+            data is presented
+            often in different ways. The SSSA Web is the <span class="emphasis">Official Web site of SSSA</span> for both
+            news, notices and <span class="emphasis">data</span>. If there are any data discrepancies between the two,
+            you should view the SSSA site as the correct source. Any errors are ours, and we'll address them immediately.
+        </li>
+        <li class="sbss">
+            It is our desire to be a complementary source and definitely not a replacement for the SSSA Web site. Although it
+            may not be apparent with the small number of pages currently available, our goal is to provide the data in a
+            way to do some interesting and perhaps useful analysis.
+        </li>
+        <li class="sbss">
+            The SBSS Data Viewer is a prototype. The pages have been generally hand-crafted in a way to reflect the organization
+            of the stored data.
+            The rendering is rudimentary at this point, but after we get a better idea of the way we and you would like us to
+            present data, and if there's interest, we'll develop a more modern responsive Web site.
+        </li>
+        <li class="sbss">
+            The SBSS Data Viewer is a static Web site. The advantage is that the pages do not require specific requests from
+            you. The disadvantage is that you lose the interaction that real applications provide, but the big advantage
+            is that we don't request any information from you and only use a single cookie that keeps track which season
+            you have selected. That cookie is removed when your browser is closed.
+        </li>
+        <li class="sbss">
+            Because the site is static and you're not sending any personal information over the wire, there is no danger that
+            your information in compromised. Even though the SBSS Data View is safe, modern browsers expect (as they should) that a
+            Web site use the https protocol (hypertext transfer protocol secure). What that does is encrypt the data transferred
+            between your browser and the Web site server. To use the https protocol, the server requires a certificate, which
+            we have not done at time. This has two impacts: First, when accessing SBSS Data Viewer, you must use
+            "http://www.sbssdata.info", "www.sbssdata.info", or even just "sbssdata.info" rather than "https." Second, most
+            browsers indicate that the site is "Not secure" and warn you that:
+            <div style="margin-top:10px;">
+                <div style="width:55%; border: 1px solid #aaaaaa; padding:5px 10px 5px 10px; margin:auto; font-style:italic">
+                    This site does not have a certificate.<br />
+                    Because this connection is not secure, information (such as passwords or credit cards)
+                    will not be securely sent to this site and may be intercepted or seen by others.
+                </div>
+            </div>
+        </li>
+        <li class="sbss">
+            There is no cost to use this site and never will be. All the source code used to acquire data, store it and display
+            it via the Web is in the public domain currently hosted on <a href="https://github.com" _target="blank">Github</a>
+            at the public repository 
+            <a href="https://github.com/PascaldiGatto28/SBSSDataBuilder" _target="blank">SBSS Data Builder</a>
+            (more information on that and technical documentation are coming).
+        </li>
+        <li class="sbss">
+            Because this a prototype and under construction, we do try and offer a fair bit of guidance, but are planning
+            to keep it off the main data pages so it doesn't get in the way. Please however, do at least look at the guide pages
+            before diving into the data. 
+        </li>
+        <li class="sbss">
+            Finally, a big thanks to all the volunteer score keepers and George Corrick that maintain the SSSA Web site make this
+            site possible. Also thank you for reading this document. We hope you like SBSS Data Viewer and are 
+            looking forward to hearing from you.
+        </li>
+    </ul>
+</body>
+</html>

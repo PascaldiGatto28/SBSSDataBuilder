@@ -31,11 +31,14 @@ namespace SBSSData.Application.LinqPadQuerySupport
         {
             Values = [];
             HtmlContainerName = "PlayerSheetsContainer.html";
+            IntermediateFilePath = string.Empty;
         }
 
-        public PlayerSheets(string containerName) : this()
+        public PlayerSheets(string containerName, string intermediateHtmlFilePath = "") 
         {
             HtmlContainerName = containerName;
+            IntermediateFilePath = intermediateHtmlFilePath;
+            Values = [];
         }
         
 
@@ -50,6 +53,13 @@ namespace SBSSData.Application.LinqPadQuerySupport
             get;
             set;
         }
+
+        public string IntermediateFilePath
+        {
+            get; 
+            set; 
+        }
+
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
@@ -107,6 +117,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                         """).ToList();
 
                 Dictionary<string, LeaguesAndPlayersStatistics> leaguesAndPlayersStatistics = GetLeaguesAndPlayersStatistics(query);
+                if (!string.IsNullOrEmpty(IntermediateFilePath))
+                {
+                    string playerName = Path.GetFileNameWithoutExtension(IntermediateFilePath);
+                    playerNames = playerNames.Where(p => p.Replace(", ", "") == playerName);
+                }
                 foreach (string playerName in playerNames)
                 {
                     IEnumerable<LeagueName> leagueNames = query.GetLeagueNamesForPlayer(playerName);
@@ -186,25 +201,41 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                      collapseTo: 2,
                                                      headElements: headElements.ToList());
 
-                    // Now populate the PlayrSheetsContainer HTML document by inserting the player list and changing the
-                    // scrdoc attribute on iframe element. So first load the file Html in a HtmlDocument.
-                    HtmlDocument htmlDoc = new HtmlDocument();
-                    htmlDoc = PageContentUtilities.GetHtmlDocument(containerHtml);
-                    HtmlNode root = htmlDoc.DocumentNode;
-                    HtmlNode sheets = root.SelectSingleNode("//iframe[@id='sheets']");
-                    sheets.Attributes["srcdoc"].Remove();
-                    sheets.Attributes.Add("srcdoc", changedHtml);
-                    HtmlNode playersList = root.SelectSingleNode("//div[@id='playersList']");
-                    foreach (string playerOption in optionValues)
+                    if (!string.IsNullOrEmpty(IntermediateFilePath))
                     {
-                        playersList.AppendChild(HtmlNode.CreateNode(playerOption));
+                        try
+                        {
+                            File.WriteAllText(IntermediateFilePath, changedHtml);
+                            actionCallback($"{IntermediateFilePath} created and contains the changedHtml from PlayerSheets.BuildHtml");
+                        }
+                        catch (Exception exception)
+                        {
+                            throw new InvalidOperationException($"The {IntermediateFilePath} is invalid", exception);
+                        }
                     }
+                    else
+                    {
 
-                    HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
-                    viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
-                    changedHtml = root.OuterHtml;
+                        // Now populate the PlayrSheetsContainer HTML document by inserting the player list and changing the
+                        // scrdoc attribute on iframe element. So first load the file Html in a HtmlDocument.
+                        HtmlDocument htmlDoc = new HtmlDocument();
+                        htmlDoc = PageContentUtilities.GetHtmlDocument(containerHtml);
+                        HtmlNode root = htmlDoc.DocumentNode;
+                        HtmlNode sheets = root.SelectSingleNode("//iframe[@id='sheets']");
+                        sheets.Attributes["srcdoc"].Remove();
+                        sheets.Attributes.Add("srcdoc", changedHtml);
+                        HtmlNode playersList = root.SelectSingleNode("//div[@id='playersList']");
+                        foreach (string playerOption in optionValues)
+                        {
+                            playersList.AppendChild(HtmlNode.CreateNode(playerOption));
+                        }
 
-                    actionCallback($"{this.GetType().Name} HTML page created.");
+                        HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
+                        viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
+                        changedHtml = root.OuterHtml;
+
+                        actionCallback($"{this.GetType().Name} HTML page created.");
+                    }
                 }
 
             }
@@ -300,10 +331,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     string zScoresTR = """
                                         <tr style="background-color:#e8efff">
                                         <td colspan="12" class="n"; style="text-align:left;">This is the ZScores </td>
-                                        <td class="n" title="[[playerName]]'s [[value]] AVG is [[zscore]] StdDevs [[AboveBelow]] the league mean, and is [[Mean]] for AVG">A</td>
-                                        <td class="n" title="[[playerName]]'s [[value]] SLG is [[zscore]] StdDevs [[AboveBelow]] the league mean, and is [[Mean]] for SLG">B</td>
-                                        <td class="n" title="[[playerName]]'s [[value]] OBP is [[zscore]] StdDevs [[AboveBelow]] the league mean, and is [[Mean]] for OPB">C</td>
-                                        <td class="n" title="[[playerName]]'s [[value]] OPS is [[zscore]] StdDevs [[AboveBelow]] the league mean, and is [[Mean]] for OPS">D</td>
+                                        <td class="n" title="[[playerName]]'s [[value]] AVG is [[zscore]] StdDevs [[AboveBelow]] the league mean, which is [[Mean]] for AVG">A</td>
+                                        <td class="n" title="[[playerName]]'s [[value]] SLG is [[zscore]] StdDevs [[AboveBelow]] the league mean, which is [[Mean]] for SLG">B</td>
+                                        <td class="n" title="[[playerName]]'s [[value]] OBP is [[zscore]] StdDevs [[AboveBelow]] the league mean, which is [[Mean]] for OPB">C</td>
+                                        <td class="n" title="[[playerName]]'s [[value]] OPS is [[zscore]] StdDevs [[AboveBelow]] the league mean, which is [[Mean]] for OPS">D</td>
                                         </tr>
                                         """;
 

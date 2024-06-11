@@ -29,7 +29,7 @@ namespace SBSSData.Application.WebDeployment
 
             if (buildHtml)
             {
-                string[] seasons = ["2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+                string[] seasons = ["2024 Spring", "2024 Winter"]; //, "2023 Fall", "2023 Summer"];
                 Construction construction = new()
                 {
                     SeasonText = seasons[0],
