@@ -2,11 +2,7 @@
   "profiles": {
     "WebDeployment": {
       "commandName": "Project",
-      "commandLineArgs": "Test"
-    },
-    "Test WebDeployment": {
-      "commandName": "Project",
-      "commandLineArgs": "Test"
+      "commandLineArgs": ""
     }
   }
 }

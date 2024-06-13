@@ -56,7 +56,7 @@ namespace SBSSData.Application.DataStore
                 }
                 catch (Exception exception)
                 {
-                    log.WriteLine("Error not caught", exception);
+                    log.WriteLine($"Error not caught -- {exception.Message}");
                     throw new InvalidOperationException("Exception encountered while the data store manager is executing", exception);
                 }
                 finally

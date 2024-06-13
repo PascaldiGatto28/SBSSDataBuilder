@@ -23,13 +23,13 @@ namespace SBSSData.Application.WebDeployment
         public void Run()
         {
             bool buildHtml = true;
-            bool publish = false;
-            bool publishToTest = PublishToTest; // (args == null) || (args.Length == 0) || (args[0] == "Test");
+            bool publish = true;
+            bool publishToTest = false; // (args == null) || (args.Length == 0) || (args[0] == "Test");
 
 
             if (buildHtml)
             {
-                string[] seasons = ["2024 Spring", "2024 Winter"]; //, "2023 Fall", "2023 Summer"];
+                string[] seasons = ["2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
                 Construction construction = new()
                 {
                     SeasonText = seasons[0],
@@ -38,18 +38,18 @@ namespace SBSSData.Application.WebDeployment
                     Callback = (t) => log.WriteLine(t.ToString() ?? "Bad logging comment!")
                 };
 
-                //_ = construction.Build<DataStoreInfo>(true);
-                //_ = construction.Build<LogSessions>(true);
+                _ = construction.Build<DataStoreInfo>(true);
+                _ = construction.Build<LogSessions>(true);
 
                 //foreach (string season in seasons)
                 string season = "2024 Spring";
                 {
                     log.WriteLine($"Beginning construction of HTML pages for {season}");
                     construction.SeasonText = season;
-                   // _ = construction.Build<GamesTeamPlayersV3>(true);
-                   // _ = construction.Build<GamesTeamPlayersHelpV3>(true);
-                   _ = construction.Build<PlayerSheets>(true);
-                   // _ = construction.Build<PlayerSheetsGuide>(true);
+                    _ = construction.Build<GamesTeamPlayersV3>(true);
+                    _ = construction.Build<GamesTeamPlayersHelpV3>(true);
+                    _ = construction.Build<PlayerSheets>(true);
+                    _ = construction.Build<PlayerSheetsGuide>(true);
                 }
             }
 
