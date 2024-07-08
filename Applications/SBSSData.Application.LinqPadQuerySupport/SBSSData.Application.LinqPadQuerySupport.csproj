@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="GamesTeamPlayers.cs" />
     <Compile Remove="GamesTeamPlayersV2.cs" />
     <Compile Remove="GamesTeamPlayersV4.cs" />
@@ -32,6 +38,7 @@
     <EmbeddedResource Include="GamesTeamPlayersHelpV3.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="GamesTeamPlayersV3.html" />
     <EmbeddedResource Include="SortablePlayerStats.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -52,11 +59,6 @@
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Stats\SBSSData.Softball.Stats.csproj" />
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball\SBSSData.Softball.csproj" />
     <ProjectReference Include="..\SBSSData.Application.Support\SBSSData.Application.Support.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 

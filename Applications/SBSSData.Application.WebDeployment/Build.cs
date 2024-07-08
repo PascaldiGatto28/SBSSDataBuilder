@@ -22,7 +22,7 @@ namespace SBSSData.Application.WebDeployment
 
         public void Run()
         {
-            bool buildHtml = true;
+            bool buildHtml = false;
             bool publish = true;
             bool publishToTest = false; // (args == null) || (args.Length == 0) || (args[0] == "Test");
 
@@ -41,8 +41,8 @@ namespace SBSSData.Application.WebDeployment
                 _ = construction.Build<DataStoreInfo>(true);
                 _ = construction.Build<LogSessions>(true);
 
-                //foreach (string season in seasons)
-                string season = "2024 Spring";
+                foreach (string season in seasons)
+                //string season = "2024 Spring";
                 {
                     log.WriteLine($"Beginning construction of HTML pages for {season}");
                     construction.SeasonText = season;
