@@ -182,6 +182,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             IEnumerable<HtmlNode> rows = tableHtmlNode.SelectNodes($"./tbody/tr");
 
             List<HtmlNode> rankingTables = tableHtmlNode.SelectNodes("./tbody//tr/td[last()]/table").ToList();
+            //amList<HtmlNode> rankingTables = tableHtmlNode.SelectNodes("./tbody//tr//td/table").ToList();
             rankingTables.ForEach(rt =>
             {
                 rt.SetAttributeValue("style", "width:160px");

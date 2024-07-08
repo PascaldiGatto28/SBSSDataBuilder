@@ -32,7 +32,7 @@
     <EmbeddedResource Include="GamesTeamPlayersHelpV3.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="GamesTeamPlayersV3.html">
+    <EmbeddedResource Include="SortablePlayerStats.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="DataStoreInfo.html">
@@ -67,7 +67,7 @@
 
   <ItemGroup>
     <Reference Include="LINQPad.Runtime">
-      <HintPath>..\..\..\..\..\..\..\..\..\Installation\Utilities\LINQPad8-Beta\LINQPad.Runtime.dll</HintPath>
+      <HintPath>..\SBSSData.Application.Support\Resource\LINQPad.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -26,7 +26,9 @@ namespace SBSSData.Application.Support
         private static readonly string urlPrefix = "https://saddlebrookesoftball.com/wp-content/gallery/player-pictures/";
         private static readonly string nlpUrlPrefix = "https://saddlebrookesoftball.com/wp-content/gallery/no-longer-playing/";
         public static readonly string dataStorePath = @"J:\SBSSDataStore\";
-        private static readonly string playerPhotosPath = @"D:\Users\Richard\Documents\Visual Studio 2022\Github Projects\SBSS\SBSSDataBuilder\Applications\SBSSData.Application.Support\PlayerPhotos\";
+        private static readonly string playerPhotosClassPath = @"J:\SBSSDataVS\";
+        //private static readonly string playerPhotosClassPath = @"D:\Users\Richard\Documents\Visual Studio 2022\Github Projects\SBSS\";
+        private static readonly string playerPhotosPath = $@"{playerPhotosClassPath}SBSSDataBuilder\Applications\SBSSData.Application.Support\PlayerPhotos\";
         private static Dictionary<string, string> playerNameToImageNameMap = [];
 
         public static Dictionary<string, string> Build()

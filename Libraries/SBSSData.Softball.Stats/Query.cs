@@ -13,7 +13,7 @@ namespace SBSSData.Softball.Stats
 
         public static readonly List<string> ComputedStatNames = ["Average", "Slugging", "OnBase", "OnBasePlusSlugging"];
 
-        public static readonly List<string> ComputedStatDisplayNames = ["AVG", "SLG", "OB", "OPS"];
+        public static readonly List<string> ComputedStatDisplayNames = ["AVG", "SLG", "OBP", "OPS"];
 
         private Query()
         {

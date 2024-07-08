@@ -26,6 +26,8 @@ namespace SBSSData.Application.Support
                 margin-right:10px;
                 color:white;
                 background-color: #4C74b2;
+                border-radius: 15px;
+                box-shadow: 2px 2px 10px 2px #aaaaaa;
             }
 
             div.overlay {
@@ -178,12 +180,53 @@ namespace SBSSData.Application.Support
                 cursor: pointer;
             }
 
-                div.help {
+            div.help {
                 display:none;
             }
 
             .tableTitle {
                 font-style:italic;
+            }
+            """;
+
+        public static readonly string SortableTableStyles =
+            """
+            table.sortable th {
+                cursor:pointer;
+            }
+                 
+            table.sortable th.ascending::before {
+                content: "▲";
+                margin-right:.25em;
+                display:inline-block;
+            }
+
+            table.sortable th.descending::before {
+                content: "▼";
+                margin-right:.25em;
+                display:inline-block;
+            }
+
+            table.sortable > thead > tr > td {
+                background-color:#d62929;
+                font-weight:400;
+                color: white;
+            }
+
+            table.sortable  tbody > tr:last-child td {
+                font-weight:500;
+                background-color:#ddd;
+            }
+
+            table.sortable tr.summary  {
+                font-weight:500;
+                background-color:#ddd;
+            }
+
+            table.statistics > thead > tr > td {
+                background-color:#d62929;
+                font-weight:400;
+                color: white;
             }
             """;
 
@@ -336,101 +379,115 @@ namespace SBSSData.Application.Support
                 }
             }
 
-                function collapseTable(headerText)
+            function collapseTable(headerText)
+            {
+                var tableId = findTableIdFromHeader(headerText);
+                if (tableId == -1)
                 {
-                    var tableId = findTableIdFromHeader(headerText);
-                    if (tableId == -1)
+                    //alert("Can't find the table whose header starts with " + headerText);
+                    return;
+                }
+
+                var table = document.getElementById(tableId);
+                if (table != null)
+                {
+                    var updown = document.getElementById(tableId + 'ud');
+                    if (updown != null) 
                     {
-                        //alert("Can't find the table whose header starts with " + headerText);
+                        updown.className = 'arrow-down';
+                    }
+
+                    table.style.borderBottomStyle = 'dashed';
+                    if (table.rows.length < 2 || table.tBodies.length == 0)
+                    {
                         return;
                     }
 
-                    var table = document.getElementById(tableId);
-                    if (table != null)
-                    {
-                        var updown = document.getElementById(tableId + 'ud');
-                        if (updown != null) 
-                        {
-                            updown.className = 'arrow-down';
-                        }
+                    table.tBodies[0].style.display = 'none';
+                    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                        table.tHead.rows[1].style.display = 'none';
+                    if (table.tFoot != null)
+                        table.tFoot.style.display = 'none';
+                }
+            }
 
-                        table.style.borderBottomStyle = 'dashed';
-                        if (table.rows.length < 2 || table.tBodies.length == 0)
-                        {
-                            return;
-                        }
+            function findTableIdFromHeader(headerText) {
+                var headers = document.querySelectorAll("a.typeheader")
+                var tableId = -1;
 
-                        table.tBodies[0].style.display = 'none';
-                        if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
-                            table.tHead.rows[1].style.display = 'none';
-                        if (table.tFoot != null)
-                            table.tFoot.style.display = 'none';
+                // This function is used to find table IDs of the first few tables so they can be expanded by the
+                // introductory text. On the tables in the first league need be queried.
+                for (let i = 0; i < headers.length; i++) {
+                    let headerElement = headers[i];
+                    //console.log(headerElement.innerText);
+                    let header = headerElement.innerText;
+                    //console.log("header = " + header);
+                    if (header.startsWith(headerText)) {
+                        tableId = headerElement.closest('table').id;
+                        break;
                     }
                 }
 
-                function findTableIdFromHeader(headerText) {
-                    var headers = document.querySelectorAll("a.typeheader")
-                    var tableId = -1;
+                return tableId
+            }
 
-                    // This function is used to find table IDs of the first few tables so they can be expanded by the
-                    // introductory text. On the tables in the first league need be queried.
-                    for (let i = 0; i < headers.length; i++) {
-                        let headerElement = headers[i];
-                        //console.log(headerElement.innerText);
-                        let header = headerElement.innerText;
-                        //console.log("header = " + header);
-                        if (header.startsWith(headerText)) {
-                            tableId = headerElement.closest('table').id;
-                            break;
-                        }
+            function getTableNestingLevel(element) {
+                console.info("Checking nesting level for " + element.id);
+                let nestingLevel = 0;
+                let currentElement = element;
+
+                while (currentElement.parentElement) {
+                    console.info("Parent element is " + currentElement.parentElement.tagName)
+                    if (currentElement.parentElement.tagName === 'TABLE') {
+                        nestingLevel++;
                     }
 
-                    return tableId
+                    currentElement = currentElement.parentElement;
                 }
 
-                function getTableNestingLevel(element) {
-                    console.info("Checking nesting level for " + element.id);
-                    let nestingLevel = 0;
-                    let currentElement = element;
+                return nestingLevel;
+            }
 
-                    while (currentElement.parentElement) {
-                        console.info("Parent element is " + currentElement.parentElement.tagName)
-                        if (currentElement.parentElement.tagName === 'TABLE') {
-                            nestingLevel++;
-                        }
-
-                        currentElement = currentElement.parentElement;
+            function findTableId(depth, index) {
+                console.log("Finding table ID for depth=" + depth + " and index=" + index);
+                var tables = document.getElementsByTagName("TABLE");
+                var spansInHeader = document.querySelectorAll("a.typeheader span")
+                var tableId = -1;
+                for (let i = 0; i < spansInHeader.length; i++) {
+                    var span = spansInHeader[i];
+                    var tableDepth = span.getAttribute("depth");
+                    var tableIndex = span.getAttribute("index");
+                    if ((tableDepth == depth) && (tableIndex == index)) {
+                        tableId = span.closest('table').id;
+                        break;
                     }
-
-                    return nestingLevel;
                 }
 
-                function findTableId(depth, index) {
-                    console.log("Finding table ID for depth=" + depth + " and index=" + index);
-                    var tables = document.getElementsByTagName("TABLE");
-                    var spansInHeader = document.querySelectorAll("a.typeheader span")
-                    var tableId = -1;
-                    for (let i = 0; i < spansInHeader.length; i++) {
-                        var span = spansInHeader[i];
-                        var tableDepth = span.getAttribute("depth");
-                        var tableIndex = span.getAttribute("index");
-                        if ((tableDepth == depth) && (tableIndex == index)) {
-                            tableId = span.closest('table').id;
-                            break;
-                        }
-                    }
+                return tableId
+            }
 
-                    return tableId
+            function toggleHelp(id) {
+                var element = document.getElementById(id);
+                var display = getComputedStyle(element).getPropertyValue("display");
+
+                //console.log('in toggleHele for id=', id, " display=", display);
+                element.style.display = (display == "none") ? "block" : "none";
+            }
+
+            function toggleStatisticsDisplay() { 
+                var statistics = document.getElementsByClassName("statistics");
+                var displayStyle = "";
+                for (i = 0; i < statistics.length; i++)
+                {
+                    var statisticsEl = statistics[i];
+                    var display = window.getComputedStyle(statisticsEl).getPropertyValue("display")
+                    displayStyle = (display == "none") ? "table" : "none";
+                    statisticsEl.style.display = displayStyle;
                 }
-
-                function toggleHelp(id) {
-                    var element = document.getElementById(id);
-                    var display = getComputedStyle(element).getPropertyValue("display");
-
-                    //console.log('in toggleHele for id=', id, " display=", display);
-                    element.style.display = (display == "none") ? "block" : "none";
-                }
-
+            
+                return displayStyle;
+            }
+            
             """;
 
         public static readonly string HelpJavascript =
@@ -485,6 +542,84 @@ namespace SBSSData.Application.Support
                     }
                 }
             }
+            """;
+
+        public static readonly string SortableTable =
+            """
+            <script language="javascript" type="text/javascript">
+                (function setEventHandler(tableSelector, stringElements)
+                {
+                    const sortableTable = document.querySelector(tableSelector);
+
+                    // select all table rows below the two header rows and above the last row
+                    const trs = [...sortableTable.querySelectorAll('tr')].slice(2, -1);
+                    var headerCount = sortableTable.rows[1].cells.length;
+                    const sortTypes = {};
+                    for (var i = 0; i < headerCount; i++)
+                    {
+                        var isString = stringElements.indexOf(i) != -1;
+                        sortTypes[i] = isString ? 1 : -1; 
+                    };
+
+                    let lastIndex = -1;
+                    const stringCols = [1];
+
+                    sortableTable.addEventListener('click', ({ target }) => 
+                    {
+                        if (!target.matches('th')) return;
+
+                        const thIndex = Array.prototype.indexOf.call(target.parentElement.children, target);
+                        const isNumeric = !stringCols.includes(thIndex);
+
+                        if (lastIndex != -1)
+                        {
+                            target.parentElement.children[lastIndex].removeAttribute('class');
+                            if (lastIndex != thIndex)
+                            {
+                                var sortTypeValue = isNumeric ? -1 : 1;
+                                sortTypes[thIndex] = sortTypeValue;
+                            }
+                        }
+
+                        lastIndex = thIndex;
+
+                        let getText = tr => tr.children[thIndex].textContent;
+                        if (!isNumeric)
+                        {
+                           getText = tr => {
+                              var fullName = tr.children[thIndex].textContent;
+                              const nameParts = fullName.split(" ");
+
+                              // Extract the first name (index 0) and the last name (all other parts)
+                              const firstName = nameParts[0];
+                              const lastName = nameParts.slice(1).join(" "); // Join the remaining parts
+
+                              // Combine the last name and first name with a comma
+                              return `${lastName}, ${firstName}`;
+                           }
+                        }
+
+                        var className = sortTypes[thIndex] < 0 ? "descending" : "ascending";
+                        target.classList.add(className);
+
+                        var rows = sortableTable.rows;
+                        var lastRowIndex = rows.length - 1;
+                        var summary = rows[lastRowIndex];
+                        sortableTable.deleteRow(lastRowIndex);
+                        summary.classList.add("summary");
+
+                        trs.sort((a, b) => 
+                        (
+                            getText(a).localeCompare(getText(b), undefined, { numeric: isNumeric }) * sortTypes[thIndex]
+                        ));
+
+                        trs.forEach(tr => sortableTable.appendChild(tr));
+                        sortableTable.appendChild(summary);
+                        sortTypes[thIndex] *= -1;
+                    });
+                })([[tableSelector]], [[stringElements]]);
+            
+            </script>
             """;
         public static string OverlayTemplate =
                                      """

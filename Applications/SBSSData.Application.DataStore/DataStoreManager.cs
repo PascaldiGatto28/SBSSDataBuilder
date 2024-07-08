@@ -105,12 +105,16 @@ namespace SBSSData.Application.DataStore
             // Scheduled games are never null because all exist when the data store is created.
             foreach (ScheduledGame scheduledGame in scheduledGames.Where(s => !s.IsComplete))
             {
-                // A completed game is never null
+                GameInformation gameInformation = scheduledGame.GameResults.GameInformation;
+                DateTime scheduledDate = gameInformation.Date;
+                DateTime now = DateTime.Now;
+
+                // A scheduled game is never null
                 if (scheduledGame.IsRecorded)
                 {
                     // When the data store is built, the GameResults property is never null. 
 
-                    log.WriteLine($"Updating {scheduledGame.GameResults.GameInformation}");
+                    log.WriteLine($"Updating \"posted\" {gameInformation.Title} scheduled for {gameInformation.Date}.");
 
                     Game currentGame = scheduledGame.GameResults;
                     Game updatedGame = Game.ConstructGame(scheduledGame, update: true);
@@ -131,6 +135,26 @@ namespace SBSSData.Application.DataStore
                     }
 
                     updated++;
+                }
+                else if (now > scheduledDate)
+                {
+                    Game currentGame = scheduledGame.GameResults;
+                    Game updatedGame = Game.ConstructGame(scheduledGame, update: true);
+
+                    // This game results may not be posted yet, in which just don't do anything.
+                    if (updatedGame.Teams.Count == 2)
+                    {
+                        scheduledGame.GameResults = updatedGame;
+                        scheduledGame.VisitorScore = updatedGame.Teams[0].RunsScored;
+                        scheduledGame.HomeScore = updatedGame.Teams[1].RunsScored;
+                        updated++;
+
+                        log.WriteLine($"{gameInformation.Title} updated");
+                    }
+                    else
+                    {
+                        log.WriteLine($"{gameInformation.Title} not updated because results have not been posted yet.");
+                    }
                 }
             }
 

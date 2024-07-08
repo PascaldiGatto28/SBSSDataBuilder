@@ -188,8 +188,12 @@ namespace SBSSData.Application.Support
             if ((tableNode != null) && !string.IsNullOrEmpty(columnHeaderText))
             {
                 // LINQ is 0-based, but HtmlAgilityPack is 1-based, that is the first cell is td[1] or th[1].
-                List<string> columnHeaders = tableNode.SelectNodes("./thead/tr[2]/th").Select(n => n.InnerText).ToList();
-                index = columnHeaders.IndexOf(columnHeaderText) + 1;
+                IEnumerable<HtmlNode> headers = tableNode.SelectNodes("./thead/tr[2]/th");
+                if (headers != null)
+                {
+                    List<string> columnHeaders = headers.Select(n => n.InnerText).ToList();
+                    index = columnHeaders.IndexOf(columnHeaderText) + 1;
+                }
             }
 
             return index;
