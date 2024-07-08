@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="CSS/LINQPad.css" />
+    <link rel="stylesheet" href="CSS/SBSS.css" />
+    <style>
+        *
+        {
+            font-family: 'Segoe UI', Helvetica, sans-serif;
+            font-size:16px;
+        }
+        .flex-container
+        {
+            display: flex;
+        }
+            .flex-container > div
+            {
+                background-color: #f1f1f1;
+                margin: 10px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                font-size: 12x;
+            }
+
+        div > div > div
+        {
+            cursor: pointer;
+            padding-left: 10px;
+            padding-bottom: 2px;
+        }
+    </style>
+    <script language="JavaScript" type="text/javascript">
+        let listContainer = document.getElementById("list");
+        listContainer.addEventListener("click", function (event) 
+        {
+            alert(event.target.innerText);
+            document.getElementById("sheet").src = event.target.getAttribute("url");
+        }
+    })
+</script>
+</head>
+<body>
+    <!-- this page is not current used because the container has its own introductory text -->
+    <div class="IntroContent" style="font-size:16px;">
+        <h1 style="font-weight: 500; font-size:1.25em; color: firebrick;">
+            Player's League Summaries 
+            <a class="navigate" href="index.html">(Back to SBSS Data Viewer)</a>
+        </h1>
+        
+        <div class="spacer">
+            For every player, this page summarizes their data for each league in which they played.
+        </div>
+     </div>
+</body>
+</html>

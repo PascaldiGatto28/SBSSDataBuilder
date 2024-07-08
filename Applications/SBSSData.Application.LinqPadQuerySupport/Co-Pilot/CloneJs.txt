@@ -1,0 +1,46 @@
+function copyElementToDiv(sourceElementId, targetDivId) {
+    const sourceElement = document.getElementById(sourceElementId);
+    const targetDiv = document.getElementById(targetDivId);
+
+    if (sourceElement && targetDiv) {
+        // Clone the source element
+        const clonedElement = sourceElement.cloneNode(true);
+
+        // Append the cloned element to the target div
+        targetDiv.appendChild(clonedElement);
+    } else {
+        console.error("Source element or target div not found.");
+    }
+}
+
+// Example usage:
+// Assuming you have an element with id "myElement" and a div with id "myDiv"
+copyElementToDiv("myElement", "myDiv");
+
+
+
+function copyElementToDiv(sourceElementId, targetDivId) {
+    const sourceElement = document.getElementById(sourceElementId);
+    const targetDiv = document.getElementById(targetDivId);
+
+    if (sourceElement && targetDiv) {
+        // Clone the source element
+        const clonedElement = sourceElement.cloneNode(true);
+
+        // Append the cloned element to the target div
+        targetDiv.appendChild(clonedElement);
+    } else {
+        console.error("Source element or target div not found.");
+    }
+}
+
+// Example usage:
+// Assuming you have an element with id "myElement" and a div with id "myDiv"
+copyElementToDiv("myElement", "myDiv");
+
+In this function:
+
+Replace "myElement" with the actual ID of the element you want to copy.
+Replace "myDiv" with the actual ID of the div where you want to append the copied content.
+
+

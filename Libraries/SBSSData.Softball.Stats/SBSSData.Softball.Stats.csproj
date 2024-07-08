@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="PlayerCard.cs" />
+    <Compile Remove="PlayerCardV2.cs" />
+    <Compile Remove="PlayerData.cs" />
+    <Compile Remove="PlayerStatsDisplay.cs" />
+    <Compile Remove="TeamStatsDisplay.cs" />
+    <Compile Remove="TeamSummaryStatsDisplay.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SBSSData.Softball\SBSSData.Softball.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Documents\" />
+  </ItemGroup>
+
+</Project>

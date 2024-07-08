@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WebDeployment": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}

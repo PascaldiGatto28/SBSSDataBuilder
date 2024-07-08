@@ -1,0 +1,131 @@
+﻿// Ignore Spelling: Linq Css
+
+using System.Reflection;
+
+using HtmlAgilityPack;
+
+using SBSSData.Application.Support;
+using SBSSData.Softball.Common;
+using SBSSData.Softball.Stats;
+
+namespace SBSSData.Application.LinqPadQuerySupport
+{
+    public class DataStoreInfo : IHtmlCreator
+    {
+        public DataStoreInfo()
+        {
+            Values = [];
+        }
+
+        public List<object> Values
+        {
+            get;
+            set;
+        }
+        private static HeadElement[] headElements =
+        {
+            new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
+            new HeadElement("meta", [["data", "description"], ["content", "Data Store information"]]),
+            new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
+            new HeadElement("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
+            new HeadElement("title", [["Data Store Information", ""]]),
+            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
+        };
+
+        private static string headerStyle = "background-color:#d62929;";
+
+        public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
+        {
+            Assembly assembly = typeof(LogSessions).Assembly;
+            string resName = assembly.FormatResourceName("DataStoreInfo.html");
+            byte[] bytes = assembly.GetEmbeddedResourceAsBytes(resName);
+            string html = bytes.ByteArrayToString();
+
+            string changedHtml = string.Empty;
+
+            List<string> seasons = ["2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+            List<DSInformationDisplay> dsInfoList = [];
+            foreach (string season in seasons)
+            {
+                string dataStorePath = $@"{dataStoreFolder}{season.RemoveWhiteSpace()}LeaguesData.json";
+
+                using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
+                {
+                    dsInfoList.Add(new DSInformationDisplay(season, dsContainer));
+                }
+            }
+
+            using (HtmlGenerator generator = new HtmlGenerator())
+            {
+                generator.WriteRootTable(dsInfoList, ExtendedDSInformationDisplay(headerStyle));
+
+                Values.Add(dsInfoList);
+                if (callback != null)
+                {
+                    callback($"{this.GetType().Name} HTML page created.");
+                }
+
+                string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
+                HtmlNode title = HtmlNode.CreateNode(htmlNode);
+                changedHtml = generator.DumpHtml(pageTitle: title,
+                                                 cssStyles: StaticConstants.LocalStyles,
+                                                 javaScript: StaticConstants.LocalJavascript,
+                                                 collapseTo: 1,
+                                                 headElements: headElements.ToList());
+            }
+
+            return changedHtml;
+        }
+
+        public static Func<TableNode, string> ExtendedDSInformationDisplay(string? headerCssStyle = null, object? value = null)
+        {
+            return (t) =>
+            {
+                HtmlNode tableHtmlNode = t.TableHtmlNode;
+                int numSeasons = tableHtmlNode.SelectNodes("./tbody//tr").Count;
+                string header = $"Data Store Information for all {numSeasons} Seasons";
+                if (!string.IsNullOrWhiteSpace(headerCssStyle))
+                {
+                    tableHtmlNode.SelectSingleNode("./thead/tr/td").Attributes.Add("style", headerCssStyle);
+                }
+
+                HtmlNodeCollection tableColumnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]//th");
+
+                //foreach (HtmlNode th in tableColumnHeaders)
+                for (int i = 0; i < tableColumnHeaders.Count; i++)
+                {
+                    HtmlNode th = tableColumnHeaders[i];
+                    string columnHeaderTitle = th.GetAttributeValue("title", string.Empty);
+                    if ((columnHeaderTitle == "System.Int32") && th.InnerHtml.Contains("&nbsp;"))
+                    {
+                        th.InnerHtml = th.InnerHtml.Replace("&nbsp;", "<br/>");
+                        th.SetAttributeValue("style", "text-align:center");
+                    }
+                    else
+                    {
+                        th.SetAttributeValue("style", "vertical-align:middle");
+                    }
+
+                    tableColumnHeaders[i].SetAttributeValue("title", titles[i]);
+                }
+
+                return header;
+            };
+        }
+
+        public static readonly List<string> titles = 
+                          ["Calendar season followed by year",
+                           "When the Data Store was last updated and saved",
+                           "Number of leagues in the season",
+                           "The size of the Data Store on disk",
+                           "Number of scheduled games",
+                           "Number of Recorded games (when box scores are recorded) - It is sum of played, canceled and forfeited games",
+                           "Scheduled games that were played",
+                           "Scheduled games that were canceled",
+                           "Scheduled games that were forfeited",
+                           "Number of teams that have participated in at least one game",
+                           "Number of players who have played in at least one game"];
+    }
+
+
+}

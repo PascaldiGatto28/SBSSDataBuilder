@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <ApplicationIcon>Sync.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <Title>SBSS Data Store Manager</Title>
+    <Description>Reads and updates the SBSS data store</Description>
+    <Version>1.0.23327</Version>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Deterministic>False</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Deterministic>False</Deterministic>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="AppContext.cs" />
+    <Compile Remove="AppSettings.cs" />
+    <Compile Remove="Construction.cs" />
+    <Compile Remove="WebPublisher.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Configuration\Settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Configuration\Settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sync.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Common\SBSSData.Softball.Common.csproj" />
+    <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Logging\SBSSData.Softball.Logging.csproj" />
+    <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Stats\SBSSData.Softball.Stats.csproj" />
+    <ProjectReference Include="..\..\Libraries\SBSSData.Softball\SBSSData.Softball.csproj" />
+    <ProjectReference Include="..\SBSSData.Application.Infrastructure\SBSSData.Application.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
