@@ -172,6 +172,12 @@ namespace SBSSData.Application.Support
 
                                 HtmlNode tableTbody = table.SelectSingleNode("tbody");
                                 tableTbody.SetAttributeValue("style", "display:none");
+                                HtmlNode tableTfoot = table.SelectSingleNode("tfoot");
+                                if (tableTfoot != null)
+                                {
+                                    tableTfoot.SetAttributeValue("style", "display:none");
+                                }
+
                                 HtmlNode columnHeaders = table.SelectSingleNode("thead/tr[2]");
 
                                 // Some tables have just one header, and it is not represented in a row.
@@ -179,11 +185,11 @@ namespace SBSSData.Application.Support
                             }
 
                             // Remove the footer
-                            HtmlNode tableFooter = table.SelectSingleNode("./tfoot");
-                            if (tableFooter != null)
-                            {
-                                table.RemoveChild(tableFooter);
-                            }
+                            //HtmlNode tableFooter = table.SelectSingleNode("./tfoot");
+                            //if (tableFooter != null)
+                            //{
+                            //    table.RemoveChild(tableFooter);
+                            //}
 
                             // Finally, put TableNode information in the TableNode.TableHtmlNode so that it is available to
                             // the code (script) in the finally HTML document.

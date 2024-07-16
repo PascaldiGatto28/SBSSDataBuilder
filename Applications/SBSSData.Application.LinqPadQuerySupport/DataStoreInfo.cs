@@ -43,9 +43,9 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             string changedHtml = string.Empty;
 
-            List<string> seasons = ["2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+            //List<string> seasons = ["2024 Summer", "2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
             List<DSInformationDisplay> dsInfoList = [];
-            foreach (string season in seasons)
+            foreach (string season in StaticConstants.Seasons)
             {
                 string dataStorePath = $@"{dataStoreFolder}{season.RemoveWhiteSpace()}LeaguesData.json";
 

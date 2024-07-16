@@ -1,6 +1,6 @@
 {
     "DataStoreFolder": "J:\\SBSSDataStore\\",
-    "Season" :  "2024 Spring",
+    "Season" :  "2024 Summer",
     "DataStoreFileName": "LeaguesData.json",
     "LogFileName": "DataStoreManager.log",
     "LogSessionFileName": "DataStoreManager.json",

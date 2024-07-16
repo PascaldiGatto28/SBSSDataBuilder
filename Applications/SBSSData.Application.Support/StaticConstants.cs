@@ -213,12 +213,12 @@ namespace SBSSData.Application.Support
                 color: white;
             }
 
-            table.sortable  tbody > tr:last-child td {
+            <!--table.sortable tfoot > tr:last-child td {
                 font-weight:500;
                 background-color:#ddd;
-            }
+            }-->
 
-            table.sortable tr.summary  {
+            table.sortable>tfoot tr.summary  {
                 font-weight:500;
                 background-color:#ddd;
             }
@@ -325,7 +325,11 @@ namespace SBSSData.Application.Support
                         }
 
                         table.tBodies[0].style.display = ''; // expand ? '' : 'none';
-                        if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.startsWith('sum'))
+                        if (table.tfoot != null)
+                        {
+                            table.tfoot.style.display = '';
+                        }
+                        if ((table.tHead.rows.length == 2) && !table.tHead.rows[1].id.startsWith('sum'))
                             table.tHead.rows[1].style.display = ''; // expand ? '' : 'none';
                     }
                     else
@@ -333,7 +337,7 @@ namespace SBSSData.Application.Support
                         updown.className = 'arrow-down'; // collapse ? 'arrow-down' : 'arrow-up';
 
                         table.style.borderBottomStyle = 'dashed'; // collapse ? 'dashed' : 'solid';
-                        if (table.rows.length < 2 || table.tBodies.length == 0)
+                        if ((table.rows.length < 2) || (table.tBodies.length == 0))
                         {
                             continue;
                         }
@@ -474,17 +478,19 @@ namespace SBSSData.Application.Support
                 element.style.display = (display == "none") ? "block" : "none";
             }
 
-            function toggleStatisticsDisplay() { 
+            function toggleStatisticsDisplay(buttonEl) { 
                 var statistics = document.getElementsByClassName("statistics");
                 var displayStyle = "";
                 for (i = 0; i < statistics.length; i++)
                 {
-                    var statisticsEl = statistics[i];
-                    var display = window.getComputedStyle(statisticsEl).getPropertyValue("display")
-                    displayStyle = (display == "none") ? "table" : "none";
-                    statisticsEl.style.display = displayStyle;
+                    var statisticsCell = statistics[i].parentElement;
+                    var display = window.getComputedStyle(statisticsCell).getPropertyValue("display")
+                    displayStyle = (display == "none") ? "table-cell" : "none";
+                    statisticsCell.style.display = displayStyle;
                 }
             
+                buttonEl.innerHTML = displayStyle == "table-cell" ? "Hide Statistics" : "Display Statistics";
+                console.log(buttonEl.innerHtml + " for " + buttonEl.tagName);
                 return displayStyle;
             }
             
@@ -547,12 +553,14 @@ namespace SBSSData.Application.Support
         public static readonly string SortableTable =
             """
             <script language="javascript" type="text/javascript">
-                (function setEventHandler(tableSelector, stringElements)
+                (function setEventHandler(columnIndex, tableSelector, stringElements)
                 {
                     const sortableTable = document.querySelector(tableSelector);
+                    const tbody = sortableTable.querySelector("tbody");
+                    const thead = sortableTable.querySelector("thead");
 
-                    // select all table rows below the two header rows and above the last row
-                    const trs = [...sortableTable.querySelectorAll('tr')].slice(2, -1);
+                    // Only rows in the body are sorted
+                    const trs = [...tbody.querySelectorAll('tr')];
                     var headerCount = sortableTable.rows[1].cells.length;
                     const sortTypes = {};
                     for (var i = 0; i < headerCount; i++)
@@ -561,17 +569,32 @@ namespace SBSSData.Application.Support
                         sortTypes[i] = isString ? 1 : -1; 
                     };
 
-                    let lastIndex = -1;
-                    const stringCols = [1];
+                    let lastIndex = columnIndex - 1;
+                    //const stringCols = [1];
+                    let className = sortTypes[columnIndex - 1] < 0 ? "descending" : "ascending";
+                    let selector = `tr th:nth-child(${columnIndex})`;
+                    console.log("selector " + selector);
+                    let activeHeader = thead.querySelector(selector);
+                    console.log("Active Header" + activeHeader);
+                    if (activeHeader != null)
+                    {
+                        activeHeader.classList.add(className);
+                        console.log("Active Header " + activeHeader.outerHTML);
+
+                        let sortTypeValue = !stringElements.includes(lastIndex) ? -1 : 1;
+                        sortTypes[lastIndex] *= -1;
+                    }
 
                     sortableTable.addEventListener('click', ({ target }) => 
                     {
                         if (!target.matches('th')) return;
 
                         const thIndex = Array.prototype.indexOf.call(target.parentElement.children, target);
-                        const isNumeric = !stringCols.includes(thIndex);
+                        console.log("lastIndex = " + lastIndex + " thIndex = " + thIndex);
 
-                        if (lastIndex != -1)
+                        const isNumeric = !stringElements.includes(thIndex);
+
+                        //if (lastIndex != -1)
                         {
                             target.parentElement.children[lastIndex].removeAttribute('class');
                             if (lastIndex != thIndex)
@@ -602,22 +625,22 @@ namespace SBSSData.Application.Support
                         var className = sortTypes[thIndex] < 0 ? "descending" : "ascending";
                         target.classList.add(className);
 
-                        var rows = sortableTable.rows;
-                        var lastRowIndex = rows.length - 1;
-                        var summary = rows[lastRowIndex];
-                        sortableTable.deleteRow(lastRowIndex);
-                        summary.classList.add("summary");
+                        //var rows = tbody.rows;
+                        //var lastRowIndex = rows.length - 1;
+                        //var summary = rows[lastRowIndex];
+                        //tbody.deleteRow(lastRowIndex);
+                        //summary.classList.add("summary");
 
                         trs.sort((a, b) => 
                         (
                             getText(a).localeCompare(getText(b), undefined, { numeric: isNumeric }) * sortTypes[thIndex]
                         ));
 
-                        trs.forEach(tr => sortableTable.appendChild(tr));
-                        sortableTable.appendChild(summary);
+                        trs.forEach(tr => tbody.appendChild(tr));
+                        //tbody.appendChild(summary);
                         sortTypes[thIndex] *= -1;
                     });
-                })([[tableSelector]], [[stringElements]]);
+                })([[columnIndex]], [[tableSelector]], [[stringElements]]);
             
             </script>
             """;
@@ -632,8 +655,10 @@ namespace SBSSData.Application.Support
                                       </div>
                                       """;
         public static string BuildOverlay(string imagePath, string imageName, string infoHtml) => OverlayTemplate.Replace("[[imagePath]]", imagePath)
-                                                                                                                  .Replace("[[imageName]]", imageName)
-                                                                                                                  .Replace("[[infoHtml]]", infoHtml);
+                                                                                                                 .Replace("[[imageName]]", imageName)
+                                                                                                                 .Replace("[[infoHtml]]", infoHtml);
+        
+        public static List<string> Seasons = ["2024 Summer", "2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
 
         //private static string helpNodeHtml = """
         //                                      <a class="help"

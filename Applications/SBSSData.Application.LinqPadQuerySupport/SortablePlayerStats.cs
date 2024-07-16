@@ -65,7 +65,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                     <div>
                                                          <button class="sbss" onclick = "viewAll(true)">Expand All Tables</button>
                                                          <button class="sbss" onclick = "viewAll(false)">Collapse All Tables</button>
-                                                         <button class="sbss" onclick = "toggleStatisticsDisplay()">Display Statistics</button>
+                                                         <button class="sbss" onclick = "toggleStatisticsDisplay(this)">Display Statistics</button>
                                                     </div> 
                                                     """;
                     string headerCss = """
@@ -77,29 +77,29 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                     generator.WriteRawHtml(expandCollapseHtml);
                     IEnumerable<LeagueName> leagueNames = query.GetLeagueNames();
-                    List<PropertyInfo> properties = typeof(PlayerStatsDisplay).GetProperties()
-                                                                              .Where(p => Query.ComputedStatDisplayNames.Contains(p.Name))
-                                                                              .ToList();
+                    List<PropertyInfo> properties = typeof(PlayerStats).GetProperties()
+                                                                       .Where(p => Query.ComputedStatNames.Contains(p.Name))
+                                                                       .ToList();
 
-                    List<LeagueStatsStatistics> leagueStatsStatistics = [];
+                    List<LeaguePlayersStatistics> leaguePlayersStatistics = [];
                     foreach (LeagueName league in leagueNames)
                     {
-                        LeagueStatsStatistics lss = GetLeagueStatsStatistics(query, league.Category, seasonText, properties, league.Day);
-                        leagueStatsStatistics.Add(lss);
+                        LeaguePlayersStatistics lss = GetLeaguePlayersStatistics(query, league.Category, seasonText, properties, league.Day);
+                        leaguePlayersStatistics.Add(lss);
                     }
 
-                    generator.WriteRootTable(leagueStatsStatistics, ExtendedSortablePlayerStats(headerCss, leagueStatsStatistics));
+                    generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
 
-                    leagueStatsStatistics = [];
+                    leaguePlayersStatistics = [];
                     IEnumerable<string> categoryNames = leagueNames.GroupBy(l => l.Category).Where(g => g.Count() > 1).Select(g => g.Key);
                     foreach (string category in categoryNames)
                     {
-                        LeagueStatsStatistics lss = GetLeagueStatsStatistics(query, category, seasonText, properties);
-                        leagueStatsStatistics.Add(lss);
+                        LeaguePlayersStatistics lss = GetLeaguePlayersStatistics(query, category, seasonText, properties);
+                        leaguePlayersStatistics.Add(lss);
                     }
 
 
-                    generator.WriteRootTable(leagueStatsStatistics, ExtendedSortablePlayerStats(headerCss, leagueStatsStatistics));
+                    generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
@@ -119,33 +119,80 @@ namespace SBSSData.Application.LinqPadQuerySupport
             return html;
         }
 
-        public LeagueStatsStatistics GetLeagueStatsStatistics(Query query, string category, string seasonText, List<PropertyInfo> properties, string day = "")
+        // For a league (or league category), return LeaguePlayersStatistic object having the league name
+        // the all player stats including z-Scores for the league sorting by plate appearances in descending
+        // order and the league descriptive statistics (the weighted (PA) mean and std deviation used for the
+        // calculation of each of the z-Scores for each active player.
+        // query parameter is based upon the season and associate path of the Leagues JSON file and returned from 
+        // the data store container.
+        // category is the league name category, e.g. "Community"
+        // seasonText is the season name, for example""2024 Spring"
+        // properties is the list of PropertyInfo for the PlayerStats class
+        // day the name of day for the league; if left blank all leagues of the same category are used
+        public LeaguePlayersStatistics GetLeaguePlayersStatistics(Query query,
+                                                                  string category,
+                                                                  string seasonText,
+                                                                  List<PropertyInfo> computedProperties,
+                                                                  string day = "")
         {
+            LeaguePlayersStatistics? lps = null;
             string season = Utilities.SwapSeasonText(seasonText);
             LeagueName league = new LeagueName(day, category, $"{day} {category} {season}", $"{day} {category}");
-            IEnumerable<PlayerStatsDisplay> playersStats = query.GetLeaguePlayersSummary(league.Category, league.Day)
-                                                                        .Select(p => new PlayerStatsDisplay(p));
 
-            List<StatisticsDisplay> sdList = [];
-            IEnumerable<double> weights = playersStats.Select(ps => (double)ps.PA);
-            foreach (PropertyInfo property in properties)
+            // Get all the players stats. Note this gets all players (not just ones have a qualified number of
+            // plate appearances) and then sorted in descending order.
+            IEnumerable<PlayerStats> playersStats = query.GetLeaguePlayersSummary(league.Category, league.Day)
+                                                         .OrderByDescending(p => p.PlateAppearances);
+
+            // First the league weighted descriptive statistics are found using the plate appearances as weights
+            // the playersStats as the weights.
+            IEnumerable<double> weights = playersStats.Select(ps => (double)ps.PlateAppearances);
+
+            // The computed properties (Average, Slugging, OnBase and OnBasePlusSlugging) are used to retrieve the
+            // values for each player to compute the Z-scores.
+            List<StatisticsDisplay> dsList = [];
+            for (int i = 0; i < computedProperties.Count; i++)
             {
-                IEnumerable<double> values = playersStats.Select(ps => (double)property.GetValue(ps));
-                string stateName = Query.ComputedStatNames[Query.ComputedStatDisplayNames.IndexOf(property.Name)];
-                StatisticsDisplay sd = new StatisticsDisplay(values.GetStatistics(stateName.NameToTitle(), weights));
-                sdList.Add(sd);
+                PropertyInfo property = computedProperties[i];
+                IEnumerable<double> values = playersStats.Select(ps => (double)(property.GetValue(ps) ?? double.NaN));
+                string statName = property.Name;
+                StatisticsDisplay sd = new StatisticsDisplay(values.GetStatistics(statName.NameToTitle(), weights));
+                dsList.Add(sd);
             }
 
-            LeagueStatsStatistics lss = new LeagueStatsStatistics(league, playersStats, sdList);
-            return lss;
+            // Now that we have the league mean and standard deviation, we can compute the Z-score for each of the
+            // computed player stats for each player.
+            List<PlayerStatistics> playersStatisticsDisplay = [];
+            foreach (PlayerStats ps in playersStats)
+            {
+                List<double> zScores = [];
+                for (int i = 0; i < dsList.Count; i++)
+                {
+                    StatisticsDisplay sd = dsList[i];
+                    double mean = sd.Mean;
+                    double stdDev = sd.StdDev;
+                    double value = (double?)computedProperties[i]?.GetValue(ps) ?? double.NaN;
+                    double zScore = (value - mean) / stdDev;
+                    zScores.Add(zScore);
+                }
+
+                // Finally use the z-Scores to create a PlayerStatistics record from the the player stats
+                // object and array of z-Scores, and add the record to the list of records.
+                PlayerStatistics pStatistics = new PlayerStatistics(ps, zScores);
+                playersStatisticsDisplay.Add(pStatistics);
+            }
+
+            // Put the pieces together and return a LeaguePlayersStatistics object/
+            lps = new LeaguePlayersStatistics(league, playersStatisticsDisplay, dsList);
+            return lps;
         }
 
         public static Func<TableNode, string> ExtendedSortablePlayerStats(string? headerCssStyle = null, object? value = null)
         {
             return (t) =>
             {
-                IEnumerable<LeagueStatsStatistics> leagueStatsStatistics = (IEnumerable<LeagueStatsStatistics>)value;
-                bool isSummaryTables = string.IsNullOrEmpty(leagueStatsStatistics.First().League.Day);
+                IEnumerable<LeaguePlayersStatistics> leaguePlayersStatistics = (IEnumerable<LeaguePlayersStatistics>?)value ?? [];
+                bool isSummaryTables = string.IsNullOrEmpty(leaguePlayersStatistics.First().League.Day);
                 HtmlNode tableNode = t.TableHtmlNode;
                 string headerTableInfo = $"Depth / Index = {t.Depth()}/{t.Index()}";
                 string headerText = "Sortable Tables";
@@ -176,18 +223,54 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                             Utilities.UpdatePlayerColumnNames(tableNode);
                             Utilities.UpdatePlayerHeaderTitles(tableNode, true, false);
-                            string eventScript = StaticConstants.SortableTable.Replace("[[tableSelector]]", tableSelector).Replace("[[stringElements]]", stringElements);
+
+
+                            HtmlNode tbody = tableNode.SelectSingleNode("./tbody");
+                            HtmlNode tfoot = tableNode.SelectSingleNode("./tfoot");
+                            if (tfoot == null)
+                            {
+                                tfoot = HtmlNode.CreateNode("tfoot");
+                                tbody.ParentNode.AppendChild(tfoot);
+                            }
+
+                            HtmlNode firstRow = tbody.SelectSingleNode("tr[1]");
+                            if (firstRow != null)
+                            {
+                                // Remove the first row from tbody
+                                tbody.RemoveChild(firstRow);
+
+                                // Append the first row to tfoot
+                                tfoot.AppendChild(firstRow);
+                            }
+
+                            // TODO: The columnIndex is the initial column that is sorted in descending order. This information
+                            // should not be hard-coded.
+                            string eventScript = StaticConstants.SortableTable
+                                                                .Replace("[[columnIndex]]", "3")
+                                                                .Replace("[[tableSelector]]", tableSelector)
+                                                                .Replace("[[stringElements]]", stringElements);
                             HtmlNode script = HtmlNode.CreateNode(eventScript);
                             tableNode.ParentNode.InsertAfter(script, tableNode);
 
-                            headerText = $"All Players Stats for {leagueStatsStatistics.ToList()[listIndex].League.ShortLeagueName}";
+                            headerText = $"All Players Stats for {leaguePlayersStatistics.ToList()[listIndex].League.ShortLeagueName}";
                             break;
                         }
                         case 2:
                         {
+                            tableNode.ParentNode.SetAttributeValue("style", "display:none");
                             tableNode.AddClass("statistics");
                             tableNode.SetAttributeValue("style", "display:table");
-                            headerText = $"Summary {leagueStatsStatistics.ToList()[listIndex].League.ShortLeagueName} Leagues Descriptive Statistics";
+
+                            List<HtmlNode> tableColumnHeaders = Utilities.GetTableColumnHeaders(tableNode);
+                            tableColumnHeaders[0].SetAttributeValue("title", "The stats for which the statistics are created.");
+                            tableColumnHeaders[1].SetAttributeValue("title", "The smallest value for each of the stats");
+                            tableColumnHeaders[2].SetAttributeValue("title", "The largest value for each of the stats");
+                            tableColumnHeaders[3].SetAttributeValue("title", "The mean value for each of the stats");
+                            tableColumnHeaders[4].SetAttributeValue("title", "The value for which half the stats are smaller (that is, the 50th percentile");
+                            tableColumnHeaders[5].SetAttributeValue("title", "The variance of all values for each of the stats");
+                            tableColumnHeaders[6].SetAttributeValue("title", "The standard deviation of all values for each of the stats");
+                            tableColumnHeaders[7].SetAttributeValue("title", "The number of players whose stats are used to compute the weighted statistics");
+                            headerText = $"Summary {leaguePlayersStatistics.ToList()[listIndex].League.ShortLeagueName} League Weighted Descriptive Statistics";
                             break;
                         }
                         default:
@@ -209,7 +292,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     }
                 }
 
-                return $"{headerText} &mdash; {headerTableInfo}";
+                return $"{headerText}"; //&mdash; {headerTableInfo}";
             };
         }
     }

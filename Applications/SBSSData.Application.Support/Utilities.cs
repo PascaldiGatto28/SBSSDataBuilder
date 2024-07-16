@@ -280,7 +280,7 @@ namespace SBSSData.Application.Support
             List<HtmlNode> tableColumnHeaders = GetTableColumnHeaders(tableHtmlNode);
 
             int j = 0;
-            int numHeaders = tableColumnHeaders.Count;
+            int numHeaders = Math.Min(tableColumnHeaders.Count, playerTitles.Count);
             if (includeRankings)
             {
                 numHeaders--;

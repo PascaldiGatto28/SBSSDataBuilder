@@ -61,7 +61,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            Action<object> actionCallback = callback == null ? (v) => Console.WriteLine(v.ToString()) : callback;
+            Action<object>? actionCallback = callback; // == null ? (v) => Console.WriteLine(v.ToString()) : callback;
             string season = seasonText.RemoveWhiteSpace();
             string playerPhotos = "../PlayerPhotos/";
 
@@ -120,6 +120,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     string playerName = Path.GetFileNameWithoutExtension(IntermediateFilePath);
                     playerNames = playerNames.Where(p => p.Replace(", ", "") == playerName);
                 }
+
                 foreach (string playerName in playerNames)
                 {
                     IEnumerable<LeagueName> leagueNames = query.GetLeagueNamesForPlayer(playerName);
@@ -231,8 +232,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
                         viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
                         changedHtml = root.OuterHtml;
-
-                        actionCallback($"{this.GetType().Name} HTML page created.");
+                        if (actionCallback != null)
+                        {
+                            actionCallback($"{this.GetType().Name} HTML page created.");
+                        }
                     }
                 }
 
