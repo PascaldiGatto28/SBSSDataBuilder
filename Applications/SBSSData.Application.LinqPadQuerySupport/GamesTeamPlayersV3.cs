@@ -16,15 +16,15 @@ namespace SBSSData.Application.LinqPadQuerySupport
 {
     public class GamesTeamPlayersV3 : IHtmlCreator
     {
-        private static HeadElement[] headElements =
-        {
-            new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
-            new HeadElement("meta", [["data", "description"], ["content", "All data for games, teams and players"]]),
-            new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
-            new HeadElement("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
-            new HeadElement("title", [["Games, Teams & Players", ""]]),
-            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
-        };
+        private static readonly HeadElement[] headElements =
+        [
+            new("meta", [["name", "author"], ["content", "Richard Levaro"]]),
+            new("meta", [["data", "description"], ["content", "All data for games, teams and players"]]),
+            new("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
+            new("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
+            new("title", [["Games, Teams & Players", ""]]),
+            new("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
+        ];
 
         public GamesTeamPlayersV3()
         {
@@ -61,7 +61,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(path))
             {
 
-                Query query = new Query(dsContainer);
+                Query query = new(dsContainer);
                 string gtpHeaderStyle = "background-color:#d62929; width:642px;";
 
                 IEnumerable<Game> playedGames = query.GetPlayedGames();
@@ -73,7 +73,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     ShortLeagueNume = $"{l.LeagueDay} {l.LeagueCategory}"
                 });
 
-                using (HtmlGenerator generator = new HtmlGenerator())
+                using (HtmlGenerator generator = new())
                 {
                     string seasonDiv = $"""
                                        <div id="seasonText">
@@ -83,8 +83,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                     string expandCollapseHtml = """
                                                 <div>
-                                                     <button class="sbss" onclick = "viewAll(true)">Expand All Tables</button>
-                                                     <button class="sbss" onclick = "viewAll(false)">Collapse All Tables</button>
+                                                     <button class="sbss" title="Click to expand all tables" onclick = "viewAll(true)">Expand All Tables</button>
+                                                     <button class="sbss" title="Click to collapse all tables to a single line" onclick = "viewAll(false)">Collapse All Tables</button>
                                                 </div> 
                                                 """;
                     //generator.WriteRawHtml(seasonDiv);
@@ -144,10 +144,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                     }
 
-                    if (actionCallback != null)
-                    {
-                        actionCallback($"{this.GetType().Name} HTML page created.");
-                    }
+                    actionCallback?.Invoke($"{GetType().Name} HTML page created.");
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
@@ -157,7 +154,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                      cssStyles: StaticConstants.LocalStyles + StaticConstants.HelpStyles,
                                                      javaScript: StaticConstants.LocalJavascript + StaticConstants.HelpJavascript,
                                                      collapseTo: 1,
-                                                     headElements: headElements.ToList());
+                                                     headElements: [.. headElements]);
                 }
 
             }
@@ -180,13 +177,13 @@ namespace SBSSData.Application.LinqPadQuerySupport
             HtmlNode root = tableHtmlNode.Ancestors("#document").First();
             IEnumerable<HtmlNode> rows = tableHtmlNode.SelectNodes($"./tbody/tr");
 
-            List<HtmlNode> rankingTables = tableHtmlNode.SelectNodes("./tbody//tr/td[last()]/table").ToList();
+            List<HtmlNode> rankingTables = [.. tableHtmlNode.SelectNodes("./tbody//tr/td[last()]/table")];
             //amList<HtmlNode> rankingTables = tableHtmlNode.SelectNodes("./tbody//tr//td/table").ToList();
             rankingTables.ForEach(rt =>
             {
                 rt.SetAttributeValue("style", "width:160px");
                 string playerName = rt.ParentNode.ParentNode.SelectSingleNode("./td[2]").InnerText;
-                string playerFirstName = playerName.Substring(0, playerName.IndexOf(' '));
+                string playerFirstName = playerName[..playerName.IndexOf(' ')];
                 string[] headers = [
                                       $"{playerFirstName}'s position in the list of all players AVG values",
                                       $"{playerFirstName}'s position in the list of all players SLG values",
@@ -318,14 +315,14 @@ namespace SBSSData.Application.LinqPadQuerySupport
             return (t) =>
             {
                 string fullLeagueName = info ?? "league";
-                string shortLeagueName = fullLeagueName.Substring(0, fullLeagueName.LastIndexOf(' '));
+                string shortLeagueName = fullLeagueName[..fullLeagueName.LastIndexOf(' ')];
                 HtmlNode tableHtmlNode = t.TableHtmlNode;
                 string header = t.Header().InnerText;
                 int depth = t.Depth();
                 int index = t.Index();
 
                 // Do not count the summary totals row. (see below)
-                int numEntries = tableHtmlNode.SelectNodes("./tbody/tr").Count();
+                int numEntries = tableHtmlNode.SelectNodes("./tbody/tr").Count;
                 HtmlNode? group = null;
                 if (depth == 1)
                 {

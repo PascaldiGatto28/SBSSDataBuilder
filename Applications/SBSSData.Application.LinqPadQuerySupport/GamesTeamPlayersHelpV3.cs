@@ -9,15 +9,15 @@ namespace SBSSData.Application.LinqPadQuerySupport
 {
     public class GamesTeamPlayersHelpV3 : IHtmlCreator
     {
-        private static HeadElement[] headElements =
-        {
-            new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
-            new HeadElement("meta", [["data", "description"], ["content", "Guide to games, teams and players"]]),
-            new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
-            new HeadElement("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
-            new HeadElement("title", [["Guide to Games,Teams & Players", ""]]),
-            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
-        };
+        private static readonly HeadElement[] headElements =
+        [
+            new("meta", [["name", "author"], ["content", "Richard Levaro"]]),
+            new("meta", [["data", "description"], ["content", "Guide to games, teams and players"]]),
+            new("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
+            new("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
+            new("title", [["Guide to Games,Teams & Players", ""]]),
+            new("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
+        ];
 
         public GamesTeamPlayersHelpV3()
         {
@@ -32,8 +32,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            GamesTeamPlayersV3  gtpV3 = new GamesTeamPlayersV3();
-            gtpV3.ResourceName = $"{this.GetType().Name}.html";
+            GamesTeamPlayersV3  gtpV3 = new();
+            gtpV3.ResourceName = $"{GetType().Name}.html";
 
             string html = gtpV3.BuildHtmlPage(seasonText, dataStoreFolder, null);
             html = html.Replace("[[Season YYYY]]", Utilities.SwapSeasonText(seasonText));
@@ -45,7 +45,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
             htmlDocument.LoadHtml(html);
             HtmlNode rootNode = htmlDocument.DocumentNode;
             HtmlNode headNode = rootNode.SelectSingleNode("//head");
-            HtmlGenerator.AddHeadData(htmlDocument, headNode, GamesTeamPlayersHelpV3.headElements.ToList());
+            HtmlGenerator.AddHeadData(htmlDocument, headNode, [.. headElements]);
 
             List<HtmlNode> nodesToRemove = [];
             HtmlNodeCollection tableNodes = rootNode.SelectNodes("//body//div[@class='spacer']/table");
@@ -62,10 +62,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 }
             }
 
-            if (callback != null)
-            {
-                callback($"{this.GetType().Name} HTML page created.");
-            }
+            callback?.Invoke($"{this.GetType().Name} HTML page created.");
 
             changedHtml = rootNode.OuterHtml;
             return changedHtml;

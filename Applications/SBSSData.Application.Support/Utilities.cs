@@ -122,7 +122,7 @@ namespace SBSSData.Application.Support
         public static WinSCPSyncResults PublishSBSSData(string source = @"J:SBSSDataStore\HtmlData\", bool isTest = true)
         {
             // Set up session options
-            SessionOptions sessionOptions = new SessionOptions
+            SessionOptions sessionOptions = new()
             {
                 Protocol = Protocol.Ftp,
                 HostName = "ftp.walkingtree.com",
@@ -133,14 +133,14 @@ namespace SBSSData.Application.Support
             string target = isTest ? "/quietcre/TestSync" : "/quietcre/Data";
             SynchronizationResult? syncResult = default;
 
-            using (Session session = new Session())
+            using (Session session = new())
             {
                 session.Open(sessionOptions);
 
                 try
                 {
                     syncResult = session.SynchronizeDirectories(SynchronizationMode.Remote,
-                                                                @"J:\SBSSDataStore\HtmlData",
+                                                                source,
                                                                 target,
                                                                 false);
                     syncResult.Check();
@@ -174,7 +174,7 @@ namespace SBSSData.Application.Support
 
         public static void AlterTableColumnHeader(HtmlNode tableNode, int headerIndex, string newHeaderText)
         {
-            List<HtmlNode> columnHeaders = tableNode.SelectNodes("./thead/tr[2]/th").ToList();
+            List<HtmlNode> columnHeaders = [.. tableNode.SelectNodes("./thead/tr[2]/th")];
             // This is a real pain in the ass. Because we searching a C# list, the first element is 0-based. But the XPath
             // is 1-based, so we really want the index that is 1-less.
             HtmlNode columnHeader = columnHeaders[headerIndex - 1];
@@ -233,19 +233,17 @@ namespace SBSSData.Application.Support
             return sbTree.ToString();
         }
 
-        public static TableTree BuildTree(HtmlNode tableRootNode)
-        {
-            TableTree tableTree = new();
-            TableNode rootTableNode = new(tableRootNode);
+        //public static TableTree BuildTree(HtmlNode tableRootNode)
+        //{
+        //    TableTree tableTree = new();
+        //    foreach (HtmlNode tableHtmlNode in tableRootNode.DescendantsAndSelf("table"))
+        //    {
+        //        TableNode tableNode = new(tableHtmlNode);
+        //        tableTree.Insert(tableNode);
+        //    }
 
-            foreach (HtmlNode tableHtmlNode in tableRootNode.DescendantsAndSelf("table"))
-            {
-                TableNode tableNode = new(tableHtmlNode);
-                tableTree.Insert(tableNode);
-            }
-
-            return tableTree;
-        }
+        //    return tableTree;
+        //}
 
         public static void UpdatePlayerColumnNames(HtmlNode tableHtmlNode)
         {
@@ -262,12 +260,9 @@ namespace SBSSData.Application.Support
         public static List<HtmlNode> GetTableColumnHeaders(HtmlNode tableHtmlNode)
         {
             HtmlNodeCollection tableColumnHeaders = tableHtmlNode.SelectNodes("./thead/tr[2]//th");
-            if (tableColumnHeaders == null)
-            {
-                tableColumnHeaders = tableHtmlNode.SelectNodes("./tbody//tr/th");
-            }
+            tableColumnHeaders ??= tableHtmlNode.SelectNodes("./tbody//tr/th");
 
-            return tableColumnHeaders.ToList();
+            return [.. tableColumnHeaders];
         }
 
         public static string ToSpanItalic(string text)
@@ -275,35 +270,46 @@ namespace SBSSData.Application.Support
             return $"""<span style="font-style:italic">{text}</span>""";
         }
 
-        public static HtmlNode UpdatePlayerHeaderTitles(HtmlNode tableHtmlNode, bool includeGames, bool includeRankings = false)
+        public static void UpdatePlayerHeaderTitles(HtmlNode tableHtmlNode, 
+                                                        bool includeGames, 
+                                                        bool includeRankings = false,
+                                                        bool includeZScores = false)
         {
             List<HtmlNode> tableColumnHeaders = GetTableColumnHeaders(tableHtmlNode);
 
-            int j = 0;
-            int numHeaders = Math.Min(tableColumnHeaders.Count, playerTitles.Count);
-            if (includeRankings)
+            int numTitles = playerTitles.Count;
+            //int numHeaders = Math.Min(tableColumnHeaders.Count, numTitles);
+
+            List<string> titles = playerTitles;
+            if (!includeZScores)
             {
-                numHeaders--;
+                // Remove the last 4 titles which are the z-Scores titles
+                titles = [.. titles.Take(numTitles - 4)];
+            }
+            if (!includeRankings)
+            {
+                // The ranking title is at the 18th location, so take the first 17 titles
+                IEnumerable<string> beforeRanking = titles.Take(17);
+
+                // Take the remainder of the titles after the ranking
+                IEnumerable<string> afterRanking = titles.Skip(18);
+
+                // Now put them together
+                titles = beforeRanking.Concat(afterRanking).ToList();
+            }
+            if (!includeGames)
+            {
+                // Just use the titles after the number of games 
+                titles = titles.Skip(1).ToList();
             }
 
-            for (int i = 0; i < numHeaders; i++)
+            for (int i = 0; i < titles.Count;  i++)
             {
-
-                HtmlNode th = tableColumnHeaders[i];
-                if (!includeGames && (i == 0))
-                {
-                    j++;
-                }
-
-                th.SetAttributeValue("title", playerTitles[j++]);
+                tableColumnHeaders[i].SetAttributeValue("title", titles[i]);
             }
 
-            if (includeRankings)
-            {
-                tableColumnHeaders[numHeaders--].SetAttributeValue("title", playerTitles.Last());
-            }
-
-            return tableHtmlNode;
+            //Console.WriteLine(tableColumnHeaders.Select(t => t.GetAttributeValue("title", null)).ToString<string>(", "));
+            //return tableHtmlNode;
         }
 
         public static readonly List<string> playerTitles =
@@ -326,6 +332,10 @@ namespace SBSSData.Application.Support
                             "On-Base Percentage = Sum of total hits and walks divided by the plate appearances; (tH+BB)/PA",
                             "On-Base Plus Slugging = Sum of On-base percentage and slugging; OBP + SLG",
                             "Rankings for each player for AVG, SLG, OBP, OPS",
+                            "The number of StdDevs above or below the league mean for AVG",
+                            "The number of StdDevs above or below the league mean for SLG",
+                            "The number of StdDevs above or below the league mean for OBP",
+                            "The number of StdDevs above or below the league mean for OPS"
                           ];
         #endregion
 

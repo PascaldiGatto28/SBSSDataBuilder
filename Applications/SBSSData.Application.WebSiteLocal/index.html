@@ -11,27 +11,20 @@
 
     <title>SBSS Data Viewer</title>
     <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
-    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.24008" />
-    <link rel="stylesheet" href="CSS/Main2.css?v=1.24008" />
+    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.24204" />
+    <link rel="stylesheet" href="CSS/Main2.css?v=1.24204" />
     <script type="text/javascript" src="Scripts/Main.js?v=1.24008"></script>
 </head>
 <body>
     <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
     <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
-        Version 1.12.24198 — Released on Tuesday, July 16 2024
+        Version 1.12.24204 &mdash; Released Date Monday, July 22 2024
     </div>
     <div class="spacer">
         The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
         is gathered from the public and official
         <a href="https://saddlebrookesoftball.com" target="_blank">SaddleBrooke Senior Softball Association (SSSA)</a> site.
     </div>
-
-    <!--<div class="space" style="width: 40%; margin: auto; border: 3px dashed #d9d9d9; padding:5px 10px 5px 10px ">
-        <span style="font-weight:500; color:navy;">
-            Please take some time to read important notes and information. It may take a few minutes,
-            but it's very important! <a href="Notices.html">Notes &amp; Information</a>
-        </span>
-    </div>-->
 
     <div class="spacer">
         The data from the current season
@@ -40,7 +33,8 @@
     </div>
 
     <div class="dropdown">
-        <button style="margin-right:0px; " onclick="myFunction()" class="dropbtn">Seasons</button>
+        <button style="margin-right:0px; " onclick="myFunction()" 
+                class="dropbtn" title="Click and to select a season from the drop-down list">Seasons</button>
         <div id="myDropdown" class="dropdown-content">
             <div seasonShortName="2024Summer" onclick="setSelectedSeason(this);">Summer 2024</div>
             <div seasonShortName="2024Spring" onclick="setSelectedSeason(this);">Spring 2024</div>
@@ -50,7 +44,7 @@
         </div>
     </div>
     <span>
-        <span id="currentSeason" style="font-weight:500; color:firebrick;" selectedSeason="2024Spring">Spring 2024</span>
+        <span id="currentSeason" style="font-weight:500; color:firebrick;" selectedSeason="2024Summer">Summer 2024</span>
         is the Selected Season
     </span>
 
@@ -58,7 +52,8 @@
 
     <div class="spacer">
         The following table has links to the pages that are available now together with a short description. More contextual
-        information is displayed on the page or there is a link to a help/guide page. Each page has a link back to this home page.
+        information is displayed on the page or if there is a link to a help/guide page. Each page has a link 
+        back to this home page.
     </div>
     <table id="t1" class="contents">
         <thead>
@@ -85,14 +80,14 @@
                     <div class="spacer">
 
                         This page contains all the data gathered from the SSSA site, which is stored in a file
-                        (called the <span style="font-weight:bold">Data Store</span>) and is displayed using 
+                        (called the <span style="font-weight:bold">Data Store</span>) and is displayed using
                         three perspectives.
                     </div>
                     <ul class="sbss">
                         <li>
                             For every played game not
                             canceled or forfeited, the results for the teams and each of the players on the team are displayed.
-                            This is a lot of data! 
+                            This is a lot of data!
                         </li>
                         <li>
                             Second, there is a table that views the results from the team perspective,
@@ -100,7 +95,7 @@
                         </li>
                         <li>
                             Finally, the last perspective is from
-                            the player. All stats (including ranking) for every player in every team in the 
+                            the player. All stats (including ranking) for every player in every team in the
                             league is displayed. The
                             data for all leagues (typically 8 or 9) are displayed.
                         </li>
@@ -114,6 +109,17 @@
                 <td>
                     Player Sheets focus directly on each player. Every player has their own "sheet" that has their summary
                     stats for every league in which they played as well as rank, percentile and Z-score statistics.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="SortablePlayerStats.html" class="navigateFrom">Players Leagues Stats &amp; Statistics</a>
+                </td>
+                <td>
+                    Players Leagues Stats &amp; Statistics has tables for leagues and player summary stats and statistics. For
+                    each league (and summary for Community and Competitive) there is table that is sortable by player
+                    name and by and stats and z-Scores for each of the computed stats (AVG, SLG, OBP, OPS). You can optionally
+                    view all league descriptive statistics as well.
                 </td>
             </tr>
             <tr>
@@ -168,7 +174,7 @@
         </tbody>
     </table>
 
-    <h2>How to Use the Page Tables</h2>
+    <h2 id="UsingTables">Using the Data Viewer Tables</h2>
     <div class="spacer">
         Data is presented as tables, and when there's a lot of data it can be hard to navigate. But all tables can
         be collapsed or expanded by clicking on the table header anywhere within the text of the table header. And when there are a
@@ -180,6 +186,7 @@
         remain attached
         to the top of browser until you scroll past the table.
     </div>
+    <h3>Tool Tips</h3>
     <div>
         The tables are composed of a title and column headers and
         columns of data. The column header text (for example player stats, like AB, TH, OPS, etc.) are
@@ -210,7 +217,32 @@
         </div>
     </div>
 
-    <div class="spacer">
+    <h3 id="SortableTables">Sortable Tables</h3>
+    <div>
+        Some player tables are sortable. When a page is displayed you see a down-arrow
+        icon indicating that the table is ordered in descending ordered based upon the values in that column. 
+        If you click on the column again, that table is
+        displayed in ascending order. Here's what see if PA (Plate Appearances) is the initial column when
+        page is displayed and then when it is clicked again:
+
+        <div>
+            <img src="images/SortIcons.png" />
+        </div>
+
+        If you click another (numeric) column, the icons on the current column disappear and you see the down arrow and the
+        table is sorted in descending order by the values in the column. The player name column is just the opposite: When
+        you first click on it the table is ordered in ascending order by player last (then first name). If you click on it again,
+        the table is order in descending order by player last name (then first name).
+
+        <div class="spacer">
+            As of this writing, the only sortable player stats table in on the
+            <a href="SortablePlayerStats.html" class="navigateFrom">Players Leagues Stats &amp; Statistics</a> page, but that 
+            may be extended as needed in future releases.
+        </div>
+    </div>
+
+    <h3>Viewing Requirements</h3>
+    <div>
         This Web site is best viewed in a desktop browser because of the size of the tables that can be nested and the number of tables.
         All pages render on a phone but can be hard to navigate and see everything. This has only been tested on chromium
         browsers (Chrome and Edge) and Android and iPhones. Your mileage may vary.
@@ -241,7 +273,7 @@
         <a href="ReleaseNotes.html" style="font-weight:500;">Open Version History</a> link in the
         heading of this section to see all
         release notes for all version. The latest release is:
-        <span style="font-weight:500">Version 1.12.24164 &mdash; Released Date Wednesday, June 12 2024</span>
+        <span style="font-weight:500">Version 1.12.24204 &mdash; Released Date Monday, July 22 2024</span>
     </div>
 
     <script lanugage="javascript" type="text/javascript">

@@ -39,14 +39,14 @@ namespace SBSSData.Application.WebDeployment
         ///     </item>
         /// </list>
         /// </remarks>
-        internal static void Main(string[] args)
+        internal static void Main()
         {
             Console.WriteLine($"\r\nSBSS Web Deployment -- Constructing HTML Pages and Deploying to the Web Server ({DateTime.Now:dddd MMMM d, yyyy})\r\n");
 
             // Normally this is set when the AppContext instance is created. However, this must be set first and being static
             // then the instance created by AppContext will be the one we want.
-            string settingsTest = ((args != null) && (args.Length != 0)) ? "Test" : string.Empty; 
-            AppSettings settings = AppSettings.Instance($@"Configuration\Settings{settingsTest}.json");
+            //string settingsTest = ((args != null) && (args.Length != 0)) ? "Test" : string.Empty; 
+            //AppSettings settings = AppSettings.Instance($@"Configuration\Settings{settingsTest}.json");
             AppContext context = AppContext.Instance;
             try
             {
@@ -54,8 +54,7 @@ namespace SBSSData.Application.WebDeployment
                 log.WriteLine("Starting the Web Publisher");
                 try
                 {
-                    Build build = new Build();
-                    build.Run();
+                    Build.Run();
                 }
                 catch (Exception exception)
                 {
@@ -84,7 +83,7 @@ namespace SBSSData.Application.WebDeployment
             string logSessionsFilePath = logFilePath.Replace(".log", ".json", StringComparison.Ordinal);
             IEnumerable<LogSession>? loggedSessions = File.Exists(logSessionsFilePath) ?
                                                      JsonConvert.DeserializeObject<IEnumerable<LogSession>>(File.ReadAllText(logSessionsFilePath)) :
-                                                     Enumerable.Empty<LogSession>();
+                                                     [];
 
             if ((loggedSessions != null) && loggedSessions.Any())
             {

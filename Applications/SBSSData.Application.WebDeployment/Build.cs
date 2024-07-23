@@ -20,7 +20,7 @@ namespace SBSSData.Application.WebDeployment
         { 
         }
 
-        public void Run()
+        public static void Run()
         {
             bool buildHtml = true;
             bool publish = true;
@@ -49,7 +49,7 @@ namespace SBSSData.Application.WebDeployment
                     _ = construction.Build<GamesTeamPlayersHelpV3>(true);
                     _ = construction.Build<PlayerSheets>(true);
                     _ = construction.Build<PlayerSheetsGuide>(true);
-                    //_ = construction.Build<SortablePlayerStats>(true);
+                    _ = construction.Build<SortablePlayerStats>(true);
                 }
             }
 

@@ -2,9 +2,9 @@
 
 namespace SBSSData.Application.Support
 {
-    public record StatisticsDisplay(string StatsName, 
-                                    double Minimum, 
-                                    double Maximum, 
+    public record StatisticsDisplay(string Stat, 
+                                    double Min, 
+                                    double Max, 
                                     double Mean, 
                                     double Median, 
                                     double Variance, 
