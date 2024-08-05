@@ -15,15 +15,15 @@ namespace SBSSData.Application.LinqPadQuerySupport
 {
     public class PlayerSheets : IHtmlCreator
     {
-        private static HeadElement[] headElements =
-        {
-            new HeadElement("meta", [["name", "author"], ["content", "Richard Levaro"]]),
-            new HeadElement("meta", [["data", "description"], ["content", "Player summary league data for all players and leagues"]]),
-            new HeadElement("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
-            new HeadElement("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
-            new HeadElement("title", [["Player's League Summaries", ""]]),
-            new HeadElement("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
-        };
+        private static readonly HeadElement[] headElements =
+        [
+            new("meta", [["name", "author"], ["content", "Richard Levaro"]]),
+            new("meta", [["data", "description"], ["content", "Player summary league data for all players and leagues"]]),
+            new("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
+            new("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
+            new("title", [["Player's League Summaries", ""]]),
+            new("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
+        ];
 
         public PlayerSheets()
         {
@@ -32,10 +32,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
             IntermediateFilePath = string.Empty;
         }
 
-        public PlayerSheets(string containerName, string intermediateHtmlFilePath = "") 
+        public PlayerSheets(string containerName, string intermediateFilePath = "") 
         {
             HtmlContainerName = containerName;
-            IntermediateFilePath = intermediateHtmlFilePath;
+            IntermediateFilePath = intermediateFilePath;
             Values = [];
         }
         
@@ -81,13 +81,108 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             string headerStyle = "background-color:#d62929; width:680px";
             string path = $"{dataStoreFolder}{season}LeaguesData.json";
+            List<string> optionValues = [];
 
-            using (DataStoreContainer dsContainer = DataStoreContainer.Instance(path))
+            List<PlayerSheetContainer> playerSheetContainers = GetPlayerSheetContainers(path, playerPhotos, ref optionValues).ToList();
+            using (HtmlGenerator generator = new())
+            {
+                // Using the results from the queries to produce tables, write the tables and any
+                // other data to the XhtmlWriter (via HtmlGenerator.Write methods).
+
+                foreach (PlayerSheetContainer psc in playerSheetContainers)
+                {
+
+                    IEnumerable<PlayerSheetItemDisplay> psd = psc.PlayerSheetItems.Select(si => new PlayerSheetItemDisplay(si));
+                    PlayerSheetContainerDisplay pscd = new(psc);
+                    generator.WriteRootTable(pscd.SheetItems.Select(s => s.Totals), ExtendedPlayerSheets(headerStyle, psc));
+                }
+
+
+                //string htmlNode = introHtml.Substring("<div class=\"IntroContent\"", "</body", true, false);
+                //HtmlNode title = HtmlNode.CreateNode(htmlNode);
+                changedHtml = generator.DumpHtml(//pageTitle: title,
+                                                    cssStyles: StaticConstants.LocalStyles + StaticConstants.PlayerSheetsStyles,
+                                                    javaScript: StaticConstants.LocalJavascript,
+                                                    collapseTo: 2,
+                                                    headElements: headElements.ToList());
+
+                if (!string.IsNullOrEmpty(IntermediateFilePath))
+                {
+                    try
+                    {
+                        File.WriteAllText(IntermediateFilePath, changedHtml);
+                        actionCallback($"{IntermediateFilePath} created and contains the changedHtml from PlayerSheets.BuildHtml");
+                    }
+                    catch (Exception exception)
+                    {
+                        throw new InvalidOperationException($"The {IntermediateFilePath} is invalid", exception);
+                    }
+                }
+                else
+                {
+
+                    // Now populate the PlayrSheetsContainer HTML document by inserting the player list and changing the
+                    // scrdoc attribute on iframe element. So first load the file Html in a HtmlDocument.
+                    HtmlDocument htmlDoc = new();
+                    htmlDoc = PageContentUtilities.GetHtmlDocument(containerHtml);
+                    HtmlNode root = htmlDoc.DocumentNode;
+                    HtmlNode sheets = root.SelectSingleNode("//iframe[@id='sheets']");
+                    sheets.Attributes["srcdoc"].Remove();
+                    sheets.Attributes.Add("srcdoc", changedHtml);
+                    HtmlNode playersList = root.SelectSingleNode("//div[@id='playersList']");
+                    foreach (string playerOption in optionValues)
+                    {
+                        playersList.AppendChild(HtmlNode.CreateNode(playerOption));
+                    }
+
+                    HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
+                    viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
+                    changedHtml = root.OuterHtml;
+                    actionCallback?.Invoke($"{this.GetType().Name} HTML page created.");
+                }
+            }
+
+
+            return changedHtml;
+        }
+
+        public static Dictionary<string, LeaguesAndPlayersStatistics> GetLeaguesAndPlayersStatistics(Query query)
+        {
+            Dictionary<string, IEnumerable<LeagueStatistics>> ls = query.GetLeaguesStatistics()     
+                                                                        .ToDictionary(k => k.Key, k => k.Value.Select(v => new LeagueStatistics(v)));
+                 
+
+            IEnumerable<LeagueName> leagueNames = query.GetLeagueNames();
+            Dictionary<string, LeaguesAndPlayersStatistics> allLeagues = [];
+            foreach (LeagueName leagueName in leagueNames)
+            {
+                var groups = query.GetAllPlayersStatistics(leagueName, 5);
+                allLeagues.Add(leagueName.ShortLeagueName, new LeaguesAndPlayersStatistics(ls[leagueName.ShortLeagueName], groups));
+            }
+
+            return allLeagues;
+        }
+        
+        public static List<PlayerSheetPercentile> GetRankPercentile(string playerName, 
+                                                                    LeagueName leagueName, 
+                                                                     Dictionary<string, LeaguesAndPlayersStatistics> allLeagues)
+        {
+            List<PlayerSheetPercentile> percentiles = [];
+            LeaguesAndPlayersStatistics lps = allLeagues[leagueName.ShortLeagueName];
+            if (lps.PlayerStatistics.TryGetValue(playerName, out IEnumerable<PlayerSheetPercentile>? ptiles))
+            {
+                percentiles = ptiles?.ToList() ?? [];
+            }
+
+            return percentiles;
+        }
+
+        public static IEnumerable<PlayerSheetContainer> GetPlayerSheetContainers(string dsPath, string playerPhotosPath, ref List<string> optionValues)
+        {
+            List<PlayerSheetContainer> playerSheetContainers = [];
+            using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dsPath))
             {
                 Query query = new(dsContainer);
-
-                List<PlayerSheetContainer> playerSheetContainers = [];
-
                 IEnumerable<string> playerNames = query.GetActivePlayerNames();
 
                 // First change the containerHtml to include the HTML that is the list of selection player options. Later I replace
@@ -99,28 +194,19 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                 foreach (string player in playerNames)
                 {
-                    if (!map.ContainsKey(player))
-                    {
-                        map.Add(player, "Available_Photo-Not");
-                    }
+                    map.TryAdd(player, "Available_Photo-Not");
                 }
 
-                List<string> optionValues = playerNames.Select(p => 
-                                                       $"""
-                                                        <div 
-                                                            class="playerOption" playerName="{p}" 
-                                                            imageName="{playerPhotos}{map[p]}.jpg">
-                                                            {p.BuildDisplayName()}
-                                                        </div>
-                                                        """).ToList();
+                optionValues = playerNames.Select(p =>
+                                               $"""
+                                                <div 
+                                                    class="playerOption" playerName="{p}" 
+                                                    imageName="{playerPhotosPath}{map[p]}.jpg">
+                                                    {p.BuildDisplayName()}
+                                                </div>
+                                                """).ToList();
 
-                Dictionary<string, LeaguesAndPlayersStatistics> leaguesAndPlayersStatistics = GetLeaguesAndPlayersStatistics(query);
-                if (!string.IsNullOrEmpty(IntermediateFilePath))
-                {
-                    string playerName = Path.GetFileNameWithoutExtension(IntermediateFilePath);
-                    playerNames = playerNames.Where(p => p.Replace(", ", "") == playerName);
-                }
-
+                Dictionary<string, LeaguesAndPlayersStatistics> leaguesAndPlayersStatistics = PlayerSheets.GetLeaguesAndPlayersStatistics(query);
                 foreach (string playerName in playerNames)
                 {
                     IEnumerable<LeagueName> leagueNames = query.GetLeagueNamesForPlayer(playerName);
@@ -160,7 +246,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                             LeagueNumTeams = totalTeams,
                             PlayerTotals = playersTotals.PlayersSummary(),
                             LeagueTotals = leagueTotals.PlayersSummary($"{shortLeagueName}"),
-                            PlayerPercentiles = GetRankPercentile(playerName, league, leaguesAndPlayersStatistics),
+                            PlayerPercentiles = PlayerSheets.GetRankPercentile(playerName, league, leaguesAndPlayersStatistics),
                             LeagueStatistics = leaguesAndPlayersStatistics[shortLeagueName].LeagueStatistics.ToList()
                         };
 
@@ -168,117 +254,24 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     }
 
                     string introduction = $"""
-                                           {playerName.BuildDisplayName()} played in {leagueNames.Count().NumDesc("league")} 
-                                           for {totalTeams.NumDesc("team")} in {totalGames.NumDesc("game")} during the 
-                                           {query.GetSeason()} season
-                                           """;
+                                   {playerName.BuildDisplayName()} played in {leagueNames.Count().NumDesc("league")} 
+                                   for {totalTeams.NumDesc("team")} in {totalGames.NumDesc("game")} during the 
+                                   {query.GetSeason()} season
+                                   """;
 
-                    //sheetData.SelectMany(s => s.PlayerStats
-                    PlayerSheetContainer psc = new PlayerSheetContainer(introduction, sheetData);
+                    PlayerSheetContainer psc = new(introduction, sheetData);
                     playerSheetContainers.Add(psc);
                 }
-
-                using (HtmlGenerator generator = new HtmlGenerator())
-                {
-                    // Using the results from the queries to produce tables, write the tables and any
-                    // other data to the XhtmlWriter (via HtmlGenerator.Write methods).
-
-                    foreach (PlayerSheetContainer psc in playerSheetContainers)
-                    {
-
-                        IEnumerable<PlayerSheetItemDisplay> psd = psc.PlayerSheetItems.Select(si => new PlayerSheetItemDisplay(si));
-                        PlayerSheetContainerDisplay pscd = new PlayerSheetContainerDisplay(psc);
-                        generator.WriteRootTable(pscd.SheetItems.Select(s => s.Totals), ExtendedPlayerSheets(headerStyle, psc));
-                    }
-
-
-                    //string htmlNode = introHtml.Substring("<div class=\"IntroContent\"", "</body", true, false);
-                    //HtmlNode title = HtmlNode.CreateNode(htmlNode);
-                    changedHtml = generator.DumpHtml(//pageTitle: title,
-                                                     cssStyles: StaticConstants.LocalStyles + StaticConstants.PlayerSheetsStyles,
-                                                     javaScript: StaticConstants.LocalJavascript,
-                                                     collapseTo: 2,
-                                                     headElements: headElements.ToList());
-
-                    if (!string.IsNullOrEmpty(IntermediateFilePath))
-                    {
-                        try
-                        {
-                            File.WriteAllText(IntermediateFilePath, changedHtml);
-                            actionCallback($"{IntermediateFilePath} created and contains the changedHtml from PlayerSheets.BuildHtml");
-                        }
-                        catch (Exception exception)
-                        {
-                            throw new InvalidOperationException($"The {IntermediateFilePath} is invalid", exception);
-                        }
-                    }
-                    else
-                    {
-
-                        // Now populate the PlayrSheetsContainer HTML document by inserting the player list and changing the
-                        // scrdoc attribute on iframe element. So first load the file Html in a HtmlDocument.
-                        HtmlDocument htmlDoc = new HtmlDocument();
-                        htmlDoc = PageContentUtilities.GetHtmlDocument(containerHtml);
-                        HtmlNode root = htmlDoc.DocumentNode;
-                        HtmlNode sheets = root.SelectSingleNode("//iframe[@id='sheets']");
-                        sheets.Attributes["srcdoc"].Remove();
-                        sheets.Attributes.Add("srcdoc", changedHtml);
-                        HtmlNode playersList = root.SelectSingleNode("//div[@id='playersList']");
-                        foreach (string playerOption in optionValues)
-                        {
-                            playersList.AppendChild(HtmlNode.CreateNode(playerOption));
-                        }
-
-                        HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
-                        viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
-                        changedHtml = root.OuterHtml;
-                        if (actionCallback != null)
-                        {
-                            actionCallback($"{this.GetType().Name} HTML page created.");
-                        }
-                    }
-                }
-
             }
 
-            return changedHtml;
-        }
-
-        public Dictionary<string, LeaguesAndPlayersStatistics> GetLeaguesAndPlayersStatistics(Query query)
-        {
-            Dictionary<string, IEnumerable<LeagueStatistics>> ls = query.GetLeaguesStatistics()     
-                                                                        .ToDictionary(k => k.Key, k => k.Value.Select(v => new LeagueStatistics(v)));
-                 
-
-            IEnumerable<LeagueName> leagueNames = query.GetLeagueNames();
-            Dictionary<string, LeaguesAndPlayersStatistics> allLeagues = [];
-            foreach (LeagueName leagueName in leagueNames)
-            {
-                var groups = query.GetAllPlayersStatistics(leagueName, 5);
-                allLeagues.Add(leagueName.ShortLeagueName, new LeaguesAndPlayersStatistics(ls[leagueName.ShortLeagueName], groups));
-            }
-
-            return allLeagues;
-        }
-        
-        public List<PlayerSheetPercentile> GetRankPercentile(string playerName, 
-                                                             LeagueName leagueName, 
-                                                             Dictionary<string, LeaguesAndPlayersStatistics> allLeagues)
-        {
-            List<PlayerSheetPercentile> percentiles = [];
-            LeaguesAndPlayersStatistics lps = allLeagues[leagueName.ShortLeagueName];
-            if (lps.PlayerStatistics.TryGetValue(playerName, out IEnumerable<PlayerSheetPercentile>? ptiles))
-            {
-                percentiles = ptiles?.ToList() ?? [];
-            }
-
-            return percentiles;
+            return playerSheetContainers;
         }
 
         public static Func<TableNode, string> ExtendedPlayerSheets(string? headerCssStyle, PlayerSheetContainer playerSheetContainer)
         {
             return (t) =>
             {
+                _ = headerCssStyle ?? "Not specified";
                 HtmlNode tableHtmlNode = t.TableHtmlNode;
                 string header = t.Header().InnerText;
                 string introductionHeader = $"""
@@ -345,8 +338,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     {
                         PlayerSheetItem psItem = psItems[i];
                         string playerName = psItem.PlayerName;
-                        string firstName = playerName.Substring(playerName.IndexOf(' ') + 1);
-                        if (psItem.PlayerPercentiles.Any() && (league == psItem.LeagueName))
+                        string firstName = playerName[(playerName.IndexOf(' ') + 1)..];
+                        if ((psItem.PlayerPercentiles.Count != 0) && (league == psItem.LeagueName))
                         {
                             List<LeagueStatistics> leagueStatistics = psItem.LeagueStatistics;
                             

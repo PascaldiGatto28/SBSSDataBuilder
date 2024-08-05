@@ -66,6 +66,7 @@ namespace SBSSData.Softball.Logging
         {
             LogFilePath = string.Empty;
             Writer = null;
+            IsClosed = false;
         }
 
         /// <summary>
@@ -653,6 +654,7 @@ namespace SBSSData.Softball.Logging
         public void Close()
         {
             Dispose(true);
+            IsClosed = true;
         }
 
         /// <summary>
@@ -719,6 +721,11 @@ namespace SBSSData.Softball.Logging
             Dispose(true);
         }
 
+        public bool IsClosed
+        {
+            get;
+            set;
+        }
 
         // IDisposable implementation
         private bool disposedValue = false; // To detect redundant calls

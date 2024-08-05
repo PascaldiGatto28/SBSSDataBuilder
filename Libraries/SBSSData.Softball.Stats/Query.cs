@@ -59,7 +59,7 @@ namespace SBSSData.Softball.Stats
 
             List<PlayerStats> ps = GetLeaguePlayers(league.Category, league.Day).Where(p => p.PlateAppearances > qualifyingPlateAppearances)
                                                                                 .ToList();
-            int n = ps.Count();
+            int n = ps.Count;
             //List<string> propertyNames = ["Average", "Slugging", "OnBase", "OnBasePlusSlugging"];
             List<PlayerSheetPercentile> playersInfo = [];
             foreach (string propertyName in ComputedStatNames)
@@ -67,16 +67,16 @@ namespace SBSSData.Softball.Stats
                 PropertyInfo? property = typeof(PlayerStats).GetProperty(propertyName);
                 if (property != null)
                 {
-                    List<double> data = psAll.Select(p => (double)property.GetValue(p)).ToList();
+                    List<double> data = psAll.Select(p => property.GetValue(p)).Cast<double>().ToList();
                     DescriptiveStatistics ds = data.GetStatistics(propertyName, weights);
                     List<PlayerStats> propertyNameStats = ps.OrderBy(p => property.GetValue(p)).ThenBy(p => p.PlateAppearances).ToList();
                     for (int i = 0; i < n; i++)
                     {
                         int percentile = (int)Math.Round(((double)((i == 0) ? 0 : i) / (double)n) * 100, 0);
                         int rank = n - i;
-                        double propertyValue = (double)property.GetValue(propertyNameStats[i]);
+                        double propertyValue = (double)(property.GetValue(propertyNameStats[i]) ?? 0);
                         double zScore = (propertyValue - ds.Mean) / ds.StdDev;
-                        PlayerSheetPercentile pInfo = new PlayerSheetPercentile(n, propertyNameStats[i].Name, propertyName, (double)(property.GetValue(propertyNameStats[i]) ?? 0), rank, percentile, zScore);
+                        PlayerSheetPercentile pInfo = new(n, propertyNameStats[i].Name, propertyName, (double)(property.GetValue(propertyNameStats[i]) ?? 0), rank, percentile, zScore);
                         playersInfo.Add(pInfo);
                     }
                 }
@@ -98,7 +98,7 @@ namespace SBSSData.Softball.Stats
                     PropertyInfo? property = typeof(PlayerStats).GetProperty(propertyName);
                     if (property != null)
                     {
-                        List<double> data = psAll.Select(p => (double)property.GetValue(p)).ToList();
+                        List<double> data = psAll.Select(p => (double)(property.GetValue(p) ?? 0)).ToList();
                         DescriptiveStatistics ds = data.GetStatistics(propertyName, weights);
                         descriptiveStatistics.Add(ds);
                     }
@@ -160,8 +160,7 @@ namespace SBSSData.Softball.Stats
 
         public IEnumerable<PlayerStats> GetLeaguePlayers(string leagueCategory = "", string day = "")
         {
-            IEnumerable<PlayerStats> leaguePlayers = new List<PlayerStats>();
-            leaguePlayers = GetLeagueSchedules(leagueCategory, day)
+            IEnumerable<PlayerStats> leaguePlayers = GetLeagueSchedules(leagueCategory, day)
                                           .SelectMany(l => l.ScheduledGames)
                                           .Where(s => s.IsComplete && !s.WasCanceled && !s.GameResults.IsForfeited)
                                           .Select(s => s.GameResults)
@@ -201,7 +200,7 @@ namespace SBSSData.Softball.Stats
             IEnumerable<PlayerStats> ps = GetLeaguePlayersSummary(leagueCategory, day);
 
             string[] fieldNames = ["Average", "Slugging","OnBase", "OnBasePlusSlugging"];
-            Dictionary<string, string[]> rankingsMap = new Dictionary<string, string[]>();
+            Dictionary<string, string[]> rankingsMap = [];
             foreach (PlayerStats playerStats in ps)
             {
                 rankingsMap.Add(playerStats.Name, ["NA", "NA", "NA", "NA"]);
@@ -270,7 +269,7 @@ namespace SBSSData.Softball.Stats
             if ((playerData != null) && playerData.Any())
             {
                 string nameText = !string.IsNullOrEmpty(summaryName) ? summaryName : playerData.First().Name;
-                player = Player.ConstructPlayer(new List<PlayerLabelValue> { new("Player", nameText) });
+                player = Player.ConstructPlayer([new("Player", nameText)]);
                 player = playerData.SumIntProperties<Player>(player);
             }
 
@@ -396,7 +395,7 @@ namespace SBSSData.Softball.Stats
 
         public static IEnumerable<LeagueSchedule> GetSchedules(IEnumerable<LeagueSchedule> schedules, string propertyName, string propertyValue)
         {
-            IEnumerable<LeagueSchedule> newSchedules = schedules ?? Enumerable.Empty<LeagueSchedule>();
+            IEnumerable<LeagueSchedule> newSchedules = schedules ?? [];
             if ((schedules != null) && schedules.Any() && !string.IsNullOrEmpty(propertyName))
             {
                 PropertyInfo? property = typeof(LeagueDescription).GetProperty(propertyName);

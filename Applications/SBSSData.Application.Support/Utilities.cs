@@ -2,6 +2,8 @@
 
 using HtmlAgilityPack;
 
+using SBSSData.Softball.Common;
+
 using WinSCP;
 
 namespace SBSSData.Application.Support
@@ -111,8 +113,8 @@ namespace SBSSData.Application.Support
         /// of the sbssdata.info Web site.
         /// </summary>
         /// <param name="source">The local folder where the Web site files are located. The default is 
-        /// J:\SBSSDataStore\HtmlData<
-        /// /param>
+        /// J:\SBSSDataStore\HtmlData
+        /// </param>
         /// <param name="isTest">If <c>true</c>, the target folder is "/quietcre/TestSync" (a test site); otherwise
         /// is is "/quietcre/Data". In the first case you need to access the text site via walkingtree.com/TestSync,
         /// in the production, you can use sbssdata URL, sbssdata.info.</param>
@@ -152,6 +154,50 @@ namespace SBSSData.Application.Support
             }
 
             return new WinSCPSyncResults(syncResult);
+        }
+
+        public static string PublishSingleFile(string localFilePath, bool isTest = true)
+        {
+            List<string> transferResults = [];
+            try
+            {
+                // Setup session options
+                SessionOptions sessionOptions = new()
+                {
+                    Protocol = Protocol.Ftp,
+                    HostName = "ftp.walkingtree.com",
+                    UserName = "quietcre",
+                    Password = "85232WindingWay",
+                };
+
+                string target = isTest ? "/quietcre/TestSync/" : "/quietcre/Data/";
+                string localFileName = Path.GetFileName(localFilePath);
+                using (Session session = new Session())
+                {
+                    // Connect
+                    session.Open(sessionOptions);
+
+                    // Upload file
+                    TransferOptions transferOptions = new TransferOptions();
+                    transferOptions.TransferMode = TransferMode.Binary;
+
+                    TransferOperationResult transferResult = session.PutFiles(localFilePath, $"{target}{localFileName}", false, transferOptions);
+
+                    // Throw on any error
+                    transferResult.Check();
+
+                    foreach (TransferEventArgs transfer in transferResult.Transfers)
+                    {
+                        transferResults.Add($"Upload of {transfer.FileName} succeeded");
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new InvalidOperationException("Error when copying {localFilePath} to sbssdata.info",  exception);
+            }
+
+            return transferResults.ToString<string>("\r\n");
         }
 
         public static string SwapSeasonText(string seasonText)

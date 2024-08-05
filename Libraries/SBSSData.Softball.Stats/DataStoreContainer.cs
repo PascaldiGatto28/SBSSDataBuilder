@@ -230,7 +230,7 @@ namespace SBSSData.Softball.Stats
         /// The scheduled team names, ordered by name.
         /// </returns>
         /// <seealso cref="GetTeamNames()"/>
-        public int NumberOfTeams => GetTeamNames().Count();
+        public int NumberOfTeams => GetTeamNames().Count;
 
         /// <summary>
         /// Returns the number of players who have participated in a completed (but not canceled) game.
@@ -242,7 +242,7 @@ namespace SBSSData.Softball.Stats
         /// The number of active players.
         /// </returns>
         /// <seealso cref="GetPlayerNames()"/>
-        public int NumberOfPlayers => GetPlayerNames().Count();
+        public int NumberOfPlayers => GetPlayerNames().Count;
 
         /// <summary>
         /// Saves the current <see cref="DataStore"/> by serializing it to the file specified <paramref name="path"/> 
@@ -383,8 +383,7 @@ namespace SBSSData.Softball.Stats
         /// </returns>
         public override string ToString()
         {
-            PropertyInfo[] properties = typeof(DataStoreContainer).GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                                                  .ToArray();
+            PropertyInfo[] properties = [.. typeof(DataStoreContainer).GetProperties(BindingFlags.Public | BindingFlags.Instance)];
 
             string text = properties.ToString<PropertyInfo>(x =>
             {

@@ -1,4 +1,6 @@
-﻿using SBSSData.Application.LinqPadQuerySupport;
+﻿using Dumpify;
+
+using SBSSData.Application.LinqPadQuerySupport;
 using SBSSData.Application.Support;
 using SBSSData.Softball.Logging;
 
@@ -14,17 +16,19 @@ namespace SBSSData.Application.WebDeployment
         private static readonly string DataStoreFolder = settings.DataStoreFolder;
         private static readonly Log log = AppContext.Instance.Log;
         private static readonly string HtmlData = settings.HtmlFolder;
-        private static readonly bool PublishToTest = settings.Test;
+        //private static readonly bool PublishToTest = settings.Test;
 
         public Build()
         { 
         }
 
-        public static void Run()
+        public static void Run(string[] args)
         {
             bool buildHtml = true;
             bool publish = true;
             bool publishToTest = false; // (args == null) || (args.Length == 0) || (args[0] == "Test");
+
+            args.Dump("Data Store Changed?");
 
 
             if (buildHtml)
@@ -40,8 +44,8 @@ namespace SBSSData.Application.WebDeployment
                 _ = construction.Build<DataStoreInfo>(true);
                 _ = construction.Build<LogSessions>(true);
 
-                foreach (string season in StaticConstants.Seasons)
-                //string season = "2024 Summer";
+                //foreach (string season in StaticConstants.Seasons)
+                string season = "2024 Summer";
                 {
                     log.WriteLine($"Beginning construction of HTML pages for {season}");
                     construction.SeasonText = season;

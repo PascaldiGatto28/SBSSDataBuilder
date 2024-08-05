@@ -32,8 +32,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            GamesTeamPlayersV3  gtpV3 = new();
-            gtpV3.ResourceName = $"{GetType().Name}.html";
+            GamesTeamPlayersV3 gtpV3 = new()
+            {
+                ResourceName = $"{GetType().Name}.html"
+            };
 
             string html = gtpV3.BuildHtmlPage(seasonText, dataStoreFolder, null);
             html = html.Replace("[[Season YYYY]]", Utilities.SwapSeasonText(seasonText));

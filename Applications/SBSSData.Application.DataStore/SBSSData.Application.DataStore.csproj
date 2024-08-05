@@ -53,6 +53,8 @@
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball.Stats\SBSSData.Softball.Stats.csproj" />
     <ProjectReference Include="..\..\Libraries\SBSSData.Softball\SBSSData.Softball.csproj" />
     <ProjectReference Include="..\SBSSData.Application.Infrastructure\SBSSData.Application.Infrastructure.csproj" />
+    <ProjectReference Include="..\SBSSData.Application.LinqPadQuerySupport\SBSSData.Application.LinqPadQuerySupport.csproj" />
+    <ProjectReference Include="..\SBSSData.Application.Support\SBSSData.Application.Support.csproj" />
   </ItemGroup>
 
 </Project>

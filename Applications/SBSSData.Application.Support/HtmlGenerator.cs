@@ -128,7 +128,7 @@ namespace SBSSData.Application.Support
                         n.InnerHtml = n.InnerText.NameToTitle().Replace(" ", "&nbsp;");
                     }
 
-                    //tables = rootNode.SelectNodes("//table");
+                    tables = rootNode.SelectNodes("//table");
                     int rootTableIndex = 0;
                     foreach (HtmlNode table in tables)
                     {
@@ -173,10 +173,7 @@ namespace SBSSData.Application.Support
                                 HtmlNode tableTbody = table.SelectSingleNode("tbody");
                                 tableTbody.SetAttributeValue("style", "display:none");
                                 HtmlNode tableTfoot = table.SelectSingleNode("tfoot");
-                                if (tableTfoot != null)
-                                {
-                                    tableTfoot.SetAttributeValue("style", "display:none");
-                                }
+                                tableTfoot?.SetAttributeValue("style", "display:none");
 
                                 HtmlNode columnHeaders = table.SelectSingleNode("thead/tr[2]");
 

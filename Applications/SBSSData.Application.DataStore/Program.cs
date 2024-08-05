@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-
-using SBSSData.Softball.Common;
-using SBSSData.Softball.Logging;
+﻿using SBSSData.Softball.Logging;
 
 using AppContext = SBSSData.Application.Infrastructure.AppContext;
 
@@ -37,7 +34,7 @@ namespace SBSSData.Application.DataStore
         ///     </item>
         /// </list>
         /// </remarks>
-        internal static void Main()
+        public static void Main()
         {
             Console.WriteLine($"\r\nSBSS Data Store Manager -- Building and Updating the SBSS Data Store ({DateTime.Now:dddd MMMM d, yyyy})\r\n");
 
@@ -45,14 +42,14 @@ namespace SBSSData.Application.DataStore
             try
             {
                 using Log log = context.Log;
-                log.WriteLine("Starting the Data Store Manager");
+                HtmlDeployment htmlDeployment = new(log);
+                log.WriteLine("Starting the Data Store Manager and HTML Deployment");
                 try
                 {
                     bool dsModified = DataStoreManager.Run((context.Settings).Update);
-                    //if (dsModified)
-                    //{
-                    //    WebPublisher.Run(null, null);
-                    //}
+
+                    // If no items have been updated, then HTML files that depend on the changed data store will not be created.
+                    htmlDeployment.CreateHtml(dsModified);
                 }
                 catch (Exception exception)
                 {
@@ -61,35 +58,17 @@ namespace SBSSData.Application.DataStore
                 }
                 finally
                 {
-                    log.WriteLine("Completed.");
-                    log.Stop();
-                    log.Close();
+                    // This method deploys all the HTML files if requested (first parameter). To generate the LogSessions
+                    // HTML file, the log must be closed and then generated the JSON file, build the LogSessions.html
+                    // file and then it copies that single to the server. Even if no other HTML files are build or 
+                    // deployed, the LogSessions file is always build and deployed.
+                    htmlDeployment.FinishDeployment(true, false);
                 }
             }
             catch (InvalidOperationException exception)
             {
                 Console.WriteLine($"Unhandled exception during Log processing {exception}");
             }
-
-            // Now process the log files. The .log file has been updated, so use Log.ReturnLog to get the a 
-            // IEnumerable<LogSession> sequence for this execution. If there is already a serialization (.json), read that
-            // and append the new sequence to it and then serialize it. It does mean we're reading and write some files, but
-            // who cares?
-
-            string logFilePath = context.Settings.LogFilePath;
-            IEnumerable<LogSession> sessions = Log.ReadLog(logFilePath);
-            string logSessionsFilePath = logFilePath.Replace(".log", ".json", StringComparison.Ordinal);
-            IEnumerable<LogSession>? loggedSessions = File.Exists(logSessionsFilePath) ?
-                                                     JsonConvert.DeserializeObject<IEnumerable<LogSession>>(File.ReadAllText(logSessionsFilePath)) :
-                                                     Enumerable.Empty<LogSession>();
-
-            if ((loggedSessions != null) && loggedSessions.Any())
-            {
-                sessions.ToList().AddRange(loggedSessions);
-            }
-
-            string json = JsonConvert.SerializeObject(sessions).FormatJsonString();
-            File.WriteAllText(logSessionsFilePath, json);
         }
     }
 }

@@ -11,9 +11,12 @@ namespace SBSSData.Softball.Stats
             LeagueName = string.Empty;
             NumGames = 0;
             NumTeams = 0;
-            Season = string.Empty;
             LeagueNumGames = 0;
             LeagueNumTeams = 0;
+            PlayerTotals = Player.Empty;
+            LeagueTotals = Player.Empty;
+            PlayerPercentiles = [];
+            LeagueStatistics = [];
         }
 
         public string PlayerName { get; set; }
@@ -42,9 +45,9 @@ namespace SBSSData.Softball.Stats
 
         public string DisplayName => PlayerName.BuildDisplayName();
 
-        public PlayerStats PlayerTotalsStats => new PlayerStats(PlayerTotals, NumGames);
+        public PlayerStats PlayerTotalsStats => new(PlayerTotals, NumGames);
 
-        public PlayerStats LeagueTotalsStats => new PlayerStats(LeagueTotals, LeagueNumGames);
+        public PlayerStats LeagueTotalsStats => new(LeagueTotals, LeagueNumGames);
 
         public List<PlayerSheetPercentile> PlayerPercentiles 
         { 
@@ -57,12 +60,5 @@ namespace SBSSData.Softball.Stats
             get;
             set; 
         }
-
-        private string Season 
-        { 
-            get; 
-            set; 
-        }
-
     }
 }

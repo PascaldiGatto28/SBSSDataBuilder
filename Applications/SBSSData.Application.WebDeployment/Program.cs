@@ -39,7 +39,7 @@ namespace SBSSData.Application.WebDeployment
         ///     </item>
         /// </list>
         /// </remarks>
-        internal static void Main()
+        internal static void Main(string[] args)
         {
             Console.WriteLine($"\r\nSBSS Web Deployment -- Constructing HTML Pages and Deploying to the Web Server ({DateTime.Now:dddd MMMM d, yyyy})\r\n");
 
@@ -54,7 +54,7 @@ namespace SBSSData.Application.WebDeployment
                 log.WriteLine("Starting the Web Publisher");
                 try
                 {
-                    Build.Run();
+                    Build.Run(args);
                 }
                 catch (Exception exception)
                 {
