@@ -188,13 +188,13 @@ namespace SBSSData.Application.Support
 
                     foreach (TransferEventArgs transfer in transferResult.Transfers)
                     {
-                        transferResults.Add($"Upload of {transfer.FileName} succeeded");
+                        transferResults.Add($"Deployment of {transfer.FileName} succeeded");
                     }
                 }
             }
             catch (Exception exception)
             {
-                throw new InvalidOperationException("Error when copying {localFilePath} to sbssdata.info",  exception);
+                throw new InvalidOperationException($"Error when deploying {localFilePath} to sbssdata.info",  exception);
             }
 
             return transferResults.ToString<string>("\r\n");

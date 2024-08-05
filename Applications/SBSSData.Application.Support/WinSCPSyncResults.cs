@@ -21,14 +21,40 @@ namespace SBSSData.Application.Support
         public override string ToString()
         {
             string success = IsSuccess ? string.Empty : "not ";
-            string text =
-                $"""
-                 Uploaded files ({NumUploads}):
-                 {Uploads.ToString<string>("\r\n")}
-                 {NumDownloads} downloaded files
-                 {NumFailures} Failures 
-                 Copy was {success}successful 
-                 """;
+            string text = "No files were deployed, because none have changed";
+            switch (NumUploads)
+            {
+                case 0:
+                {
+                    if (!IsSuccess)
+                    {
+                        text = "No files were deployed, because the deployment was not successful";
+                    }
+                    break;
+                }
+                case 1:
+                {
+                    text =
+                        $"""
+                         One files deployed:
+                         {Uploads.First()}
+                         {NumDownloads} downloaded files
+                         Deployment was {success}successful 
+                         """;
+                    break;
+                }
+                default:
+                {
+                    text =
+                        $"""
+                         {NumUploads} files deployed:
+                         {Uploads.ToString<string>("\r\n")}
+                         {NumDownloads} downloaded files
+                         Deployment was {success}successful 
+                         """;
+                    break;
+                }
+            }
             return text;
         }
 

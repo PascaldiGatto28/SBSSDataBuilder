@@ -90,7 +90,7 @@ namespace SBSSData.Application.DataStore
             Build<LogSessions>(true);
             string copyResults = Utilities.PublishSingleFile($"{HtmlDataFolder}LogSessions.html", deploymentTest);
 
-            // The log ain't no good no more, so we just have to right out the results to the console.
+            // The log ain't no good no more, so we just have to wright out the results to the console.
             Console.WriteLine($"Publishing LogSessions.html: {copyResults}"); 
         }
 
