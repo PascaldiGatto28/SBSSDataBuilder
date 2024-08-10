@@ -151,8 +151,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     changedHtml = generator.DumpHtml(pageTitle: title,
                                                      //cssStyles: StaticConstants.LocalStyles,
                                                      //javaScript: StaticConstants.LocalJavascript,
-                                                     cssStyles: StaticConstants.LocalStyles + StaticConstants.HelpStyles,
-                                                     javaScript: StaticConstants.LocalJavascript + StaticConstants.HelpJavascript,
+                                                     cssStyles: StaticConstants.LocalStyles + 
+                                                                StaticConstants.HelpStyles +
+                                                                StaticConstants.SortableTableStyles,
+                                                     javaScript: StaticConstants.LocalJavascript + 
+                                                                 StaticConstants.HelpJavascript,
                                                      collapseTo: 1,
                                                      headElements: [.. headElements]);
                 }
@@ -305,8 +308,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 //});
 
                 //tableHtmlNode.SelectSingleNode("./thead/tr[2]/th[last()]").Attributes.Add("style", "display:none");
+
             }
 
+            Utilities.ConvertToSortable(tableHtmlNode, [1], false, 3);
             return header;
         }
 
@@ -428,6 +433,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                             HtmlNode newName = HtmlNode.CreateNode($"<td>{name.InnerText} Totals</td>");
                             name.ParentNode.ReplaceChild(newName, name);
 
+                            Utilities.ConvertToSortable(tableHtmlNode, [1]);
                         }
                         else if (groupName == "Games and Teams")
                         {
@@ -488,6 +494,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         tableHtmlNode.SelectNodes("tbody/tr/td[1]").ToList().ForEach(n => n.Remove());
 
                         Utilities.UpdatePlayerHeaderTitles(tableHtmlNode, false);
+
+                        Utilities.ConvertToSortable(tableHtmlNode, [0], false, 2);
                         break;
                     }
                     default:

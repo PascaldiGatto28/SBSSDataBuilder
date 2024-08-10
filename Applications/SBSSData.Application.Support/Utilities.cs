@@ -358,33 +358,51 @@ namespace SBSSData.Application.Support
             //return tableHtmlNode;
         }
 
-        public static void ConvertToSortable(HtmlNode tableNode)
+        public static void ConvertToSortable(HtmlNode tableNode, 
+                                             List<int>? stringCells = null, 
+                                             bool updateHeadersAndTitles = false,
+                                             int initializedColumnNumber = 3,
+                                             string headerBackgroundColor = "#4C74B2") 
         {
             tableNode.AddClass("sortable");
             List<HtmlNode> headerNodes = [.. tableNode.SelectNodes(".//th")];
             HtmlNode lastRow = tableNode.SelectSingleNode("./tbody/tr[last()]");
             //lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
-
-            List<int> stringElementList = [];
-            for (int i = 0; i < headerNodes.Count; i++)
+            TableNode tNode = new TableNode(tableNode);
+            if (tNode.Depth() > 0)
             {
-                HtmlNode headerNode = headerNodes[i];
-                if (headerNode.GetAttributeValue("title", null) == "System.String")
+                HtmlNode cell = tableNode.SelectSingleNode("./thead/tr/td");
+                cell.SetAttributeValue("style", $"background-color: {headerBackgroundColor}");
+            }
+
+
+
+            List<int> stringElementList = stringCells ?? [];
+            if (stringElementList.Count == 0)
+            {
+                for (int i = 0; i < headerNodes.Count; i++)
                 {
-                    stringElementList.Add(i);
+                    HtmlNode headerNode = headerNodes[i];
+                    if (headerNode.GetAttributeValue("title", null) == "System.String")
+                    {
+                        stringElementList.Add(i);
+                    }
                 }
             }
 
-            // Now for each zScore, add the class "hidden" to it, a the class zScore and typeData attribute.
             var rows = tableNode.SelectNodes("./tbody//tr").ToList();
 
+            // Create strings to act as replacements for the Javascript script. 
             string stringElements = $"""'[{stringElementList.ToString<int>(", ")}]'""";
             string tableSelector = $"'#{tableNode.Id}'";
 
-            //Utilities.UpdatePlayerColumnNames(tableNode);
-            //Utilities.UpdatePlayerHeaderTitles(tableNode, true, false, false);
+            if (updateHeadersAndTitles)
+            {
+                Utilities.UpdatePlayerColumnNames(tableNode);
+                Utilities.UpdatePlayerHeaderTitles(tableNode, true, false, false);
+            }
 
-            // Testing removing last data row to the footer
+            //Remove the last data row to the footer of the table, because only want to sort body rows.
 
             HtmlNode tbody = tableNode.SelectSingleNode("./tbody");
             HtmlNode tfoot = tableNode.SelectSingleNode("./tfoot");
@@ -408,7 +426,7 @@ namespace SBSSData.Application.Support
             // TODO: The columnIndex is the initial column that is sorted in descending order. This information
             // should not be hard-coded.
             string eventScript = StaticConstants.SortableTable
-                                                .Replace("[[columnIndex]]", "3")
+                                                .Replace("[[columnIndex]]", $"\"{initializedColumnNumber}\"")
                                                 .Replace("[[tableSelector]]", tableSelector)
                                                 .Replace("[[stringElements]]", stringElements);
             HtmlNode script = HtmlNode.CreateNode(eventScript);
