@@ -358,6 +358,64 @@ namespace SBSSData.Application.Support
             //return tableHtmlNode;
         }
 
+        public static void ConvertToSortable(HtmlNode tableNode)
+        {
+            tableNode.AddClass("sortable");
+            List<HtmlNode> headerNodes = [.. tableNode.SelectNodes(".//th")];
+            HtmlNode lastRow = tableNode.SelectSingleNode("./tbody/tr[last()]");
+            //lastRow.Attributes.Add("style", "background-color:#ddd; font-weight:500;");
+
+            List<int> stringElementList = [];
+            for (int i = 0; i < headerNodes.Count; i++)
+            {
+                HtmlNode headerNode = headerNodes[i];
+                if (headerNode.GetAttributeValue("title", null) == "System.String")
+                {
+                    stringElementList.Add(i);
+                }
+            }
+
+            // Now for each zScore, add the class "hidden" to it, a the class zScore and typeData attribute.
+            var rows = tableNode.SelectNodes("./tbody//tr").ToList();
+
+            string stringElements = $"""'[{stringElementList.ToString<int>(", ")}]'""";
+            string tableSelector = $"'#{tableNode.Id}'";
+
+            //Utilities.UpdatePlayerColumnNames(tableNode);
+            //Utilities.UpdatePlayerHeaderTitles(tableNode, true, false, false);
+
+            // Testing removing last data row to the footer
+
+            HtmlNode tbody = tableNode.SelectSingleNode("./tbody");
+            HtmlNode tfoot = tableNode.SelectSingleNode("./tfoot");
+            if (tfoot != null)
+            {
+                tableNode.RemoveChild(tfoot);
+            }
+
+            tfoot = HtmlNode.CreateNode("<tfoot><span></span></tfoot>");
+            tableNode.AppendChild(tfoot);
+
+            if (lastRow != null)
+            {
+                // Remove the last row from tbody
+                tbody.RemoveChild(lastRow);
+
+                // Append the last row to tfoot
+                tfoot.FirstChild.AppendChild(lastRow);
+            }
+
+            // TODO: The columnIndex is the initial column that is sorted in descending order. This information
+            // should not be hard-coded.
+            string eventScript = StaticConstants.SortableTable
+                                                .Replace("[[columnIndex]]", "3")
+                                                .Replace("[[tableSelector]]", tableSelector)
+                                                .Replace("[[stringElements]]", stringElements);
+            HtmlNode script = HtmlNode.CreateNode(eventScript);
+            tableNode.ParentNode.InsertAfter(script, tableNode);
+        }
+
+
         public static readonly List<string> playerTitles =
                           [
                             "Number of games played",
