@@ -20,16 +20,21 @@ namespace SBSSData.Application.LinqPadQuerySupport
             new("meta", [["data", "description"], ["content", "Player league stats for all players and leagues using sortable tables"]]),
             new("meta", [["name", "viewport"], ["content", "width=device-width, initial-scale=1.0"]]),
             new("meta", [["http-equiv", "cache-control"], ["content", "no-cache"]]),
-            new("title", [["Player's League Sortable Summaries", ""]]),
+            new("title", [["Player's League Summaries", ""]]),
             new("link", [["rel", "shortcut icon"], ["type", "image/x-icon"], ["href", "../SBSSData.ico"]])
         ];
-
-        
 
         public SortablePlayerStats()
         {
             Values = [];
             ResourceName = $"{this.GetType().Name}.html";
+        }
+
+        public SortablePlayerStats(string resourceName, string intermediateFilePath = "")
+        {
+            ResourceName = resourceName;
+            IntermediateFilePath = intermediateFilePath;
+            Values = [];
         }
 
         public List<object> Values
@@ -39,6 +44,13 @@ namespace SBSSData.Application.LinqPadQuerySupport
         }
 
         public string ResourceName
+        {
+            get;
+            set;
+        }
+        
+
+        public string IntermediateFilePath
         {
             get;
             set;
@@ -119,8 +131,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
                     html = generator.DumpHtml(pageTitle: title,
-                                              cssStyles: StaticConstants.SortableTableStyles + StaticConstants.LocalStyles, 
-                                              javaScript:StaticConstants.LocalJavascript,
+                                              cssStyles: StaticConstants.LocalStyles +
+                                                         StaticConstants.HelpStyles +
+                                                         StaticConstants.SortableTableStyles,
+                                              javaScript:StaticConstants.LocalJavascript + StaticConstants.HelpJavascript,
                                               collapseTo: 1,
                                               headElements: [.. headElements]);
 
@@ -359,7 +373,6 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                                                        playerName,
                                                                                        statValues,
                                                                                        [.. zScores]);
-                                ;
                                 HtmlNode popUp = HtmlNode.CreateNode(overlayHtml);
                                 nameCell.ChildNodes.Append(popUp);
                                 nameCell.Attributes.Add("onmouseover", "this.querySelector('.overlay').style.display='block'");

@@ -140,22 +140,22 @@ div.season
 <script language='JavaScript' type='text/javascript'>
 function toggle(id)
 {
-	var table = document.getElementById(id);
-	if (table == null) return false;
-	var updown = document.getElementById(id + 'ud');
-	if (updown == null) return false;
-	var expand = updown.className == 'arrow-down';
-	updown.className = expand ? 'arrow-up' : 'arrow-down';
-	table.style.borderBottomStyle = expand ? 'solid' : 'dashed';
-	if (table.rows.length < 2 || table.tBodies.length == 0) return false;
-	table.tBodies[0].style.display = expand ? '' : 'none';		
-	if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.indexOf ('sum') == 0)
-		table.tHead.rows[1].style.display = expand ? '' : 'none';
-	if (table.tFoot != null)
-		table.tFoot.style.display = expand ? '' : 'none';
-	if (expand)
-		table.scrollIntoView ({behavior:'smooth', block:'nearest'});
-	return false;
+    var table = document.getElementById(id);
+    if (table == null) return false;
+    var updown = document.getElementById(id + 'ud');
+    if (updown == null) return false;
+    var expand = updown.className == 'arrow-down';
+    updown.className = expand ? 'arrow-up' : 'arrow-down';
+    table.style.borderBottomStyle = expand ? 'solid' : 'dashed';
+    if (table.rows.length < 2 || table.tBodies.length == 0) return false;
+    table.tBodies[0].style.display = expand ? '' : 'none';		
+    if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.indexOf ('sum') == 0)
+        table.tHead.rows[1].style.display = expand ? '' : 'none';
+    if (table.tFoot != null)
+        table.tFoot.style.display = expand ? '' : 'none';
+    if (expand)
+        table.scrollIntoView ({behavior:'smooth', block:'nearest'});
+    return false;
 }
 function toggleDetailsVisibility(detailsId, introductionId)
 {

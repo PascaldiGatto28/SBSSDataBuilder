@@ -177,11 +177,10 @@ namespace SBSSData.Application.Support
                 padding: 0px;
                 font-weight: 500;
             }
-            button.showme:hover, .button.showme:focus {
-                background-color: button.sbss:hover, .button.sbss:focus {
-                background-color: #829fc9;
+            button.showme:hover, .button.showme:focus 
+            {
+                background-color: #dbe4f0;
             };
-            }
 
             span.showme {
                 font-size: .75em;
@@ -197,6 +196,92 @@ namespace SBSSData.Application.Support
             }
             """;
 
+        public static readonly string AboutTablesStyles =
+            """
+            h1, h2, h3, h4, h5, h6
+            {
+                font-weight: 400;
+            }
+
+            h1
+            {
+                color:firebrick; 
+                font-size:1.6em;
+            }
+
+            h2
+            {
+                color:#4C74B2;
+                font-size:1.2em;
+                font-weight:500;
+            }
+
+            h3
+            {
+                color: #4C74B2;
+                font-size: 1.1em;
+            }
+
+            li
+            {
+                margin-bottom: 10px;
+            }
+
+            ul li
+            {
+                line-height: 1.3;
+                margin-bottom: 10px
+            }
+
+            ul.sbss
+            {
+                padding: 0;
+                margin-left: 20px;
+            }
+                ul.sbss li
+                {
+                    list-style-type: square;
+                    margin-top: 0px;
+                    margin-bottom: 10px;
+                }
+
+            li::marker
+            {
+                color: firebrick;
+            }
+                        
+            a, a:visited, a:hover, a:visited:hover
+            {
+                font-weight:400;
+            }
+
+                a.navigate
+                {
+                    font-size: .65em
+                }
+
+            span.highlight
+            {
+                font-weight:500; 
+                margin-left:.3em;
+                margin-right:.3em; 
+                padding-left:.3em; 
+                padding-right:.3em
+            }
+
+            span.headerText
+            {
+                color:white; 
+                background-color:firebrick
+            }
+
+            span.columnHeader
+            {
+                color:black; 
+                background-color:#ddd
+            }
+            
+            """;
         public static readonly string SortableTableStyles =
             """
             table.sortable th {
@@ -661,19 +746,6 @@ namespace SBSSData.Application.Support
                         }
 
                         lastIndex = thIndex;
-
-                        //let compare(a, b) = tr => tr.children[thIndex].innerText;
-                        //if (isNumeric)
-                        //{
-                        //   getText = tr => {
-                        //      var cellEl = tr.children[thIndex];
-                        //      var zscoreData = cellEl.getAttribute("zscoredata") + 10.0;
-                        //      console.log("returning zscoreData" + zscoreData);
-                        //      return (zscoreData != null) ? zscoreData : cellEl.innerText;
-                        //   }
-                        //}
-                        //else
-                        //{
                         getText = tr => {
                            //var children = tr.children[thIndex];
 
@@ -695,14 +767,6 @@ namespace SBSSData.Application.Support
                         var className = sortTypes[thIndex] < 0 ? "descending" : "ascending";
                         target.classList.add(className);
 
-                        //console.log("target classList = " + target.classList);
-
-                        //var rows = tbody.rows;
-                        //var lastRowIndex = rows.length - 1;
-                        //var summary = rows[lastRowIndex];
-                        //tbody.deleteRow(lastRowIndex);
-                        //summary.classList.add("summary");
-
                         trs.sort(function(rowA, rowB) 
                         {
                             //console.log("In sort, isNumeric = " + isNumeric + " and thIndex = " + thIndex);
@@ -717,13 +781,45 @@ namespace SBSSData.Application.Support
                         });
 
                         trs.forEach(tr => tbody.appendChild(tr));
-                        //tbody.appendChild(summary);
                         sortTypes[thIndex] *= -1;
                     });
                 })([[columnIndex]], [[tableSelector]], [[stringElements]]);
             
             </script>
             """;
+
+        public static readonly string OverlayGenericTemplate =
+                                    """
+                                      <div id="overlay" class="overlay" style="position:fixed; [[overlayStyle]]">
+                                          <div id="overlayImage">
+                                              <img style="margin:auto; height:250px;" src="[[imagePath]][[imageName]].jpg"/>
+                                          </div>
+                                            <div id="overlayInfo" style="padding-left:0px;  
+                                                                         max-width:160px; 
+                                                                         margin-top:5px;  
+                                                                         white-space:normal; 
+                                                                         font-weight:400;
+                                                                         background-color:#f2f2f2;
+                                                                         border:solid 1px #b22222;
+                                                                         display:flex; 
+                                                                         justify-content:center;">
+                                               <div style=""width:160px; text-align:center; \">
+                                                    [[infoHtml]]
+                                               </div>
+                                            </div>   
+                                          </div>
+                                      </div>
+                                      """;
+
+        public static string BuildGenericOverlay(string overlayStyle,
+                                                 string imagePath, 
+                                                 string imageName, 
+                                                 string infoHtml) => 
+                                                 OverlayGenericTemplate.Replace("[[overlayStyle]]", overlayStyle)
+                                                                       .Replace("[[imagePath]]", imagePath)
+                                                                       .Replace("[[imageName]]", imageName)
+                                                                       .Replace("[[infoHtml]]", infoHtml);
+
         public static readonly string OverlayTemplate =
                                      """
                                       <div id="overlay" class="overlay">

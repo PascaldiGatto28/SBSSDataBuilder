@@ -10,7 +10,7 @@ namespace SBSSData.Application.WebDeployment
 {
     public sealed class TestBuild
     {
-        private static readonly AppSettings settings = AppSettings.Instance($@"Configuration\Settings.json");
+        private static readonly AppSettings settings = AppSettings.Instance($@"Configuration\SettingsTest.json");
         private static readonly string DataStoreFolder = settings.DataStoreFolder;
         private static readonly Log log = AppContext.Instance.Log;
         private static readonly string HtmlData = settings.HtmlFolder;
@@ -31,8 +31,8 @@ namespace SBSSData.Application.WebDeployment
                 Callback = (t) => log.WriteLine(t.ToString() ?? "Bad logging comment!")
             };
 
-            //_ = construction.Build<DataStoreInfo>(true);
-            //_ = construction.Build<LogSessions>(true);
+            _ = construction.Build<DataStoreInfo>(true);
+            _ = construction.Build<LogSessions>(true);
 
             //foreach (string season in StaticConstants.Seasons)
             string season = "2024 Summer";

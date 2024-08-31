@@ -69,31 +69,5 @@ namespace SBSSData.Application.Support
                                                              player.OnBasePlusSlugging)
         {
         }
-
-        //public PlayerStatsDisplay(string playerName, List<PlayerSheetPercentile> psPercentile) : 
-        //                                                                this(0,
-        //                                                                     playerName,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     0,
-        //                                                                     psPercentile[0].Percentile,
-        //                                                                     psPercentile[1].Percentile,
-        //                                                                     psPercentile[2].Percentile,
-        //                                                                     psPercentile[3].Percentile)
-
-        //{
-        //}
-
-
-
-
     }
 }

@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="description" content="SBSS Data Viewer Tables and How to Use">
+    <meta name="keywords" content="HTML, CSS, JavaScript, Senior Softball Data">
+    <meta name="author" content="Richard Levaro">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <title>About Data Viewer Tables</title>
+    <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
+    <link rel="stylesheet" href="CSS/LINQPad.css" />
+    <link rel="stylesheet" href="CSS/Main2.css?v=0.24107" />
+    <link rel="stylesheet" href="CSS/SBSS.css?v=0.24107" />
+    <style type="text/css">
+        span.highlight
+        {
+            font-weight: 500;
+            margin-left: .3em;
+            margin-right: .3em;
+            padding-left: .3em;
+            padding-right: .3em
+        }
+
+        span.headerText
+        {
+            color: white;
+            background-color: firebrick
+        }
+
+        span.columnHeader
+        {
+            color: black;
+            background-color: #ddd
+        }
+        button.showme
+        {
+            background-color: #fffae6;
+            border: 1px solid black;
+            color: black;
+            padding: 3px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            border-radius: 15px;
+            box-shadow: 2px 2px 10px 2px #aaaaaa;
+            font-size: 12px;
+            height: 20px;
+            width: 50px;
+            padding: 0px;
+            font-weight: 500;
+        }
+
+            button.showme:hover, .button.showme:focus
+            {
+                background-color: #dbe4f0;
+            }
+    </style>
+    <script type="text/javascript" src="Scripts/Main.js?v=0.24107"></script>
+    <script type="text/javascript" language="javascript">
+        function toggle(id)
+        {
+            var table = document.getElementById(id);
+            if (table == null) return false;
+            var updown = document.getElementById(id + 'ud');
+            if (updown == null) return false;
+            var expand = updown.className == 'arrow-down';
+            updown.className = expand ? 'arrow-up' : 'arrow-down';
+            table.style.borderBottomStyle = expand ? 'solid' : 'dashed';
+            if (table.rows.length < 2 || table.tBodies.length == 0) return false;
+            table.tBodies[0].style.display = expand ? '' : 'none';
+            if (table.tHead.rows.length == 2 && !table.tHead.rows[1].id.indexOf('sum') == 0)
+                table.tHead.rows[1].style.display = expand ? '' : 'none';
+            if (table.tFoot != null)
+                table.tFoot.style.display = expand ? '' : 'none';
+            if (expand)
+                table.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            return false;
+        }
+
+        
+    </script>
+    <title>ABout Data View Tables</title>
+</head>
+<body style="font-size:16px;">
+    <div class="IntroContent" style="font-size:16px;">
+    <h1 style="font-weight: 500; font-size:1.3em; color: firebrick;">
+        About Data Viewer Tables
+        <a class="navigate" style="font-size:10px;" href="index.html">(Back to SBSS Data Viewer)</a>
+    </h1>
+
+        <div>
+        The following
+        <a href="#tableFrame">table</a> is typical. We'll use it to describe the general anatomy of a Data Viewer table, it's
+        properties and features.
+        </div>
+
+        <div class="spacer">
+            <h2>Anatomy of a Table</h2>
+
+            Data Viewer tables are just a special case of all HTML tables. But the parts of the table are specialized
+            and useful to know how they are used. HTML tables are just columns (vertical) and rows (horizontal) that
+            displays data in each cell (intersection of a row and column) context and meaning. There are
+            three components: Header, Body and Footer. The sample table is the most common Data Viewer
+            table &mdash; player stats table. The <a href="#sampleTable"> same table</a> is "live" so you can
+            inspect and click away to see how it works.
+
+            <div class="spacer">
+                <h3>Header</h3>
+                <div class="spacer">
+                    The header consists of two rows: the top row (header text) is
+                    <span class="highlight headerText">
+                        displayed using these background and text colors
+                    </span>
+                    and provides information
+                    about the table contents (the cells). It's a special row because it spans all the columns in the table.
+                    You can expand or collapse the table by clicking on the header text
+                    or the small triangle
+                    (<span class="highlight headerText" style="font-size:.75em">▼</span> or
+                    <span class="highlight headerText" style="font-size:.75em">▲</span>)
+                    to the left of text.
+                    When you click on the text (or triangle), the visibility of the table changes. If is totally visible, it will
+                    be collapsed to show only the header description. Click on it again and the full table is expanded and scrolled
+                    into view.
+
+                    When a table is
+                    expanded, the triangle is up; when collapsed it is down. Another visibility indication is when the
+                    table is expanded,
+                    the bottom border of the header text is solid; when collapsed it is dashed.
+                    <button class="showme" onclick="toggle('t1');">Try it!</button>
+                </div>
+
+                <div class="spacer">
+                    The second row of the header contains the column headers. This row is
+                    <span class="highlight columnHeader">
+                        displayed using these background and text colors.
+                    </span>
+                    It displays text that describes the data in each cell of the column. For player stats, the abbreviations are
+                    standard, but for some tables that may not be the case. If you hover the 
+                    column header with your mouse, a small
+                    "pop-up" is displayed for a few seconds describing the data.
+                    For example, when you hover over the "TH" column header, you'll see
+                    <div class="spacer">
+                        <img src="Images/ColumnHeaderHover.png" />
+                    </div>
+                    Move your cursor over the column headers and try it!
+                    Expanding, collapsing and column descriptions work in exactly the same way for all Data Viewer tables not just
+                    the player stats tables.
+                </div>
+            </div>
+
+            <div class="spacer">
+                <h3>Body</h3>
+                <div class="spacer">
+                    This section is where all the data is displayed. If you focus on the rows, what you see are the various
+                    data items for that specific item &mdash; in our example the player. If you focus on the columns within
+                    the body, you see all particular data items (in our example, the stat) for each players. So the intersection
+                    of a row and column (a cell) is a particular data item for a particular player.
+                </div>
+                <div class="spacer">
+                    There are Data Viewer tables for which rows are teams, a single game, or even a season. The cells can contain
+                    a table. For example in the in the "Games, Teams and Players" page, there's a table for each league, for
+                    example "Monday Community." This is a special kind of table where the body of the table contains just
+                    a single cell for each row. Each row represents a perspective of the all stats data and cell is just another
+                    table. The first row is the "Game Results Data" for all the played games. Each row represents a played game,
+                    the cell of which is the table "Scheduled Game Information", and the second cell "Teams and Players" for
+                    this game is a table having all the stats data of the played game. This table contains columns for the
+                    team name, runs scored, hits, win or loss, and then another table having all the player data.
+                    <div class="spacer">
+                        <img style="width:700px;" src="D:\Users\Richard\Documents\Visual Studio 2022\Github Projects\SBSS\SBSSDataBuilder\Applications\SBSSData.Application.WebSiteLocal\Images\ComplexTableSummary.png" />
+                    </div>
+                    The player data is much like our sample table. You can see how powerful tables can be in organizing
+                    mountains of data in a way the data can be viewed and summarized. The "Games, Teams and Players" page
+                    contains every bit of league, team and player data for the season. 
+                    <a href="DocHtml/SampleGTPTable.html" target="">Sample nested tables</a>
+                </div>
+
+                <div class="spacer">
+                    <h3>Footer</h3>
+                    The table is the last raw of the table and is used to summarize the data in the body. 
+                    This row is
+                    <span class="highlight columnHeader">
+                        displayed using these background and text colors.
+                    </span>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="spacer">
+            Data are presented in tables that are "collapsible", "sticky" and for player stats data "sortable."
+        </div>
+
+        <ul class="sbss">
+            <li>
+                Collapsible &mdash;
+                When there's a lot of data and many tables, navigation can be a bit imposing. But all tables can
+                be collapsed or expanded by clicking on the table header anywhere within the text of the table header. Just
+                before the header text, you see a "down arrow" if the table is current expanded and an "up arrow" if it collapsed.
+                The header text acts as a toggle: Clicking on a table that is collapsed expands it (that is shows all table
+                data); click on a table this is expanded, collapsed it (that shows just the header and its text).
+
+                <div class="spacer">
+                    And when there are a
+                    lot of tables, buttons are available to collapse or expand all tables on the page. Try clicking on the table header below.
+                    When a table is expanded, the arrow to the left of the header text is up and the bottom border of the table is solid.
+                    If the arrow is down
+                    and the bottom border is dashed, the table is collapsed and can be expanded, by clicking on the header text
+                </div>
+            </li>
+        </ul>
+
+        
+        <!--<div>
+            When there's a lot of data it can be hard to navigate. But all tables can
+            be collapsed or expanded by clicking on the table header anywhere within the text of the table header. And when there are a
+            lot of tables, buttons are available to collapse or expand all tables on the page. Try clicking on the table header above.
+            When a table is expanded, the arrow to the left of the header text is up and the bottom border of the table is solid.
+            If the arrow is down
+            and the bottom border is dashed, the table is collapsed and can be expanded, by clicking on the header text. Finally
+            the table column header text is "sticky" &mdash; when you scroll down, and the table is visible, the table header
+            remain attached
+            to the top of browser until you scroll past the table.
+        </div>-->
+    </div>
+</body>
+</html>

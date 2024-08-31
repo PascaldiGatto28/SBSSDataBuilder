@@ -1,0 +1,120 @@
+﻿
+.modalBackground
+{
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 9; /* Sit on top */
+    padding-top: 25px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow:auto;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+}
+
+.popup-content
+{
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: solid 2px firebrick;
+    border-radius: 25px;
+    border: 2px solid firebrick;
+    box-shadow: 10px 10px 50px 15px #ccccff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    width: 80%;
+}
+
+    /*.modal-content SampleTable
+    {
+        height: 580px;
+        width: 700px;
+    }
+
+    .modal-content SampleGTPTables
+    {
+        width: 1040px;
+        height: 580px;
+    }*/
+
+/* "close" element*/
+.close
+{
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus
+    {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+button.sbss
+{
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 12px;
+    font-family: 'Segoe UI Semibold', 'sans serif';
+    border: 1px solid black;
+    padding: 2px 5px 5px 5px;
+    margin-right: 10px;
+    color: white;
+    background-color: #4C74b2;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px 2px #aaaaaa;
+}
+
+    button.sbss:hover, .button.sbss:focus
+    {
+        background-color: #829fc9;
+    }
+
+span.highlight
+{
+    font-weight: 500;
+    margin-left: .3em;
+    margin-right: .3em;
+    padding-left: .3em;
+    padding-right: .3em
+}
+
+span.headerRootText
+{
+    color: white;
+    background-color: firebrick
+}
+
+span.headerNestedText
+{
+    color: white;
+    background-color: #4C74b2
+}
+
+span.columnHeader
+{
+    color: black;
+    background-color: #ddd
+}
+
+a, a:visited
+{
+    text-decoration: none;
+    font-family: Segoe UI Semibold, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    a:hover,  a:visited:hover
+    {
+        text-decoration: underline;
+    }

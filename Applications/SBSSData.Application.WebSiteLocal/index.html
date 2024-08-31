@@ -11,14 +11,14 @@
 
     <title>SBSS Data Viewer</title>
     <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
-    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.24204" />
-    <link rel="stylesheet" href="CSS/Main2.css?v=1.24204" />
-    <script type="text/javascript" src="Scripts/Main.js?v=1.24008"></script>
+    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.24244" />
+    <link rel="stylesheet" href="CSS/Main.css?v=1.24244" />
+    <script type="text/javascript" src="Scripts/Main.js?v=1.24244"></script>
 </head>
 <body>
     <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
     <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
-        Version 1.12.24204 &mdash; Released Date Monday, July 22 2024
+        Version 1.15.24244 &mdash; Released Date Saturday, August 31 2024
     </div>
     <div class="spacer">
         The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
@@ -29,12 +29,13 @@
     <div class="spacer">
         The data from the current season
         are updated every weekday evening no later than 6:30 PM, after which you can see the all pages populated using
-        the latest data.
+        the latest data. Data from other seasons can be viewed by selecting the season from the drop-down list when clicking the 
+        "Seasons" button.
     </div>
 
     <div class="dropdown">
         <button style="margin-right:0px; " onclick="myFunction()" 
-                class="dropbtn" title="Click and to select a season from the drop-down list">Seasons</button>
+                class="dropbtn" title="Click to select a season from the drop-down list">Seasons</button>
         <div id="myDropdown" class="dropdown-content">
             <div seasonShortName="2024Summer" onclick="setSelectedSeason(this);">Summer 2024</div>
             <div seasonShortName="2024Spring" onclick="setSelectedSeason(this);">Spring 2024</div>
@@ -51,7 +52,7 @@
     <h2>Contents</h2>
 
     <div class="spacer">
-        The following table has links to the pages that are available now together with a short description. More contextual
+        The following table has links to the Data Viewer pages together with a short description. More contextual
         information is displayed on the page or if there is a link to a help/guide page. Each page has a link 
         back to this home page.
     </div>
@@ -74,15 +75,23 @@
         <tbody>
             <tr>
                 <td>
+                    <a href="AboutTables.html">About SBSS Data Viewer Tables</a>
+                </td>
+                <td>
+                    The page is a detailed look at the features of Data Viewer tables using live tables that you
+                    view and test while reading the page. A must read if you haven't yet.
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <a href="GamesTeamPlayersV3.html" class="navigateFrom">Game Results, Teams and Players</a>
                 </td>
                 <td>
-                    <div class="spacer">
-
-                        This page contains all the data gathered from the SSSA site, which is stored in a file
-                        (called the <span style="font-weight:bold">Data Store</span>) and is displayed using
-                        three perspectives.
-                    </div>
+                    
+                    This page contains all the data gathered from the SSSA site, which is stored in a file
+                    (called the <span style="font-weight:bold">Data Store</span>) and is displayed using
+                    three perspectives.
+                    
                     <ul class="sbss">
                         <li>
                             For every played game not
@@ -117,9 +126,9 @@
                 </td>
                 <td>
                     Players Leagues Stats &amp; Statistics has tables for leagues and player summary stats and statistics. For
-                    each league (and summary for Community and Competitive) there is table that is sortable by player
-                    name and by and stats and z-Scores for each of the computed stats (AVG, SLG, OBP, OPS). You can optionally
-                    view all league descriptive statistics as well.
+                    each league (and summary for Community and Competitive) there is table having all player stats for
+                    league. You can optionally view all league descriptive stats as well Z-scores for the computed
+                    stats for each player.
                 </td>
             </tr>
             <tr>
@@ -127,10 +136,13 @@
                     <a href="References.html">Definitions, Explanations &amp; Details</a>
                 </td>
                 <td>
-                    The page is updated as new features are added and there is background information that is not
-                    in the data page itself. As of this release, a table documents
-                    "Commonly Used Batting Stats Abbreviations" and how we use them to calculate player stats. The page
-                    also describes why, how and calculation of rankings, percentiles and Z-scores.
+                    The page contains background information that is not in a specific data page providing a central location
+                    for the information
+                    This page contains a table document
+                    "Commonly Used Batting Stats Abbreviations" that defines the abbreviation used tables displaying player
+                    stats. For the sections "Percentiles and Ranking" and 
+                    "Z-Scores and Statistics" describe why and how rankings, percentiles and
+                    Z-scores are used and calculated.
                 </td>
             </tr>
             <tr>
@@ -146,7 +158,8 @@
                     <a href="ReleaseNotes.html">Version History</a>
                 </td>
                 <td>
-                    All release notes are saved in this page. It contains notes for every release: Changes and new features.
+                    All release notes are saved in this page. It contains notes for every release: Changes, corrections
+                    and new features.
                 </td>
             </tr>
             <tr>
@@ -156,8 +169,8 @@
                 <td>
                     The data store is the file where the all the data from SSSA Web site is stored;
                     technically it is JSON file. Useful to see
-                    how many games were played, which were canceled or forfeited, and how many teams and players there are.
-                    This page displays a single table showing the data store information for 5 seasons including
+                    how many games were played, which were recorded, canceled or forfeited, and how many teams and active players there are.
+                    This page displays a single table showing the data store information for the last few seasons including
                     the current one.
                 </td>
             </tr>
@@ -168,80 +181,13 @@
                 <td>
                     TLDR; (For computer nerds like me). This is the contents of the log file for the
                     current (or last completed) season. It contains details of the games that were played,
-                    marked as canceled or forfeited.
+                    marked as recorded, canceled or forfeited. It also shows the files that are deployed to the web site server.
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <h2 id="UsingTables">Using the Data Viewer Tables</h2>
-    <div class="spacer">
-        Data is presented as tables, and when there's a lot of data it can be hard to navigate. But all tables can
-        be collapsed or expanded by clicking on the table header anywhere within the text of the table header. And when there are a
-        lot of tables, buttons are available to collapse or expand all tables on the page. Try clicking on the table header above.
-        When a table is expanded, the arrow to the left of the header text is up and the bottom border of the table is solid.
-        If the arrow is down
-        and the bottom border is dashed, the table is collapsed and can be expanded, by clicking on the header text. Finally
-        the table column header text is "sticky" &mdash; when you scroll down, and the table is visible, the table header 
-        remain attached
-        to the top of browser until you scroll past the table.
-    </div>
-    <h3>Tool Tips</h3>
-    <div>
-        The tables are composed of a title and column headers and
-        columns of data. The column header text (for example player stats, like AB, TH, OPS, etc.) are
-        documented in the ""Definitions, Explanations &amp; Details"" page. For all tables when you
-        hover over the column header text, a tool tip pops open for a few seconds. This can be quite helpful if you're
-        not sure what the data represents. Here's an example of the tool tip for the
-        column header text "TH":
-
-        <div>
-            <img src="Images/ToolTip.png" />
-        </div>
-
-        Some tables don't have columns headers but the first cell in a row acts as the "header" for the row. In this case,
-        hovering over the first cell text in each row provides a tool tip. For example, here's the "Rankings" table in
-        a row of the "Player Summary Stats" table in the "Game Results, Teams and Players" page:
-
-        <div>
-            <img src="images/RankingsToolTip.png" />
-        </div>
-
-        Be aware that tool tips are only displayed for table column header text in general. There are
-        exceptions where table values actually have tool tips, and that's for Percentiles, Rankings, Z-scores and
-        league summary in the "Player
-        Sheets" page. This is done because the information is inserted in the player's table only when the data
-        is relevant (that is, enough plate appearances to be part of the calculations) and is not really part of the table.
-        <div>
-            <img src="images/PercentilesToolTip.png" />
-        </div>
-    </div>
-
-    <h3 id="SortableTables">Sortable Tables</h3>
-    <div>
-        Some player tables are sortable. When a page is displayed you see a down-arrow
-        icon indicating that the table is ordered in descending ordered based upon the values in that column. 
-        If you click on the column again, that table is
-        displayed in ascending order. Here's what see if PA (Plate Appearances) is the initial column when
-        page is displayed and then when it is clicked again:
-
-        <div>
-            <img src="images/SortIcons.png" />
-        </div>
-
-        If you click another (numeric) column, the icons on the current column disappear and you see the down arrow and the
-        table is sorted in descending order by the values in the column. The player name column is just the opposite: When
-        you first click on it the table is ordered in ascending order by player last (then first name). If you click on it again,
-        the table is order in descending order by player last name (then first name).
-
-        <div class="spacer">
-            As of this writing, the only sortable player stats table in on the
-            <a href="SortablePlayerStats.html" class="navigateFrom">Players Leagues Stats &amp; Statistics</a> page, but that 
-            may be extended as needed in future releases.
-        </div>
-    </div>
-
-    <h3>Viewing Requirements</h3>
+    <h2>Viewing Requirements</h2>
     <div>
         This Web site is best viewed in a desktop browser because of the size of the tables that can be nested and the number of tables.
         All pages render on a phone but can be hard to navigate and see everything. This has only been tested on chromium
@@ -258,22 +204,27 @@
         Please contact me with any problems, questions, concerns or suggestions. I will respond as rapidly as possible. Also please
         let me now if you would like to receive an email when new features are added or changed. You can reach
         me via email at <a href="mailto:Richard.Levaro@Outlook.com?subject=SBSS Data Viewer">Richard.Levaro@outlook.com</a>.
-        When I send an email to the list of people that want to be notified, your email address will not be visible because it will
-        be a BCC (blind copy) item. In this case the sender will be my address, but the recipient will be my alter ego.
+        When I send an email to the list of people that want to be notified, your email address will not be visible, because it is
+        sent as a BCC (blind copy) item. In this case the sender will be my address, but the recipient will be my alter ego.
         Please share the <a href="http://www.sbssdata.info">SBSS Data Viewer</a> link with others who you think might be interested.
         Thank you!
     </div>
 
     <h2 id="ReleaseNotes">
         Latest Release Notes
-        <a href="ReleaseNotes.html" class="navigate" style="font-size:.68em; color:firebrick; font-weight:500;">(Open Version History)</a>
+        <a href="ReleaseNotes.html" class="navigate" style="font-size:.68em; color:firebrick; font-weight:500;">(Version History)</a>
     </h2>
     <div class="spacer">
-        Notes of the versions of the SBSS Data Viewer Web site can be on the "Version History" page. Click on the
-        <a href="ReleaseNotes.html" style="font-weight:500;">Open Version History</a> link in the
-        heading of this section to see all
+        Two big items in this release: (1) All tables having player stats are now sortable, and (2) documentation for all
+        SBSS Data Viewer table features and properties are documented in the
+        <a href="AboutTables.html" target="blank">About Tables</a> page.
+        <div>
+        Notes of the all versions of the SBSS Data Viewer Web site can be seen on the "Version History" page. Click on the
+        <a href="ReleaseNotes.html" style="font-weight:500;">Version History</a> link in the
+        heading of this section to see 
         release notes for all version. The latest release is:
-        <span style="font-weight:500">Version 1.12.24204 &mdash; Released Date Monday, July 22 2024</span>
+        <span style="font-weight:500">Version 1.15.24244 &mdash; Released Date Saturday, August 31 2024</span>
+        </div>
     </div>
 
     <script lanugage="javascript" type="text/javascript">

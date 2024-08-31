@@ -1,6 +1,5 @@
 ﻿using Dumpify;
 
-using SBSSData.Application.LinqPadQuerySupport;
 using SBSSData.Application.Support;
 using SBSSData.Softball.Logging;
 
@@ -49,11 +48,12 @@ namespace SBSSData.Application.WebDeployment
                 {
                     log.WriteLine($"Beginning construction of HTML pages for {season}");
                     construction.SeasonText = season;
-                    _ = construction.Build<GamesTeamPlayersV3>(true);
+                    //_ = construction.Build<GamesTeamPlayersV3>(true);
                     //_ = construction.Build<GamesTeamPlayersHelpV3>(true);
                     //_ = construction.Build<PlayerSheets>(true);
                     //_ = construction.Build<PlayerSheetsGuide>(true);
                     //_ = construction.Build<SortablePlayerStats>(true);
+                    //_ = construction.Build<SortablePlayerStatsGuide>(true);
                 }
             }
 

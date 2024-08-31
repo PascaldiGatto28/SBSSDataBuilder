@@ -1,0 +1,401 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"> 
+<head>
+    <meta charset="utf-8" />
+    <meta name="description" content="About Data Viewer Tables" />
+    <meta name="keywords" content="HTML, CSS, JavaScript" />
+    <meta name="author" content="Richard Levaro" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+
+    <title>Data Viewer Tables</title>
+    <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
+    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.24204" />
+    <link rel="stylesheet" href="CSS/Main.css?v=1.24204" />
+    <link rel="stylesheet" href="CSS/AboutTables.css?v=1.24204" />
+    <!--<script type="text/javascript" src="Scripts/AboutTables.js?v=1.24008"></script>-->
+</head>
+<body>
+    <h1 style="font-weight: 500; font-size:1.3em; color: firebrick;">
+        About SBSS Data Viewer Tables
+        <a class="navigate" style="font-size:10px;" href="index.html">(Back to SBSS Data Viewer)</a>
+    </h1>
+
+    <div class="spacer">
+        Using live sample tables, this page lets you explore the features and properties of SBSS Data View tables.
+        We have two samples: The first is a single table of player stats together with summary stats (in this case for the league);
+        The second is a fragment from the "Game Results, Teams and Players" page which illustrates tables nested within other tables
+        and how to navigate through them all. Both samples can be displayed in a pop-up window by clicking either the "Open Sample
+        Table" or "Open Nested Tables" buttons.
+    </div>
+    <div class="spacer">
+        It's a much better experience viewing this page on a desktop, laptop or other device using a full-screen because they have more
+        screen "real estate" than a phone. Go ahead and click on the buttons. You can close the pop-up by clicking anywhere away
+        from it, or using the "Close the Pop-up"
+        button at the top of the pop-up. If you change the view, you can click
+        the "Reload the Pop-up" button to recover the original view. Don't forget to come back!
+    </div>
+
+    <div id="modalPopup">
+        <!-- Trigger/Open The Modal -->
+        <button class="sbss" id="openSampleTable" title="Click to display the sample table"
+                onclick="openPopup('SampleTable')">
+            Open Sample Table
+        </button>
+        <button class="sbss" id="openSampleGTPTables" title="Click to display a section from the 'Game Results, Teams and Players' page"
+                onclick="openPopup('SampleGTPTables')">
+            Open Nested Tables
+        </button>
+
+        <!-- The Modal Popup -->
+        <div id="popup" class="modalBackground" style="overflow-y:auto;">
+
+            <!-- Modal content -->
+            <div class="popup-content" style="overflow-y:auto; resize:both;">
+                <div style="display:flex; justify-content:center; cursor:pointer">
+                    <button class="sbss" id="closePopup" title="Click here or anywhere outside this pop-up to dismiss it"
+                            style="margin-bottom:10px;"
+                            onclick="document.getElementById('popup').style.display='none';">
+                        Close the Pop-up
+                    </button>
+                    <button class="sbss" id="reloadPopup" title="Click here to return the contents of of the pop-up to its original state"
+                            style="margin-bottom:10px;"
+                            onclick="document.getElementById('tableContainer').src += ' ';">
+
+                        Reload the Pop-up
+                    </button>
+                </div>
+                <iframe id="tableContainer" style="margin: auto; border: solid 1px firebrick; border-radius: 10px;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="spacer">
+        <h2>Anatomy of a Table</h2>
+
+        Data Viewer tables are just a special case of HTML tables. But the parts of the table are specialized,
+        and it's useful to know how they are used. HTML tables are just columns (vertical) and rows (horizontal) that
+        display data in each cell (intersection of a row and column) giving context and meaning. There are
+        three components of a table: Header, Body and Footer. The "Sample Table" is the most common Data Viewer
+        table &mdash; a player stats table. The <a style="color:#00ee" onclick="openPopup('SampleTable')">Sample Table</a>
+        is "live" so you can
+        inspect to see how it works while reading this document.
+
+        <div class="spacer">
+            <h3>Header</h3>
+            <div class="spacer">
+                The header consists of two rows: the top row (header text) is
+                <span class="highlight headerRootText">
+                    displayed using these background and text colors
+                </span>
+                for top-level tables, and
+                <span class="highlight headerNestedText">
+                    displayed using these background and text colors
+                </span>
+                for nested tables. A table is nested if it is the contents of table cell &mdash; see
+                <a onclick="openPopup('SampleGTPTables');" style="color:#00ee;">Nested Tables</a>.
+                The header text provides information
+                about the table contents (the cells). It's a special row because it spans all the columns in the table.
+                You can expand or collapse the table by clicking on the header text
+                or the small triangle
+                (<span style="font-size:.75em">▼</span> or
+                <span style="font-size:.75em">▲</span>)
+                to the left of text. You <span style="font-weight:700; color:Red;">must click on the text or triangle</span> not
+                just anywhere in the row to collapse or expand!
+            </div>
+            <div class="spacer">
+                When you click on the text (or triangle), the visibility of the table changes. If is totally visible, it will
+                be collapsed to show only the header description. Click on it again and the full table is expanded and scrolled
+                into view.
+                See <a href="#tableProperties">Table Properties</a> for details, or better yet,
+                <a onclick="openPopup('SampleTable')" style="color: #00ee">try it yourself!</a>
+            </div>
+
+            <div class="spacer">
+                The second row of the header contains the column headers. This row is
+                <span class="highlight columnHeader">
+                    displayed using these background and text colors.
+                </span>
+                It displays text that describes the data in each cell of the column. For player stats, the
+                <a href="References.html#Abbreviations" target="_blank">Batting Abbreviations</a>
+                are
+                standard, but for some tables that may not be the case. If you hover the
+                column header with your mouse, a
+                "tool-tip" is displayed describing the data while your cursor remains over the header cell.
+                <a onclick="openPopup('SampleTable')" style="color: #0000ee">Try it yourself, hovering over the TB header!</a>
+            </div>
+            <div class="spacer">
+                Expanding, collapsing and column descriptions work in exactly the same way for all Data Viewer tables not just
+                the player stats tables.
+            </div>
+        </div>
+
+        <div class="spacer">
+            <h3>Body</h3>
+            <div class="spacer">
+                This section is where all the data is displayed. If you focus on the rows, what you see are the various
+                data items for that specific row &mdash; in our example the player. If you focus on the columns within
+                the body, you see all particular data items (in our example, the stats) for each of the players. So the intersection
+                of a row and column (a cell) is a particular data item (a player stat) for a particular player.
+            </div>
+            <div class="spacer">
+                There are Data Viewer tables for which rows are teams, a single game, or even a season. The cells can contain
+                a table. For example in the in the "Games, Teams and Players" page, there's a table for each league, for
+                example "Monday Community." This is a special kind of table where the body of the table contains just
+                a single cell for each row. Each row represents a perspective of the all stats data and the cell is just another
+                table. The first row is the "Game Results Data" for all the played games. Each row represents a played game,
+                the cell of which is the table "Scheduled Game Information", and the second cell "Teams and Players" for
+                this game is a table having all the stats data of the played game. This table contains columns for the
+                team name, runs scored, hits, win or loss, and then another table having all the player data. Whew, you really
+                need to check out
+                <a onclick="openPopup('SampleGTPTables')" style="color:#00ee">Games, Teams and Players</a> to make sense of all
+                this.
+            </div>
+            <div class="spacer">
+                The player data (the table that is nested 3 tables deep) is much like our sample table.
+                You can see how powerful tables can be in organizing
+                mountains of data in a way the data can be viewed and summarized. The
+                <a href="DocHtml/GamesTeamPlayersSample.html" target="_blank">Game Results, Teams and Players</a> page
+                contains every bit of league, team and player data for the season. A lot of tables and a lot a data.
+            </div>
+        </div>
+
+        <div class="spacer">
+            <h3>Footer</h3>
+            <div class="spacer">
+                The footer is the last row of the table and is used to summarize the data in the body.
+                This row is
+                <span class="highlight columnHeader">
+                    displayed using these background and text colors.
+                </span>
+                For some tables, there is no summary data and for those tables, no footer is displayed. In the
+                <a onclick="openPopup('SampleGTPTables')" style="color:#00ee">Nested Tables</a> sample, the player stats
+                are summarized three different ways: player stats for each game, player stats for each team, and finally
+                players stats for the league.
+            </div>
+        </div>
+    </div>
+
+
+    <div class="spacer" id="tableProperties">
+        <h2>Table Properties</h2>
+
+        Data Viewer tables are collapsible, sticky and for player stats tables, sortable.
+
+        <div class="spacer">
+            <h3>Collapsing Multiple Tables</h3>
+            <div class="spacer">
+                When there's a lot of data it can be hard to navigate the many tables by collapsing or expanding one
+                table at a time
+                clicking the header top row text. In this case you'll see buttons that allow you collapse or expand all
+                the tables at once as the <a onclick="openPopup('SampleGTPTables')" style="color:#00ee">Nested Tables</a> sample
+                illustrates.
+            </div>
+
+            <div class="span">
+                When a table is expanded, the triangle to the left of the header text is "up"
+                (<span style="font-size:.75em">▲</span>) and the bottom border of the header text row is solid. When
+                the table is collapsed, you only see the top header row, its triangle is down
+                <span style="font-size:.75em">▼</span>, and the bottom border of the header
+                text row is dashed.
+            </div>
+        </div>
+
+
+        <div class="spacer">
+            <h3>Sticky Headers</h3>
+            <div class="spacer">
+                When scrolling a large table, the top of the table can disappear which can make it hard to remember what data
+                the columns represent. When this happens the top of the screen "holds onto" the column header row. Click to
+                <button class="sbss"
+                        title="Opens the sample table in a frame that lets you scroll see the sticky headers"
+                        style="margin-left:5px;"
+                        onclick="var example = document.getElementById('example'); example.src = 'DocHtml/SampleTable.html'; example.parentElement.style.display = 'block'">
+                    Open the Sample Table to Scroll
+                </button>
+                and to
+                <button class="sbss"
+                        title="Closes the sample table"
+                        style="margin-left:5px;"
+                        onclick="var example = document.getElementById('example'); example.parentElement.style.display = 'none'">
+                    Close the Sample Table
+                </button>
+                <div id="exampleContainer" class="spacer" style="height:260px; width:720px; display:none;">
+                    <iframe id="example" style="border: solid 1px firebrick;
+                                                border-radius: 10px;
+                                                width:95%; height:260px;">
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="spacer">
+                The tool-tips are still displayed when the header is "stuck". Sticky headers work for all tables that have a
+                column header row in the Header section even when the table is nested.
+            </div>
+        </div>
+
+        <div class="spacer">
+            <h3>Tool Tips &ndash; Revisited</h3>
+            <div class="spacer">
+                The tables are composed of a title and column headers and
+                columns of data. The column header text (for example player stats, like AB, TH, OPS, etc.) are
+                documented in the "Definitions, Explanations &amp; Details" page. For all tables when you
+                hover over the column header text, a tool tip pops open for as long as you keep hovering over the cell.
+                This can be quite helpful if you're
+                not sure what the data represents. Here's an example of the tool tip for the
+                column header text "TH":
+
+                <div>
+                    <img src="Images/ToolTip.png" />
+                </div>
+
+                Some tables don't have columns headers but the first cell in a row acts as the "header" for the row. In this case,
+                hovering over the first cell text in each row provides a tool tip. For example, here's the "Rankings" table in
+                a row of the "Player Summary Stats" table in the "Game Results, Teams and Players" page:
+
+                <div>
+                    <img src="images/RankingsToolTip.png" />
+                </div>
+
+                Be aware that tool tips are only displayed for table column header text in general. There are
+                exceptions where table values actually have tool tips, and that's for Percentiles, Rankings, Z-scores and
+                league summary in the "Player
+                Sheets" page. This is done because the information is inserted in the player's table only when the data
+                is relevant (that is, enough plate appearances to be part of the calculations) and is not really part of the table.
+                <div>
+                    <img src="images/PercentilesToolTip.png" />
+                </div>
+
+                <div class="spacer">
+                    Although not a classic tool tip, some of the tables display a photo (if available) of the player with summary
+                    or additional data. Open up the "Sample Table" and hover over a player name. You'll see
+                    their photo and perhaps some (not) useful information. It's just kind of fun.
+                </div>
+            </div>
+        </div>
+
+        <div class="spacer">
+            <h3 id="SortableTables">Sortable Tables</h3>
+            <div class="spacer">
+                All player stats tables, nested or not, are sortable. When a page is displayed you see a down-arrow
+                icon indicating that the table is ordered in descending order based upon the values in that column.
+                If you click on the column again, that table is
+                displayed in ascending order. Here's what see if PA (Plate Appearances) is the initial column when
+                page is displayed:
+
+                <div>
+                    Try it for the <a onclick="openPopup('SampleTable')" style="color: #00ee">Sample Table</a> and for the
+                    <a onclick="openPopup('SampleGTPTables')" style="color: #00ee">Nested Tables</a>.
+                </div>
+
+                <div class="spacer">
+                    If you click another (numeric) column, the icons on the current column disappear and you see the down arrow and the
+                    table is sorted in descending order by the values in the clicked column. The player name column is just the opposite: When
+                    you first click on it the table is ordered in ascending order by player last name (then first name). If you click on it again,
+                    the table is order in descending order by player last name (then first name).
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="spacer">
+        <h2>Data Migration</h2>
+        <div class="spacer">
+            The SBSS Data Viewer lets you view accumulated stats and statistics in unique ways from games played. This allows
+            you to more easily view and certainly to evaluate and compare stats. But where does the data come from?
+        </div>
+        <div class="spacer">
+            The data is gathered from the public and official
+            <a href="https://saddlebrookesoftball.com" target="_blank">SaddleBrooke Senior Softball Association (SSSA)</a> site.
+            Volunteer score keepers create the score sheets for each game played. At some point during the same day, the score 
+            sheets are recorded in the SSSA server and the updated data is available for viewing from the SSSA web site.
+            It is a remarkable commitment and service to all that are interested in the data. I certainly appreciate all the
+            work and commitment.
+        </div>
+        <div class="spacer">
+            After the data has been recorded, any new data is recovered from the SSSA site web pages (called page scraping)
+            and stored in the 
+            SBSS Data Viewer data store, which is just a JSON (Javascript Object Notation) file. It's my intent to make these files
+            available for download (why not, it's not my data after all). The only data that is captured is schedule information and
+            player stats. Computed stats (AVC, SLG, OBP, OPS) are not captured, but rather calculated while saving data. Summary
+            data is always created by the Data Viewer. If you see any discrepancies between the Data Viewer and the SSSA site,
+            please assume the SSSA site is correct, and please let <a href="index.html#feedback" target="_blank">me</a> know so 
+            I can fix the issue.
+        </div>
+        <div class="spacer">
+            Scraping the pages every week day keeps the data store up to date. The process is totally automated to reduce
+            any errors creeping in. For a typical day, the process takes less than 30 seconds to find all changes, update the data
+            store, reconstruct the HTML data pages, and upload any changes to the sbssdata.info server. Happy viewing.
+        </div>
+    </div>
+
+    <div class="spacer">
+        One last thing! When I said you can dismiss the pop-ups of the sample tables by clicking anywhere outside the pop-up,
+        that's technically true. But in a couple of cases, the pop-up isn't dismissed, it's just replaced. Tell me how I did
+        that and you win a prize!
+    </div>
+
+
+        <script language="javascript">
+            // Get the popup
+            const popup = document.getElementById("popup");
+            //console.log("popup = " + popup);
+
+            function openPopup(tableName)
+            {
+                popup.style.display = "none";
+                var iframe = document.getElementById("tableContainer");
+                iframe.src = "DocHtml/" + tableName + ".html";
+                var container = document.getElementsByClassName("popup-content")[0];
+                if (tableName == "SampleTable")
+                {
+                    container.style.width = "760px";
+                    container.style.height = "560px";
+                    iframe.style.width = "90%";
+                    iframe.style.minHeight = "520px";
+                    iframe.style.height = "95%";
+                }
+                else
+                {
+                    container.style.width = "1060px"
+                    iframe.style.width = "95%";
+                    iframe.style.minHeight = "520px";
+                    iframe.style.height = "95%";
+                }
+
+                popup.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            //span.onclick = function() {
+            //  modal.style.display = "none";
+            //}
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event)
+            {
+                //console.log("from window.onclick; " + event.target);
+                if (event.target == popup)
+                {
+                    popup.style.display = "none";
+                }
+
+                var elementUnderPopup = document.elementFromPoint(event.clientX, event.clientY);
+                //console.log("elementUnderPopup = " + elementUnderPopup.outerHTML);
+                if (elementUnderPopup.tagName == "BUTTON")
+                {
+                    var id = elementUnderPopup.id;
+                    if (id == 'openSampleTable')
+                    {
+                        openPopup('SampleTable');
+                    }
+                    else if (id == 'openSampleGTPTables')
+                    {
+                        openPopup('SampleGTPTables');
+                    }
+                }
+            }
+        </script>
+</body>
+</html>

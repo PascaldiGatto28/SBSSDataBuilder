@@ -27,8 +27,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="AboutTables.html" />
+    <None Remove="AboutTablesVer0.html" />
+    <None Remove="CSS\MainVer0.css" />
+    <None Remove="DataStoreInfo.html" />
+    <None Remove="DescriptiveStatistics.html" />
     <None Remove="DocHtml\ZScoresExample.html" />
     <None Remove="Images\AwesomePlayerSheet.png" />
+    <None Remove="LogSessions.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,15 +42,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="CSS\Main.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="CSS\Main2.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataStoreInfo.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DescriptiveStatistics.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocHtml\ZScoresExample.html">
@@ -71,10 +68,10 @@
     <Content Include="Images\ToolTip.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="index.html">
+    <Content Include="AboutTables.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LogSessions.html">
+    <Content Include="index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Notices.html">

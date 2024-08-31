@@ -433,6 +433,43 @@ namespace SBSSData.Application.Support
             tableNode.ParentNode.InsertAfter(script, tableNode);
         }
 
+        /// <summary>
+        /// Return the name (not the path) of the player's photo
+        /// </summary>
+        /// <param name="playeName">The name of the player, which can be expressed as the display name or the
+        /// data store playerName For example "Alex Sunrise" or "Sunrise, Alex"
+        /// </param>
+        /// <returns>If the data store name is found in the Name2ImageNameMap, the photo name is returned. In our
+        /// example, Sunrise_Alex. If the name is not found in the map, the photo name returned is Available_Photo-Not.
+        /// </returns>
+        public static string GetPlayerPhotoName(string playerName)
+        {
+            Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
+
+            string playerKey = string.Empty;
+            char delimiter = playerName.Contains(',') ? ',' : ' ';
+            string[] playerNameSplit = playerName.Split(delimiter, StringSplitOptions.RemoveEmptyEntries)
+                                                 .Where(s => !string.IsNullOrWhiteSpace(s))
+                                                 .ToArray();
+
+            if (playerNameSplit.Length == 2)
+            {
+                playerKey = (delimiter == ',') ?
+                            $"{playerNameSplit[0]}, {playerNameSplit[1]}" :
+                            $"{playerNameSplit[1]}, {playerNameSplit[0]}";
+            }
+            else
+            {
+                playerKey = $"Unknown, {string.Empty}";
+            }
+
+            if (!map.TryGetValue(playerKey, out string? playerPhotoName))
+            {
+                playerPhotoName = "Available_Photo-Not";
+            }
+
+            return playerPhotoName;
+        }
 
         public static readonly List<string> playerTitles =
                           [
@@ -451,7 +488,7 @@ namespace SBSSData.Application.Support
                             "Total Bases = singles + 2*doubles + 3*triples + 4*home runs",
                             "Average = TH / AB",
                             "Slugging = TB / AB",
-                            "On-Base Percentage = Sum of total hits and walks divided by the plate appearances; (tH+BB)/PA",
+                            "On-Base Percentage = Sum of total hits and walks divided by the plate appearances; (TH+BB)/PA",
                             "On-Base Plus Slugging = Sum of On-base percentage and slugging; OBP + SLG",
                             "Rankings for each player for AVG, SLG, OBP, OPS",
                             "The number of StdDevs above or below the league mean for AVG",

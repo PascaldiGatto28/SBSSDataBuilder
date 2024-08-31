@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="AboutTables.cs" />
     <Compile Remove="GamesTeamPlayers.cs" />
     <Compile Remove="GamesTeamPlayersV2.cs" />
     <Compile Remove="GamesTeamPlayersV4.cs" />
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="AboutTables.html" />
     <None Remove="DataStoreInfo.html" />
     <None Remove="GamesTeamPlayersHelpV3.html" />
     <None Remove="GamesTeamPlayersV3.html" />
