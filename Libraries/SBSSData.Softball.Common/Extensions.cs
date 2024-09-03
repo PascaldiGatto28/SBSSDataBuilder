@@ -470,11 +470,11 @@ namespace SBSSData.Softball.Common
         /// </summary>
         /// <param name="typeNameHandling">If <c>true</c>, the type names are included in the JSON string. This
         /// is the default and is necessary if you have a subclass but want only the base class to be 
-        /// serialized.</param>
+        /// serialized. NOT SURE ABOUT THAT!!!</param>
         /// <param name="source">The object to serialize; if <c>null</c>, the empty string is returned.</param>
         /// <returns>A JSON string representing the object that can deserialized to create an instance of the object. The
         /// string is formatted for indentation using space characters (rather than tabs).</returns>
-        public static string ToJsonString(this object source, bool typeNameHandling = true)
+        public static string ToJsonString(this object source, bool typeNameHandling = false)
         {
             string jsonString = string.Empty;
 
@@ -487,10 +487,10 @@ namespace SBSSData.Softball.Common
                 textWriter.Indentation = 4;
                 textWriter.IndentChar = ' ';
 
-                JsonSerializer serializer = typeNameHandling ? new()
+                JsonSerializer serializer = new()
                 {
-                    TypeNameHandling = TypeNameHandling.Auto
-                } : new();
+                    TypeNameHandling = typeNameHandling ? TypeNameHandling.Auto : TypeNameHandling.None
+                };
 
                 serializer.Serialize(textWriter, source);
 
