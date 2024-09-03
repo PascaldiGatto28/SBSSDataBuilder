@@ -36,7 +36,8 @@ namespace SBSSData.Application.DataStore
         /// </remarks>
         public static void Main()
         {
-            Console.WriteLine($"\r\nSBSS Data Store Manager -- Building and Updating the SBSS Data Store ({DateTime.Now:dddd MMMM d, yyyy})\r\n");
+            Console.WriteLine($"\r\nSBSS Data Store Manager —  Building and Updating the SBSS Data Store ({DateTime.Now:dddd MMMM d, yyyy})");
+            Console.WriteLine("Version 1.12.24247 — Released Date Tuesday, September 3 2024\r\n");
 
             AppContext context = AppContext.Instance;
             try
