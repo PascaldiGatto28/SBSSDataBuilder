@@ -33,10 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="J:\SBSSDataStore\HtmlData\CSS\Main2.css" Link="CSS\Main2.css" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="GamesTeamPlayersHelpV3.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
