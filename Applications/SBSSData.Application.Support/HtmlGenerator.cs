@@ -80,6 +80,8 @@ namespace SBSSData.Application.Support
                 }
 
                 HtmlNode style = rootNode.SelectSingleNode("//style");
+
+                                                     
                 string styles = style.InnerHtml;
                 if (!string.IsNullOrEmpty(cssStyles))
                 {
@@ -88,7 +90,12 @@ namespace SBSSData.Application.Support
 
                 style.InnerHtml = styles;
 
+
                 HtmlNode script = rootNode.SelectSingleNode("//script");
+
+                HtmlNode biasmlScript = HtmlNode.CreateNode(StaticConstants.biaslmScript);
+                headNode.InsertBefore(biasmlScript, script);
+
                 string scripts = script.InnerHtml;
                 if (!string.IsNullOrEmpty(javaScript))
                 {

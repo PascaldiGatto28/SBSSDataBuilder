@@ -334,6 +334,16 @@ namespace SBSSData.Application.Support
 
             """;
 
+        public static readonly string biaslmScript =
+            """
+            <script data-host="https://biasml.com" 
+                    data-dnt="false" 
+                    src="https://biasml.com/js/script.js" 
+                    id="ZwSg9rf6GA" 
+                    async defer>
+            </script>
+            """;
+
         public static readonly string LocalJavascript =
             """
             function toggleDetailsVisibility(detailsId, introductionId)
