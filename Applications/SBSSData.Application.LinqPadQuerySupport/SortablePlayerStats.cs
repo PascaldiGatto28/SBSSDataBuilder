@@ -97,7 +97,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                         font-size:1.20em;
                                         """;
 
-                    generator.WriteRawHtml(expandCollapseHtml);
+                    
                     IEnumerable<LeagueName> leagueNames = query.GetLeagueNames();
                     List<PropertyInfo> properties = typeof(PlayerStats).GetProperties()
                                                                        .Where(p => Query.ComputedStatNames.Contains(p.Name))
@@ -107,26 +107,35 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     foreach (LeagueName league in leagueNames)
                     {
                         LeaguePlayersStatistics? lss = GetLeaguePlayersStatistics(query, league.Category, seasonText, properties, league.Day);
-                        if (lss != null)
+                        if ((lss != null) && lss.PlayersStatistics.Count() > 1)
                         {
                             leaguePlayersStatistics.Add(lss);
                         }
                     }
 
-                    generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
-
-                    leaguePlayersStatistics = [];
-                    IEnumerable<string> categoryNames = leagueNames.GroupBy(l => l.Category).Where(g => g.Count() > 1).Select(g => g.Key);
-                    foreach (string category in categoryNames)
+                    if (leaguePlayersStatistics.Count == 0)
                     {
-                        LeaguePlayersStatistics? lss = GetLeaguePlayersStatistics(query, category, seasonText, properties);
-                        if (lss != null)
-                        {
-                            leaguePlayersStatistics.Add(lss);
-                        }
+                        string noData = """<div style="font-size:18px; color:Firebrick; font-weight:500;">No data is available yet, because no games have been played!</div>""";
+                        generator.WriteRawHtml(noData);
                     }
+                    else
+                    {
+                        generator.WriteRawHtml(expandCollapseHtml);
+                        generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
 
-                    generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
+                        leaguePlayersStatistics = [];
+                        IEnumerable<string> categoryNames = leagueNames.GroupBy(l => l.Category).Where(g => g.Count() > 1).Select(g => g.Key);
+                        foreach (string category in categoryNames)
+                        {
+                            LeaguePlayersStatistics? lss = GetLeaguePlayersStatistics(query, category, seasonText, properties);
+                            if (lss != null)
+                            {
+                                leaguePlayersStatistics.Add(lss);
+                            }
+                        }
+
+                        generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
+                    }
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
@@ -327,8 +336,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
                             tableNode.ParentNode.InsertAfter(script, tableNode);
 
                             // Now go through the rows yet again to set up overlay windows, but now the summmary is not
-                            // in the tbody
-                            rows = [.. tableNode.SelectNodes("./tbody//tr")];
+                            // in the tbody. In this if there is no data the use the empty list which will prevent processing.
+
+                            
+                            rows = [.. tableNode.SelectNodes("./tbody//tr") ?? Enumerable.Empty<HtmlNode>()];
                             string imagePath = "../PlayerPhotos/";
                             foreach (HtmlNode row in rows)
                             {

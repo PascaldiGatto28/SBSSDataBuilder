@@ -118,25 +118,39 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         throw new InvalidOperationException($"The {IntermediateFilePath} is invalid", exception);
                     }
                 }
-                else
+                else 
                 {
-
                     // Now populate the PlayrSheetsContainer HTML document by inserting the player list and changing the
                     // scrdoc attribute on iframe element. So first load the file Html in a HtmlDocument.
                     HtmlDocument htmlDoc = new();
                     htmlDoc = PageContentUtilities.GetHtmlDocument(containerHtml);
                     HtmlNode root = htmlDoc.DocumentNode;
+
                     HtmlNode sheets = root.SelectSingleNode("//iframe[@id='sheets']");
                     sheets.Attributes["srcdoc"].Remove();
-                    sheets.Attributes.Add("srcdoc", changedHtml);
                     HtmlNode playersList = root.SelectSingleNode("//div[@id='playersList']");
-                    foreach (string playerOption in optionValues)
+
+                    if (playerSheetContainers.Count > 0)
                     {
-                        playersList.AppendChild(HtmlNode.CreateNode(playerOption));
+                        sheets.Attributes.Add("srcdoc", changedHtml);
+
+                        //HtmlNode playersList = root.SelectSingleNode("//div[@id='playersList']");
+                        foreach (string playerOption in optionValues)
+                        {
+                            playersList.AppendChild(HtmlNode.CreateNode(playerOption));
+                        }
+
+                        HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
+                        viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
+                    }
+                    else
+                    {
+                        HtmlNode flexContainer = root.SelectSingleNode("//div[contains(@class, 'flex-container')]");
+                        HtmlNode noData = HtmlNode.CreateNode("""<div style="font-size:18px; margin-left:10px; color:Firebrick; font-weight:500;">No data is available yet, because no games have been played.</div>""");
+                        flexContainer.ParentNode.InsertAfter(noData, flexContainer);
+                        flexContainer.Remove();
                     }
 
-                    HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
-                    viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
                     changedHtml = root.OuterHtml;
                     actionCallback?.Invoke($"{this.GetType().Name} HTML page created.");
                 }

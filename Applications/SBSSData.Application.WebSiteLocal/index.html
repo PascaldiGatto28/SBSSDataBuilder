@@ -11,15 +11,15 @@
 
     <title>SBSS Data Viewer</title>
     <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
-    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.24244" />
-    <link rel="stylesheet" href="CSS/Main.css?v=1.24244" />
-    <script type="text/javascript" src="Scripts/Main.js?v=1.24244"></script>
+    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.24277" />
+    <link rel="stylesheet" href="CSS/Main.css?v=1.24277" />
+    <script type="text/javascript" src="Scripts/Main.js?v=1.24277"></script>
     <script data-host="https://biasml.com" data-dnt="false" src="https://biasml.com/js/script.js" id="ZwSg9rf6GA" async defer></script>
 </head>
 <body>
     <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
     <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
-        Version 1.15.24244 &mdash; Released Date Saturday, August 31 2024
+        Version 1.12.24281 &mdash; Released Date Thursday, October 7 2024
     </div>
     <div class="spacer">
         The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
@@ -31,13 +31,14 @@
         The data from the current season
         are updated every weekday evening no later than 6:30 PM, after which you can see the all pages populated using
         the latest data. Data from other seasons can be viewed by selecting the season from the drop-down list when clicking the 
-        "Seasons" button.
+        "Seasons" button. Now that the 2024 Fall season play has started, it is the default season.
     </div>
 
     <div class="dropdown">
         <button style="margin-right:0px; " onclick="myFunction()" 
                 class="dropbtn" title="Click to select a season from the drop-down list">Seasons</button>
         <div id="myDropdown" class="dropdown-content">
+            <div seasonShortName="2024Fall" onclick="setSelectedSeason(this);">Fall 2024</div>
             <div seasonShortName="2024Summer" onclick="setSelectedSeason(this);">Summer 2024</div>
             <div seasonShortName="2024Spring" onclick="setSelectedSeason(this);">Spring 2024</div>
             <div seasonShortName="2024Winter" onclick="setSelectedSeason(this);">Winter 2024</div>
@@ -46,7 +47,7 @@
         </div>
     </div>
     <span>
-        <span id="currentSeason" style="font-weight:500; color:firebrick;" selectedSeason="2024Summer">Summer 2024</span>
+        <span id="currentSeason" style="font-weight:500; color:firebrick;" selectedSeason="2024Fall">Fall 2024</span>
         is the Selected Season
     </span>
 
@@ -216,16 +217,10 @@
         <a href="ReleaseNotes.html" class="navigate" style="font-size:.68em; color:firebrick; font-weight:500;">(Version History)</a>
     </h2>
     <div class="spacer">
-        Two big items in this release: (1) All tables having player stats are now sortable, and (2) documentation for all
-        SBSS Data Viewer table features and properties are documented in the
-        <a href="AboutTables.html" target="blank">About Tables</a> page.
-        <div>
-        Notes of the all versions of the SBSS Data Viewer Web site can be seen on the "Version History" page. Click on the
-        <a href="ReleaseNotes.html" style="font-weight:500;">Version History</a> link in the
-        heading of this section to see 
-        release notes for all version. The latest release is:
-        <span style="font-weight:500">Version 1.15.24244 &mdash; Released Date Saturday, August 31 2024</span>
-        </div>
+        Version 1.12.24277 &mdash; Released Date Thursday, October 3 2024
+        This release just supports the Fall 2024 season. As of this writing there have been no games played yet so there's
+        no data to display. After Monday, October 7 you'll see data for games played, and the default
+        season will be changed from Summer 2024 to Fall 2024.
     </div>
 
     <script lanugage="javascript" type="text/javascript">

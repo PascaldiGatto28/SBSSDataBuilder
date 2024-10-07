@@ -79,7 +79,7 @@ namespace SBSSData.Application.WebDeployment
             // who cares?
 
             string logFilePath = context.Settings.LogFilePath;
-            IEnumerable<LogSession> sessions = Log.ReadLog(logFilePath);
+            IEnumerable<LogSession> sessions = []; // Log.ReadLog(logFilePath);
             string logSessionsFilePath = logFilePath.Replace(".log", ".json", StringComparison.Ordinal);
             IEnumerable<LogSession>? loggedSessions = File.Exists(logSessionsFilePath) ?
                                                      JsonConvert.DeserializeObject<IEnumerable<LogSession>>(File.ReadAllText(logSessionsFilePath)) :

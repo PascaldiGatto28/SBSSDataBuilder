@@ -87,28 +87,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                      <button class="sbss" title="Click to collapse all tables to a single line" onclick = "viewAll(false)">Collapse All Tables</button>
                                                 </div> 
                                                 """;
-                    //generator.WriteRawHtml(seasonDiv);
-
-                    //string displayRankingColumn = """
-                    //                               <script type=text/javascript>
-                    //                                   function setColumn (checked)
-                    //                                   {
-                    //                                        alert(checked);
-                    //                                   }
-                    //                               </script>  
-                    //                               <div style="text-align:right;">
-                    //                                   <input type="checkbox" id="rankingColumn" name="ranking" value="true" onchange="setColumn(this.checked);">
-                    //                                   <label for="ranking">Hide the ranking column</label>
-                    //                               </div>
-                    //                               """;
-
-                    generator.WriteRawHtml(expandCollapseHtml);
-
-                    //actionCallback("expandCollapseHtml raw Html written");
-
-                    //generator.WriteRootTable(dsInfo, Utilities.ExtendedDsInfo(dsInfoHeaderStyle));
-                    //actionCallback("dsInfo root table written");
-
+                    bool noGames = true;
+                    bool expandCollapseVisible = false;
                     foreach (var leagueName in leagueNames)
                     {
                         IEnumerable<Game> leagueGames = playedGames.Where(g => (g.GameInformation.LeagueDay == leagueName.Day) &&
@@ -116,6 +96,14 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                         if (leagueGames.Any())
                         {
+                            if (!expandCollapseVisible)
+                            {
+                                generator.WriteRawHtml(expandCollapseHtml);
+                                expandCollapseVisible = true;
+                            }
+
+                            noGames = false;
+
                             var games = leagueGames.Select(g => new
                             {
                                 Games = new GameInformationDisplay(g.GameInformation),
@@ -141,7 +129,13 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
                             generator.WriteRootTable(gtp, ExtendedGamesTeamPlayers($"{fullLeagueName}", gtpHeaderStyle));
                         }
+                    }
 
+                    if (noGames)
+                    {
+                        
+                        string noData = """<div style="font-size:18px; color:Firebrick; font-weight:500;">No data is available, because no games have been played yet!</div>""";
+                        generator.WriteRawHtml(noData);
                     }
 
                     actionCallback?.Invoke($"{GetType().Name} HTML page created.");

@@ -53,6 +53,8 @@ namespace SBSSData.Application.DataStore
             if (modified)
             {
 
+                Directory.CreateDirectory(OutputPath);
+
                 ActiveLog.WriteLine($"Beginning construction of HTML pages for {Season}");
 
                 Build<DataStoreInfo>(true);
