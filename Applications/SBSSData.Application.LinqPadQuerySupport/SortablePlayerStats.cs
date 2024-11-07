@@ -346,27 +346,28 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                 HtmlNode nameCell = row.SelectSingleNode("./td[2]");
                                 nameCell.SetAttributeValue("style", "cursor:pointer");
                                 string playerName = nameCell.InnerText;
-
+                                string firstName = playerName[(playerName.IndexOf(' ') + 1)..];
+                                string imageName = Utilities.GetPlayerPhotoName(playerName);
                                 // Put this in utilities and share with GamesTeamsPlayersV3
-                                Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
+                                //Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
 
-                                string playerKey = string.Empty;
-                                string[] playerNameSplit = playerName.Split(' ');
-                                string firstName = playerNameSplit[0];
+                                //string playerKey = string.Empty;
+                                //string[] playerNameSplit = playerName.Split(' ');
+                                //string firstName = playerNameSplit[0];
                                 
-                                if (playerNameSplit.Length == 2)
-                                {
-                                    playerKey = $"{playerNameSplit[1]}, {playerNameSplit[0]}";
-                                }
-                                else
-                                {
-                                    playerKey = $"Unknown, {string.Empty}";
-                                }
+                                //if (playerNameSplit.Length == 2)
+                                //{
+                                //    playerKey = $"{playerNameSplit[1]}, {playerNameSplit[0]}";
+                                //}
+                                //else
+                                //{
+                                //    playerKey = $"Unknown, {string.Empty}";
+                                //}
 
-                                if (!map.TryGetValue(playerKey, out string? imageName))
-                                {
-                                    imageName = "Available_Photo-Not";
-                                }
+                                //if (!map.TryGetValue(playerKey, out string? imageName))
+                                //{
+                                //    imageName = "Available_Photo-Not";
+                                //}
                                 // End of code to find photo name.
 
                                 //string child = $"""

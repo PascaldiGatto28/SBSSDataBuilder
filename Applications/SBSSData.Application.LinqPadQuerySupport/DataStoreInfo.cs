@@ -43,12 +43,23 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
             string changedHtml = string.Empty;
 
-            //List<string> seasons = ["2024 Summer", "2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+
+            // There is a gotcha here. At this point, the current DataStoreContainer (dsc) is the
+            // the last built data store and if the instance is non-null that dsc will be used. That
+            // works fine for the values that are updated like played games, but not players because the
+            // property is not updated during the update process. So we need to either call the GetPlayers
+            // method directly or better yet, just set the current instance to null. This will force 
+            // the data store to be read from file. Like all the IHtmlCreater classes, the instance is
+            // created from the data store file.
+            DataStoreContainer.Empty.Dispose();  // The instance is now null.
+
             List<DSInformationDisplay> dsInfoList = [];
             foreach (string season in StaticConstants.Seasons)
             {
                 string dataStorePath = $@"{dataStoreFolder}{season.RemoveWhiteSpace()}LeaguesData.json";
 
+                // Each iteration will load the data store from its json file, because it is disposed 
+                // the container is disposed.
                 using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
                 {
                     dsInfoList.Add(new DSInformationDisplay(season, dsContainer));

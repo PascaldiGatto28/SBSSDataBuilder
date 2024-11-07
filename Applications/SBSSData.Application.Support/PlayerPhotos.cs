@@ -18,6 +18,7 @@ namespace SBSSData.Application.Support
             { "O’Donnell, Sue", "Odonnell_Sue" },
             { "St Jules, Barb", "St-Jules_Barbara" },
             { "St Jules, David", "St-Jules_David" },
+            { "St Jules, Dave", "St-Jules_David" },
             { "Carbone, Bobby", "Carbonne_Bobby" },
             { "Takacs, Jim", "Talacs_Jim" },
             { "Schvartzberg, Yvette", "Schwartzberg_Yvette" },
@@ -31,10 +32,11 @@ namespace SBSSData.Application.Support
         private static readonly string playerPhotosPath = $@"{playerPhotosClassPath}SBSSDataBuilder\Applications\SBSSData.Application.Support\PlayerPhotos\";
         private static Dictionary<string, string> playerNameToImageNameMap = [];
 
-        public static Dictionary<string, string> Build()
+        public static Dictionary<string, string> Build(string? playersPhotosFolder = null)
         {
-            IEnumerable<string> playerImageFilesNames = CreateImages(playerPhotosPath);
-            IEnumerable<string> imageNames = Directory.GetFiles(playerPhotosPath)
+            string playersPhotos = playersPhotosFolder ?? playerPhotosPath;
+            IEnumerable<string> playerImageFilesNames = CreateImages(playersPhotos);
+            IEnumerable<string> imageNames = Directory.GetFiles(playersPhotos)
                                                       .Select(p => Path.GetFileNameWithoutExtension(p))
                                                       .Select(p => p.Replace("_", ", "))
                                                       .OrderBy(p => p);

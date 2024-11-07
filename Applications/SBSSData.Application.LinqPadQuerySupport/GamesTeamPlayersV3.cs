@@ -261,19 +261,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 }
                 else
                 {
-                    if (playerNameSplit.Length == 2)
-                    {
-                        playerKey = $"{playerNameSplit[1]}, {playerNameSplit[0]}";
-                    }
-                    else
-                    {
-                        playerKey = $"Unknown, {string.Empty}";
-                    }
-
-                    if (!map.TryGetValue(playerKey, out imageName))
-                    {
-                        imageName = "Available_Photo-Not";
-                    }
+                    imageName = Utilities.GetPlayerPhotoName(playerName);
                 }
 
                 string newOverlayHtml = StaticConstants.BuildOverlay(imagePath, imageName, rankTableHtml);
