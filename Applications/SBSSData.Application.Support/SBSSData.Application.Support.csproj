@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
+    <PackageReference Include="LINQPad.Runtime" Version="8.3.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="WinSCP" Version="6.3.3" />
   </ItemGroup>
