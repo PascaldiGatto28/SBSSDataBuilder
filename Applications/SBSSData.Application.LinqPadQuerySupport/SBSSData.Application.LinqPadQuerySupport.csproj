@@ -62,13 +62,12 @@
 
   <ItemGroup>
     <PackageReference Include="Dumpify" Version="0.6.5" />
-    <PackageReference Include="LINQPad.Runtime" Version="8.3.7" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Reference Include="LINQPad.Runtime">
-      <HintPath>..\SBSSData.Application.Support\Resource\LINQPad.Runtime.dll</HintPath>
+      <HintPath>..\..\LINQPad8-Beta 8-3-5\LINQPad.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
 

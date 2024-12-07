@@ -8,8 +8,11 @@
 
   <ItemGroup>
     <Compile Remove="PlayerPhotos\**" />
+    <Compile Remove="Resource\**" />
     <EmbeddedResource Remove="PlayerPhotos\**" />
+    <EmbeddedResource Remove="Resource\**" />
     <None Remove="PlayerPhotos\**" />
+    <None Remove="Resource\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +25,6 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
-    <PackageReference Include="LINQPad.Runtime" Version="8.3.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="WinSCP" Version="6.3.3" />
   </ItemGroup>
@@ -35,12 +37,8 @@
 
   <ItemGroup>
     <Reference Include="LINQPad.Runtime">
-      <HintPath>..\..\..\..\..\..\..\..\..\Installation\Utilities\LINQPad8-Beta\LINQPad.Runtime.dll</HintPath>
+      <HintPath>..\..\LINQPad8-Beta 8-3-5\LINQPad.Runtime.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resource\" />
   </ItemGroup>
 
 </Project>

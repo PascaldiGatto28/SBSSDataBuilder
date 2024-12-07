@@ -305,7 +305,7 @@ namespace SBSSData.Softball.Stats
                     // Finally add a time stamp to the file name and then copy the file to the backup folder.
                     newPath = newPath.AppendTextToFileName($"{DataStore.BuildDate:-MM-dd-yyyy HH-mm-ss.ff}");
 
-                    File.Copy(dataStorePath, newPath);
+                    File.Copy(dataStorePath, newPath, true);
                 }
 
                 DataStore.BuildDate = DateTime.Now;

@@ -5,7 +5,6 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +23,6 @@
 
   <ItemGroup>
     <PackageReference Include="Dumpify" Version="0.6.5" />
-    <PackageReference Include="LINQPad.Runtime" Version="8.3.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

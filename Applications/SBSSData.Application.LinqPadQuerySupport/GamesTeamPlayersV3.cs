@@ -180,8 +180,8 @@ namespace SBSSData.Application.LinqPadQuerySupport
             HtmlNode root = tableHtmlNode.Ancestors("#document").First();
             IEnumerable<HtmlNode> rows = tableHtmlNode.SelectNodes($"./tbody/tr");
 
-            List<HtmlNode> rankingTables = [.. tableHtmlNode.SelectNodes("./tbody//tr/td[last()]/table")];
-            //amList<HtmlNode> rankingTables = tableHtmlNode.SelectNodes("./tbody//tr//td/table").ToList();
+            //List<HtmlNode> rankingTables = [.. tableHtmlNode.SelectNodes("./tbody//tr/td[last()]/table")];
+            List<HtmlNode> rankingTables = tableHtmlNode.SelectNodes("./tbody//tr//td/table").ToList();
             rankingTables.ForEach(rt =>
             {
                 rt.SetAttributeValue("style", "width:160px");
