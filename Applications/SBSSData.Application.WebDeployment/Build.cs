@@ -24,7 +24,7 @@ namespace SBSSData.Application.WebDeployment
 
         public static void Run(string[] args)
         {
-            bool buildHtml = false;
+            bool buildHtml = true;
             bool publish = true;
             bool publishToTest = false; // (args == null) || (args.Length == 0) || (args[0] == "Test");
 
