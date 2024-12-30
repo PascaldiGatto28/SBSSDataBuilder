@@ -878,7 +878,7 @@ namespace SBSSData.Application.Support
             return altered;
         }
 
-        public static readonly List<string> Seasons = ["2024 Fall", "2024 Summer", "2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+        public static readonly List<string> Seasons = ["2025 Winter", "2024 Fall", "2024 Summer", "2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
 
         //private static string helpNodeHtml = """
         //                                      <a class="help"

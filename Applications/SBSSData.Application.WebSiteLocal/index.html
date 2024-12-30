@@ -17,27 +17,37 @@
     <script data-host="https://biasml.com" data-dnt="false" src="https://biasml.com/js/script.js" id="ZwSg9rf6GA" async defer></script>
 </head>
 <body>
-    <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
-    <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
-        Version 1.12.24281 &mdash; Released Date Thursday, October 7 2024
-    </div>
-    <div class="spacer">
-        The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
-        is gathered from the public and official
-        <a href="https://saddlebrookesoftball.com" target="_blank">SaddleBrooke Senior Softball Association (SSSA)</a> site.
+    <div style="display:flex">
+        <img src="./Images/SBSSLogo.png" width="200" height="150;" " />
+        <div style="margin-top:10px;">
+            <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
+            <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
+                Version 1.12.24361 &mdash; Released Date Thursday, December 26 2024
+            </div>
+            <div class="spacer">
+                The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
+                is gathered from the public and official
+                <a href="https://saddlebrookesoftball.com" target="_blank">SaddleBrooke Senior Softball Association (SSSA)</a> site.
+            </div>
+        </div>
     </div>
 
-    <div class="spacer">
+
+    <div>
         The data from the current season
         are updated every weekday evening no later than 6:30 PM, after which you can see the all pages populated using
-        the latest data. Data from other seasons can be viewed by selecting the season from the drop-down list when clicking the 
-        "Seasons" button. Now that the 2024 Fall season play has started, it is the default season.
+        the latest data. Data from other seasons can be viewed by selecting the season from the drop-down list when clicking the
+        "Seasons" button. Now that the 2025 Winter season has started but no games have been played, the 2024 Season is still the
+        default. As soon as the 2025 Winter season data is available, this season will be the default.
     </div>
 
-    <div class="dropdown">
-        <button style="margin-right:0px; " onclick="myFunction()" 
-                class="dropbtn" title="Click to select a season from the drop-down list">Seasons</button>
+    <div class="dropdown" style="margin-top:10px;">
+        <button style="margin-right:0px; " onclick="myFunction()"
+                class="dropbtn" title="Click to select a season from the drop-down list">
+            Seasons
+        </button>
         <div id="myDropdown" class="dropdown-content">
+            <!--<div seasonShortName="2025Winter" onclick="setSelectedSeason(this);">Winter 2025</div>-->
             <div seasonShortName="2024Fall" onclick="setSelectedSeason(this);">Fall 2024</div>
             <div seasonShortName="2024Summer" onclick="setSelectedSeason(this);">Summer 2024</div>
             <div seasonShortName="2024Spring" onclick="setSelectedSeason(this);">Spring 2024</div>
@@ -55,7 +65,7 @@
 
     <div class="spacer">
         The following table has links to the Data Viewer pages together with a short description. More contextual
-        information is displayed on the page or if there is a link to a help/guide page. Each page has a link 
+        information is displayed on the page or if there is a link to a help/guide page. Each page has a link
         back to this home page.
     </div>
     <table id="t1" class="contents">
@@ -89,11 +99,11 @@
                     <a href="GamesTeamPlayersV3.html" class="navigateFrom">Game Results, Teams and Players</a>
                 </td>
                 <td>
-                    
+
                     This page contains all the data gathered from the SSSA site, which is stored in a file
                     (called the <span style="font-weight:bold">Data Store</span>) and is displayed using
                     three perspectives.
-                    
+
                     <ul class="sbss">
                         <li>
                             For every played game not
@@ -142,7 +152,7 @@
                     for the information
                     This page contains a table document
                     "Commonly Used Batting Stats Abbreviations" that defines the abbreviation used tables displaying player
-                    stats. For the sections "Percentiles and Ranking" and 
+                    stats. For the sections "Percentiles and Ranking" and
                     "Z-Scores and Statistics" describe why and how rankings, percentiles and
                     Z-scores are used and calculated.
                 </td>
@@ -211,16 +221,19 @@
         Please share the <a href="http://www.sbssdata.info">SBSS Data Viewer</a> link with others who you think might be interested.
         Thank you!
     </div>
-
     <h2 id="ReleaseNotes">
         Latest Release Notes
         <a href="ReleaseNotes.html" class="navigate" style="font-size:.68em; color:firebrick; font-weight:500;">(Version History)</a>
     </h2>
     <div class="spacer">
-        Version 1.12.24277 &mdash; Released Date Thursday, October 3 2024
-        This release just supports the Fall 2024 season. As of this writing there have been no games played yet so there's
-        no data to display. After Monday, October 7 you'll see data for games played, and the default
-        season will be changed from Summer 2024 to Fall 2024.
+        Version 1.12.24361 &mdash; Released Date Thursday, December 26 2024<br />
+        This release is just in preparation for the Winter 2025 season. As of this writing there have been no games played yet, so there's
+        no data to display. After Monday January 6, you'll see data for games played, and the default
+        season will be changed from Fall 2024 to Winter 2025.
+    </div>
+    <div class="spacer" id="Logo">
+        You might also notice the SBSS Data Viewer logo at the top of the page. This logo was developed, and generously allowed its use, by the 
+        talented Maike K. Jacobi. 
     </div>
 
     <script lanugage="javascript" type="text/javascript">
