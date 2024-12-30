@@ -67,7 +67,7 @@
 
   <ItemGroup>
     <Reference Include="LINQPad.Runtime">
-      <HintPath>..\SBSSData.Application.Support\Resource\LINQPad.Runtime.dll</HintPath>
+      <HintPath>..\..\LINQPad8-Beta 8-3-5\LINQPad.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
 

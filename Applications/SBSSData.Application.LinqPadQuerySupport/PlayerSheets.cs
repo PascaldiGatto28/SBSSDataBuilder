@@ -58,8 +58,12 @@ namespace SBSSData.Application.LinqPadQuerySupport
             set; 
         }
 
-
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
+        {
+            return BuildHtmlPage(seasonText, dataStoreFolder, callback);
+        }
+
+        public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null, string specifiedPlayerNames = "")
         {
             Action<object>? actionCallback = callback; // == null ? (v) => Console.WriteLine(v.ToString()) : callback;
             string season = seasonText.RemoveWhiteSpace();
@@ -83,62 +87,65 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string path = $"{dataStoreFolder}{season}LeaguesData.json";
             List<string> optionValues = [];
 
-            List<PlayerSheetContainer> playerSheetContainers = GetPlayerSheetContainers(path, playerPhotos, ref optionValues).ToList();
-            using (HtmlGenerator generator = new())
+            List<PlayerSheetContainer> playerSheetContainers = GetPlayerSheetContainers(path, playerPhotos, ref optionValues, specifiedPlayerNames).ToList();
+            if ((playerSheetContainers.Count > 0) && (playerSheetContainers.First().PlayerSheetItems.Count() > 0))
             {
-                // Using the results from the queries to produce tables, write the tables and any
-                // other data to the XhtmlWriter (via HtmlGenerator.Write methods).
-
-                foreach (PlayerSheetContainer psc in playerSheetContainers)
+                using (HtmlGenerator generator = new())
                 {
+                    // Using the results from the queries to produce tables, write the tables and any
+                    // other data to the XhtmlWriter (via HtmlGenerator.Write methods).
 
-                    IEnumerable<PlayerSheetItemDisplay> psd = psc.PlayerSheetItems.Select(si => new PlayerSheetItemDisplay(si));
-                    PlayerSheetContainerDisplay pscd = new(psc);
-                    generator.WriteRootTable(pscd.SheetItems.Select(s => s.Totals), ExtendedPlayerSheets(headerStyle, psc));
-                }
-
-
-                //string htmlNode = introHtml.Substring("<div class=\"IntroContent\"", "</body", true, false);
-                //HtmlNode title = HtmlNode.CreateNode(htmlNode);
-                changedHtml = generator.DumpHtml(//pageTitle: title,
-                                                    cssStyles: StaticConstants.LocalStyles + StaticConstants.PlayerSheetsStyles,
-                                                    javaScript: StaticConstants.LocalJavascript,
-                                                    collapseTo: 2,
-                                                    headElements: headElements.ToList());
-
-                if (!string.IsNullOrEmpty(IntermediateFilePath))
-                {
-                    try
+                    foreach (PlayerSheetContainer psc in playerSheetContainers)
                     {
-                        File.WriteAllText(IntermediateFilePath, changedHtml);
-                        actionCallback($"{IntermediateFilePath} created and contains the changedHtml from PlayerSheets.BuildHtml");
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new InvalidOperationException($"The {IntermediateFilePath} is invalid", exception);
-                    }
-                }
-                else
-                {
 
-                    // Now populate the PlayrSheetsContainer HTML document by inserting the player list and changing the
-                    // scrdoc attribute on iframe element. So first load the file Html in a HtmlDocument.
-                    HtmlDocument htmlDoc = new();
-                    htmlDoc = PageContentUtilities.GetHtmlDocument(containerHtml);
-                    HtmlNode root = htmlDoc.DocumentNode;
-                    HtmlNode sheets = root.SelectSingleNode("//iframe[@id='sheets']");
-                    sheets.Attributes["srcdoc"].Remove();
-                    sheets.Attributes.Add("srcdoc", changedHtml);
-                    HtmlNode playersList = root.SelectSingleNode("//div[@id='playersList']");
-                    foreach (string playerOption in optionValues)
-                    {
-                        playersList.AppendChild(HtmlNode.CreateNode(playerOption));
+                        IEnumerable<PlayerSheetItemDisplay> psd = psc.PlayerSheetItems.Select(si => new PlayerSheetItemDisplay(si));
+                        PlayerSheetContainerDisplay pscd = new(psc);
+                        generator.WriteRootTable(pscd.SheetItems.Select(s => s.Totals), ExtendedPlayerSheets(headerStyle, psc));
                     }
 
-                    HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
-                    viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
-                    changedHtml = root.OuterHtml;
-                    actionCallback?.Invoke($"{this.GetType().Name} HTML page created.");
+
+                    //string htmlNode = introHtml.Substring("<div class=\"IntroContent\"", "</body", true, false);
+                    //HtmlNode title = HtmlNode.CreateNode(htmlNode);
+                    changedHtml = generator.DumpHtml(//pageTitle: title,
+                                                        cssStyles: StaticConstants.LocalStyles + StaticConstants.PlayerSheetsStyles,
+                                                        javaScript: StaticConstants.LocalJavascript,
+                                                        collapseTo: 2,
+                                                        headElements: headElements.ToList());
+
+                    if (!string.IsNullOrEmpty(IntermediateFilePath))
+                    {
+                        try
+                        {
+                            File.WriteAllText(IntermediateFilePath, changedHtml);
+                            actionCallback($"{IntermediateFilePath} created and contains the changedHtml from PlayerSheets.BuildHtml");
+                        }
+                        catch (Exception exception)
+                        {
+                            throw new InvalidOperationException($"The {IntermediateFilePath} is invalid", exception);
+                        }
+                    }
+                    else
+                    {
+
+                        // Now populate the PlayrSheetsContainer HTML document by inserting the player list and changing the
+                        // scrdoc attribute on iframe element. So first load the file Html in a HtmlDocument.
+                        HtmlDocument htmlDoc = new();
+                        htmlDoc = PageContentUtilities.GetHtmlDocument(containerHtml);
+                        HtmlNode root = htmlDoc.DocumentNode;
+                        HtmlNode sheets = root.SelectSingleNode("//iframe[@id='sheets']");
+                        sheets.Attributes["srcdoc"].Remove();
+                        sheets.Attributes.Add("srcdoc", changedHtml);
+                        HtmlNode playersList = root.SelectSingleNode("//div[@id='playersList']");
+                        foreach (string playerOption in optionValues)
+                        {
+                            playersList.AppendChild(HtmlNode.CreateNode(playerOption));
+                        }
+
+                        HtmlNode viewAllNode = playersList.SelectSingleNode(".//div");
+                        viewAllNode.InnerHtml = $"View All {optionValues.Count} Players";
+                        changedHtml = root.OuterHtml;
+                        actionCallback?.Invoke($"{this.GetType().Name} HTML page created.");
+                    }
                 }
             }
 
@@ -165,7 +172,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
         
         public static List<PlayerSheetPercentile> GetRankPercentile(string playerName, 
                                                                     LeagueName leagueName, 
-                                                                     Dictionary<string, LeaguesAndPlayersStatistics> allLeagues)
+                                                                    Dictionary<string, LeaguesAndPlayersStatistics> allLeagues)
         {
             List<PlayerSheetPercentile> percentiles = [];
             LeaguesAndPlayersStatistics lps = allLeagues[leagueName.ShortLeagueName];
@@ -177,13 +184,13 @@ namespace SBSSData.Application.LinqPadQuerySupport
             return percentiles;
         }
 
-        public static IEnumerable<PlayerSheetContainer> GetPlayerSheetContainers(string dsPath, string playerPhotosPath, ref List<string> optionValues)
+        public static IEnumerable<PlayerSheetContainer> GetPlayerSheetContainers(string dsPath, string playerPhotosPath, ref List<string> optionValues, string specifiedPlayerName = "")
         {
             List<PlayerSheetContainer> playerSheetContainers = [];
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dsPath))
             {
                 Query query = new(dsContainer);
-                IEnumerable<string> playerNames = query.GetActivePlayerNames();
+                IEnumerable<string> playerNames = string.IsNullOrWhiteSpace(specifiedPlayerName) ? query.GetActivePlayerNames() : [specifiedPlayerName];
 
                 // First change the containerHtml to include the HTML that is the list of selection player options. Later I replace
                 // the iFrame source doc attribute to the HTML of the returned HTML.

@@ -1,5 +1,6 @@
 ﻿using Dumpify;
 
+using SBSSData.Application.LinqPadQuerySupport;
 using SBSSData.Application.Support;
 using SBSSData.Softball.Logging;
 
@@ -24,8 +25,8 @@ namespace SBSSData.Application.WebDeployment
         public static void Run(string[] args)
         {
             bool buildHtml = true;
-            bool publish = false;
-            bool publishToTest = true; // (args == null) || (args.Length == 0) || (args[0] == "Test");
+            bool publish = true;
+            bool publishToTest = false; // (args == null) || (args.Length == 0) || (args[0] == "Test");
 
             args.Dump("Data Store Changed?");
 
@@ -40,19 +41,19 @@ namespace SBSSData.Application.WebDeployment
                     Callback = (t) => log.WriteLine(t.ToString() ?? "Bad logging comment!")
                 };
 
-                //_ = construction.Build<DataStoreInfo>(true);
-                //_ = construction.Build<LogSessions>(true);
+                _ = construction.Build<DataStoreInfo>(true);
+                _ = construction.Build<LogSessions>(true);
 
                 //foreach (string season in StaticConstants.Seasons)
-                string season = "2024 Summer";
+                //string season = "2024 Summer";
                 {
-                    log.WriteLine($"Beginning construction of HTML pages for {season}");
-                    construction.SeasonText = season;
-                    //_ = construction.Build<GamesTeamPlayersV3>(true);
-                    //_ = construction.Build<GamesTeamPlayersHelpV3>(true);
-                    //_ = construction.Build<PlayerSheets>(true);
-                    //_ = construction.Build<PlayerSheetsGuide>(true);
-                    //_ = construction.Build<SortablePlayerStats>(true);
+                    log.WriteLine($"Beginning construction of HTML pages for {construction.SeasonText}");
+                    //construction.SeasonText = season;
+                    _ = construction.Build<GamesTeamPlayersV3>(true);
+                    _ = construction.Build<GamesTeamPlayersHelpV3>(true);
+                    _ = construction.Build<PlayerSheets>(true);
+                    _ = construction.Build<PlayerSheetsGuide>(true);
+                    _ = construction.Build<SortablePlayerStats>(true);
                     //_ = construction.Build<SortablePlayerStatsGuide>(true);
                 }
             }
