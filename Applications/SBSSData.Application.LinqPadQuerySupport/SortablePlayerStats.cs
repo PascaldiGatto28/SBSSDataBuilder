@@ -107,7 +107,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     foreach (LeagueName league in leagueNames)
                     {
                         LeaguePlayersStatistics? lss = GetLeaguePlayersStatistics(query, league.Category, seasonText, properties, league.Day);
-                        if (lss != null)
+                        if ((lss != null) && (lss.PlayersStatistics.First().Name != "Unknown"))
                         {
                             leaguePlayersStatistics.Add(lss);
                         }
@@ -120,7 +120,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                     foreach (string category in categoryNames)
                     {
                         LeaguePlayersStatistics? lss = GetLeaguePlayersStatistics(query, category, seasonText, properties);
-                        if (lss != null)
+                        if ((lss != null) && (lss.PlayersStatistics.First().Name != "Unknown"))
                         {
                             leaguePlayersStatistics.Add(lss);
                         }
@@ -231,200 +231,208 @@ namespace SBSSData.Application.LinqPadQuerySupport
                 string headerTableInfo = $"Depth / Index = {t.Depth()}/{t.Index()}";
                 string headerText = "Sortable Tables";
 
-                // Create the sortable player summary stats table
-                int listIndex = (t.Index() - 1) / 3;
-                int index = t.Index() % 3;
-                if (t.Depth() == 1)
+                try
                 {
-                    switch (index)
+
+                    // Create the sortable player summary stats table
+                    int listIndex = (t.Index() - 1) / 3;
+                    int index = t.Index() % 3;
+                    if (t.Depth() == 1)
                     {
-                        case 1:
+                        switch (index)
                         {
-                            tableNode.AddClass("sortable");
-                            List<HtmlNode> headerNodes = [.. tableNode.SelectNodes(".//th")];
-                            List<int> zScoreHeaderIndexes = [];
-
-
-                            List<int> stringElementList = [];
-                            for (int i = 0; i < headerNodes.Count; i++)
+                            case 1:
                             {
-                                HtmlNode headerNode = headerNodes[i];
-                                if (headerNode.GetAttributeValue("title", null) == "System.String")
-                                {
-                                    stringElementList.Add(i);
-                                }
+                                tableNode.AddClass("sortable");
+                                List<HtmlNode> headerNodes = [.. tableNode.SelectNodes(".//th")];
+                                List<int> zScoreHeaderIndexes = [];
 
-                                if (headerNode.InnerHtml.Contains("ZScore"))
-                                {
-                                    headerNode.AddClass("hidden");
-                                    headerNode.AddClass("zScore");
-                                    zScoreHeaderIndexes.Add(i);
-                                    headerNode.InnerHtml = headerNode.InnerHtml.Replace("ZScore", " Z-score");
-                                }
-                            }
 
-                            // Now for each zScore, add the class "hidden" to it, a the class zScore and typeData attribute.
-                            var rows = tableNode.SelectNodes("./tbody//tr").ToList();
-                            foreach (HtmlNode row in rows)
-                            {
-                                // Skip the first 16 cells (indexes 0 to 15) and start from the 17th cell (index 16)
-                                int startColumn = zScoreHeaderIndexes.First();
-                                int endColumn = zScoreHeaderIndexes.Last();
-                                foreach (HtmlNode cell in row.SelectNodes($"td[position() > {startColumn} and position() <= {endColumn + 1}]"))
+                                List<int> stringElementList = [];
+                                for (int i = 0; i < headerNodes.Count; i++)
                                 {
-                                    cell.AddClass("zScore");
-                                    cell.AddClass("hidden");
-                                    if (!double.TryParse(cell.InnerText, out double zScore))
+                                    HtmlNode headerNode = headerNodes[i];
+                                    if (headerNode.GetAttributeValue("title", null) == "System.String")
                                     {
-                                        zScore = 0;
+                                        stringElementList.Add(i);
                                     }
 
-                                    
-                                    cell.Attributes.Add("zScoreData", zScore.ToString());
-                                    string zText = $"{Math.Round(zScore, 2):+0.00;-0.00; 0.00}";
-                                    cell.InnerHtml = zText;
+                                    if (headerNode.InnerHtml.Contains("ZScore"))
+                                    {
+                                        headerNode.AddClass("hidden");
+                                        headerNode.AddClass("zScore");
+                                        zScoreHeaderIndexes.Add(i);
+                                        headerNode.InnerHtml = headerNode.InnerHtml.Replace("ZScore", " Z-score");
+                                    }
                                 }
 
-                                
-                            }
-
-                            string stringElements = $"""'[{stringElementList.ToString<int>(", ")}]'""";
-                            string tableSelector = $"'#{t.Id()}'";
-
-                            Utilities.UpdatePlayerColumnNames(tableNode);
-                            Utilities.UpdatePlayerHeaderTitles(tableNode, true, false, true);
-
-                            // Testing removing first data row to the footer
-
-                            HtmlNode tbody = tableNode.SelectSingleNode("./tbody");
-                            HtmlNode tfoot = tableNode.SelectSingleNode("./tfoot");
-                            if (tfoot != null)
-                            {
-                                tableNode.RemoveChild(tfoot);
-                            }
-
-                            tfoot = HtmlNode.CreateNode("<tfoot><span></span></tfoot>");
-                            tableNode.AppendChild(tfoot);
-
-                            HtmlNode lastRow = tbody.SelectSingleNode("tr[last()]");
-                            if (lastRow != null)
-                            {
-                                // Remove the first row from tbody
-                                tbody.RemoveChild(lastRow);
-                                
-                                
-                                // Append the first row to tfoot
-                                tfoot.FirstChild.AppendChild(HtmlNode.CreateNode(lastRow.OuterHtml));
-                            }
-
-                            // TODO: The columnIndex is the initial column that is sorted in descending order. This information
-                            // should not be hard-coded.
-                            string eventScript = StaticConstants.SortableTable
-                                                                .Replace("[[columnIndex]]", "3")
-                                                                .Replace("[[tableSelector]]", tableSelector)
-                                                                .Replace("[[stringElements]]", stringElements);
-                            HtmlNode script = HtmlNode.CreateNode(eventScript);
-                            tableNode.ParentNode.InsertAfter(script, tableNode);
-
-                            // Now go through the rows yet again to set up overlay windows, but now the summmary is not
-                            // in the tbody
-                            rows = [.. tableNode.SelectNodes("./tbody//tr")];
-                            string imagePath = "../PlayerPhotos/";
-                            foreach (HtmlNode row in rows)
-                            {
-                                HtmlNode nameCell = row.SelectSingleNode("./td[2]");
-                                nameCell.SetAttributeValue("style", "cursor:pointer");
-                                string playerName = nameCell.InnerText;
-
-                                // Put this in utilities and share with GamesTeamsPlayersV3
-                                Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
-
-                                string playerKey = string.Empty;
-                                string[] playerNameSplit = playerName.Split(' ');
-                                string firstName = playerNameSplit[0];
-                                
-                                if (playerNameSplit.Length == 2)
+                                // Now for each zScore, add the class "hidden" to it, a the class zScore and typeData attribute.
+                                var rows = tableNode.SelectNodes("./tbody//tr").ToList();
+                                foreach (HtmlNode row in rows)
                                 {
-                                    playerKey = $"{playerNameSplit[1]}, {playerNameSplit[0]}";
-                                }
-                                else
-                                {
-                                    playerKey = $"Unknown, {string.Empty}";
+                                    // Skip the first 16 cells (indexes 0 to 15) and start from the 17th cell (index 16)
+                                    int startColumn = zScoreHeaderIndexes.First();
+                                    int endColumn = zScoreHeaderIndexes.Last();
+                                    foreach (HtmlNode cell in row.SelectNodes($"td[position() > {startColumn} and position() <= {endColumn + 1}]"))
+                                    {
+                                        cell.AddClass("zScore");
+                                        cell.AddClass("hidden");
+                                        if (!double.TryParse(cell.InnerText, out double zScore))
+                                        {
+                                            zScore = 0;
+                                        }
+
+
+                                        cell.Attributes.Add("zScoreData", zScore.ToString());
+                                        string zText = $"{Math.Round(zScore, 2):+0.00;-0.00; 0.00}";
+                                        cell.InnerHtml = zText;
+                                    }
+
+
                                 }
 
-                                if (!map.TryGetValue(playerKey, out string? imageName))
-                                {
-                                    imageName = "Available_Photo-Not";
-                                }
-                                // End of code to find photo name.
+                                string stringElements = $"""'[{stringElementList.ToString<int>(", ")}]'""";
+                                string tableSelector = $"'#{t.Id()}'";
 
-                                //string child = $"""
-                                //               <div class="overlaystats"><img style="width:240px;" src="../PlayerPhotos/{imageName}.jpg"></div> 
-                                //               """;
-                                int avgTdIndex = Utilities.GetTableColumnIndex(tableNode, "AVG");
-                                List<HtmlNode> computedTdElements = row.SelectNodes(".//td").Skip(avgTdIndex - 1).Take(4).ToList();
-                                List<string> statValues = computedTdElements.Select(t => t.InnerText).ToList();
-                                
-                                IEnumerable<HtmlNode> tdElements = row.SelectNodes(".//td[contains(@class, 'zScore')]");
-                                IEnumerable<string> zScores = tdElements.Select(n => n.InnerText); //.ToString<string>("<br/>");
-                                string overlayHtml = StaticConstants.BuildOverlayStats(imagePath,
-                                                                                       imageName,
-                                                                                       firstName,
-                                                                                       playerName,
-                                                                                       statValues,
-                                                                                       [.. zScores]);
-                                HtmlNode popUp = HtmlNode.CreateNode(overlayHtml);
-                                nameCell.ChildNodes.Append(popUp);
-                                nameCell.Attributes.Add("onmouseover", "this.querySelector('.overlay').style.display='block'");
-                                nameCell.Attributes.Add("onmouseout", "this.querySelector('.overlay').style.display='none'");
-                            }
+                                Utilities.UpdatePlayerColumnNames(tableNode);
+                                Utilities.UpdatePlayerHeaderTitles(tableNode, true, false, true);
+
+                                // Testing removing first data row to the footer
+
+                                HtmlNode tbody = tableNode.SelectSingleNode("./tbody");
+                                HtmlNode tfoot = tableNode.SelectSingleNode("./tfoot");
+                                if (tfoot != null)
+                                {
+                                    tableNode.RemoveChild(tfoot);
+                                }
+
+                                tfoot = HtmlNode.CreateNode("<tfoot><span></span></tfoot>");
+                                tableNode.AppendChild(tfoot);
+
+                                HtmlNode lastRow = tbody.SelectSingleNode("tr[last()]");
+                                if (lastRow != null)
+                                {
+                                    // Remove the first row from tbody
+                                    tbody.RemoveChild(lastRow);
+
+
+                                    // Append the first row to tfoot
+                                    tfoot.FirstChild.AppendChild(HtmlNode.CreateNode(lastRow.OuterHtml));
+                                }
+
+                                // TODO: The columnIndex is the initial column that is sorted in descending order. This information
+                                // should not be hard-coded.
+                                string eventScript = StaticConstants.SortableTable
+                                                                    .Replace("[[columnIndex]]", "3")
+                                                                    .Replace("[[tableSelector]]", tableSelector)
+                                                                    .Replace("[[stringElements]]", stringElements);
+                                HtmlNode script = HtmlNode.CreateNode(eventScript);
+                                tableNode.ParentNode.InsertAfter(script, tableNode);
+
+                                // Now go through the rows yet again to set up overlay windows, but now the summmary is not
+                                // in the tbody
+                                IEnumerable<HtmlNode> rowNodes = tableNode.SelectNodes("./tbody//tr");
+                                rows = rowNodes != null ? rowNodes.ToList() : [];
+                                string imagePath = "../PlayerPhotos/";
+                                foreach (HtmlNode row in rows)
+                                {
+                                    HtmlNode nameCell = row.SelectSingleNode("./td[2]");
+                                    nameCell.SetAttributeValue("style", "cursor:pointer");
+                                    string playerName = nameCell.InnerText;
+
+                                    // Put this in utilities and share with GamesTeamsPlayersV3
+                                    Dictionary<string, string> map = PlayerPhotos.GetPlayerName2ImageNameMap();
+
+                                    string playerKey = string.Empty;
+                                    string[] playerNameSplit = playerName.Split(' ');
+                                    string firstName = playerNameSplit[0];
+
+                                    if (playerNameSplit.Length == 2)
+                                    {
+                                        playerKey = $"{playerNameSplit[1]}, {playerNameSplit[0]}";
+                                    }
+                                    else
+                                    {
+                                        playerKey = $"Unknown, {string.Empty}";
+                                    }
+
+                                    if (!map.TryGetValue(playerKey, out string? imageName))
+                                    {
+                                        imageName = "Available_Photo-Not";
+                                    }
+                                    // End of code to find photo name.
+
+                                    //string child = $"""
+                                    //               <div class="overlaystats"><img style="width:240px;" src="../PlayerPhotos/{imageName}.jpg"></div> 
+                                    //               """;
+                                    int avgTdIndex = Utilities.GetTableColumnIndex(tableNode, "AVG");
+                                    List<HtmlNode> computedTdElements = row.SelectNodes(".//td").Skip(avgTdIndex - 1).Take(4).ToList();
+                                    List<string> statValues = computedTdElements.Select(t => t.InnerText).ToList();
+
+                                    IEnumerable<HtmlNode> tdElements = row.SelectNodes(".//td[contains(@class, 'zScore')]");
+                                    IEnumerable<string> zScores = tdElements.Select(n => n.InnerText); //.ToString<string>("<br/>");
+                                    string overlayHtml = StaticConstants.BuildOverlayStats(imagePath,
+                                                                                           imageName,
+                                                                                           firstName,
+                                                                                           playerName,
+                                                                                           statValues,
+                                                                                           [.. zScores]);
+                                    HtmlNode popUp = HtmlNode.CreateNode(overlayHtml);
+                                    nameCell.ChildNodes.Append(popUp);
+                                    nameCell.Attributes.Add("onmouseover", "this.querySelector('.overlay').style.display='block'");
+                                    nameCell.Attributes.Add("onmouseout", "this.querySelector('.overlay').style.display='none'");
+                                }
 
                                 headerText = $"All Players Stats for {leaguePlayersStatistics.ToList()[listIndex].League.ShortLeagueName}";
-                            break;
-                        }
-                        case 2:
-                        {
-                            //tableNode.ParentNode.SetAttributeValue("style", "display:none");
-                            tableNode.ParentNode.AddClass("hidden");
-                            tableNode.AddClass("statistics");
-                            tableNode.SetAttributeValue("style", "display:table");
-
-                            List<HtmlNode> firstColumn = [..tableNode.SelectNodes("./tbody//tr/td[1]")];
-                            List<string> statNames = Query.ComputedStatDisplayNames;
-                            for (int i = 0; i < firstColumn.Count; i++)
-                            {
-                                firstColumn[i].InnerHtml = statNames[i];
+                                break;
                             }
+                            case 2:
+                            {
+                                //tableNode.ParentNode.SetAttributeValue("style", "display:none");
+                                tableNode.ParentNode.AddClass("hidden");
+                                tableNode.AddClass("statistics");
+                                tableNode.SetAttributeValue("style", "display:table");
 
-                            List<HtmlNode> tableColumnHeaders = Utilities.GetTableColumnHeaders(tableNode);
-                            tableColumnHeaders[0].SetAttributeValue("title", "The stats for which the statistics are created.");
-                            tableColumnHeaders[1].SetAttributeValue("title", "The smallest value for each of the stats");
-                            tableColumnHeaders[2].SetAttributeValue("title", "The largest value for each of the stats");
-                            tableColumnHeaders[3].SetAttributeValue("title", "The mean value for each of the stats");
-                            tableColumnHeaders[4].SetAttributeValue("title", "The value for which half the stats are smaller (that is, the 50th percentile");
-                            tableColumnHeaders[5].SetAttributeValue("title", "The variance of all values for each of the stats");
-                            tableColumnHeaders[6].SetAttributeValue("title", "The standard deviation of all values for each of the stats");
-                            tableColumnHeaders[7].SetAttributeValue("title", "The number of players whose stats are used to compute the weighted statistics");
-                            headerText = $"{leaguePlayersStatistics.ToList()[listIndex].League.ShortLeagueName} Weighted Statistics";
-                            break;
-                        }
-                        default:
-                        {
-                            break;
+                                List<HtmlNode> firstColumn = [.. tableNode.SelectNodes("./tbody//tr/td[1]")];
+                                List<string> statNames = Query.ComputedStatDisplayNames;
+                                for (int i = 0; i < firstColumn.Count; i++)
+                                {
+                                    firstColumn[i].InnerHtml = statNames[i];
+                                }
+
+                                List<HtmlNode> tableColumnHeaders = Utilities.GetTableColumnHeaders(tableNode);
+                                tableColumnHeaders[0].SetAttributeValue("title", "The stats for which the statistics are created.");
+                                tableColumnHeaders[1].SetAttributeValue("title", "The smallest value for each of the stats");
+                                tableColumnHeaders[2].SetAttributeValue("title", "The largest value for each of the stats");
+                                tableColumnHeaders[3].SetAttributeValue("title", "The mean value for each of the stats");
+                                tableColumnHeaders[4].SetAttributeValue("title", "The value for which half the stats are smaller (that is, the 50th percentile");
+                                tableColumnHeaders[5].SetAttributeValue("title", "The variance of all values for each of the stats");
+                                tableColumnHeaders[6].SetAttributeValue("title", "The standard deviation of all values for each of the stats");
+                                tableColumnHeaders[7].SetAttributeValue("title", "The number of players whose stats are used to compute the weighted statistics");
+                                headerText = $"{leaguePlayersStatistics.ToList()[listIndex].League.ShortLeagueName} Weighted Statistics";
+                                break;
+                            }
+                            default:
+                            {
+                                break;
+                            }
                         }
                     }
-
-                    
-                }
-                else if (t.Depth() == 0)
-                {
-                    headerText = isSummaryTables ? "Sortable Summary Tables for Leagues and Players" : "Sortable Tables for All Players Stats for Each League";
-                    Utilities.ExcludeTableColumn(tableNode, 1);
-                    tableNode.SelectSingleNode("./thead/tr[2]").Remove();
-                    if (!string.IsNullOrEmpty(headerCssStyle))
+                    else if (t.Depth() == 0)
                     {
-                        tableNode.SelectSingleNode("./thead/tr[1]").Attributes.Add("style", headerCssStyle);
+                        headerText = isSummaryTables ? "All Player Stats for Combined Community and Competitive Leagues" : "All Players Stats for Each League";
+                        Utilities.ExcludeTableColumn(tableNode, 1);
+                        tableNode.SelectSingleNode("./thead/tr[2]").Remove();
+                        if (!string.IsNullOrEmpty(headerCssStyle))
+                        {
+                            tableNode.SelectSingleNode("./thead/tr[1]").Attributes.Add("style", headerCssStyle);
+                        }
                     }
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"{exception.Message}\r\n{exception.StackTrace}");
+                    return string.Empty;
                 }
 
                 return $"{headerText}"; //&mdash; {headerTableInfo}";

@@ -60,7 +60,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            return BuildHtmlPage(seasonText, dataStoreFolder, callback);
+            return BuildHtmlPage(seasonText, dataStoreFolder, callback, "");
         }
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null, string specifiedPlayerNames = "")
@@ -147,6 +147,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         actionCallback?.Invoke($"{this.GetType().Name} HTML page created.");
                     }
                 }
+            }
+            else
+            {
+                changedHtml = containerHtml;
             }
 
 
@@ -285,7 +289,7 @@ namespace SBSSData.Application.LinqPadQuerySupport
                                                 <div style="font-weight:500; font-family:'Segoe UI Semibold'; font-size:14px; 
                                                 color:white; background-color:#d62929; 
                                                 border-radius:15px; 
-                                                padding:7px; margin:-8px 10px 5px 15px; width:640px; text-align:center;">
+                                                padding:7px; margin:-8px 10px 5px 15px; width:660px; text-align:center;">
                                                    {playerSheetContainer.Introduction}
                                                 </div>
                                                 """;

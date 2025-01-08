@@ -125,7 +125,7 @@ namespace SBSSData.Application.Support
 
             td.typeheader
             {
-                width:680px;
+                width:725px;
             }   
             div.overlay
             {

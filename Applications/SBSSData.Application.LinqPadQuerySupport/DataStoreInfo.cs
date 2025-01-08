@@ -44,14 +44,21 @@ namespace SBSSData.Application.LinqPadQuerySupport
             string changedHtml = string.Empty;
 
             //List<string> seasons = ["2024 Summer", "2024 Spring", "2024 Winter", "2023 Fall", "2023 Summer"];
+
+            // The reason we process the seasons from oldest to current, is that if we do not the first
+            // season is the original instance of the data store so we won't get the updated count.
+            List<string> seasons = StaticConstants.Seasons;
+            seasons.Reverse();
+
             List<DSInformationDisplay> dsInfoList = [];
-            foreach (string season in StaticConstants.Seasons)
+            foreach (string season in seasons)
             {
                 string dataStorePath = $@"{dataStoreFolder}{season.RemoveWhiteSpace()}LeaguesData.json";
 
                 using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dataStorePath))
                 {
-                    dsInfoList.Add(new DSInformationDisplay(season, dsContainer));
+                    // Using insert to get the list of seasons from current to oldest
+                    dsInfoList.Insert(0, new DSInformationDisplay(season, dsContainer));
                 }
             }
 

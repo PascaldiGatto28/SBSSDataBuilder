@@ -55,12 +55,15 @@ namespace SBSSData.Application.DataStore
 
                 ActiveLog.WriteLine($"Beginning construction of HTML pages for {Season}");
 
-                Build<DataStoreInfo>(true);
                 Build<GamesTeamPlayersV3>(true);
                 Build<GamesTeamPlayersHelpV3>(true);
                 Build<PlayerSheets>(true);
                 Build<PlayerSheetsGuide>(true);
                 Build<SortablePlayerStats>(true);
+
+                // Build DataStoreInfo last to make sure that any new players are picked 
+                // up after the data store is updated.
+                Build<DataStoreInfo>(true);
 
                 ActiveLog.WriteLine("Six HTML pages have been constructed.");
             }
