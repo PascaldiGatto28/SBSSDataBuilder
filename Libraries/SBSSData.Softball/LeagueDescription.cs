@@ -107,13 +107,22 @@ namespace SBSSData.Softball
             try
             {
                 HtmlNode article = htmlDocument.DocumentNode.SelectSingleNode("//article");
+                string entryTitle = article.SelectSingleNode("./header/h1").InnerText;
+
+                string[] leagueInfo = entryTitle.NameToWords().ToArray();
+                string leagueDay = leagueInfo[0].Trim();
+                string leagueCategory = leagueInfo[1].Trim();
+
+                // Replaced the following commented code with the above code because the leagueInfo in the article class
+                // may not end with "-league". In particular the Thursday recreation league as of this writing. To be safe
+                // using the entry title is more reliable.
+                //string[] leagueInfo = articleClass.Substring("sp_league-", "-league", false, false)
+                //                                  .Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                //string leagueDay = leagueInfo[0].Trim().Capitalize();
+                //string leagueCategory = leagueInfo[1].Trim().Capitalize();
+
+
                 string articleClass = article.GetAttributeValue("class", string.Empty);
-                string[] leagueInfo = articleClass.Substring("sp_league-", "-league", false, false)
-                                                  .Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                string leagueDay = leagueInfo[0].Trim().Capitalize();
-                string leagueCategory = leagueInfo[1].Trim().Capitalize();
-
-
                 string[] leagueSeason = articleClass.Substring("sp_season", false)
                                                     .Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
                 string season = leagueSeason[0].Trim().Capitalize();
