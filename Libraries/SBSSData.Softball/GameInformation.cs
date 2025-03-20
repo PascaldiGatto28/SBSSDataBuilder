@@ -1,4 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Reflection;
+using System.Text.Json.Serialization;
+using System.Xml.Linq;
 
 using HtmlAgilityPack;
 
@@ -203,6 +206,35 @@ namespace SBSSData.Softball
             }
 
             return description;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            // Check for null and type compatibility
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            GameInformation gameInfo = (GameInformation)obj;
+            IEnumerable<PropertyInfo> properties = typeof(GameInformation).GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                string value1 = property?.GetValue(this)?.ToString() ?? string.Empty;
+                string value2 = property?.GetValue(gameInfo)?.ToString() ?? string.Empty;
+
+                if (value1 != value2)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using HtmlAgilityPack;
+﻿using System.Reflection;
+
+using HtmlAgilityPack;
 
 using Newtonsoft.Json;
 
@@ -307,6 +309,47 @@ namespace SBSSData.Softball
             }
 
             return teams;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            // Check for null and type compatibility
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Game game = (Game)obj;
+
+            IEnumerable<PropertyInfo> properties = typeof(Game).GetProperties().Where(p => p.Name != "Empty");
+            foreach (PropertyInfo p in properties)
+            {
+                object? value = p.GetValue(this);
+                object? otherValue = p.GetValue(game);
+
+                if (!p.IsCollection())
+                {
+                    if (value == null || !value.Equals(otherValue))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    List<Team> valueList = (value as List<Team>) ?? [];
+                    List<Team> otherValueList = (otherValue as List<Team>) ?? [];
+                    if ((valueList.Count != otherValueList.Count) || !valueList.SequenceEqual(otherValueList))
+                    {
+                        return false;
+                    }
+                };
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(GameInformation, Teams);
         }
     }
 }
