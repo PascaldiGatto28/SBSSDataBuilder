@@ -157,7 +157,7 @@ namespace SBSSData.Softball
                 else
                 {
                     List<Player> valueList = ((value as List<Player>) ?? []).OrderBy(p => p.Name).ToList();
-                    List<Player> otherValueList = ((value as List<Player>) ?? []).OrderBy(p => p.Name).ToList();
+                    List<Player> otherValueList = ((otherValue as List<Player>) ?? []).OrderBy(p => p.Name).ToList();
                     if ((valueList.Count != otherValueList.Count) || !valueList.SequenceEqual(otherValueList))
                     {
                         return false;
