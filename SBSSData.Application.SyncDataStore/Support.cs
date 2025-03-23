@@ -44,14 +44,15 @@ namespace SBSSData.Application.SyncDataStore
         /// <param name="dataStorePath">The path of the JSON that is the data which is queried for the actuve
         /// games (completed but not canceled or forfeited</param>
         /// <returns></returns>
-        public static SortedList<string, Game> GetSortedGames(string dataStorePath)
+        public static SortedList<string, Game> GetSortedGames(string dataStorePath, List<string>? excludedGames = null)
         {
+            excludedGames ??= StaticConstants.ExcludedGames;
             SortedList<string, Game> sortedGames = [];
             LeaguesData lg = dataStorePath?.Deserialize<LeaguesData>() ?? LeaguesData.Empty;
             IEnumerable<ScheduledGame> scheduledGames = lg.LeagueSchedules.SelectMany(s => s.ScheduledGames);
             IEnumerable<Game> lgPlayedGames = scheduledGames.Where(s => s.IsComplete && !s.WasCanceled)
                                                                          .Select(s => s.GameResults)
-                                                                         .Where(s => !s.IsForfeited)
+                                                                         .Where(s => !s.IsForfeited && !excludedGames.Contains(s.GameInformation.GameId))
                                                                          .OrderBy(s => s.GameInformation.GameId);
             lgPlayedGames.ToList().ForEach(g => sortedGames.Add(g.GameInformation.GameId, g));
             return sortedGames;
@@ -102,10 +103,66 @@ namespace SBSSData.Application.SyncDataStore
 
             return new CompareResults
             {
-                UnequalGames = unEqualKeys,
-                CurrentKeysNotFound = currentKeysNotFound,
-                BuiltKeysNotFound = builtKeysNotFound
-            };
+                //CurrentGames = currentGames,
+                //BuiltGames = builtGames,
+                UnequalGames = ShowTextIfEmpty(unEqualKeys,"No unequal keys"),
+                CurrentKeysNotFound = ShowTextIfEmpty(currentKeysNotFound, "All current keys found"),
+                BuiltKeysNotFound = ShowTextIfEmpty(builtKeysNotFound, "All built keys found")
+            }; 
+        }
+
+        private static List<string> ShowTextIfEmpty (List<string> strings, string text)
+        {
+             return strings.Count == 0 ? [text] : strings;
+        }   
+
+        public static void ViewUnEqualGames(CompareResults results, SortedList<string, Game> currentGames, SortedList<string, Game> builtGames)
+        {
+
+            foreach (string key in results.UnequalGames)
+            {
+                Console.WriteLine($"Game {key} is not equal");
+                bool equal = false;
+                Game currentGame = currentGames[key];
+                Game builtGame = builtGames[key];
+                equal = currentGame.GameInformation.Equals(builtGame.GameInformation).Dump("Game Information");
+                if (!equal)
+                {
+                    currentGame.GameInformation.Dump();
+                    builtGame.GameInformation.Dump();
+                }
+                
+                equal = currentGame.Teams[0].Equals(builtGame.Teams[0]).Dump("Visiting Teams");
+                if (!equal)
+                { 
+                    List<Player> currentPlayers = currentGame.Teams[0].Players;
+                    List<Player> builtPlayers = builtGame.Teams[0].Players;
+                    for (int i = 0; i < currentPlayers.Count; i++)
+                    {
+                        if (!currentPlayers[i].Equals(builtPlayers[i]))
+                        {
+                            currentPlayers[i].Dump();
+                            builtPlayers[i].Dump();
+                        }
+                    }
+
+                    //currentGame.Teams[0].Dump();
+                    //builtGame.Teams[0].Dump();
+                }
+
+                currentGame.Teams[1].Equals(builtGame.Teams[1]).Dump("Home Teams");
+                if (!equal)
+                {
+                    currentGame.Teams[1].Dump();
+                    builtGame.Teams[1].Dump();
+                }
+
+
+
+                //Console.WriteLine($"Game {key} is not equal");
+                //Console.WriteLine($"Current Game: ");
+                //Console.WriteLine($"Built Game: {builtGame}");
+            }
         }
     }
 }
