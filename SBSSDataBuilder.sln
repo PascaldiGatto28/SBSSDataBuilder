@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.Infras
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.WebSiteLocal", "Applications\SBSSData.Application.WebSiteLocal\SBSSData.Application.WebSiteLocal.csproj", "{571C84B1-E723-442B-88BB-E2FF2A231E2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBSSData.Application.SyncDataStore", "SBSSData.Application.SyncDataStore\SBSSData.Application.SyncDataStore.csproj", "{74654672-AAD9-43B1-AF6C-272370446425}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBSSData.Application.SyncDataStore", "Applications\SBSSData.Application.SyncDataStore\SBSSData.Application.SyncDataStore.csproj", "{74654672-AAD9-43B1-AF6C-272370446425}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
