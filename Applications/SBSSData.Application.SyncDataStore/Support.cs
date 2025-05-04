@@ -39,6 +39,23 @@ namespace SBSSData.Application.SyncDataStore
         }
 
         /// <summary>
+        /// Copies the data store to the current data store location.   
+        /// </summary>
+        /// <param name="dsPath"></param>
+        /// <param name="currentDSPath"></param>
+        /// <param name="overwrite"></param>
+        /// <returns></returns>
+        public static int CopyDataStore(string dsPath, string currentDSPath, bool overwrite = true)
+        {
+            if (!File.Exists(currentDSPath) || overwrite)
+            {
+                File.Copy(dsPath, currentDSPath, true);
+            }
+
+            return File.ReadAllText(currentDSPath)?.Length ?? 0;
+        }
+
+        /// <summary>
         /// Returns all the games having data from the data store.
         /// </summary>
         /// <param name="dataStorePath">The path of the JSON that is the data which is queried for the actuve

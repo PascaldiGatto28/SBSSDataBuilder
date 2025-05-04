@@ -83,7 +83,7 @@ namespace SBSSData.Application.DataStore
 
                 dsContainer = DataStoreManager.Build(dataStorePath);
                 bytesWritten = dsContainer.Save();
-                modified = true;
+                //modified = true;
                 log.WriteLine($"New data store constructed {bytesWritten:#,###} bytes written, and the created container:\r\n{dsContainer}");
             }
 

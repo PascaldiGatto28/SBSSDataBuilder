@@ -216,6 +216,8 @@ namespace SBSSData.Softball.Stats
         /// <seealso cref="GamesPlayed"/>
         public int GamesForfeited => GetScheduledGames().Count(g => g.IsComplete && g.GameResults.IsForfeited);
 
+        public bool IsDataStoreEmpty => GetScheduledGames().Count(g => g.IsComplete || g.WasCanceled) == 0;
+
         /// <summary>
         /// The number of games actually played (neither canceled nor forfeited) in all leagues, that is, 
         /// games where there are player stats for the teams.

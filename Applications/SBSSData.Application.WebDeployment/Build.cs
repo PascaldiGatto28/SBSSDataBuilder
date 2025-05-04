@@ -25,7 +25,7 @@ namespace SBSSData.Application.WebDeployment
         public static void Run(string[] args)
         {
             bool buildHtml = true;
-            bool publish = true;
+            bool publish = false;
             bool publishToTest = false; // (args == null) || (args.Length == 0) || (args[0] == "Test");
 
             args.Dump("Data Store Changed?");

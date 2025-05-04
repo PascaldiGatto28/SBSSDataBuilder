@@ -69,7 +69,7 @@ namespace SBSSData.Application.DataStore
             }
             else
             {
-                ActiveLog.WriteLine("No HTML pages constructed, because the data store has not changed.");
+                ActiveLog.WriteLine("No HTML pages constructed because just created the data store or it has not changed.");
             }
         }
 
@@ -77,11 +77,10 @@ namespace SBSSData.Application.DataStore
         // create the JSON file from the log file, and that requires the log file to be closed.
         public void FinishDeployment(bool deployToWeb, bool deploymentTest = false)
         {
-            string where = deploymentTest ? "Test Sync" : "Production (Data)";
-            ActiveLog.WriteLine($"Deploying changed HTML pages to the {where} folder on sbssdata.info");
-
             if (deployToWeb)
             {
+                string where = deploymentTest ? "Test Sync" : "Production (Data)";
+                ActiveLog.WriteLine($"Deploying changed HTML pages to the {where} folder on sbssdata.info");
                 WinSCPSyncResults results = Utilities.PublishSBSSData($"{HtmlDataFolder}", deploymentTest);
                 ActiveLog.WriteLine($"{results}");
             }
@@ -93,7 +92,7 @@ namespace SBSSData.Application.DataStore
             Build<LogSessions>(true);
             string copyResults = Utilities.PublishSingleFile($"{HtmlDataFolder}LogSessions.html", deploymentTest);
 
-            // The log ain't no good no more, so we just have to wright out the results to the console.
+            // The log ain't no good no more, so we just have to write out the results to the console.
             Console.WriteLine($"Publishing LogSessions.html: {copyResults}"); 
         }
 

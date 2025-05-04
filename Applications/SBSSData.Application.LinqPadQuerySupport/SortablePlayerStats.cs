@@ -113,7 +113,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         }
                     }
 
-                    generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
+                    if (leaguePlayersStatistics.Count > 0)
+                    {
+                        generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
+                    }
+                    //generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
 
                     leaguePlayersStatistics = [];
                     IEnumerable<string> categoryNames = leagueNames.GroupBy(l => l.Category).Where(g => g.Count() > 1).Select(g => g.Key);
@@ -126,7 +130,11 @@ namespace SBSSData.Application.LinqPadQuerySupport
                         }
                     }
 
-                    generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
+                    if (leaguePlayersStatistics.Count > 0)
+                    {
+                        generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
+                    }
+                    //generator.WriteRootTable(leaguePlayersStatistics, ExtendedSortablePlayerStats(headerCss, leaguePlayersStatistics));
 
                     string htmlNode = html.Substring("<div class=\"IntroContent\"", "</body", true, false);
                     HtmlNode title = HtmlNode.CreateNode(htmlNode);
