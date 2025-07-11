@@ -28,6 +28,9 @@ namespace SBSSData.Application.DataStore
             set;
         } = activeLog;
 
+        /// <summary>
+        /// Gets the folder path where the application's data store is located.
+        /// </summary>
         public string DataStoreFolder
         {
             get;
@@ -98,10 +101,21 @@ namespace SBSSData.Application.DataStore
 
         public Func<IHtmlCreator, Action<object>?, string> BuildHtml => (i, a) => i.BuildHtmlPage(Season, DataStoreFolder, a ?? Callback);
 
+        /// <summary>
+        /// Builds an HTML page using the specified HTML creator type.
+        /// </summary>
+        /// <remarks>The method dynamically creates an instance of the specified HTML creator type
+        /// <typeparamref name="T"/> and invokes its HTML page creation logic. If <paramref name="useCallback"/> is <see
+        /// langword="true"/>, the callback is passed to the HTML creator; otherwise, no callback is used.</remarks>
+        /// <typeparam name="T">The type of the HTML creator to use. Must implement <see cref="IHtmlCreator"/> and have a parameterless
+        /// constructor.</typeparam>
+        /// <param name="useCallback">A value indicating whether a callback should be used during the HTML creation process. <see
+        /// langword="true"/> to use the callback; otherwise, <see langword="false"/>.</param>
+        /// <returns>An empty string. The generated HTML is written to the output using an internal mechanism.</returns>
         public string Build<T>(bool useCallback) where T : IHtmlCreator, new()
         {
             string html = string.Empty;
-            T? htmlCreator = (T?)Activator.CreateInstance(typeof(T));
+            T? htmlCreator = Activator.CreateInstance<T>();
 
             if (htmlCreator != null)
             {

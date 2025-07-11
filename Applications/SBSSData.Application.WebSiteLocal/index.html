@@ -11,9 +11,9 @@
 
     <title>SBSS Data Viewer</title>
     <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
-    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.25259" />
-    <link rel="stylesheet" href="CSS/Main.css?v=1.25259" />
-    <script type="text/javascript" src="Scripts/Main.js?v=1.25259"></script>
+    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.25192" />
+    <link rel="stylesheet" href="CSS/Main.css?v=1.25192" />
+    <script type="text/javascript" src="Scripts/Main.js?v=1.25192"></script>
     <script data-host="https://biasml.com" data-dnt="false" src="https://biasml.com/js/script.js" id="ZwSg9rf6GA" async defer></script>
 </head>
 <body>
@@ -22,7 +22,7 @@
         <div style="margin-top:10px;">
             <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
             <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
-                Version 1.12.258 &mdash; Released Date Sunday, May 4 2025
+                Version 1.12.260 &mdash; Release Date Friday, July 11 2025
             </div>
             <div class="spacer">
                 The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
@@ -37,9 +37,10 @@
         The data from the current season
         are updated every weekday evening no later than 6:30 PM, after which you can see the all pages populated using
         the latest data. Data from other seasons can be viewed by selecting the season from the drop-down list when clicking the
-        "Seasons" button. Now that the 2025 Spring season has started, it is the default.
+        "Seasons" button. Welcome to the 2025 Summer season! There won't be any data until Monday night, so for now 
+        the 2025 Spring season remains the default. 
     </div>
-    <div class="spacer" style="border: solid 3px #808080; 
+    <!--<div class="spacer" style="border: solid 3px #808080; 
                                border-radius: 15px; 
                                box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.7);
                                padding: 10px; 
@@ -53,7 +54,7 @@
         I will continue to maintain the site and fix any bugs that are reported.
         For those who have expressed interest, I thank you for your support and encouragement.
         Have a great Spring season, and I hope to see you on the field.
-    </div>
+    </div>-->
 
     <div class="dropdown" style="margin-top:10px;">
         <button style="margin-right:0px; " onclick="myFunction()"
@@ -61,6 +62,7 @@
             Seasons
         </button>
         <div id="myDropdown" class="dropdown-content">
+            <div seasonShortName="2025Summer" onclick="setSelectedSeason(this);">Summer 2025</div>
             <div seasonShortName="2025Spring" onclick="setSelectedSeason(this);">Spring 2025</div>
             <div seasonShortName="2025Winter" onclick="setSelectedSeason(this);">Winter 2025</div>
             <div seasonShortName="2024Fall" onclick="setSelectedSeason(this);">Fall 2024</div>
