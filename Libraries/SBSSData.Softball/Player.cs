@@ -229,5 +229,34 @@ namespace SBSSData.Softball
         {
             return Name.BuildDisplayName();
         }
+
+        public override bool Equals(object? obj)
+        {
+            // Check for null and type compatibility
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Player player = (Player)obj;
+
+            IEnumerable<PropertyInfo> properties = typeof(Player).GetProperties().Where(p => p.Name != "Empty");
+            foreach (PropertyInfo p in properties)
+            {
+                object? value = p.GetValue(this);
+                object? otherValue = p.GetValue(player);
+                if ((value == null) || !Equals(value, otherValue))
+                {
+                    return false;
+                }
+            };
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(HashCode.Combine(Name, AtBats, Runs, Singles, Doubles, Triples, HomeRuns, BasesOnBalls), HashCode.Combine(SacrificeFlies));
+        }
     }
 }

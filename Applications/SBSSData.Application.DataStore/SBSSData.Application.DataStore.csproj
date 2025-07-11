@@ -14,7 +14,7 @@
     <Title>SBSS Data Store Manager</Title>
     <Description>Reads and updates the SBSS data store</Description>
     <Version>1.0.23327</Version>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

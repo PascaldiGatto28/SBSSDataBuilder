@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Text;
 
+using SBSSData.Softball.Common;
+
 namespace SBSSData.Softball
 {
     /// <summary>
@@ -127,6 +129,48 @@ namespace SBSSData.Softball
             summary.Append(Name).Append($" ({isHome}, Runs {RunsScored}, {Outcome})");
 
             return summary.ToString();
+        }
+
+        public override bool Equals(object? obj)
+        {
+            // Check for null and type compatibility
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Team team = (Team)obj;
+
+            IEnumerable<PropertyInfo> properties = typeof(Team).GetProperties();
+            foreach (PropertyInfo p in properties)
+            {
+                object? value = p.GetValue(this);
+                object? otherValue = p.GetValue(team);
+
+                if (!p.IsCollection())
+                {
+                    if (value == null || !value.Equals(otherValue))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    List<Player> valueList = ((value as List<Player>) ?? []).OrderBy(p => p.Name).ToList();
+                    List<Player> otherValueList = ((otherValue as List<Player>) ?? []).OrderBy(p => p.Name).ToList();
+                    if ((valueList.Count != otherValueList.Count) || !valueList.SequenceEqual(otherValueList))
+                    {
+                        return false;
+                    }
+                };
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(HashCode.Combine(Name, HomeTeam, RunsScored, RunsAgainst, Hits, Outcome, Players));
         }
     }
 }

@@ -28,6 +28,9 @@ namespace SBSSData.Application.DataStore
             set;
         } = activeLog;
 
+        /// <summary>
+        /// Gets the folder path where the application's data store is located.
+        /// </summary>
         public string DataStoreFolder
         {
             get;
@@ -55,18 +58,21 @@ namespace SBSSData.Application.DataStore
 
                 ActiveLog.WriteLine($"Beginning construction of HTML pages for {Season}");
 
-                Build<DataStoreInfo>(true);
                 Build<GamesTeamPlayersV3>(true);
                 Build<GamesTeamPlayersHelpV3>(true);
                 Build<PlayerSheets>(true);
                 Build<PlayerSheetsGuide>(true);
                 Build<SortablePlayerStats>(true);
 
+                // Build DataStoreInfo last to make sure that any new players are picked 
+                // up after the data store is updated.
+                Build<DataStoreInfo>(true);
+
                 ActiveLog.WriteLine("Six HTML pages have been constructed.");
             }
             else
             {
-                ActiveLog.WriteLine("No HTML pages constructed, because the data store has not changed.");
+                ActiveLog.WriteLine("No HTML pages constructed because just created the data store or it has not changed.");
             }
         }
 
@@ -74,11 +80,10 @@ namespace SBSSData.Application.DataStore
         // create the JSON file from the log file, and that requires the log file to be closed.
         public void FinishDeployment(bool deployToWeb, bool deploymentTest = false)
         {
-            string where = deploymentTest ? "Test Sync" : "Production (Data)";
-            ActiveLog.WriteLine($"Deploying changed HTML pages to the {where} folder on sbssdata.info");
-
             if (deployToWeb)
             {
+                string where = deploymentTest ? "Test Sync" : "Production (Data)";
+                ActiveLog.WriteLine($"Deploying changed HTML pages to the {where} folder on sbssdata.info");
                 WinSCPSyncResults results = Utilities.PublishSBSSData($"{HtmlDataFolder}", deploymentTest);
                 ActiveLog.WriteLine($"{results}");
             }
@@ -90,16 +95,27 @@ namespace SBSSData.Application.DataStore
             Build<LogSessions>(true);
             string copyResults = Utilities.PublishSingleFile($"{HtmlDataFolder}LogSessions.html", deploymentTest);
 
-            // The log ain't no good no more, so we just have to wright out the results to the console.
+            // The log ain't no good no more, so we just have to write out the results to the console.
             Console.WriteLine($"Publishing LogSessions.html: {copyResults}"); 
         }
 
         public Func<IHtmlCreator, Action<object>?, string> BuildHtml => (i, a) => i.BuildHtmlPage(Season, DataStoreFolder, a ?? Callback);
 
+        /// <summary>
+        /// Builds an HTML page using the specified HTML creator type.
+        /// </summary>
+        /// <remarks>The method dynamically creates an instance of the specified HTML creator type
+        /// <typeparamref name="T"/> and invokes its HTML page creation logic. If <paramref name="useCallback"/> is <see
+        /// langword="true"/>, the callback is passed to the HTML creator; otherwise, no callback is used.</remarks>
+        /// <typeparam name="T">The type of the HTML creator to use. Must implement <see cref="IHtmlCreator"/> and have a parameterless
+        /// constructor.</typeparam>
+        /// <param name="useCallback">A value indicating whether a callback should be used during the HTML creation process. <see
+        /// langword="true"/> to use the callback; otherwise, <see langword="false"/>.</param>
+        /// <returns>An empty string. The generated HTML is written to the output using an internal mechanism.</returns>
         public string Build<T>(bool useCallback) where T : IHtmlCreator, new()
         {
             string html = string.Empty;
-            T? htmlCreator = (T?)Activator.CreateInstance(typeof(T));
+            T? htmlCreator = Activator.CreateInstance<T>();
 
             if (htmlCreator != null)
             {

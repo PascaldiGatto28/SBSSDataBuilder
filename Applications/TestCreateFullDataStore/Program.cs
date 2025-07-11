@@ -11,11 +11,14 @@ namespace TestCreateFullDataStore
     {
         internal static void Main()
         {
-            string logPath = @"D:\Temp\Junk\MoreJunk\x.log";
+            string dsFolder = @"C:\Users\richa\AppData\Local\RichardTemp\Junk\";
+            string logFolder = $@"{dsFolder}\MoreJunk\";
+            Directory.CreateDirectory(logFolder);
+            string logPath = $"{logFolder}x.log";
             Log log = new(logPath);
-            //string path = @"D:\Temp\junk\LeaguesData.json";
-            //Program.Build(path);
-            // _ = Program.Update(path, log);
+            string dsPath = $"{dsFolder}2025WinterLeaguesData.json";
+            //Program.Build(dsPath);
+            _ = Program.Update(dsPath, log);
             //Log log = new(logPath);
 
             LogEntry logEntry = new()
@@ -53,7 +56,7 @@ namespace TestCreateFullDataStore
             LeaguesData leaguesData = LeaguesData.ConstructLeaguesData(message: callback);
             //leaguesData.Dump("Constructed");
             //string json = leaguesData.ToString();
-            //string path = @"D:\Temp\Junk\LeaguesData.json";
+            //string dsPath = @"D:\Temp\Junk\LeaguesData.json";
             int size = leaguesData.Serialize(path);
             Console.WriteLine($"LeaguesData serialized {size:#,###} bytes to {path}");
 
@@ -61,9 +64,9 @@ namespace TestCreateFullDataStore
         }
 
 
-        public static LeaguesData Update(string path, Log log)
+        public static LeaguesData Update(string dsPath, Log log)
         {
-            LeaguesData dataStore = path.Deserialize<LeaguesData>();
+            LeaguesData dataStore = dsPath.Deserialize<LeaguesData>();
             int count = dataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).Count(g => g.IsComplete);
             log.WriteLine($"There are {count} complete games as of {dataStore.BuildDate:dddd MMMM d, yyyy a\\t h:mm tt}");
             IEnumerable<LeagueSchedule> schedules = dataStore.LeagueSchedules;
@@ -101,9 +104,9 @@ namespace TestCreateFullDataStore
 
             if (updated > 0)
             {
-                int size = dataStore.Serialize<LeaguesData>(path);
+                int size = dataStore.Serialize<LeaguesData>(dsPath);
                 log.WriteLine($"{updated} games updated, data store serialized using {size:#,###} bytes.");
-                dataStore = path.Deserialize<LeaguesData>();
+                dataStore = dsPath.Deserialize<LeaguesData>();
                 count = dataStore.LeagueSchedules.SelectMany(s => s.ScheduledGames).Count(g => g.IsComplete);
                 log.WriteLine($"There are {count} complete games as of {dataStore.BuildDate:dddd MMMM d, yyyy a\\t h:mm tt}");
             }

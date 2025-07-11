@@ -37,9 +37,10 @@ namespace SBSSData.Application.DataStore
         public static void Main()
         {
             Console.WriteLine($"\r\nSBSS Data Store Manager —  Building and Updating the SBSS Data Store ({DateTime.Now:dddd MMMM d, yyyy})");
-            Console.WriteLine("Version 1.12.24365 — Released Date Monday, December 30 2024\r\n");
+            Console.WriteLine("1.12.25192 — Released Date Friday, July 11 2025\r\n");
 
             AppContext context = AppContext.Instance;
+            bool dsModified = false;
             try
             {
                 using Log log = context.Log;
@@ -47,7 +48,7 @@ namespace SBSSData.Application.DataStore
                 log.WriteLine("Starting the Data Store Manager and HTML Deployment");
                 try
                 {
-                    bool dsModified = DataStoreManager.Run((context.Settings).Update);
+                    dsModified = DataStoreManager.Run((context.Settings).Update);
 
                     // If no items have been updated, then HTML files that depend on the changed data store will not be created.
                     htmlDeployment.CreateHtml(dsModified);
@@ -63,7 +64,8 @@ namespace SBSSData.Application.DataStore
                     // HTML file, the log must be closed and then generated the JSON file, build the LogSessions.html
                     // file and then it copies that single to the server. Even if no other HTML files are build or 
                     // deployed, the LogSessions file is always build and deployed.
-                    htmlDeployment.FinishDeployment(true, false);
+
+                    htmlDeployment.FinishDeployment(dsModified, false);
                 }
             }
             catch (InvalidOperationException exception)

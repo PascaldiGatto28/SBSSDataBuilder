@@ -1,5 +1,6 @@
 ﻿
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -594,6 +595,17 @@ namespace SBSSData.Softball.Common
             return jsonText;
         }
 
+        /// <summary>
+        /// Converts a sequence of key-value pairs to a <c>SortedList</c> object.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="source"></param>
+        /// <returns>A sorted list.</returns>
+        public static SortedList<TKey, TValue> ToSortedList<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source) where TKey : notnull
+        {
+            return new SortedList<TKey, TValue>(source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+        }
 
         /// <summary>
         /// Converts an sequence of objects of type <typeparamref name="T"/> to a string where each element of the sequence
@@ -866,6 +878,19 @@ namespace SBSSData.Softball.Common
                                                          IEnumerable<double>? weights = null)
         {
             return DescriptiveStatistics.GetWeightedStatistics(source, title, weights);
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> if the property type is a collection.
+        /// </summary>
+        /// <param name="propertyInfo"></param>
+        /// <returns></returns>
+        public static bool IsCollection(this PropertyInfo propertyInfo)
+        {
+            return propertyInfo.PropertyType.IsGenericType &&
+                   (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(List<>) ||
+                    propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>) ||
+                    propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>));
         }
     }
 }

@@ -11,18 +11,18 @@
 
     <title>SBSS Data Viewer</title>
     <link rel="shortcut icon" type="image/x-icon" href="SBSSData.ico" />
-    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.24277" />
-    <link rel="stylesheet" href="CSS/Main.css?v=1.24277" />
-    <script type="text/javascript" src="Scripts/Main.js?v=1.24277"></script>
+    <link rel="stylesheet" href="CSS/LINQPad.css?v=1.25192" />
+    <link rel="stylesheet" href="CSS/Main.css?v=1.25192" />
+    <script type="text/javascript" src="Scripts/Main.js?v=1.25192"></script>
     <script data-host="https://biasml.com" data-dnt="false" src="https://biasml.com/js/script.js" id="ZwSg9rf6GA" async defer></script>
 </head>
 <body>
     <div style="display:flex">
-        <img src="./Images/SBSSLogo.png" width="200" height="150;" " />
+        <img src="./Images/SBSSLogo.png" width="200" title="The SBSS Data Viewer logo was developed by the talented Maike K. Jacobi who generously allowed its use." />
         <div style="margin-top:10px;">
             <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
             <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
-                Version 1.12.24361 &mdash; Released Date Thursday, December 26 2024
+                Version 1.12.260 &mdash; Release Date Friday, July 11 2025
             </div>
             <div class="spacer">
                 The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
@@ -37,9 +37,24 @@
         The data from the current season
         are updated every weekday evening no later than 6:30 PM, after which you can see the all pages populated using
         the latest data. Data from other seasons can be viewed by selecting the season from the drop-down list when clicking the
-        "Seasons" button. Now that the 2025 Winter season has started but no games have been played, the 2024 Season is still the
-        default. As soon as the 2025 Winter season data is available, this season will be the default.
+        "Seasons" button. Welcome to the 2025 Summer season! There won't be any data until Monday night, so for now 
+        the 2025 Spring season remains the default. 
     </div>
+    <!--<div class="spacer" style="border: solid 3px #808080; 
+                               border-radius: 15px; 
+                               box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.7);
+                               padding: 10px; 
+                               width:75%; 
+                               margin:auto;
+                               margin-top:15px;
+                               margin-bottom:10px;"> 
+        I'm sorry to say that I'll not be adding new features to this site. I'll maintain it for the foreseeable future, but due to lack
+        of interest, I won't be adding new features.
+        It's been a fun project &ndash; a lot of time &amp work, and a labor of love. I hope you have enjoyed using it.
+        I will continue to maintain the site and fix any bugs that are reported.
+        For those who have expressed interest, I thank you for your support and encouragement.
+        Have a great Spring season, and I hope to see you on the field.
+    </div>-->
 
     <div class="dropdown" style="margin-top:10px;">
         <button style="margin-right:0px; " onclick="myFunction()"
@@ -47,7 +62,9 @@
             Seasons
         </button>
         <div id="myDropdown" class="dropdown-content">
-            <!--<div seasonShortName="2025Winter" onclick="setSelectedSeason(this);">Winter 2025</div>-->
+            <div seasonShortName="2025Summer" onclick="setSelectedSeason(this);">Summer 2025</div>
+            <div seasonShortName="2025Spring" onclick="setSelectedSeason(this);">Spring 2025</div>
+            <div seasonShortName="2025Winter" onclick="setSelectedSeason(this);">Winter 2025</div>
             <div seasonShortName="2024Fall" onclick="setSelectedSeason(this);">Fall 2024</div>
             <div seasonShortName="2024Summer" onclick="setSelectedSeason(this);">Summer 2024</div>
             <div seasonShortName="2024Spring" onclick="setSelectedSeason(this);">Spring 2024</div>
@@ -57,7 +74,7 @@
         </div>
     </div>
     <span>
-        <span id="currentSeason" style="font-weight:500; color:firebrick;" selectedSeason="2024Fall">Fall 2024</span>
+        <span id="currentSeason" style="font-weight:500; color:firebrick; padding-left:10px;" selectedSeason="2025Spring">Spring 2025</span>
         is the Selected Season
     </span>
 
@@ -165,7 +182,7 @@
                     If you haven't had a chance to read this, please do before navigating through the Web site.
                 </td>
             </tr>
-            <tr>
+            <!--<tr>
                 <td>
                     <a href="ReleaseNotes.html">Version History</a>
                 </td>
@@ -173,13 +190,13 @@
                     All release notes are saved in this page. It contains notes for every release: Changes, corrections
                     and new features.
                 </td>
-            </tr>
+            </tr>-->
             <tr>
                 <td>
                     <a href="DataStoreInfo.html">Data Store Information</a>
                 </td>
                 <td>
-                    The data store is the file where the all the data from SSSA Web site is stored;
+                    The data store is the file where the all the data from SSSA Web site are stored;
                     technically it is JSON file. Useful to see
                     how many games were played, which were recorded, canceled or forfeited, and how many teams and active players there are.
                     This page displays a single table showing the data store information for the last few seasons including
@@ -200,41 +217,54 @@
     </table>
 
     <h2>Viewing Requirements</h2>
-    <div>
+    <div class="spacer">
         This Web site is best viewed in a desktop browser because of the size of the tables that can be nested and the number of tables.
         All pages render on a phone but can be hard to navigate and see everything. This has only been tested on chromium
         browsers (Chrome and Edge) and Android and iPhones. Your mileage may vary.
     </div>
-    <div class="space">
-        When you select a link to a page, if it is displayed same tab, to go back previous page just click on the link that is
+    <div class="spacer">
+        When you select a link to a page, if it is displayed in the same tab, to go back previous page just click on the link that is
         part of the page header. See the <a href="Notices.html">Things to Note &amp; Information</a> page for more detailed information
         about the site structure.
     </div>
 
     <h2 id="feedback">Feedback &amp; Contact Information</h2>
     <div class="spacer">
-        Please contact me with any problems, questions, concerns or suggestions. I will respond as rapidly as possible. Also please
-        let me now if you would like to receive an email when new features are added or changed. You can reach
+        Please contact me with any problems, questions, concerns or suggestions. I will respond as rapidly as possible. You can reach
         me via email at <a href="mailto:Richard.Levaro@Outlook.com?subject=SBSS Data Viewer">Richard.Levaro@outlook.com</a>.
-        When I send an email to the list of people that want to be notified, your email address will not be visible, because it is
-        sent as a BCC (blind copy) item. In this case the sender will be my address, but the recipient will be my alter ego.
         Please share the <a href="http://www.sbssdata.info">SBSS Data Viewer</a> link with others who you think might be interested.
         Thank you!
     </div>
-    <h2 id="ReleaseNotes">
+    <!--<h2 id="ReleaseNotes">
         Latest Release Notes
         <a href="ReleaseNotes.html" class="navigate" style="font-size:.68em; color:firebrick; font-weight:500;">(Version History)</a>
     </h2>
     <div class="spacer">
-        Version 1.12.24361 &mdash; Released Date Thursday, December 26 2024<br />
-        This release is just in preparation for the Winter 2025 season. As of this writing there have been no games played yet, so there's
-        no data to display. After Monday January 6, you'll see data for games played, and the default
-        season will be changed from Fall 2024 to Winter 2025.
+        Version 1.12.257 &mdash; Released Date Tuesday, January 7 2025<br />
+        This release supports the Winter 2025 season, and it is the default season selected when you first access the Data Viewer home page.
+    </div>
+    <div class="spacer">
+        There have been a number of changes to the "Players Leagues Stats & Statistics" page most to accommodate when not all leagues have
+        yet played again. Like the other pages, information for games or leagues do not appear until there is actual data. Also the titles
+        of the tables that actually contain the league (and combined leagues) tables have been altered to remove the "sortable" reference &ndash; all
+        data tables are now sortable.
+    </div>
+    <div class="spacer">
+        The "Data Store Information" page has been corrected to return the current number of players. When not all leagues have reported data,
+        not all active players were counted properly. That only affected the current season; all other seasons have the correct data.
+    </div>
+    <div class="spacer">
+        The current season of this writing (Winter 2025) is now the default season, but you can look any season's data using drop-down "Seasons"
+        button.
+    </div>
+    <div class="spacer">
+        The "Player Sheets" page formatting was altered so text within cells do not take more than one line. That makes reading the
+        tables easier. The "Seasons" button formatting has changed to be more like other buttons on the other pages.
     </div>
     <div class="spacer" id="Logo">
-        You might also notice the SBSS Data Viewer logo at the top of the page. This logo was developed, and generously allowed its use, by the 
-        talented Maike K. Jacobi. 
-    </div>
+        You might also notice the SBSS Data Viewer logo at the top of the page.
+        The SBSS Data Viewer logo was developed by the talented Maike K. Jacobi who generously allowed its use.
+    </div>-->
 
     <script lanugage="javascript" type="text/javascript">
 

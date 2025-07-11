@@ -71,19 +71,18 @@ namespace SBSSData.Application.DataStore
             }
             else
             {
-                string dataStorePath = dsContainer.DataStorePath;
                 if (dataStore.LeagueSchedules.Any())
                 {
                     log.WriteLine(LogCategory.Warning, "The existing data store will be overwritten");
                 }
                 else
                 {
-                    log.WriteLine($"Building the data store at {dataStorePath}");
+                    log.WriteLine($"Building the data store at {dsContainer.DataStorePath}");
                 }
 
-                dsContainer = DataStoreManager.Build(dataStorePath);
+                dsContainer = DataStoreManager.Build(dsContainer.DataStorePath);
                 bytesWritten = dsContainer.Save();
-                modified = true;
+                //modified = true;
                 log.WriteLine($"New data store constructed {bytesWritten:#,###} bytes written, and the created container:\r\n{dsContainer}");
             }
 
