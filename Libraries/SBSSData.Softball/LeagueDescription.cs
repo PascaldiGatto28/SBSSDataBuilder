@@ -59,7 +59,7 @@ namespace SBSSData.Softball
         public string Season
         {
             get;
-            init;
+            set;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace SBSSData.Softball
         public string Year
         {
             get;
-            init;
+            set;
         }
 
         /// <summary>
@@ -121,21 +121,42 @@ namespace SBSSData.Softball
                 //string leagueDay = leagueInfo[0].Trim().Capitalize();
                 //string leagueCategory = leagueInfo[1].Trim().Capitalize();
 
+                // The html on the pages have changed so the following code no longer works.
+                //string articleClass = article.GetAttributeValue("class", string.Empty);
+                //string[] leagueSeason = articleClass.Substring("sp_season", false)
+                //                                    .Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                //string season = leagueSeason[0].Trim().Capitalize();
+                //string year = leagueSeason[1].Trim();
 
-                string articleClass = article.GetAttributeValue("class", string.Empty);
-                string[] leagueSeason = articleClass.Substring("sp_season", false)
-                                                    .Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                string season = leagueSeason[0].Trim().Capitalize();
-                string year = leagueSeason[1].Trim();
+                
+                string season = string.Empty;
+                string year = string.Empty;
+                HtmlNode seasonYearNode = article.SelectSingleNode("./div/div[2]/div/div//table/tbody/tr[1]/td[6]");
 
-                return new LeagueDescription()
+                // The InnerText is something like "Fall 2023" so split it into two parts. If is null, then there are
+                // no scheduled games, so just return the empty object.
+
+                LeagueDescription leagueDescription = new();
+                if (seasonYearNode != null)
                 {
-                    LeagueCategory = leagueCategory,
-                    LeagueDay = leagueDay,
-                    Season = season,
-                    Year = year,
-                    ScheduleDataSource = scheduleDataSource
-                };
+                    string[] parts = seasonYearNode.InnerText.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length == 2)
+                    {
+                        season = parts[0].Trim().Capitalize();
+                        year = parts[1].Trim();
+                    }
+
+                    leagueDescription = new()
+                    {
+                        LeagueCategory = leagueCategory,
+                        LeagueDay = leagueDay,
+                        Season = season,
+                        Year = year,
+                        ScheduleDataSource = scheduleDataSource
+                    };
+                }
+
+                return leagueDescription;
             }
             catch (Exception exception)
             {

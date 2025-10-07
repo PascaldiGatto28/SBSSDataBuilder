@@ -11,6 +11,8 @@ namespace SBSSData.Softball.Storage
     /// The embedded resources are JSON files for the various data stores and the current log file. The files
     /// actually are in OneDrive, but using links allows the files to be easily accessed by the class methods.
     /// The only files that are updated are the current data store and the log and associated <c>.json</c> file.
+    /// N.B. This class is not used by ano other the libraries or the application. It is provided for diagnostic
+    /// and testing purposes.
     /// </remarks>
     public static class DataRepository
     {

@@ -17,6 +17,8 @@
         {
         }
 
+        public static LeagueName Empty => new (string.Empty, string.Empty, string.Empty, string.Empty);
+
         //public override bool Equals(object? obj)
         //{
         //    bool isEqual = false;

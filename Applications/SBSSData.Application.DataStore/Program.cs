@@ -37,7 +37,7 @@ namespace SBSSData.Application.DataStore
         public static void Main()
         {
             Console.WriteLine($"\r\nSBSS Data Store Manager —  Building and Updating the SBSS Data Store ({DateTime.Now:dddd MMMM d, yyyy})");
-            Console.WriteLine("1.12.25192 — Released Date Friday, July 11 2025\r\n");
+            Console.WriteLine("1.12.25278 — Released Date Sunday, October 5 2025\r\n");
 
             AppContext context = AppContext.Instance;
             bool dsModified = false;
