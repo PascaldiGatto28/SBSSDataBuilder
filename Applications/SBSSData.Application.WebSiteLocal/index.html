@@ -22,7 +22,7 @@
         <div style="margin-top:10px;">
             <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
             <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
-                Version 1.12.260 &mdash; Release Date Friday, July 11 2025
+                Version 1.12.278 &mdash; Release Date Monday, October 6 2025
             </div>
             <div class="spacer">
                 The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
@@ -37,10 +37,9 @@
         The data from the current season
         are updated every weekday evening no later than 6:30 PM, after which you can see the all pages populated using
         the latest data. Data from other seasons can be viewed by selecting the season from the drop-down list when clicking the
-        "Seasons" button. Welcome to the 2025 Summer season! Now that there is some data for the 2025 Summer season, it is the
-        default season. Remember you can always look at previous seasons by click on the "Seasons" button.
+        "Seasons" button. Welcome to the 2025 Fall season! 
     </div>
-    <!--<div class="spacer" style="border: solid 3px #808080; 
+    <div class="spacer" style="border: solid 3px #808080; 
                                border-radius: 15px; 
                                box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.7);
                                padding: 10px; 
@@ -48,13 +47,13 @@
                                margin:auto;
                                margin-top:15px;
                                margin-bottom:10px;"> 
-        I'm sorry to say that I'll not be adding new features to this site. I'll maintain it for the foreseeable future, but due to lack
-        of interest, I won't be adding new features.
+        I'm sorry to say that this site will no longer be available after the Fall Season due to lack
+        of interest especially from the SSSA board.
         It's been a fun project &ndash; a lot of time &amp work, and a labor of love. I hope you have enjoyed using it.
         I will continue to maintain the site and fix any bugs that are reported.
         For those who have expressed interest, I thank you for your support and encouragement.
-        Have a great Spring season, and I hope to see you on the field.
-    </div>-->
+        Have a great Fall season, and I hope to see you on the field.
+    </div>
 
     <div class="dropdown" style="margin-top:10px;">
         <button style="margin-right:0px; " onclick="myFunction()"
@@ -62,6 +61,7 @@
             Seasons
         </button>
         <div id="myDropdown" class="dropdown-content">
+            <div seasonShortName="2025Fall" onclick="setSelectedSeason(this);">Fall 2025</div>
             <div seasonShortName="2025Summer" onclick="setSelectedSeason(this);">Summer 2025</div>
             <div seasonShortName="2025Spring" onclick="setSelectedSeason(this);">Spring 2025</div>
             <div seasonShortName="2025Winter" onclick="setSelectedSeason(this);">Winter 2025</div>
@@ -74,7 +74,7 @@
         </div>
     </div>
     <span>
-        <span id="currentSeason" style="font-weight:500; color:firebrick; padding-left:10px;" selectedSeason="2025Summer">Summer 2025</span>
+        <span id="currentSeason" style="font-weight:500; color:firebrick; padding-left:10px;" selectedSeason="2025Fall">Fall 2025</span>
         is the Selected Season
     </span>
 
@@ -174,15 +174,15 @@
                     Z-scores are used and calculated.
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <a href="Notices.html">Things to Note &amp; Information</a>
-                </td>
-                <td>
-                    If you haven't had a chance to read this, please do before navigating through the Web site.
-                </td>
-            </tr>
             <!--<tr>
+            <td>
+                <a href="Notices.html">Things to Note &amp; Information</a>
+            </td>
+            <td>
+                If you haven't had a chance to read this, please do before navigating through the Web site.
+            </td>
+            </tr>
+            <tr>
                 <td>
                     <a href="ReleaseNotes.html">Version History</a>
                 </td>
@@ -208,7 +208,7 @@
                     <a href="LogSessions.html">Log Sessions</a>
                 </td>
                 <td>
-                    TLDR; (For computer nerds like me). This is the contents of the log file for the
+                    TLDR; This is the contents of the log file for the
                     current (or last completed) season. It contains details of the games that were played,
                     marked as recorded, canceled or forfeited. It also shows the files that are deployed to the web site server.
                 </td>
@@ -224,16 +224,16 @@
     </div>
     <div class="spacer">
         When you select a link to a page, if it is displayed in the same tab, to go back previous page just click on the link that is
-        part of the page header. See the <a href="Notices.html">Things to Note &amp; Information</a> page for more detailed information
-        about the site structure.
+        part of the page header. <!--See the <a href="Notices.html">Things to Note &amp; Information</a> page for more detailed information
+        about the site structure.-->
     </div>
 
     <h2 id="feedback">Feedback &amp; Contact Information</h2>
     <div class="spacer">
         Please contact me with any problems, questions, concerns or suggestions. I will respond as rapidly as possible. You can reach
         me via email at <a href="mailto:Richard.Levaro@Outlook.com?subject=SBSS Data Viewer">Richard.Levaro@outlook.com</a>.
-        Please share the <a href="http://www.sbssdata.info">SBSS Data Viewer</a> link with others who you think might be interested.
-        Thank you!
+        <!--Please share the <a href="http://www.sbssdata.info">SBSS Data Viewer</a> link with others who you think might be interested.
+        Thank you!-->
     </div>
     <!--<h2 id="ReleaseNotes">
         Latest Release Notes

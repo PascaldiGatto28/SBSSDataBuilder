@@ -38,6 +38,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBSSData.Application.WebSit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBSSData.Application.SyncDataStore", "Applications\SBSSData.Application.SyncDataStore\SBSSData.Application.SyncDataStore.csproj", "{74654672-AAD9-43B1-AF6C-272370446425}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBSSData.Softball.Rosters", "Libraries\SBSSData.Softball.Rosters\SBSSData.Softball.Rosters.csproj", "{EBF97F4C-1C5F-4386-94A6-4564A7E4AB59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBSSData.Softball.Renderer", "Libraries\SBSSData.Softball.Renderer\SBSSData.Softball.Renderer.csproj", "{B294872A-7DF7-42A0-915A-4F3E046E7DA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +96,14 @@ Global
 		{74654672-AAD9-43B1-AF6C-272370446425}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74654672-AAD9-43B1-AF6C-272370446425}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74654672-AAD9-43B1-AF6C-272370446425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBF97F4C-1C5F-4386-94A6-4564A7E4AB59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF97F4C-1C5F-4386-94A6-4564A7E4AB59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF97F4C-1C5F-4386-94A6-4564A7E4AB59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF97F4C-1C5F-4386-94A6-4564A7E4AB59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B294872A-7DF7-42A0-915A-4F3E046E7DA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B294872A-7DF7-42A0-915A-4F3E046E7DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B294872A-7DF7-42A0-915A-4F3E046E7DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B294872A-7DF7-42A0-915A-4F3E046E7DA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +122,8 @@ Global
 		{2707D3EF-EC8B-4098-9375-5CC26A1089A3} = {54E165F3-50B2-434D-9701-BCF9307790F2}
 		{571C84B1-E723-442B-88BB-E2FF2A231E2C} = {54E165F3-50B2-434D-9701-BCF9307790F2}
 		{74654672-AAD9-43B1-AF6C-272370446425} = {54E165F3-50B2-434D-9701-BCF9307790F2}
+		{EBF97F4C-1C5F-4386-94A6-4564A7E4AB59} = {E43FBD7A-0EA0-4CAB-8649-7FC478BAE67B}
+		{B294872A-7DF7-42A0-915A-4F3E046E7DA1} = {E43FBD7A-0EA0-4CAB-8649-7FC478BAE67B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90CD84B2-8201-4202-9D03-099CF3076382}

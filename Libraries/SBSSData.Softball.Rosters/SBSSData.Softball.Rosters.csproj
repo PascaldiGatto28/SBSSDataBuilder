@@ -7,16 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\**" />
-    <Compile Remove="Properties\**" />
-    <EmbeddedResource Remove="Data\**" />
-    <EmbeddedResource Remove="Properties\**" />
-    <None Remove="Data\**" />
-    <None Remove="Properties\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SBSSData.Softball.Common\SBSSData.Softball.Common.csproj" />
+    <ProjectReference Include="..\SBSSData.Softball.Stats\SBSSData.Softball.Stats.csproj" />
     <ProjectReference Include="..\SBSSData.Softball\SBSSData.Softball.csproj" />
   </ItemGroup>
 
