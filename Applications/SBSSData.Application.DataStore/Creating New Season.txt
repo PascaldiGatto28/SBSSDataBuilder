@@ -1,0 +1,13 @@
+Creating a New Season
+
+——> Alter the Settings.json in the SBSSData.Application.DataStore project file to include the new season. For example, to create a new season called "2026 Spring", change the "Season" property in the Seasons.json file to "Season" : "2026 Spring" and change "BuildOption" to "BuildOption": "Build", 
+
+——> Move the files DataStoreManager.json and DataStoreManager.log from the SBSSDataStore (J:\SBSSDataStore) to the Backup folder (J:\SBSSDataStore\Backup) keeping any existing files having the same name.
+
+——> Move all the files in the Backup folder to the Archive subfolder. The Backup folder should not have any files and just one subfolder, "Archive".
+
+——> In the class file SBSSData.Application.Support.StaticConstants.cs, add the string "2026 Spring" to the beginning of the array public static readonly List<string> Seasons.  Save everything and rebuild (Debug) the SBSSData.Application.DataStore. From VS, execute the SBSSData.Application.DataStore. It will create the new data store it and save the json DateStore file. In our example, it is saved here "J:\SBSSDataStore\2026SpringLeaguesData.json". The DataStore has been created and the DataStoreManager.log and .json files updated in the DataStore folder. However, no HTML files have been created.
+
+——> Create the HTML season folder in "J:\SBSSDataStore\HtmlData". For example, create the folder "J:\SBSSDataStore\HtmlData\2026Spring" (N.B. This is a bug because the HtmlDeployment.Build method should create this automatically if it doesn't exist). 
+
+——> Next modify the index.html file in the SBssData.Application.WebSiteLocal project. Executing the project will move any changed files (index.html is the only file that is required) to the HTML folder ("J:\SBSSDataStore\HtmlData"). The minimal change to index.html is to add the new season (for example, 2026 Spring)

@@ -211,6 +211,7 @@ namespace SBSSData.Softball
         /// <returns>Returns a list of <c>Team</c> objects. It may be empty, but never <c>null</c>.</returns>
         private static List<Team> ConstructTeams(HtmlDocument htmlDocument)
         {
+
             List<HtmlNode> spSectionContentNodes = [.. htmlDocument.DocumentNode.SelectSingleNode("//article/div").SelectNodes("div")];
 
             // Now each of the teams. The second section provide summary information about the team for this game.

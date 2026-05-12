@@ -1,10 +1,10 @@
 {
     "DataStoreFolder": "J:\\SBSSDataStore\\",
-    "Season" :  "2025 Fall",
+    "Season" : "2026 Spring",
     "DataStoreFileName": "LeaguesData.json",
     "LogFileName": "DataStoreManager.log",
     "LogSessionFileName": "DataStoreManager.json",
-    "BuildOption": "Update", // Build a new instance; Update to update
+    "BuildOption": "Build", // Build a new instance; Update to update
     "HtmlFolder": "HtmlData\\", 
     "Test": false // Not used
 }

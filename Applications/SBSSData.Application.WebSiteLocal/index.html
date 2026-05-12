@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="CSS/LINQPad.css?v=1.25192" />
     <link rel="stylesheet" href="CSS/Main.css?v=1.25192" />
     <script type="text/javascript" src="Scripts/Main.js?v=1.25192"></script>
-    <script data-host="https://biasml.com" data-dnt="false" src="https://biasml.com/js/script.js" id="ZwSg9rf6GA" async defer></script>
+    <!--<script data-host="https://biasml.com" data-dnt="false" src="https://biasml.com/js/script.js" id="ZwSg9rf6GA" async defer></script>-->
 </head>
 <body>
     <div style="display:flex">
@@ -22,7 +22,7 @@
         <div style="margin-top:10px;">
             <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
             <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
-                Version 1.12.278 &mdash; Release Date Monday, October 6 2025
+                Version 1.12.279 &mdash; Release Date Wednesday May 5, 2026
             </div>
             <div class="spacer">
                 The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
@@ -37,9 +37,9 @@
         The data from the current season
         are updated every weekday evening no later than 6:30 PM, after which you can see the all pages populated using
         the latest data. Data from other seasons can be viewed by selecting the season from the drop-down list when clicking the
-        "Seasons" button. Welcome to the 2025 Fall season! 
+        "Seasons" button. The default season when you first access the site is the current season.
     </div>
-    <div class="spacer" style="border: solid 3px #808080; 
+    <!--<div class="spacer" style="border: solid 3px #808080; 
                                border-radius: 15px; 
                                box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.7);
                                padding: 10px; 
@@ -50,10 +50,10 @@
         I'm sorry to say that this site will no longer be available after the Fall Season due to lack
         of interest especially from the SSSA board.
         It's been a fun project &ndash; a lot of time &amp work, and a labor of love. I hope you have enjoyed using it.
-        I will continue to maintain the site and fix any bugs that are reported.
+        I will continue to maintain the site and fix any bugs that are reported until it is removed on November 28.
         For those who have expressed interest, I thank you for your support and encouragement.
         Have a great Fall season, and I hope to see you on the field.
-    </div>
+    </div>-->
 
     <div class="dropdown" style="margin-top:10px;">
         <button style="margin-right:0px; " onclick="myFunction()"
@@ -61,6 +61,8 @@
             Seasons
         </button>
         <div id="myDropdown" class="dropdown-content">
+            <div seasonShortName="2026Spring" onclick="setSelectedSeason(this);">Spring 2026</div>
+            <div seasonShortName="2026Winter" onclick="setSelectedSeason(this);">Winter 2026</div>
             <div seasonShortName="2025Fall" onclick="setSelectedSeason(this);">Fall 2025</div>
             <div seasonShortName="2025Summer" onclick="setSelectedSeason(this);">Summer 2025</div>
             <div seasonShortName="2025Spring" onclick="setSelectedSeason(this);">Spring 2025</div>
@@ -74,7 +76,7 @@
         </div>
     </div>
     <span>
-        <span id="currentSeason" style="font-weight:500; color:firebrick; padding-left:10px;" selectedSeason="2025Fall">Fall 2025</span>
+        <span id="currentSeason" style="font-weight:500; color:firebrick; padding-left:10px;" selectedSeason="2026Spring">Spring 2026</span>
         is the Selected Season
     </span>
 
