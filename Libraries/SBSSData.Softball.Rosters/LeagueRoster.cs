@@ -164,26 +164,20 @@ namespace SBSSData.Softball.Rosters
 
             try
             {
-                List<HtmlNode> spanNodes = root.SelectNodes("//span").ToList();//.Count.Dump("Number of span nodes");
-                int numSpanNodes = spanNodes.Count;
-                var spNodes = root.SelectNodes("//div[@class='sportspress']");
-                for (int i = 0; i < numSpanNodes; i++)
+                // The manager span contains text like "Manager: John Doe". Want to extract just the name,
+                // so trim off the "Manager:" prefix.
+                List<string> managers = root.SelectNodes("//span").Where(s => s.InnerHtml.Contains("Manager:"))
+                                            .Select(s => s.InnerHtml.Substring("Manager:".Length).TrimStart()).ToList();
+                int numManagers = managers.Count;
+
+                // There is a "sportspress" node for each team, and the manager spans are in the same order as the teams. 
+                HtmlNodeCollection spNodes = root.SelectNodes("//div[@class='sportspress']");
+                for (int i = 0; i < managers.Count; i++)
                 {
                     HtmlNode spNode = spNodes.ElementAt(i);
                     string teamName = spNode.SelectSingleNode("h4").InnerText.CleanNameText();
-                    string manager = spanNodes[i].InnerHtml.Substring("Manager: ".Length);
-
-                    // There's one roster (monday community recreation, that is the first one in SSSA Rosters&Stats)
-                    // that has a missing </span>. Normally, endIndex is -1 in which case the selecting just the
-                    // appropriate text is not needed. If this ever gets fixed, the code will not execute and
-                    // no harm no foul.
-                    int endIndex = manager.IndexOf("<br");
-                    if (endIndex > 0)
-                    {
-                        manager = manager.Substring(0, endIndex);
-                        callback("Fixed Manager name");
-                    }
-
+                    string manager = managers[i];
+                    
                     HtmlNode tableBody = spNode.SelectSingleNode("div/div/table/tbody");
                     IEnumerable<string> players = tableBody.SelectNodes("tr/td[@class='data-name']").Select(n => n.InnerText.CleanNameText());
                     TeamRoster roster = new(teamName, manager, players.ToList());
