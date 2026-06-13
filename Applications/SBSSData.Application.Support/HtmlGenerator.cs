@@ -1,38 +1,61 @@
-﻿// Ignore Spelling: css
-
-using HtmlAgilityPack;
-
+﻿using HtmlAgilityPack;
 using LINQPad;
-
 using SBSSData.Softball.Common;
 
 namespace SBSSData.Application.Support
 {
+    /// <summary>
+    /// Generates and post-processes HTML pages using a LINQPad XHTML writer and HtmlAgilityPack.
+    /// Provides helpers to write text, raw HTML and table content, and to produce a final HTML document
+    /// with optional head elements, CSS, JavaScript and table-collapsing behavior.
+    /// </summary>
     public sealed class HtmlGenerator : IDisposable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HtmlGenerator"/> class.
+        /// Creates the underlying LINQPad XHTML writer and initializes the table node callback list.
+        /// </summary>
         public HtmlGenerator()
         {
             Writer = LINQPad.Util.CreateXhtmlWriter(true, 6, false);
             TableNodeCallbacks = [];
         }
 
+        /// <summary>
+        /// Gets the <see cref="TextWriter"/> used to write XHTML output.
+        /// This writer is created by LINQPad and is disposed when <see cref="Dispose"/> is called.
+        /// </summary>
         public TextWriter Writer
         {
             get;
             init;
         }
 
+        /// <summary>
+        /// Gets the list of callbacks used to provide table header text for root tables.
+        /// Each callback receives a <see cref="TableNode"/> and returns the header string to apply.
+        /// Callbacks may be null to indicate no header is provided for a corresponding table.
+        /// </summary>
         public List<Func<TableNode, string>?> TableNodeCallbacks
         {
             get;
             init;
         }
 
+        /// <summary>
+        /// Writes plain text to the underlying writer.
+        /// </summary>
+        /// <param name="text">The text to write.</param>
         public void WriteText(string text)
         {
             Writer.Write(text);
         }
 
+        /// <summary>
+        /// Writes a simple text table (an object with an Information property) to the writer.
+        /// Useful for producing a small one-column table-like display in the XHTML output.
+        /// </summary>
+        /// <param name="text">The text to include in the table's Information cell.</param>
         public void WriteTextTable(string text) //, string description = "", string header = "")
         {
             var displayObject = new
@@ -42,17 +65,32 @@ namespace SBSSData.Application.Support
 
             Writer.Write(displayObject); //, description: description, header: writeHeader);
         }
+
+        /// <summary>
+        /// Writes raw HTML to the output without HTML-encoding by wrapping the content with LINQPad's raw HTML helper.
+        /// </summary>
+        /// <param name="text">The raw HTML string to write.</param>
         public void WriteRawHtml(string text)
         {
             object displayObject = Util.RawHtml(text);
             Writer.Write(displayObject);
         }
 
+        /// <summary>
+        /// Writes an arbitrary object to the underlying writer.
+        /// The writer determines how the object is rendered into XHTML.
+        /// </summary>
+        /// <param name="value">The object to write.</param>
         public void Write(object value)
         {
             Writer.Write(value);
         }
 
+        /// <summary>
+        /// Writes a root table value to the writer and registers an optional callback to provide a table header.
+        /// </summary>
+        /// <param name="value">The table root value to write.</param>
+        /// <param name="callback">A callback that receives the corresponding <see cref="TableNode"/> and returns a header string, or <c>null</c>.</param>
         public void WriteRootTable(object? value, Func<TableNode, string>? callback)
         {
             Writer.Write(value);
@@ -61,6 +99,22 @@ namespace SBSSData.Application.Support
 
         private static readonly string emptyDoc = """<html><body><span style="color:firebrick; font-size:1.50em; font-weight:bold;">This is an empty document; no tables were written.</span></body></html>""";
 
+        /// <summary>
+        /// Produces the final HTML document string after applying post-processing to the raw XHTML produced by the writer.
+        /// </summary>
+        /// <param name="pageTitle">An optional <see cref="HtmlNode"/> to prepend to the document body as the page title (can contain any HTML).</param>
+        /// <param name="cssStyles">Optional additional CSS styles to append to the document's &lt;style&gt; element.</param>
+        /// <param name="javaScript">Optional additional JavaScript to append to the document's &lt;script&gt; element.</param>
+        /// <param name="collapseTo">
+        /// Collapse depth threshold for nested tables. Tables with nesting level greater than or equal to this value
+        /// will be collapsed (their tbody/tfoot hidden) and an arrow indicator adjusted. Default is 1.
+        /// </param>
+        /// <param name="headElements">Optional list of head elements to add (meta, link, title, etc.).</param>
+        /// <returns>The processed document HTML as a string (outer HTML of the root node).</returns>
+        /// <remarks>
+        /// Uses HtmlAgilityPack to modify table headers, apply callbacks that set table header text, collapse nested tables,
+        /// add head elements, and append CSS/JavaScript. If no content was written to the writer, returns a minimal empty-document HTML.
+        /// </remarks>
         public string DumpHtml(HtmlNode? pageTitle = null, string cssStyles = "", string javaScript = "", int collapseTo = 1, List<HeadElement>? headElements = null)
         {
             string? docHtml = Writer?.ToString();
@@ -202,6 +256,13 @@ namespace SBSSData.Application.Support
             return rootNode.OuterHtml;
         }
 
+        /// <summary>
+        /// Adds the provided list of head elements (meta, link, title, etc.) to the specified document head node.
+        /// Elements are prepended in the order they appear in the list.
+        /// </summary>
+        /// <param name="htmlDocument">The <see cref="HtmlDocument"/> used to create new head element nodes.</param>
+        /// <param name="headNode">The document head <see cref="HtmlNode"/> to which elements will be added.</param>
+        /// <param name="headElements">The list of <see cref="HeadElement"/> instances that describe head elements and attributes.</param>
         public static void AddHeadData(HtmlDocument htmlDocument, HtmlNode headNode, List<HeadElement> headElements)
         {
             if ((htmlDocument != null) && (headNode != null))
@@ -243,6 +304,10 @@ namespace SBSSData.Application.Support
             return nestingLevel;
         }
 
+        /// <summary>
+        /// Disposes the underlying writer and releases any resources used by this instance.
+        /// After calling <see cref="Dispose"/>, the writer should not be used.
+        /// </summary>
         public void Dispose()
         {
             Writer.Dispose();

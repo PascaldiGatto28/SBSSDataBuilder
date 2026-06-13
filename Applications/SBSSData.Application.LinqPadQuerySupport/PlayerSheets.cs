@@ -60,10 +60,10 @@ namespace SBSSData.Application.LinqPadQuerySupport
 
         public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null)
         {
-            return BuildHtmlPage(seasonText, dataStoreFolder, callback, "");
+            return BuildHtmlPage(seasonText, dataStoreFolder, callback, null);
         }
 
-        public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null, string specifiedPlayerNames = "")
+        public string BuildHtmlPage(string seasonText, string dataStoreFolder, Action<object>? callback = null, List<string>? specifiedPlayerNames = null)
         {
             Action<object>? actionCallback = callback; // == null ? (v) => Console.WriteLine(v.ToString()) : callback;
             string season = seasonText.RemoveWhiteSpace();
@@ -188,13 +188,15 @@ namespace SBSSData.Application.LinqPadQuerySupport
             return percentiles;
         }
 
-        public static IEnumerable<PlayerSheetContainer> GetPlayerSheetContainers(string dsPath, string playerPhotosPath, ref List<string> optionValues, string specifiedPlayerName = "")
+        public static IEnumerable<PlayerSheetContainer> GetPlayerSheetContainers(string dsPath, string playerPhotosPath, ref List<string> optionValues, List<string>? specifiedPlayerNames= null)
         {
             List<PlayerSheetContainer> playerSheetContainers = [];
             using (DataStoreContainer dsContainer = DataStoreContainer.Instance(dsPath))
             {
                 Query query = new(dsContainer);
-                IEnumerable<string> playerNames = string.IsNullOrWhiteSpace(specifiedPlayerName) ? query.GetActivePlayerNames() : [specifiedPlayerName];
+                //IEnumerable<string> playerNames = ((specifiedPlayerNames ?? []).Count == 0) ? query.GetActivePlayerNames() : specifiedPlayerNames;
+
+                IEnumerable<string> playerNames = specifiedPlayerNames is null or { Count: 0 } ? query.GetActivePlayerNames() : specifiedPlayerNames;
 
                 // First change the containerHtml to include the HTML that is the list of selection player options. Later I replace
                 // the iFrame source doc attribute to the HTML of the returned HTML.
