@@ -22,7 +22,7 @@
         <div style="margin-top:10px;">
             <h1>SaddleBrook Senior Softball (SBSS) Data Viewer</h1>
             <div id="version" style="font-size:.80em; margin-top:-4px; font-weight:400">
-                Version 1.12.279 &mdash; Release Date Wednesday May 5, 2026
+                Version 1.12.280 &mdash; Release Date July 13, 2026
             </div>
             <div class="spacer">
                 The SBSS Data Viewer lets you view accumulated statistics from games played. All this data
@@ -61,6 +61,7 @@
             Seasons
         </button>
         <div id="myDropdown" class="dropdown-content">
+            <div seasonShortName="2026Summer" onclick="setSelectedSeason(this);">Summer 2026</div>
             <div seasonShortName="2026Spring" onclick="setSelectedSeason(this);">Spring 2026</div>
             <div seasonShortName="2026Winter" onclick="setSelectedSeason(this);">Winter 2026</div>
             <div seasonShortName="2025Fall" onclick="setSelectedSeason(this);">Fall 2025</div>
@@ -76,7 +77,7 @@
         </div>
     </div>
     <span>
-        <span id="currentSeason" style="font-weight:500; color:firebrick; padding-left:10px;" selectedSeason="2026Spring">Spring 2026</span>
+        <span id="currentSeason" style="font-weight:500; color:firebrick; padding-left:10px;" selectedSeason="2026Summer">Summer 2026</span>
         is the Selected Season
     </span>
 
